@@ -26,7 +26,17 @@ export default function Home({ initialCount }: InferGetServerSidePropsType<typeo
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <h1 className={styles.title}>Main Page</h1>
+      <h1 className="text-3xl font-bold underline">TailWind Test</h1>
       <main className={styles.main}>
+        <div className="p-6 max-w-sm mx-auto bg-white rounded-xl shadow-lg flex items-center space-x-4">
+          <div className="shrink-0">
+            <img className="h-12 w-12" src="/fake-logo.png" alt="ChitChat Logo" />
+          </div>
+          <div>
+            <div className="text-xl font-medium text-black">Tailwind Test</div>
+            <p className="text-slate-500">You have a new message!</p>
+          </div>
+        </div>
         <div>Initial count from the server: {count}</div>
         <div>Double count: {doubleCount}</div>
         <button onClick={() => setCount((count) => count + 1)}>+1</button>
