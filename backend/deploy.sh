@@ -2,7 +2,8 @@
 
 #REPOSITORY=/home/ec2-user/app/step1
 REPOSITORY=/home/ec2-user/app
-PROJECT_NAME=SpringPractice-webservice
+#PROJECT_NAME=SpringPractice-webservice
+PROJECT_NAME=dnd-6th-10-a-piece-of-writing
 
 cd $REPOSITORY/$PROJECT_NAME
 
