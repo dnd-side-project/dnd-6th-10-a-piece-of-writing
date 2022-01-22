@@ -3,9 +3,10 @@
 #REPOSITORY=/home/ec2-user/app/step1
 REPOSITORY=/home/ec2-user/app
 #PROJECT_NAME=SpringPractice-webservice
-PROJECT_NAME=dnd-6th-10-a-piece-of-writing
+PROJECT_NAME=backend
+PROJECT_DIR=dnd-6th-10-a-piece-of-writing/backend
 
-cd $REPOSITORY/$PROJECT_NAME
+#cd $REPOSITORY/$PROJECT_NAME
 
 echo "> Git pull"
 
