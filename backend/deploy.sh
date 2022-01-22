@@ -8,6 +8,8 @@ PROJECT_DIR=dnd-6th-10-a-piece-of-writing/backend
 
 #cd $REPOSITORY/$PROJECT_NAME
 
+cd $REPOSITORY/$PROJECT_DIR
+
 echo "> Git pull"
 
 git pull
@@ -28,7 +30,9 @@ cd $REPOSITORY
 
 echo "> Build 파일 복사"
 
-cp $REPOSITORY/$PROJECT_NAME/build/libs/*.jar $REPOSITORY/
+#cp $REPOSITORY/$PROJECT_NAME/build/libs/*.jar $REPOSITORY/
+
+cp $REPOSITORY/$PROJECT_DIR/build/libs/*.jar $REPOSITORY/
 
 echo "> 현재 구동 중인 어플리케이션 pid 확인"
 
