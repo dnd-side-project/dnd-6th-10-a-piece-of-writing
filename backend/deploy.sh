@@ -61,4 +61,9 @@ echo "> JAR Name : $JAR_NAME"
 #        -Dspring.profiles.active=real \
 #        $REPOSITORY/$JAR_NAME 2>&1 &
 
-nohup java -jar $REPOSITORY/$JAR_NAME 2>&1 &
+# nohup java -jar $REPOSITORY/$JAR_NAME 2>&1 &
+
+nohup java -jar \
+        -Dspring.config.location=classpath:/application.properties,/home/ec2-user/app/application-real-db.properties,\
+        -Dspring.profiles.active=real \
+        $REPOSITORY/$JAR_NAME 2>&1 &
