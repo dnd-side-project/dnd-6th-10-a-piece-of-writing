@@ -70,7 +70,7 @@ Ex) 이슈번호가 67인 이슈의 기능을 구현한 뒤 커밋을 하는 상
 
 ### Backend
 -   Java, SpringBoot, IntelliJ
--   Spring Security, 
+-   Spring Security, JWT
 -   Git Travis
 -   AWS EC2, S3, CodeDeploy
 -   Junit, JPA
