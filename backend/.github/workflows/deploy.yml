@@ -1,0 +1,40 @@
+name: a-piece-of-writing
+
+on:
+  push:
+    branches:
+#      - version/2020-12-11 # (1) 실습하시는분들은 master로 하시면 됩니다. (저는 별도 브랜치로 지정)
+#      - main # 향후 main으로 merge 시 main 브랜치로 변경 예정
+      - feature/27-CI
+#      현재 만드는 Github Action의 트리거 브랜치를 지정합니다.
+#      즉, 여기서는 feature/27-CI 브랜치가 push되면 현재 만들고 있는 Github Action이 실행됩니다.
+
+  workflow_dispatch: # (2) 수동 실행
+#  브랜치 push 이벤트외에, 수동으로 실행하는 것도 가능하게 만드는 옵션입니다.
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # (3)
+#    해당 Github Action 스크립트가 작동될 OS 환경을 지정합니다.
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2 # (4)
+#        프로젝트 코드를 checkout 합니다.
+
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1 # (5)
+        with:
+          java-version: 1.8
+#          Github Action이 실행될 OS에 Java를 설치합니다.
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew # (6)
+        shell: bash
+#        gradle wrapper를 실행할 수 있도록 실행 권한 (+x)을 줍니다.
+#        해당 실행 권한이 있어야 아래 (7) 를 실행할 수 있습니다.
+
+      - name: Build with Gradle
+        run: ./gradlew clean build # (7)
+        shell: bash
+#        gradle wrapper를 통해 해당 프로젝트를 build 합니다.
