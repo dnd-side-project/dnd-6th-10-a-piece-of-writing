@@ -28,12 +28,14 @@ jobs:
 #          Github Action이 실행될 OS에 Java를 설치합니다.
 
       - name: Grant execute permission for gradlew
-        run: chmod +x ./gradlew # (6)
-#        shell: bash # Grant execute permission for gradlew 스텝에서 chmod: cannot access './gradlew': No such file or directory 오류 발생하여 해결 위해 주석 처리
+#        run: chmod +x ./gradlew # (6)
+        run: chmod +x ./backend/gradlew # (6) # Grant execute permission for gradlew 스텝에서 chmod: cannot access './gradlew': No such file or directory 오류 발생하여 해결 위해 경로 변경
+        shell: bash
 #        gradle wrapper를 실행할 수 있도록 실행 권한 (+x)을 줍니다.
 #        해당 실행 권한이 있어야 아래 (7) 를 실행할 수 있습니다.
 
       - name: Build with Gradle
-        run: ./gradlew clean build # (7)
-#        shell: bash # Grant execute permission for gradlew 스텝에서 chmod: cannot access './gradlew': No such file or directory 오류 발생하여 해결 위해 주석 처리
+#        run: ./gradlew clean build # (7)
+        run: ./backend/gradlew clean build # (7) # Grant execute permission for gradlew 스텝에서 chmod: cannot access './gradlew': No such file or directory 오류 발생하여 해결 위해 경로 변경
+        shell: bash
 #        gradle wrapper를 통해 해당 프로젝트를 build 합니다.
