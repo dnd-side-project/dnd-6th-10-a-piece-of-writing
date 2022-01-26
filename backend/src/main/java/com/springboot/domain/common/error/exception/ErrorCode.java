@@ -13,19 +13,22 @@ public enum ErrorCode {
     INVALID_TYPE_VALUE(400, "C005", " Invalid Type Value"),
     HANDLE_ACCESS_DENIED(403, "C006", "Access is Denied"),
 
+    // JWT
+    EXPIRED_JWT(403, "J001", "Expired Jwt"),
+    UNSUPPORTED_JWT(403, "J002", "Unsupported Jwt"),
+    SIGNATURE_INVALID_JWT(403, "JOO3", "Signature Invalid Jwt"),
+    JWT_NOT_FOUND(403, "J004", "Jwt Not Found"),
+    AUTHENTICATION_FAILED(403, "J005", "Authentication Failed"),
 
     // Member
     EMAIL_DUPLICATION(400, "M001", "Email is Duplication"),
     LOGIN_INPUT_INVALID(400, "M002", "Login input is invalid"),
-
-    // Coupon
-    COUPON_ALREADY_USE(400, "CO001", "Coupon was already used"),
-    COUPON_EXPIRE(400, "CO002", "Coupon was already expired")
+    PASSWORD_INVALID(401, "M003", "Password is invalid"),
 
     ;
     private final String code;
     private final String message;
-    private int status;
+    private final int status;
 
     ErrorCode(final int status, final String code, final String message) {
         this.status = status;
@@ -38,11 +41,11 @@ public enum ErrorCode {
     }
 
     public String getCode() {
-        return code;
+        return this.code;
     }
 
     public int getStatus() {
-        return status;
+        return this.status;
     }
 
 

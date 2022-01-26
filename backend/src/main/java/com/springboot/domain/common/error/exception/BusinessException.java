@@ -2,7 +2,7 @@ package com.springboot.domain.common.error.exception;
 
 public class BusinessException extends RuntimeException {
 
-    private ErrorCode errorCode;
+    private final ErrorCode errorCode;
 
     public BusinessException(String message, ErrorCode errorCode) {
         super(message);
@@ -17,5 +17,4 @@ public class BusinessException extends RuntimeException {
     public ErrorCode getErrorCode() {
         return errorCode;
     }
-
 }
