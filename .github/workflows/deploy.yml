@@ -16,6 +16,13 @@ jobs:
     runs-on: ubuntu-latest # (3)
 #    해당 Github Action 스크립트가 작동될 OS 환경을 지정합니다.
 
+    env:
+      working-directory: ./backend
+#  Change Directory from 'dnd-6th-10-a-piece-of-writing' to 'backend' to execute gradlew command
+#      working-directory 프로퍼티 작성
+#    env를 선언하여 working directory를 상수로 저장해 둡니다.
+#      working-directory 프로퍼티는 명령을 실행할 때 마다 수행해 주어야 합니다. 터미널처럼 한번 경로를 이동한다고 상태가 남는 것이 아니라 매번 새로 실행하기 때문입니다.
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2 # (4)
@@ -27,18 +34,20 @@ jobs:
           java-version: 1.8
 #          Github Action이 실행될 OS에 Java를 설치합니다.
 
-      - name: Change Directory from 'dnd-6th-10-a-piece-of-writing' to 'backend' to execute gradlew command
-        run: cd backend/
+#      - name: Change Directory from 'dnd-6th-10-a-piece-of-writing' to 'backend' to execute gradlew command
+#        run: cd backend/
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew # (6)
-#        run: chmod +x ./backend/gradlew # (6) # Grant execute permission for gradlew 스텝에서 chmod: cannot access './gradlew': No such file or directory 오류 발생하여 해결 위해 경로 변경
+        working-directory: ${{ env.working-directory }}
+#        run: chmod +x ./backend/gradlew # (6) # Grant execute permission for gradlew 스텝에서 chmod: cannot access './gradlew': No such file or directory 오류 발생하여 해결 위해 경로 변경 -> working directory로 해결
         shell: bash
 #        gradle wrapper를 실행할 수 있도록 실행 권한 (+x)을 줍니다.
 #        해당 실행 권한이 있어야 아래 (7) 를 실행할 수 있습니다.
 
       - name: Build with Gradle
         run: ./gradlew clean build # (7)
-#        run: ./backend/gradlew clean build # (7) # Grant execute permission for gradlew 스텝에서 chmod: cannot access './gradlew': No such file or directory 오류 발생하여 해결 위해 경로 변경
+        working-directory: ${{ env.working-directory }}
+#        run: ./backend/gradlew clean build # (7) # Grant execute permission for gradlew 스텝에서 chmod: cannot access './gradlew': No such file or directory 오류 발생하여 해결 위해 경로 변경 -> working directory로 해결
         shell: bash
 #        gradle wrapper를 통해 해당 프로젝트를 build 합니다.
