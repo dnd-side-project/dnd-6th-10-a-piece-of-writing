@@ -3,9 +3,9 @@ package com.springboot.domain.auth.controller;
 import com.springboot.domain.auth.jwt.JwtUtil;
 import com.springboot.domain.common.error.exception.ErrorCode;
 import com.springboot.domain.common.error.exception.InvalidValueException;
-import com.springboot.domain.common.model.RequestDto;
-import com.springboot.domain.common.model.ResponseDto;
-import com.springboot.domain.common.model.ResponseService;
+import com.springboot.domain.common.model.RequestVo;
+import com.springboot.domain.common.model.ResponseVo;
+import com.springboot.domain.common.model.ResponseServiceImpl;
 import com.springboot.domain.common.model.SuccessCode;
 import com.springboot.domain.member.model.Member;
 import java.util.HashMap;
@@ -23,19 +23,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
-    private final ResponseService responseService;
+    private final ResponseServiceImpl responseServiceImpl;
 
     @PostMapping(value = "/login")
-    public ResponseEntity<ResponseDto> login(@RequestBody RequestDto requestDto) {
-        Member member = (Member) memberService.loadUserByUsername(requestDto.getEmail());
+    public ResponseEntity<ResponseVo> login(@RequestBody RequestVo requestVo) {
+        Member member = (Member) memberService.loadUserByUsername(requestVo.getEmail());
 
-        if(!passwordEncoder.matches(requestDto.getPassword(), member.getPassword())) {
-            throw new InvalidValueException(requestDto.getPassword(), ErrorCode.PASSWORD_INVALID);
+        if(!passwordEncoder.matches(requestVo.getPassword(), member.getPassword())) {
+            throw new InvalidValueException(requestVo.getPassword(), ErrorCode.PASSWORD_INVALID);
         }
-        String token = JwtUtil.createAuthToken(requestDto.getEmail());
+        String token = JwtUtil.createAuthToken(requestVo.getEmail());
         Map<String, String> body = new HashMap<>();
         body.put("access-token", token);
 
-        return responseService.successResult(SuccessCode.LOGIN_SUCCESS, body);
+        return responseServiceImpl.successResult(SuccessCode.LOGIN_SUCCESS, body);
     }
 }
