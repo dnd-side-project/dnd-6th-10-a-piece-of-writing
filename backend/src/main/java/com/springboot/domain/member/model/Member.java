@@ -30,7 +30,8 @@ public class Member implements UserDetails {
     private Long memberId;
 
     @Column(nullable = true)
-    private String profileUrl;
+    @Builder.Default
+    private String profileUrl = "<basic img url> pls set basic url";
 
     @Column(nullable = false)
     private String email;
