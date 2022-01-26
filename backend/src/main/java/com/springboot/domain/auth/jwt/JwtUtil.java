@@ -3,17 +3,27 @@ package com.springboot.domain.auth.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.springboot.domain.member.service.MemberService;
 import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
+@RequiredArgsConstructor
+@Component
 public class JwtUtil {
 
-    private static final String secretKey = "key-DND-team10";
-    private static final Algorithm ALGORITHM = Algorithm.HMAC512(secretKey);
-    private static final long AUTH_TIME = 1000 * 60 * 30; // 30min
-    private static final long REFRESH_TIME = 1000 * 60 * 60 * 24 * 7; // 7days
+    private final String secretKey = "key-DND-team10";
+    private final Algorithm ALGORITHM = Algorithm.HMAC512(secretKey);
+    private final long AUTH_TIME = 1000 * 60 * 30; // 30min
+    private final long REFRESH_TIME = 1000 * 60 * 60 * 24 * 7; // 7days
 
-    public static String createAuthToken(String email) {
+    private final MemberService memberService;
+
+    public String createAuthToken(String email) {
         Date now = new Date();
         return JWT.create()
                 .withIssuedAt(now)
@@ -24,7 +34,7 @@ public class JwtUtil {
                 .sign(ALGORITHM);
     }
 
-    public static String createRefreshToken(String email) {
+    public String createRefreshToken(String email) {
         Date now = new Date();
         return JWT.create()
                 .withIssuedAt(now)
@@ -35,27 +45,23 @@ public class JwtUtil {
                 .sign(ALGORITHM);
     }
 
-    public static String resolveToken(HttpServletRequest request) {
+    public Authentication getAuthentication(String token) {
+        UserDetails userDetails = memberService.loadUserByUsername(
+                JWT.require(ALGORITHM).build().verify(token).getSubject());
+        return new UsernamePasswordAuthenticationToken(userDetails, null,
+                userDetails.getAuthorities());
+    }
+
+    public String resolveToken(HttpServletRequest request) {
         return request.getHeader("X-AUTH_TOKEN");
     }
 
-    public static TokenResult verifyToken(String token) {
+    public boolean validateToken(String token) {
         try {
             DecodedJWT verifiedToken = JWT.require(ALGORITHM).build().verify(token);
-            return TokenResult.builder()
-                    .iss(verifiedToken.getIssuer())
-                    .name(verifiedToken.getSubject())
-                    .type(verifiedToken.getClaim("token-type").asString())
-                    .success(true)
-                    .build();
-        } catch(Exception ex) {
-            DecodedJWT unverifiedToken = JWT.decode(token);
-            return TokenResult.builder()
-                    .iss(unverifiedToken.getIssuer())
-                    .name(unverifiedToken.getSubject())
-                    .type(unverifiedToken.getClaim("token-type").asString())
-                    .success(false)
-                    .build();
+            return !verifiedToken.getExpiresAt().before(new Date());
+        } catch (Exception ex) {
+            return false;
         }
     }
 }

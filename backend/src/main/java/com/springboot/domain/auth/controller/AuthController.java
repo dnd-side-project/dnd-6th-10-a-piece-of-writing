@@ -16,24 +16,25 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
 public class AuthController {
+
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
     private final ResponseServiceImpl responseServiceImpl;
+    private final JwtUtil jwtUtil;
 
     @PostMapping(value = "/api/login")
     public ResponseEntity<ResponseVo> login(@RequestBody RequestVo requestVo) {
         Member member = (Member) memberService.loadUserByUsername(requestVo.getEmail());
 
-        if(!passwordEncoder.matches(requestVo.getPassword(), member.getPassword())) {
+        if (!passwordEncoder.matches(requestVo.getPassword(), member.getPassword())) {
             throw new InvalidValueException(requestVo.getPassword(), ErrorCode.PASSWORD_INVALID);
         }
-        String token = JwtUtil.createAuthToken(requestVo.getEmail());
+        String token = jwtUtil.createAuthToken(requestVo.getEmail());
         Map<String, String> body = new HashMap<>();
         body.put("access-token", token);
 
