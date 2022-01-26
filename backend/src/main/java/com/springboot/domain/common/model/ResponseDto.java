@@ -13,13 +13,12 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public class ResponseDto {
     private int status;
-    private String message;
     private Object data;
 
-    public static ResponseDto commonResult() {
-        return new ResponseDto(200, "request success", new Object());
+    public static ResponseDto commonResponse(int status, String msg) {
+        return new ResponseDto(status, new Object());
     }
-    public static ResponseDto commonResult(Object object) {
-        return new ResponseDto(200, "request success", object);
+    public static ResponseDto commonResponse(int status, String msg, Object object) {
+        return new ResponseDto(status, object);
     }
 }
