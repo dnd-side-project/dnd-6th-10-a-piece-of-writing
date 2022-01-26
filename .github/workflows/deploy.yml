@@ -52,3 +52,17 @@ jobs:
 #        run: ./backend/gradlew clean build # (7) # Grant execute permission for gradlew 스텝에서 chmod: cannot access './gradlew': No such file or directory 오류 발생하여 해결 위해 경로 변경 -> working directory로 해결
         shell: bash
 #        gradle wrapper를 통해 해당 프로젝트를 build 합니다.
+
+      # Time Action 추가
+      # build 시점의 현재 시간을 확인하는 기능
+      - name: Get current time
+        uses: 1466587594/get-current-time@v2
+        id: current-time
+        with:
+          format: YYYY-MM-DDTHH-mm-ss
+          utcOffset: "+09:00"
+
+      - name: Show Current Time
+        run: echo "CurrentTime=${{steps.current-time.outputs.formattedTime}}"
+        # get-current-time 에서 지정한 포맷대로 현재 시간을 노출하게 됩니다.
+        shell: bash
