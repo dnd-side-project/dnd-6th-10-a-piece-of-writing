@@ -29,6 +29,9 @@ public class Member implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
 
+    @Column(nullable = true)
+    private String profileUrl;
+
     @Column(nullable = false)
     private String email;
 
