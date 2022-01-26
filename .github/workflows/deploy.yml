@@ -34,6 +34,7 @@ jobs:
           java-version: 1.8
 #          Github Action이 실행될 OS에 Java를 설치합니다.
 
+#      위의 env:working-directory로 해결
 #      - name: Change Directory from 'dnd-6th-10-a-piece-of-writing' to 'backend' to execute gradlew command
 #        run: cd backend/
 
