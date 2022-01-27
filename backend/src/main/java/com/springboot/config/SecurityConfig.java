@@ -1,5 +1,6 @@
 package com.springboot.config;
 
+import com.springboot.domain.auth.CustomAccessDeniedHandler;
 import com.springboot.domain.auth.CustomAuthenticationEntryPoint;
 import com.springboot.domain.auth.jwt.JwtAuthenticationFilter;
 import com.springboot.domain.auth.jwt.JwtUtil;
@@ -23,6 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtUtil jwtUtil;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -33,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(customAuthenticationEntryPoint)
-//                .accessDeniedHandler()
+                .accessDeniedHandler(customAccessDeniedHandler)
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

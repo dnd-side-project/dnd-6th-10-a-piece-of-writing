@@ -3,6 +3,7 @@ package com.springboot.domain.auth;
 import com.springboot.domain.auth.jwt.JwtUtil;
 import com.springboot.domain.common.error.exception.ErrorCode;
 import java.io.IOException;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,6 +34,11 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
             message = jwtUtil.setInvalidAuthenticationMessage(token);
         }
 
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, message);
+        response.setContentType("application/json;charset=UTF-8");
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.getWriter().println("{ \"message\" : \"" + message
+                + "\", \"code\" : \"" +  ErrorCode.AUTHENTICATION_FAILED.getCode()
+                + "\", \"status\" : " + ErrorCode.AUTHENTICATION_FAILED.getStatus()
+                + ", \"errors\" : [ ] }");
     }
 }
