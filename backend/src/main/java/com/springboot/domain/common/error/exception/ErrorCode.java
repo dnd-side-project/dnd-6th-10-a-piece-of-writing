@@ -48,5 +48,4 @@ public enum ErrorCode {
         return this.status;
     }
 
-
 }
