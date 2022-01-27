@@ -27,7 +27,7 @@ public class AuthController {
     private final ResponseServiceImpl responseServiceImpl;
     private final JwtUtil jwtUtil;
 
-    @PostMapping(value = "/api/login")
+    @PostMapping(value = "/login")
     public ResponseEntity<ResponseVo> login(@RequestBody RequestVo requestVo) {
         Member member = (Member) memberService.loadUserByUsername(requestVo.getEmail());
 
