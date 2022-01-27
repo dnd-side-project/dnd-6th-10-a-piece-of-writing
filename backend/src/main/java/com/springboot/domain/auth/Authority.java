@@ -1,4 +1,4 @@
-package com.springboot.domain.auth.jwt;
+package com.springboot.domain.auth;
 
 public class Authority {
     public static final String ROLE_USER = "ROLE_USER";
