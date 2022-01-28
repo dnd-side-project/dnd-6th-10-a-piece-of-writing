@@ -13,8 +13,8 @@ const FAKE_IMAGE_URLS = [
 export default function main() {
   return (
     <div className="masonry before:box-inherit after:box-inherit">
-      {FAKE_IMAGE_URLS.map((src) => (
-        <div className="break-inside p-8 my-6 w-50 bg-gray-100 rounded-lg">
+      {FAKE_IMAGE_URLS.map((src, index) => (
+        <div className="break-inside p-8 my-6 w-50 bg-gray-100 rounded-lg" key={`${src}_${index}`}>
           <img className="w-full" src={src} />
         </div>
       ))}
