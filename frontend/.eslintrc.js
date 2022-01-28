@@ -94,6 +94,11 @@ module.exports = {
             position: 'before',
           },
           {
+            pattern: '@/**',
+            group: 'external',
+            position: 'after',
+          },
+          {
             pattern: './*.scss',
             group: 'sibling',
             position: 'after',
