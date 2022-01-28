@@ -69,12 +69,11 @@ Ex) 이슈번호가 67인 이슈의 기능을 구현한 뒤 커밋을 하는 상
 ## ⚒️ 기술 스택
 
 ### Backend
--   Java, SpringBoot, IntelliJ
--   Spring Security, JWT
--   Git Travis
--   AWS EC2, S3, CodeDeploy
--   Junit, JPA
--   Nginx
+-   Development : Java, SpringBoot, IntelliJ, JPA
+-   Authentication : Spring Security, JWT
+-   DevOps: Github Action, S3, CodeDeploy, Nginx
+-   Cloud : AWS EC2
+-   Test : Junit
 
 ## 👥 파트 및 개발 계획
 ### [ 팀원 & 파트 ]
