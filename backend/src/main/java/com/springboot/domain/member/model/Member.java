@@ -29,6 +29,9 @@ public class Member implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
 
+    @Column(nullable = false)
+    private String nickname;
+
     @Column(nullable = true)
     @Builder.Default
     private String profileUrl = "<basic img url> pls set basic url";
