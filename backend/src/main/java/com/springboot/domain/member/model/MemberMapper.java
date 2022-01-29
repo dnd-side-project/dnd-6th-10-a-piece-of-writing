@@ -1,6 +1,6 @@
 package com.springboot.domain.member.model;
 
-import com.springboot.domain.common.model.RequestVo;
+import com.springboot.domain.common.model.RequestDto;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -9,7 +9,7 @@ public interface MemberMapper {
 
     MemberMapper INSTANCE = Mappers.getMapper(MemberMapper.class);
 
-    Member RequestDtoToMember(RequestVo requestVo);
+    Member RequestDtoToMember(RequestDto requestDto);
 
-    RequestVo memberToRequestDto(Member member);
+    RequestDto memberToRequestDto(Member member);
 }
