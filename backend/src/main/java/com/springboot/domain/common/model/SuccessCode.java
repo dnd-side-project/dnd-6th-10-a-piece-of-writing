@@ -11,7 +11,8 @@ import lombok.Getter;
 public enum SuccessCode {
 //    Auth
     LOGIN_SUCCESS("login success", 200),
-
+    LOGOUT_SUCCESS("logout success", 200),
+    REISSUE_SUCCESS("reissue access token success", 200),
     ;
 
     private final String message;

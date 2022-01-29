@@ -11,12 +11,15 @@ import com.springboot.domain.common.error.exception.ErrorCode;
 import com.springboot.domain.member.service.MemberService;
 import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+@Getter
 @RequiredArgsConstructor
 @Component
 public class JwtUtil {
@@ -27,6 +30,7 @@ public class JwtUtil {
     private final long REFRESH_TIME = 1000 * 60 * 60 * 24 * 7; // 7days
 
     private final MemberService memberService;
+    private final ValueOperations<String, String> valueOperations;
 
     public String createAuthToken(String email) {
         Date now = new Date();
@@ -57,8 +61,12 @@ public class JwtUtil {
                 userDetails.getAuthorities());
     }
 
-    public String resolveToken(HttpServletRequest request) {
+    public String resolveAccessToken(HttpServletRequest request) {
         return request.getHeader("X-AUTH_TOKEN");
+    }
+
+    public String resolveRefreshToken(HttpServletRequest request) {
+        return request.getHeader("X-AUTH-REFRESH_TOKEN");
     }
 
     public boolean validateToken(String token) {
@@ -70,14 +78,17 @@ public class JwtUtil {
         }
     }
 
-    public String setInvalidAuthenticationMessage(String token){
+    public String setInvalidAuthenticationMessage(String token) {
         try {
             JWT.require(ALGORITHM).build().verify(token);
+            if (valueOperations.get(token) != null) {
+                return ErrorCode.EXPIRED_ACCESS_TOKEN.getMessage();
+            }
             return "Unknown error : Should Tell to Backend";
         } catch (AlgorithmMismatchException | InvalidClaimException e) {
             return ErrorCode.UNSUPPORTED_JWT.getMessage();
         } catch (TokenExpiredException e) {
-            return ErrorCode.EXPIRED_JWT.getMessage();
+            return ErrorCode.EXPIRED_ACCESS_TOKEN.getMessage();
         } catch (SignatureVerificationException e) {
             return ErrorCode.SIGNATURE_INVALID_JWT.getMessage();
         } catch (IllegalArgumentException e) {
