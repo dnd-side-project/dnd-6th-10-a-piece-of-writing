@@ -9,9 +9,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestVo {
+public class RequestDto {
 
     private Long memberId;
+    private String nickname;
+    private String profileUrl;
     private String email;
     private String password;
     private String authority;
