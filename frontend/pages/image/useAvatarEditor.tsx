@@ -15,7 +15,7 @@ type Props = {
 export const CropSlider: React.FC<Props> = ({
   min = 0,
   max = 500,
-  step = null,
+  step = undefined,
   name,
   value,
   setValue = (n) => {},
