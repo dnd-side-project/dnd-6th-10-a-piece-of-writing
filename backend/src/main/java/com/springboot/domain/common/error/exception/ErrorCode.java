@@ -12,18 +12,20 @@ public enum ErrorCode {
     INTERNAL_SERVER_ERROR(500, "C004", "Server Error"),
     INVALID_TYPE_VALUE(400, "C005", " Invalid Type Value"),
     HANDLE_ACCESS_DENIED(403, "C006", "Access is Denied"),
+    HEADER_MISSING_ERROR(400, "C007", "Header is missing"),
 
     // JWT
-    EXPIRED_JWT(403, "J001", "Expired Jwt"),
+    EXPIRED_ACCESS_TOKEN(403, "J001", "Expired access token"),
+    EXPIRED_REFRESH_TOKEN(403, "J001", "Expired refresh token"),
     UNSUPPORTED_JWT(403, "J002", "Unsupported Jwt"),
     SIGNATURE_INVALID_JWT(403, "JOO3", "Signature Invalid Jwt"),
     JWT_NOT_FOUND(403, "J004", "Jwt Not Found"),
     AUTHENTICATION_FAILED(403, "J005", "Authentication Failed"),
+    INVALID_ACCESS_TOKEN(400, "J006", "Tokens have already been logged out"),
 
     // Member
     EMAIL_DUPLICATION(400, "M001", "Email is Duplication"),
     LOGIN_INPUT_INVALID(400, "M002", "Login input is invalid"),
-    PASSWORD_INVALID(401, "M003", "Password is invalid"),
 
     ;
     private final String code;
