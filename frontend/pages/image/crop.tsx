@@ -1,7 +1,5 @@
 import React, { useRef, useState } from 'react'
 
-import Slider from 'rc-slider'
-
 import { CENTER_FLEX } from '@/styles/classNames'
 import classNames from 'classnames/bind'
 import styles from './upload.module.scss'
@@ -9,21 +7,24 @@ import 'rc-slider/assets/index.css'
 
 import AvatarEditor from 'react-avatar-editor'
 import { Button } from '@/components/button'
+import { CropSlider } from '@/pages/image/useAvatarEditor'
 
 const cx = classNames.bind(styles)
 
 const crop = () => {
+  const [zoom, setZoom] = useState(1)
   const [width, setWidth] = useState(250)
   const [height, setHeight] = useState(250)
+  const [rotate, setRotate] = useState(0)
   const [text, setText] = useState('')
 
   const [resultImageUrl, setResultImageUrl] = useState('')
 
-  const editorRef = useRef()
+  const editorRef = useRef<AvatarEditor>()
 
   const onClickTest = () => {
+    if (!editorRef.current) return
     const canvas = editorRef.current.getImage().toDataURL()
-    console.log({ canvas })
     fetch(canvas)
       .then((res) => res.blob())
       .then((blob) => setResultImageUrl(window.URL.createObjectURL(blob)))
@@ -33,44 +34,23 @@ const crop = () => {
     <div className={cx('w-full', 'min-h-screen', CENTER_FLEX, 'flex-col')}>
       <div className={cx('flex-col', CENTER_FLEX)}>
         <AvatarEditor
-          ref={editorRef}
+          ref={(editor) => {
+            editor && (editorRef.current = editor)
+          }}
           crossOrigin={'anonymous'}
           image="https://fakeimg.pl/1000/"
           width={width}
           height={height}
-          // border={50}
           color={[255, 255, 255, 0.6]} // RGBA
-          scale={1}
-          rotate={0}
+          scale={zoom}
+          rotate={rotate}
         />
       </div>
       <div className={cx('w-full', CENTER_FLEX, 'flex-col')}>
-        <div className={cx('w-full', CENTER_FLEX)}>
-          <span>width</span>
-          <div className={'w-48 m-3'}>
-            <Slider
-              min={0}
-              max={500}
-              value={width}
-              onChange={(e) => {
-                setWidth(e)
-              }}
-            />
-          </div>
-        </div>
-        <div className={cx('w-full', CENTER_FLEX)}>
-          <span>height</span>
-          <div className={'w-48 m-3'}>
-            <Slider
-              min={0}
-              max={500}
-              value={height}
-              onChange={(e) => {
-                setHeight(e)
-              }}
-            />
-          </div>
-        </div>
+        <CropSlider value={width} setValue={setWidth} name={'width'} />
+        <CropSlider value={height} setValue={setHeight} name={'height'} />
+        <CropSlider value={zoom} setValue={setZoom} name={'zoom'} max={2} step={0.01} />
+        <CropSlider value={rotate} setValue={setRotate} name={'rotate'} max={360} step={1} />
         <textarea
           className="placeholder:italic placeholder:text-slate-400 block bg-white w-full border border-slate-300 rounded-md py-2 pl-9 pr-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm"
           placeholder="내용을 입력하세요.."
