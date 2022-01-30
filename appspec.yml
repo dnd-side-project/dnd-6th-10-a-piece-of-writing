@@ -5,7 +5,7 @@ files:
     # 책 내용
 #    destination: /home/ec2-user/app/step2/zip/
     # 웹사이트 내용
-    destination: /home/ec2-user/dnd-6th-10-a-piece-of-writing
+    destination: /home/ec2-user/dnd-6th-10-a-piece-of-writing/
     overwrite: yes
 
 permissions:
