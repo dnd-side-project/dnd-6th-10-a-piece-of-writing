@@ -25,6 +25,7 @@ const crop = () => {
   const [resultImageUrl, setResultImageUrl] = useState('')
 
   const editorRef = useRef<AvatarEditor>()
+  const imageInputRef = useRef<HTMLInputElement>(null)
 
   const onClickTest = () => {
     if (!editorRef.current) return
@@ -34,6 +35,17 @@ const crop = () => {
       .then((blob) => setResultImageUrl(window.URL.createObjectURL(blob)))
   }
 
+  const onImageChange = (e: React.FormEvent<HTMLInputElement>) => {
+    e.preventDefault()
+    const imageFiles = e.currentTarget.files
+    imageFiles?.[0] && setImage(imageFiles[0])
+  }
+
+  const onClickImageButton = (e: React.MouseEvent) => {
+    e.preventDefault()
+    imageInputRef?.current?.click()
+  }
+
   const handleDrop = (dropped: File[]) => {
     setImage(dropped[0])
   }
@@ -41,6 +53,18 @@ const crop = () => {
   return (
     <div className={cx('w-full', 'min-h-screen', CENTER_FLEX, 'flex-col')}>
       <div className={cx('text-center m-2')}>이미지를 드래그 앤 드랍 해주세요!</div>
+      <button className={'bg-amber-300 rounded'} onClick={onClickImageButton}>
+        이미지 첨부하기
+      </button>
+      <input
+        className={'hidden'}
+        ref={imageInputRef}
+        type={'file'}
+        id={'image-input'}
+        accept={'image/*'}
+        name={'file'}
+        onChange={onImageChange}
+      />
       <Dropzone onDrop={handleDrop} noClick noKeyboard>
         {({ getRootProps, getInputProps }) => (
           <div className={cx('flex-col', CENTER_FLEX)} {...getRootProps()}>
