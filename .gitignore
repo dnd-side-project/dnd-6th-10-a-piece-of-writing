@@ -118,8 +118,8 @@ dist
 
 # backend
 
-.gradle
-build
-out
+.gradle/
+build/
+out/
 #application-oauth.properties
 application-real-db.properties
