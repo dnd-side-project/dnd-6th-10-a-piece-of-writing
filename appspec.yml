@@ -1,11 +1,14 @@
+# 354p.
 version: 0.0
 os: linux
 files:
   - source: /
+    # CodeDeploy에서 전달해 준 파일 중 destination으로 이동시킬 대상 지정. 루트 경로를 지정하면 전체 파일을 가리킴.
     # 책 내용
 #    destination: /home/ec2-user/app/step2/zip/
     # 웹사이트 내용
     destination: /home/ec2-user/dnd-6th-10-a-piece-of-writing/
+    # source에서 지정된 파일을 받을 위치.
     overwrite: yes
 
 permissions:
