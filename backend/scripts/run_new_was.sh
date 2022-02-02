@@ -35,3 +35,5 @@ nohup java -jar \
     -Dserver.port=${TARGET_PORT} /home/ec2-user/dnd-6th-10-a-piece-of-writing/backend/build/libs/* > /home/ec2-user/nohup.out 2>&1 &
 echo "> Now new WAS runs at ${TARGET_PORT}."
 exit 0
+
+##
