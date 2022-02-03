@@ -19,7 +19,11 @@ echo "> cp $REPOSITORY/$PROJECT_DIR/$JAR_DIR/*.jar $REPOSITORY/"
 cp $REPOSITORY/$PROJECT_DIR/$JAR_DIR/*.jar $REPOSITORY/
 
 echo "> 새 어플리케이션 배포"
-JAR_NAME=$(ls -tr $REPOSITORY/*.jar | tail -n 1)
+#JAR_NAME=$(ls -tr $REPOSITORY/*.jar | tail -n 1)
+
+JAR_TMP=$(ls -tr $REPOSITORY/*.jar | tail -n 1)
+
+JAR_NAME=${JAR_TMP##*/}
 
 echo "> JAR Name: $JAR_NAME"
 
