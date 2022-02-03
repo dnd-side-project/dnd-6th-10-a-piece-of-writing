@@ -25,6 +25,6 @@ hooks:
     - location: scripts/health_check.sh
       timeout: 180
       runas: ec2-user
-    - location: scripts/switch.sh
+    - location: scripts/switch_web.sh
       timeout: 180
       runas: ec2-user

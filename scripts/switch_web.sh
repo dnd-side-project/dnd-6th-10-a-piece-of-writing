@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# web. https://wbluke.tistory.com/39
 # nginx 리로드를 통해 서비스하는 포트를 스위칭하는 스크립트
 
 # Crawl current connected port of WAS

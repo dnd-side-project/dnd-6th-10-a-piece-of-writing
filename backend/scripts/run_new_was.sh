@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# web. https://wbluke.tistory.com/39
 # 새로운 WAS를 띄우는 스크립트
 
 CURRENT_PORT=$(cat /home/ec2-user/service_url.inc | grep -Po '[0-9]+' | tail -1)
