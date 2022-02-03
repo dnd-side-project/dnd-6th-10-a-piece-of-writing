@@ -5,6 +5,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @RestController
 public class HelloController {
 
@@ -16,9 +19,20 @@ public class HelloController {
         return "hello";
     }
 
+//    @GetMapping("/")
+//    public String version() {
+//        return String.format("Project Version : %s", version);
+//    }
+
     @GetMapping("/")
-    public String version() {
-        return String.format("Project Version : %s", version);
+    public String nowtime() {
+        // 현재 날짜/시간
+        LocalDateTime now = LocalDateTime.now();
+
+        // 포맷팅
+        String formatedNow = now.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초"));
+
+        return formatedNow;
     }
 
     @GetMapping("/health")
