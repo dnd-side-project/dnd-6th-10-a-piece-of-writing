@@ -19,11 +19,11 @@ echo "> cp $REPOSITORY/$PROJECT_DIR/$JAR_DIR/*.jar $REPOSITORY/"
 cp $REPOSITORY/$PROJECT_DIR/$JAR_DIR/*.jar $REPOSITORY/
 
 echo "> 새 어플리케이션 배포"
-#JAR_NAME=$(ls -tr $REPOSITORY/*.jar | tail -n 1)
+JAR_NAME=$(ls -tr $REPOSITORY/*.jar | tail -n 1)
 
-JAR_TMP=$(ls -tr $REPOSITORY/*.jar | tail -n 1)
+#JAR_TMP=$(ls -tr $REPOSITORY/*.jar | tail -n 1)
 
-JAR_NAME=${JAR_TMP##*/}
+#JAR_NAME=${JAR_TMP##*/}
 
 echo "> JAR Name: $JAR_NAME"
 
@@ -37,8 +37,6 @@ IDLE_PROFILE=$(find_idle_profile)
 
 echo "> $JAR_NAME 를 profile=$IDLE_PROFILE 로 실행합니다."
 nohup java -jar \
-#    -Dspring.config.location=classpath:/application.properties,classpath:/application-$IDLE_PROFILE.properties,/home/ec2-user/app/application-oauth.properties,/home/ec2-user/app/application-real-db.properties \
     -Dspring.config.location=classpath:/application.properties,classpath:/application-$IDLE_PROFILE.properties,/home/ec2-user/app/application-real-db.properties \
     -Dspring.profiles.active=$IDLE_PROFILE \
-    $REPOSITORY/$JAR_NAME > $REPOSITORY/nohup.out 2>&1 &
-#    $JAR_NAME > $REPOSITORY/nohup.out 2>&1 &
+    $JAR_NAME > $REPOSITORY/nohup.out 2>&1 &
