@@ -31,14 +31,28 @@ jobs:
       # checkout 은 깃헙이 제공하는 워크스페이스 (이 workflow 를 실행하는 공간) 에서 내 저장소가 위치한 곳으로 이동한다고 생각하시면 됩니다.
       - name: Checkout
         uses: actions/checkout@v2 # (4)
+        
+      # 프론트엔드 변경 감지
+      - uses: marceloprado/has-changed-path@v1
+        id: changed-frontend
+        with:
+            paths: frontend
+              
+      # 백엔드 변경 감지
+      - uses: marceloprado/has-changed-path@v1
+        id: changed-backend
+        with:
+            paths: backend
       
-      # 프론트 빌드  
+      # ---- 프론트엔드 ----
+
       - name: Set up Node JS 16
         uses: actions/setup-node@v2
         with:
             node-version: '16'
 
       - name: Build frontend
+        if: steps.changed-frontend.outputs.changed == 'true'
         working-directory: ./frontend
         run: |
           npm install -g yarn
@@ -47,9 +61,17 @@ jobs:
         env:
           DEPLOY_ENV: production
 
+      - name: Make frontend Tag
+        if: steps.changed-frontend.outputs.changed == 'true'
+        run: echo -e "frontend" > is-frontend-changed
+        shell: bash
+          
+      # ---- 백엔드 ----
+
       # java 를 셋업하고 gradlew 에 실행권한을 준 뒤 프로젝트를 build 하는 과정
       # Github Action이 실행될 OS에 Java를 설치합니다.
       - name: Set up JDK 1.8
+        if: steps.changed-backend.outputs.changed == 'true'
         uses: actions/setup-java@v1 # (5)
         with:
           java-version: 1.8
@@ -57,15 +79,35 @@ jobs:
       # gradle wrapper를 실행할 수 있도록 실행 권한 (+x)을 줍니다.
       # 해당 실행 권한이 있어야 아래 (7) 를 실행할 수 있습니다.
       - name: Grant execute permission for gradlew
+        if: steps.changed-backend.outputs.changed == 'true'
         run: chmod +x ./gradlew # (6)
         working-directory: ${{ env.backend-directory }}
         shell: bash
 
       # gradle wrapper를 통해 해당 프로젝트를 build 합니다.
       - name: Build backend with Gradle
+        if: steps.changed-backend.outputs.changed == 'true'
         run: ./gradlew clean build # (7)
         working-directory: ${{ env.backend-directory }}
         shell: bash
+
+      
+      # ---- 배포 단계 ----
+
+  
+      # 백엔드용 변경사항이 일어났음을 알려주는 태그를 생성한다.
+      - name: Make backend Tag
+        if: steps.changed-backend.outputs.changed == 'true'
+        run: echo -e "backend" > is-backend-changed
+        shell: bash
+      
+      # S3 관련 설정
+      # 업로드할 때는 zip 으로 압축하는 과정이 필요
+      - name: Make zip file backend
+        if: steps.changed-backend.outputs.changed == 'true'
+        run: zip -r ./$GITHUB_SHA.zip .
+        shell: bash
+        # $GITHUB_SHA : 현재 workflow 를 실행시키는 커밋의 해쉬값
 
       # build 시점의 현재 시간을 확인하는 기능
       - name: Get current time
@@ -80,15 +122,6 @@ jobs:
         run: echo "CurrentTime=${{steps.current-time.outputs.formattedTime}}"
         shell: bash
 
-      # S3 관련 설정
-      # 업로드할 때는 zip 으로 압축하는 과정이 필요
-      - name: Make zip file
-        run: zip -r ./$GITHUB_SHA.zip .
-#        working-directory: ${{ env.working-directory }}
-        # working-directory를 backend 로 설정하면, 전체 프로젝트에서 백엔드 부분만 압축하여 S3로 전달 후, 그것을 CodeDeploy가 가져오기에, 전체 프로젝트 배포에 필요한 프로젝트 최상단에 위치한 appspec.yml 설정 등을 쓸 수 없으므로 안 된다.
-        shell: bash
-        # $GITHUB_SHA : 현재 workflow 를 실행시키는 커밋의 해쉬값
-
       # AWS credential 을 설정
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -100,8 +133,7 @@ jobs:
       # S3 버킷에 build 한 jar 파일을 업로드
       - name: Upload to S3
         run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
-#        working-directory: ${{ env.working-directory }}
-         # working-directory를 backend 로 설정하면, 전체 프로젝트에서 백엔드 부분만 압축하여 S3로 전달 후, 그것을 CodeDeploy가 가져오기에, 전체 프로젝트 배포에 필요한 프로젝트 최상단에 위치한 appspec.yml 설정 등을 쓸 수 없으므로 안 된다.
+#        working-directory: ${{ env.backend-directory }}
 
       # CodeDeploy 관련 설정
       - name: Code Deploy
