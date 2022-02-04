@@ -23,9 +23,11 @@ public enum ErrorCode {
     AUTHENTICATION_FAILED(403, "J005", "Authentication Failed"),
     INVALID_ACCESS_TOKEN(400, "J006", "Tokens have already been logged out"),
 
+    // Auth
+    LOGIN_INPUT_INVALID(400, "A001", "Login input is invalid"),
+
     // Member
     EMAIL_DUPLICATION(400, "M001", "Email is Duplication"),
-    LOGIN_INPUT_INVALID(400, "M002", "Login input is invalid"),
 
     ;
     private final String code;
