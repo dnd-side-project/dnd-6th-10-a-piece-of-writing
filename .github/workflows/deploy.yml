@@ -91,20 +91,18 @@ jobs:
         working-directory: ${{ env.backend-directory }}
         shell: bash
 
-      
-      # ---- 배포 단계 ----
-
-  
       # 백엔드용 변경사항이 일어났음을 알려주는 태그를 생성한다.
       - name: Make backend Tag
         if: steps.changed-backend.outputs.changed == 'true'
         run: echo -e "backend" > is-backend-changed
         shell: bash
       
+      
+      # ---- 배포 단계 ----
+      
       # S3 관련 설정
       # 업로드할 때는 zip 으로 압축하는 과정이 필요
-      - name: Make zip file backend
-        if: steps.changed-backend.outputs.changed == 'true'
+      - name: Make zip file
         run: zip -r ./$GITHUB_SHA.zip .
         shell: bash
         # $GITHUB_SHA : 현재 workflow 를 실행시키는 커밋의 해쉬값
