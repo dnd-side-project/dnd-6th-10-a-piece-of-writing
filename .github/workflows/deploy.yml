@@ -58,6 +58,8 @@ jobs:
           node-version: '16'
 
       - name: Build frontend
+        with:
+          paths: frontend
         run: |
             npm install -g yarn
             yarn install --prefer-offline --frozen-lockfile
