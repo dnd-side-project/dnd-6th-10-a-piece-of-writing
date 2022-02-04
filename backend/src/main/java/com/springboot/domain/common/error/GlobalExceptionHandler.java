@@ -72,7 +72,6 @@ public class GlobalExceptionHandler {
     }
 
 
-
 //    ------------------------------------------    //
 
     @ExceptionHandler(BusinessException.class)
