@@ -10,7 +10,7 @@ import styles from './upload.module.scss'
 import 'rc-slider/assets/index.css'
 
 import { Button } from '@/components/button'
-import { CropSlider } from '@/pages/image/useAvatarEditor'
+import { CropSlider } from '@/components/slider'
 
 const cx = classNames.bind(styles)
 
