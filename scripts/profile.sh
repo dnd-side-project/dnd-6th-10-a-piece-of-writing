@@ -16,13 +16,19 @@ function find_idle_profile()
         CURRENT_PROFILE=$(curl -s http://localhost/profile)
     fi
 
-    # 초기 profile이 real 이므로, real1, real2 사이클로 옮기기 위한 변경.
-    if [ ${CURRENT_PROFILE} == real2  ] || [ ${CURRENT_PROFILE} == real  ]
+    if [ ${CURRENT_PROFILE} == real1 ]
     then
-      IDLE_PROFILE=real1
-    else
       IDLE_PROFILE=real2
+    else
+      IDLE_PROFILE=real1
     fi
+
+#    if [ ${CURRENT_PROFILE} == real2  ] || [ ${CURRENT_PROFILE} == real  ]
+#    then
+#      IDLE_PROFILE=real1
+#    else
+#      IDLE_PROFILE=real2
+#    fi
 
     echo "${IDLE_PROFILE}"
 }
