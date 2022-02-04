@@ -31,7 +31,8 @@ jobs:
       # checkout 은 깃헙이 제공하는 워크스페이스 (이 workflow 를 실행하는 공간) 에서 내 저장소가 위치한 곳으로 이동한다고 생각하시면 됩니다.
       - name: Checkout
         uses: actions/checkout@v2 # (4)
-        
+      
+      # 프론트 빌드  
       - name: Set up Node JS 16
         uses: actions/setup-node@v2
         with:

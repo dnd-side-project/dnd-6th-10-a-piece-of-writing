@@ -9,7 +9,7 @@ import { Button } from '@/components/button'
 // @ts-ignore
 const ImageEditor: any = dynamic(() => import('@toast-ui/react-image-editor'))
 
-const ForwardedRefImageEditor = React.forwardRef((props, ref) => <ImageEditor {...props} forwardedRef={ref} />)
+const ForwardedRefImageEditor: any = React.forwardRef((props, ref) => <ImageEditor {...props} forwardedRef={ref} />)
 
 const cx = classNames.bind(styles)
 
@@ -17,11 +17,10 @@ const upload = ({}) => {
   const editorRef = useRef()
 
   const onCLickTest = () => {
-    const instance = editorRef?.current?.getInstance()
-    console.log({ editorRef })
-    console.log({ current: editorRef?.current })
-    console.log({ instance })
-
+    // const instance = editorRef?.current?.getInstance()
+    // console.log({ editorRef })
+    // console.log({ current: editorRef?.current })
+    // console.log({ instance })
     // console.log(instance.getCanvasSize())
   }
 
