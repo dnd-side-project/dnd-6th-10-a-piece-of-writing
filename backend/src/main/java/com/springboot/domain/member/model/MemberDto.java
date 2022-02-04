@@ -1,4 +1,4 @@
-package com.springboot.domain.common.model;
+package com.springboot.domain.member.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestDto {
+public class MemberDto {
 
     private Long memberId;
     private String nickname;
