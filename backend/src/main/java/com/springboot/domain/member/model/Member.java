@@ -29,12 +29,13 @@ public class Member implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
 
-    @Column(nullable = false)
-    private String nickname;
+    @Column(nullable = true)
+    @Builder.Default
+    private String nickname = "닉네임을 설정해주세요";
 
     @Column(nullable = true)
     @Builder.Default
-    private String profileUrl = "<basic img url> pls set basic url";
+    private String profileUrl = "<basic img url> 미정";
 
     @Column(nullable = false)
     private String email;
