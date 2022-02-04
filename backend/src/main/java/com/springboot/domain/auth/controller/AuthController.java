@@ -108,6 +108,7 @@ public class AuthController {
             return responseServiceImpl.successResult(SuccessCode.REISSUE_SUCCESS, body);
         }
 
+        redisTemplate.delete(refreshTokenUuid);
         return new ResponseEntity<>(ErrorResponse.of(ErrorCode.EXPIRED_REFRESH_TOKEN),
                 HttpStatus.valueOf(ErrorCode.EXPIRED_REFRESH_TOKEN.getStatus()));
     }

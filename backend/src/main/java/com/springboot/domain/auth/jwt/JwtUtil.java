@@ -65,10 +65,6 @@ public class JwtUtil {
         return request.getHeader("X-AUTH_TOKEN");
     }
 
-    public String resolveRefreshToken(HttpServletRequest request) {
-        return request.getHeader("X-AUTH-REFRESH_TOKEN");
-    }
-
     public boolean validateToken(String token) {
         try {
             DecodedJWT verifiedToken = JWT.require(ALGORITHM).build().verify(token);
