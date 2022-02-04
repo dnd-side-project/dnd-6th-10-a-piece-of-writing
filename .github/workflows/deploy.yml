@@ -106,6 +106,7 @@ jobs:
       # S3 관련 설정
       # 업로드할 때는 zip 으로 압축하는 과정이 필요
       - name: Make zip file
+        if: steps.changed-frontend.outputs.changed == 'true' || steps.changed-backend.outputs.changed == 'true'
         run: zip -r ./$GITHUB_SHA.zip .
         shell: bash
         # $GITHUB_SHA : 현재 workflow 를 실행시키는 커밋의 해쉬값
@@ -125,6 +126,7 @@ jobs:
 
       # AWS credential 을 설정
       - name: Configure AWS credentials
+        if: steps.changed-frontend.outputs.changed == 'true' || steps.changed-backend.outputs.changed == 'true'
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -133,9 +135,11 @@ jobs:
 
       # S3 버킷에 build 한 jar 파일을 업로드
       - name: Upload to S3
+        if: steps.changed-frontend.outputs.changed == 'true' || steps.changed-backend.outputs.changed == 'true'
         run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
 #        working-directory: ${{ env.backend-directory }}
 
       # CodeDeploy 관련 설정
       - name: Code Deploy
+        if: steps.changed-frontend.outputs.changed == 'true' || steps.changed-backend.outputs.changed == 'true'
         run: aws deploy create-deployment --application-name a-piece-of-writing-deploy --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name a-piece-of-writing-webservice-group --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
