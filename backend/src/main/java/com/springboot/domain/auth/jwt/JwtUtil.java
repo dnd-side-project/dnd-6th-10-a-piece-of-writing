@@ -27,12 +27,15 @@ public class JwtUtil {
 
     @Value("${secret.key}")
     private String secretKey;
-    private Algorithm ALGORITHM = Algorithm.HMAC512(secretKey);
-    private long AUTH_TIME = 1000 * 60 * 30; // 30min
-    private long REFRESH_TIME = 1000 * 60 * 60 * 24 * 7; // 7days
+    private final long AUTH_TIME = 1000 * 60 * 30; // 30min
+    private final long REFRESH_TIME = 1000 * 60 * 60 * 24 * 7; // 7days
 
     private final MemberService memberService;
     private final ValueOperations<String, String> valueOperations;
+
+    public Algorithm getAlgorithm() {
+        return Algorithm.HMAC512(this.secretKey);
+    }
 
     public String createAuthToken(String email) {
         Date now = new Date();
@@ -42,7 +45,7 @@ public class JwtUtil {
                 .withClaim("iss", "DND-team10")
                 .withClaim("token-type", "access-token")
                 .withExpiresAt(new Date(now.getTime() + AUTH_TIME))
-                .sign(ALGORITHM);
+                .sign(this.getAlgorithm());
     }
 
     public String createRefreshToken(String email) {
@@ -53,11 +56,11 @@ public class JwtUtil {
                 .withClaim("iss", "DND-team10")
                 .withClaim("token-type", "refresh-token")
                 .withExpiresAt(new Date(now.getTime() + REFRESH_TIME))
-                .sign(ALGORITHM);
+                .sign(this.getAlgorithm());
     }
 
     public Authentication getAuthentication(String token) {
-        String email = JWT.require(ALGORITHM).build().verify(token).getSubject();
+        String email = JWT.require(this.getAlgorithm()).build().verify(token).getSubject();
         UserDetails userDetails = memberService.loadUserByUsername(email);
         return new UsernamePasswordAuthenticationToken(userDetails, null,
                 userDetails.getAuthorities());
@@ -69,7 +72,7 @@ public class JwtUtil {
 
     public boolean validateToken(String token) {
         try {
-            DecodedJWT verifiedToken = JWT.require(ALGORITHM).build().verify(token);
+            DecodedJWT verifiedToken = JWT.require(this.getAlgorithm()).build().verify(token);
             return !verifiedToken.getExpiresAt().before(new Date());
         } catch (Exception ex) {
             return false;
@@ -78,7 +81,7 @@ public class JwtUtil {
 
     public String setInvalidAuthenticationMessage(String token) {
         try {
-            JWT.require(ALGORITHM).build().verify(token);
+            JWT.require(this.getAlgorithm()).build().verify(token);
             if (valueOperations.get(token) != null) {
                 return ErrorCode.EXPIRED_ACCESS_TOKEN.getMessage();
             }

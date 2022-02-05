@@ -97,7 +97,7 @@ public class AuthController {
         String refreshToken = valueOperations.get(refreshTokenUuid);
 
         if (refreshToken != null) {
-            DecodedJWT verifiedToken = JWT.require(jwtUtil.getALGORITHM()).build()
+            DecodedJWT verifiedToken = JWT.require(jwtUtil.getAlgorithm()).build()
                     .verify(refreshToken);
             String accessToken = jwtUtil.createAuthToken(verifiedToken.getSubject());
 
