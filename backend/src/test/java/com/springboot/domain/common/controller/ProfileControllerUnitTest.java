@@ -1,6 +1,5 @@
 package com.springboot.domain.common.controller;
 
-import com.springboot.domain.common.controller.ProfileController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.env.MockEnvironment;
