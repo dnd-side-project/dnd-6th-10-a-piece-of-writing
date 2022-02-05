@@ -2,7 +2,6 @@ package com.springboot.domain.common.controller;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
@@ -11,15 +10,12 @@ import java.time.format.DateTimeFormatter;
 @RestController
 public class HelloController {
 
-    @Value("${logging-module.version}")
-    private String version;
-
     @GetMapping("/hello")
     public String hello() {
         return "hello";
     }
 
-    @GetMapping("/")
+    @GetMapping("/home")
     public String nowtime() {
         // 현재 날짜/시간
         LocalDateTime now = LocalDateTime.now();
@@ -34,7 +30,5 @@ public class HelloController {
     public String checkHealth() {
         return "healthy";
     }
-
-
 
 }
