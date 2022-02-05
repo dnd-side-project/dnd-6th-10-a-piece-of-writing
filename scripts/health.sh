@@ -21,7 +21,7 @@ do
 
   if [ ${UP_COUNT} -ge 1 ]
   then # $up_count >= 1 ("real" 문자열이 있는지 검증)
-      echo "> Health check 성공"
+      echo "> Backend health check 성공"
       switch_proxy
       break
   else
@@ -31,11 +31,27 @@ do
 
   if [ ${RETRY_COUNT} -eq 10 ]
   then
-    echo "> Health check 실패. "
+    echo "> Backend health check 실패. "
     echo "> 엔진엑스에 연결하지 않고 배포를 종료합니다."
     exit 1
   fi
 
+  echo "> Health check 연결 실패. 재시도..."
+  sleep 10
+done
+
+for RETRY_COUNT in {1..10}
+do
+  STATUS=$(curl -o /dev/null -w "%{http_code}" "http://localhost:3333")
+  if [ $STATUS -eq 200 ]; then
+    echo "Frontend healcheck 성공"
+    break
+  fi
+  if [ ${RETRY_COUNT} -eq 10 ]
+    then
+      echo "> Frontend health check 실패. "
+      exit 1
+    fi
   echo "> Health check 연결 실패. 재시도..."
   sleep 10
 done
