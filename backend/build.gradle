@@ -2,10 +2,13 @@ plugins {
     id 'org.springframework.boot' version '2.4.1'
     id 'io.spring.dependency-management' version '1.0.10.RELEASE'
     id 'java'
+    id 'base' // github action 의 빌드 과정에서 'Build with Gradle' 오류가 발생하여 추가
 }
 
 group 'com'
 version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
@@ -45,7 +48,7 @@ dependencies {
 
     // testing
     testImplementation('org.springframework.boot:spring-boot-starter-test')
-    testImplementation("org.springframework.security:spring-security-test")
+//    testImplementation("org.springframework.security:spring-security-test") // 권한 관련
 
 }
 

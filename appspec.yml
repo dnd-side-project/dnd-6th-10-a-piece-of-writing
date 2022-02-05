@@ -1,0 +1,46 @@
+# 354p.
+version: 0.0
+os: linux
+files:
+  - source: /
+    # CodeDeploy에서 전달해 준 파일 중 destination으로 이동시킬 대상 지정. 루트 경로를 지정하면 전체 파일을 가리킴.
+    destination: /home/ec2-user/dnd-6th-10-a-piece-of-writing/
+    # source에서 지정된 파일을 받을 위치.
+    overwrite: yes
+
+permissions:
+  - object: /
+    pattern: "**"
+    owner: ec2-user
+    group: ec2-user
+
+# 387p.
+hooks:
+  AfterInstall:
+#    - location: stop.sh
+    - location: scripts/stop.sh # 엔진엑스와 연결되어 있지 않은 스프링 부트를 종료합니다.
+      timeout: 60
+      runas: ec2-user
+  ApplicationStart:
+#    - location: start.sh
+    - location: scripts/start.sh # 엔진엑와 연결되어 있지 않은 Port로 새 버전의 스프링 부트를 시작합니다.
+      timeout: 60
+      runas: ec2-user
+  ValidateService:
+#    - location: health.sh
+    - location: scripts/health.sh # 새 스프링 부트가 정상적으로 실행됐는지 확인 합니다.
+      timeout: 60
+      runas: ec2-user
+
+# website
+#hooks:
+#  ApplicationStart:
+#    - location: scripts/run_new_was.sh
+#      timeout: 180
+#      runas: ec2-user
+#    - location: scripts/health_check.sh
+#      timeout: 180
+#      runas: ec2-user
+#    - location: scripts/switch.sh
+#      timeout: 180
+#      runas: ec2-user

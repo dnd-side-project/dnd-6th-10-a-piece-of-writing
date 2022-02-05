@@ -18,3 +18,25 @@ a {
 * {
   box-sizing: border-box;
 }
+
+@layer utilities {
+  @variants responsive {
+    .masonry {
+      column-count: 3;
+      column-gap: 1.5em;
+    }
+    .break-inside {
+      break-inside: avoid;
+    }
+  }
+}
+
+
+.slick-prev {
+  left: 3% !important;
+  z-index: 1;
+}
+.slick-next {
+  right: 3% !important;
+  z-index: 1;
+}
