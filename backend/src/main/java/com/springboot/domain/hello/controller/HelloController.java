@@ -19,11 +19,6 @@ public class HelloController {
         return "hello";
     }
 
-//    @GetMapping("/")
-//    public String version() {
-//        return String.format("Project Version : %s", version);
-//    }
-
     @GetMapping("/")
     public String nowtime() {
         // 현재 날짜/시간
@@ -40,17 +35,6 @@ public class HelloController {
         return "healthy";
     }
 
-//    @GetMapping("/")
-//    public String hello2() {
-//        return "hello!!";
-//    }
 
-//    @GetMapping("/hello/dto")
-//    public HelloResponseDto helloDto(@RequestParam("name") String name,
-//                                     @RequestParam("amount") int amount) {
-//        return new HelloResponseDto(name, amount);
-//    }
-
-    // feature branch commit test - 220120
 
 }
