@@ -12,7 +12,7 @@ module.exports = {
       },
       autorestart: true,
       watch: false,
-      // exec_mode: 'cluster',
+      exec_mode: 'cluster',
     },
   ],
 }
