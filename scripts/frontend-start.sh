@@ -13,4 +13,4 @@ pm2 kill
 
 echo "> 새 어플리케이션 배포"
 echo "> pm2 start pm2.config.json"
-pm2 start pm2.config.json
+pm2 start pm2.config.js
