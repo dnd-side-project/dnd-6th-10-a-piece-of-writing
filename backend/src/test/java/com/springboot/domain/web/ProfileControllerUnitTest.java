@@ -1,6 +1,6 @@
 package com.springboot.domain.web;
 
-import com.springboot.web.ProfileController;
+import com.springboot.domain.common.controller.ProfileController;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.env.MockEnvironment;
 

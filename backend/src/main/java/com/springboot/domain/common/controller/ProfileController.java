@@ -1,4 +1,4 @@
-package com.springboot.web;
+package com.springboot.domain.common.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.env.Environment;
