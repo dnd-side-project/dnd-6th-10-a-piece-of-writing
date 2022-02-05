@@ -59,7 +59,7 @@ jobs:
         working-directory: ./frontend
         run: |
           npm install -g yarn
-          yarn install --prefer-offline --frozen-lockfile
+          yarn install --prefer-offline
           yarn build
         env:
           DEPLOY_ENV: production
