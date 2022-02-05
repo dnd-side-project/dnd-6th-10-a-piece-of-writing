@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - feature/front-workflow
 
   workflow_dispatch: # (2) 수동 실행
 #  브랜치 push 이벤트외에, 수동으로 실행하는 것도 가능하게 만드는 옵션입니다.
