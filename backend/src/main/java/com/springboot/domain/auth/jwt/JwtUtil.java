@@ -13,6 +13,7 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,10 +25,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtUtil {
 
-    private final String secretKey = "key-DND-team10";
-    private final Algorithm ALGORITHM = Algorithm.HMAC512(secretKey);
-    private final long AUTH_TIME = 1000 * 60 * 30; // 30min
-    private final long REFRESH_TIME = 1000 * 60 * 60 * 24 * 7; // 7days
+    @Value("${secret.key}")
+    private String secretKey;
+    private Algorithm ALGORITHM = Algorithm.HMAC512(secretKey);
+    private long AUTH_TIME = 1000 * 60 * 30; // 30min
+    private long REFRESH_TIME = 1000 * 60 * 60 * 24 * 7; // 7days
 
     private final MemberService memberService;
     private final ValueOperations<String, String> valueOperations;

@@ -2,7 +2,10 @@
 /.gradle/
 /.idea/
 /build/
+
+.gradle/
+build/
+.idea/
+
 application-oauth.properties
 application-real-db.properties
-
-dev.properties
