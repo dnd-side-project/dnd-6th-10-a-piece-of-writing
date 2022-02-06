@@ -8,7 +8,7 @@ const MainLayout: React.FC<Props> = ({ children }) => {
     <>
       <div className={`w-full flex flex-nowrap flex-col justify-center content-center align-middle`}>
         <MainBar>
-          <div className="ml-40">글 한조각</div>
+          <div className="md:ml-48px ">글 한조각</div>
           <span className="inset-y-0 left-0 flex items-center pl-2">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
               <path

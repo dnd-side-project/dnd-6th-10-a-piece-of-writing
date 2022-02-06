@@ -7,6 +7,7 @@ import styles from './register.module.scss'
 import { useDebounce } from 'usehooks-ts'
 import { GrayInput } from '@/components/input'
 import styled from 'styled-components'
+import { usePassword } from '@/hook/usePassword'
 
 type Props = {}
 
@@ -21,8 +22,13 @@ const isValidEmail = (email: string): boolean => {
 
 const register: React.FC<Props> = ({}) => {
   const [email, setEmail] = useState('')
+  const { password, checkPassword, passwordCheck, onChangePassword, onChangePasswordCheck } = usePassword()
   const [message, setMessage] = useState('')
   const debouncedValue = useDebounce<string>(message, 500)
+
+  useEffect(() => {
+    // 이메일 중복확인 테스트
+  }, [debouncedValue])
 
   const onChangeEmail = useCallback(
     (e) => {
@@ -32,9 +38,11 @@ const register: React.FC<Props> = ({}) => {
     [email, setEmail],
   )
 
-  useEffect(() => {
-    // 이메일 중복확인 테스트
-  }, [debouncedValue])
+  const onClickRegister = () => {
+    if (!checkPassword()) return
+
+    // 회원가입 api
+  }
 
   return (
     <div className={cx('w-full', 'flex-col', CENTER_FLEX)}>
@@ -46,10 +54,24 @@ const register: React.FC<Props> = ({}) => {
         <Label>이메일</Label>
         <GrayInput className="w-386 h-52" placeholder={'이메일'} value={email} onChange={onChangeEmail} />
         <Label>비밀번호</Label>
-        <GrayInput className="w-386 h-52" placeholder={'비밀번호'} />
+        <GrayInput
+          className="w-386 h-52"
+          placeholder={'비밀번호'}
+          value={password}
+          onChange={onChangePassword}
+          type={'password'}
+        />
         <Label>비밀번호 확인</Label>
-        <GrayInput className="w-386 h-52" placeholder={'비밀번호 확인'} type={'password'} />
-        <BlackButton className={cx('text-white', 'h-52', 'w-386 mt-2')}>회원가입</BlackButton>
+        <GrayInput
+          className="w-386 h-52"
+          placeholder={'비밀번호 확인'}
+          type={'password'}
+          value={passwordCheck}
+          onChange={onChangePasswordCheck}
+        />
+        <BlackButton className={cx('text-white', 'h-52', 'w-386 mt-2')} onClick={onClickRegister}>
+          회원가입
+        </BlackButton>
         <div className={cx('w-full', 'text-red-400', CENTER_FLEX)}>{debouncedValue}</div>
       </div>
     </div>
