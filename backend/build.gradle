@@ -18,6 +18,7 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter-web')
     implementation('org.springframework.boot:spring-boot-starter-data-jpa')
     implementation('mysql:mysql-connector-java')
+    implementation('org.mariadb.jdbc:mariadb-java-client')
     implementation('junit:junit:4.13.1')
     implementation('com.fasterxml.jackson.core:jackson-databind')
 
