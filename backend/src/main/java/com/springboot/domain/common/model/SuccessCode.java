@@ -13,6 +13,7 @@ public enum SuccessCode {
     LOGOUT_SUCCESS("logout success", 200),
     REISSUE_SUCCESS("reissue access token success", 200),
     SIGN_SUCCESS("signin success", 200),
+    WITHDRAWAL_SUCCESS("withdrawal success", 200),
     ;
 
     private final String message;

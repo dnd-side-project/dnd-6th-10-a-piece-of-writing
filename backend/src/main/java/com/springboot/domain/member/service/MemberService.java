@@ -28,6 +28,10 @@ public class MemberService implements UserDetailsService {
         return memberRepository.findMemberByEmail(email);
     }
 
+    public void deleteMemberByEmail(Member member) {
+        memberRepository.delete(member);
+    }
+
     public Member save(Member member) {
         return memberRepository.save(member);
     }

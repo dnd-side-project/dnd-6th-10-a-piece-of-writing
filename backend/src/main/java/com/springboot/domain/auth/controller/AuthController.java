@@ -3,7 +3,7 @@ package com.springboot.domain.auth.controller;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.springboot.domain.auth.jwt.JwtUtil;
-import com.springboot.domain.auth.model.SignDto;
+import com.springboot.domain.auth.model.MemberInfoDto;
 import com.springboot.domain.common.error.ErrorResponse;
 import com.springboot.domain.common.error.exception.BusinessException;
 import com.springboot.domain.common.error.exception.ErrorCode;
@@ -50,8 +50,8 @@ public class AuthController {
         Member member = (Member) memberService.loadUserByUsername(memberDto.getEmail());
 
         if (!passwordEncoder.matches(memberDto.getPassword(), member.getPassword())) {
-            throw new InvalidValueException(ErrorCode.LOGIN_INPUT_INVALID.getMessage(),
-                    ErrorCode.LOGIN_INPUT_INVALID);
+            throw new InvalidValueException(ErrorCode.PASSWORD_INPUT_INVALID.getMessage(),
+                    ErrorCode.PASSWORD_INPUT_INVALID);
         }
 
         String accessToken = jwtUtil.createAuthToken(memberDto.getEmail());
@@ -112,19 +112,46 @@ public class AuthController {
                 HttpStatus.valueOf(ErrorCode.EXPIRED_REFRESH_TOKEN.getStatus()));
     }
 
-    @PostMapping(value = "sign")
-    public ResponseEntity<?> sign(@Valid @RequestBody SignDto signDto) {
-        Optional<Member> member = memberService.findMemberByEmail(signDto.getEmail());
+    @PostMapping(value = "/sign")
+    public ResponseEntity<?> sign(@Valid @RequestBody MemberInfoDto memberInfoDto) {
+        Optional<Member> member = memberService.findMemberByEmail(memberInfoDto.getEmail());
 
         if (member.isPresent()) {
             throw new BusinessException(ErrorCode.EMAIL_DUPLICATION);
         }
 
-        String password = passwordEncoder.encode(signDto.getPassword());
-        Member newMember = Member.builder().email(signDto.getEmail()).password(password).build();
+        String password = passwordEncoder.encode(memberInfoDto.getPassword());
+        Member newMember = Member.builder().email(memberInfoDto.getEmail()).password(password).build();
 
         memberService.save(newMember);
 
         return responseServiceImpl.successResult(SuccessCode.SIGN_SUCCESS);
+    }
+
+    @PostMapping(value = "/withdrawal")
+    public ResponseEntity<?> withdrawal(@Valid @RequestBody MemberInfoDto memberInfoDto,
+            @RequestHeader(value = "X-AUTH_TOKEN") String accessToken,
+            @RequestHeader(value = "X-AUTH-REFRESH_TOKEN") String refreshTokenUuid) {
+
+        if (accessToken.isEmpty() || refreshTokenUuid.isEmpty()) {
+            throw new InvalidValueException(ErrorCode.HEADER_MISSING_ERROR.getMessage(),
+                    ErrorCode.HEADER_MISSING_ERROR);
+        }
+
+        Member member = (Member) memberService.loadUserByUsername(memberInfoDto.getEmail());
+        if (!passwordEncoder.matches(memberInfoDto.getPassword(), member.getPassword())) {
+            throw new InvalidValueException(ErrorCode.PASSWORD_INPUT_INVALID.getMessage(),
+                    ErrorCode.PASSWORD_INPUT_INVALID);
+        }
+
+        memberService.deleteMemberByEmail(member);
+
+//      회원 탈퇴 관련 로직이 더 추가될 수 있음
+
+        valueOperations.set(accessToken, accessToken, jwtUtil.getAUTH_TIME(),
+                TimeUnit.MILLISECONDS);
+        redisTemplate.delete(refreshTokenUuid);
+
+        return responseServiceImpl.successResult(SuccessCode.WITHDRAWAL_SUCCESS);
     }
 }
