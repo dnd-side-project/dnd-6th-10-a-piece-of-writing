@@ -116,3 +116,11 @@ dist
 
 /.idea
 
+# backend
+
+.gradle/
+build/
+out/
+#application-oauth.properties
+application-real-db.properties
+temp_sdm/
