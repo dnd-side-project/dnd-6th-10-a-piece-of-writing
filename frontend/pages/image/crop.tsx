@@ -6,13 +6,12 @@ import dragAndDropImage from '@/public/drag-and-drop.png'
 
 import { CENTER_FLEX } from '@/styles/classNames'
 import classNames from 'classnames/bind'
-import styles from './upload.module.scss'
 import 'rc-slider/assets/index.css'
 
 import { Button } from '@/components/button'
-import { CropSlider } from '@/pages/image/useAvatarEditor'
+import { CropSlider } from '@/components/slider'
 
-const cx = classNames.bind(styles)
+const cx = classNames.bind({})
 
 const crop = () => {
   const [zoom, setZoom] = useState(1)

@@ -10,6 +10,14 @@ source ${ABSDIR}/profile.sh
 
 IDLE_PORT=$(find_idle_port)
 
+
+ROOT_DIR=$(dirname $ABSDIR)
+
+if ! test -f "$ROOT_DIR/is-backend-changed"; then
+    echo "> 백엔드에 변경사항이 없으므로 stop 하지 않습니다."
+    exit 0;
+fi
+
 echo "> $IDLE_PORT 에서 구동중인 애플리케이션 pid 확인"
 IDLE_PID=$(lsof -ti tcp:${IDLE_PORT})
 
