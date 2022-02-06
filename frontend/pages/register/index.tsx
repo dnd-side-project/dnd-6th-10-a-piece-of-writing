@@ -37,8 +37,12 @@ const register: React.FC<Props> = ({}) => {
   }, [debouncedValue])
 
   return (
-    <div className={cx('w-full', 'h-screen', 'flex-col', CENTER_FLEX)}>
+    <div className={cx('w-full', 'flex-col', CENTER_FLEX)}>
       <div className={cx('Frame')}>
+        <MainSpan>
+          글 한 조각,
+          <br /> 함께 음미해보세요
+        </MainSpan>
         <Label>이메일</Label>
         <GrayInput className="w-386 h-52" placeholder={'이메일'} value={email} onChange={onChangeEmail} />
         <Label>비밀번호</Label>
@@ -55,7 +59,6 @@ const register: React.FC<Props> = ({}) => {
 const Label = styled.label`
   height: 18px;
   flex-grow: 0;
-  font-family: NotoSansKR;
   font-size: 12px;
   font-weight: normal;
   font-stretch: normal;
@@ -64,6 +67,20 @@ const Label = styled.label`
   letter-spacing: normal;
   text-align: left;
   color: #737373;
+`
+
+const MainSpan = styled.span`
+  height: 144px;
+  margin-top: 198px;
+  margin-bottom: 58px;
+  font-size: 48px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: normal;
+  text-align: left;
+  color: #000;
 `
 
 export default register
