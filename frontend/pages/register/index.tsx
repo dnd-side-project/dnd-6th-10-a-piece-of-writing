@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react'
-
-import { Input } from '@/components/input'
-import { Button } from '@/components/button'
+import { BlackButton } from '@/components/button'
 import { CENTER_FLEX } from '@/styles/classNames'
 
 import classNames from 'classnames/bind'
 import styles from './register.module.scss'
 import { useDebounce } from 'usehooks-ts'
+import { GrayInput } from '@/components/input'
+import styled from 'styled-components'
 
 type Props = {}
 
@@ -39,16 +39,31 @@ const register: React.FC<Props> = ({}) => {
   return (
     <div className={cx('w-full', 'h-screen', 'flex-col', CENTER_FLEX)}>
       <div className={cx('Frame')}>
-        <Input placeholder={'이메일'} value={email} onChange={onChangeEmail} />
-        <Input placeholder={'비밀번호'} />
-        <Input placeholder={'비밀번호 확인'} type={'password'} />
+        <Label>이메일</Label>
+        <GrayInput className="w-386 h-52" placeholder={'이메일'} value={email} onChange={onChangeEmail} />
+        <Label>비밀번호</Label>
+        <GrayInput className="w-386 h-52" placeholder={'비밀번호'} />
+        <Label>비밀번호 확인</Label>
+        <GrayInput className="w-386 h-52" placeholder={'비밀번호 확인'} type={'password'} />
+        <BlackButton className={cx('text-white', 'h-52', 'w-386 mt-2')}>회원가입</BlackButton>
         <div className={cx('w-full', 'text-red-400', CENTER_FLEX)}>{debouncedValue}</div>
-        <div className={`w-full ${CENTER_FLEX}`}>
-          <Button className={'text-white'}>회원가입</Button>
-        </div>
       </div>
     </div>
   )
 }
+
+const Label = styled.label`
+  height: 18px;
+  flex-grow: 0;
+  font-family: NotoSansKR;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: normal;
+  text-align: left;
+  color: #737373;
+`
 
 export default register

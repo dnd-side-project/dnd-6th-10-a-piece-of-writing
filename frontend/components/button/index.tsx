@@ -1,44 +1,23 @@
 import React from 'react'
-import classNames from 'classnames/bind'
-import styles from './button.module.scss'
+import styled from 'styled-components'
 
-const cx = classNames.bind(styles)
-
-type Props = {
-  border?: string
-  color?: string
-  className?: string
-  children?: React.ReactNode
-  height?: string
-  onClick?: () => void
-  radius?: string
+interface BlackButtonProps {
   width?: string
+  height?: string
 }
 
-export const Button: React.FC<Props> = ({
-  className,
-  border,
-  color,
-  children,
-  height,
-  onClick,
-  radius,
-  width,
-  ...props
-}) => {
-  return (
-    <button
-      onClick={onClick}
-      style={{
-        backgroundColor: color,
-        border,
-        borderRadius: radius,
-        height,
-        width,
-      }}
-      className={cx('btn', className)}
-      {...props}>
-      {children}
-    </button>
-  )
+export const BlackButton = styled.button`
+  width: ${(props: BlackButtonProps) => props.width || '386px'};
+  height: ${(props: BlackButtonProps) => props.height || '52px'};
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 101px;
+  border-radius: 13px;
+  background-color: #2c2c2c;
 }
+
+
+`
