@@ -29,6 +29,12 @@ a {
       break-inside: avoid;
     }
   }
+  .h-52 {
+    height: 52px;
+  }
+  .w-386 {
+    width: 386px;
+  }
 }
 
 
