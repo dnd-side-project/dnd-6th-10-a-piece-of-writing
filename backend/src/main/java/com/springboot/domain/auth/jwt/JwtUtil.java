@@ -10,6 +10,10 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.springboot.domain.common.error.exception.ErrorCode;
 import com.springboot.domain.member.service.MemberService;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import javax.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -77,6 +81,21 @@ public class JwtUtil {
         } catch (Exception ex) {
             return false;
         }
+    }
+
+    public Map<String, String> issueJwtTokenBody(String email) {
+        String accessToken = this.createAuthToken(email);
+        String refreshToken = this.createRefreshToken(email);
+        String refreshTokenUuid = UUID.randomUUID().toString();
+
+        valueOperations.set(refreshTokenUuid, refreshToken, this.getREFRESH_TIME(),
+                TimeUnit.MILLISECONDS);
+
+        Map<String, String> body = new HashMap<>();
+        body.put("access-token", accessToken);
+        body.put("refresh-token-uuid", refreshTokenUuid);
+
+        return body;
     }
 
     public String setInvalidAuthenticationMessage(String token) {
