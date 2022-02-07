@@ -12,3 +12,10 @@ export const ImageCardSm = styled.div`
   border: solid 2px #000;
   background-color: rgba(156, 171, 194, 0.35);
 `
+
+export const ImageCardMd = styled.div`
+  width: 184px;
+  height: 184px;
+  border-radius: 13px;
+  background-color: #f7f7f7;
+`

@@ -5,7 +5,7 @@ import styles from './login.module.scss'
 import classNames from 'classnames/bind'
 import { CENTER_FLEX } from '@/styles/classNames'
 import { GrayInput } from '@/components/input'
-import { BlackButton } from '@/components/button'
+import { Button } from '@/components/button'
 
 type Props = {}
 
@@ -19,7 +19,7 @@ const login: React.FC<Props> = ({}) => {
           <GrayInput placeholder={'이메일'} />
           <GrayInput placeholder={'비밀번호'} />
           <div className={`w-full ${CENTER_FLEX}`}>
-            <BlackButton className={cx('text-white')}>로그인</BlackButton>
+            <Button className={cx('text-white')}>로그인</Button>
           </div>
         </div>
       </div>

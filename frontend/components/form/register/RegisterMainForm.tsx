@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { GrayInput } from '@/components/input'
-import { BlackButton } from '@/components/button'
+import { Button } from '@/components/button'
 import styled from 'styled-components'
 import { usePassword } from '@/hook/usePassword'
 import { useDebounce } from 'usehooks-ts'
@@ -78,9 +78,9 @@ const RegisterMainForm: React.FC<Props> = ({}) => {
         onChange={onChangePasswordCheck}
       />
       <div className={cx('w-full', 'text-red-400', 'mb-1')}>{message.passwordCheck}</div>
-      <BlackButton className={cx('text-white', 'h-52', 'w-386 mt-2')} onClick={onClickRegister}>
+      <Button className={cx('text-white', 'h-52', 'w-386 mt-2')} onClick={onClickRegister}>
         회원가입
-      </BlackButton>
+      </Button>
     </div>
   )
 }

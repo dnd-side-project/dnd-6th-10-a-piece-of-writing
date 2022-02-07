@@ -2,9 +2,6 @@ import React from 'react'
 import Slider, { Settings } from 'react-slick'
 import { ImageCardSm } from '@/components/card/imageCard'
 
-// import 'slick-carousel/slick/slick.css'
-// import 'slick-carousel/slick/slick-theme.css'
-
 export default function SimpleSlider() {
   const settings: Settings = {
     dots: true,

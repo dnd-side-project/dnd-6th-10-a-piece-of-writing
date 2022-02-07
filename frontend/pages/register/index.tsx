@@ -3,10 +3,10 @@ import { CENTER_FLEX } from '@/styles/classNames'
 
 import classNames from 'classnames/bind'
 import styles from './register.module.scss'
-import RegisterMainForm from '@/components/Form/register/RegisterMainForm'
+import RegisterMainForm from '@/components/form/register/RegisterMainForm'
 import { useAtom } from 'jotai'
 import { resgisterPageAtom } from '@/atom/register'
-import RegisterNicknameForm from '@/components/Form/register/RegisterNicknameForm'
+import RegisterNicknameForm from '@/components/form/register/RegisterNicknameForm'
 
 type Props = {}
 
