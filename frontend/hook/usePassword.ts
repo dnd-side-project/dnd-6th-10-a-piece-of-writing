@@ -1,12 +1,19 @@
 import React, { useCallback, useState } from 'react'
+import { RegisterMessage } from '@/components/Form/register/RegisterMainForm'
 
-export const usePassword = () => {
+export const usePassword = ({ setMessage }: { setMessage: React.Dispatch<React.SetStateAction<RegisterMessage>> }) => {
   const [password, setPassword] = useState('')
   const [passwordCheck, setPasswordCheck] = useState('')
 
   const onChangePassword = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       e.preventDefault()
+      e.target.value.length <= 9
+        ? setMessage((message) => ({ ...message, password: '영문자, 숫자 포함 8~20자' }))
+        : setMessage((message) => ({ ...message, password: '' }))
+      e.target.value !== passwordCheck
+        ? setMessage((message) => ({ ...message, passwordCheck: '비밀번호가 일치하지 않습니다.' }))
+        : setMessage((message) => ({ ...message, passwordCheck: '' }))
       setPassword(e.target.value)
     },
     [setPassword],
@@ -15,6 +22,9 @@ export const usePassword = () => {
   const onChangePasswordCheck = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       e.preventDefault()
+      e.target.value !== password
+        ? setMessage((message) => ({ ...message, passwordCheck: '비밀번호가 일치하지 않습니다.' }))
+        : setMessage((message) => ({ ...message, passwordCheck: '' }))
       setPasswordCheck(e.target.value)
     },
     [setPassword],

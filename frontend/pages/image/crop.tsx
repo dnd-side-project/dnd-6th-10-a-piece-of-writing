@@ -8,7 +8,7 @@ import { CENTER_FLEX } from '@/styles/classNames'
 import classNames from 'classnames/bind'
 import 'rc-slider/assets/index.css'
 
-import { Button } from '@/components/button'
+import { BlackButton } from '@/components/button'
 import { CropSlider } from '@/components/slider'
 
 const cx = classNames.bind({})
@@ -100,7 +100,7 @@ const crop = () => {
               }}
             />
           </div>
-          <Button onClick={onClickTest}>테스트</Button>
+          <BlackButton onClick={onClickTest}>테스트</BlackButton>
           <div className={'w-52 h-52'}>
             <div
               className={'w-full h-0'}
