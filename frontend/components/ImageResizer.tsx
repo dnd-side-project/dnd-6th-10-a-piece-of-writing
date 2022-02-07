@@ -5,10 +5,16 @@ import AvatarEditor from 'react-avatar-editor'
 import { CropSlider } from '@/components/slider'
 import classNames from 'classnames/bind'
 import { ImageUploadButton } from '@/components/button/ImageUploadButton'
+import { Button } from '@/components/button'
+import { ImageUploadCropper } from '@/components/modal/ImageUploadCropper'
 
 const cx = classNames.bind({})
 
-const ImageResizer = () => {
+type Props = {
+  setUploadButtonEnabled: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const ImageResizer = ({ setUploadButtonEnabled }: Props) => {
   const [zoom, setZoom] = useState(1)
   const [width, setWidth] = useState(250)
   const [height, setHeight] = useState(250)
@@ -17,11 +23,13 @@ const ImageResizer = () => {
   const [resultImageUrl, setResultImageUrl] = useState('')
 
   const imageExist = image !== ''
+  const resultImageUrlExist = resultImageUrl !== ''
 
   const editorRef = useRef<AvatarEditor>()
   const imageInputRef = useRef<HTMLInputElement>(null)
+  // const resultImageRef = useRef<HTMLImageElement>(null)
 
-  const onClickTest = () => {
+  const onClickResize = () => {
     if (!editorRef.current) return
     const canvas = editorRef.current.getImage().toDataURL()
     fetch(canvas)
@@ -60,7 +68,7 @@ const ImageResizer = () => {
       <Dropzone onDrop={handleDrop} noClick noKeyboard>
         {({ getRootProps, getInputProps }) => (
           <div className={cx('flex-col', CENTER_FLEX)} {...getRootProps()}>
-            {imageExist && (
+            {imageExist && !resultImageUrlExist && (
               <AvatarEditor
                 ref={(editor) => {
                   editor && (editorRef.current = editor)
@@ -78,7 +86,7 @@ const ImageResizer = () => {
           </div>
         )}
       </Dropzone>
-      {imageExist && (
+      {imageExist && !resultImageUrlExist && (
         <>
           <div className={cx('w-full', CENTER_FLEX, 'flex-col')}>
             <CropSlider value={width} setValue={setWidth} name={'width'} />
@@ -86,8 +94,12 @@ const ImageResizer = () => {
             <CropSlider value={zoom} setValue={setZoom} name={'zoom'} max={2} step={0.01} />
             <CropSlider value={rotate} setValue={setRotate} name={'rotate'} max={360} step={1} />
           </div>
+          <Button className={'mt-2'} onClick={onClickResize}>
+            선택
+          </Button>
         </>
       )}
+      {resultImageUrlExist && <ImageUploadCropper setOriginImage={setResultImageUrl} originImage={resultImageUrl} />}
     </>
   )
 }

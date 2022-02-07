@@ -1,36 +1,37 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { Button } from '@/components/button'
-import useUploadImage from '@/hook/useUploadImage'
 import ImageResizer from '@/components/ImageResizer'
 
-type Props = {}
+type Props = {
+  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
+}
 
-const ImageUploadModal: React.FC<Props> = ({}) => {
-  const { image, imageInputRef, onImageChange, onClickImageButton, handleDrop } = useUploadImage()
+const ImageUploadModal: React.FC<Props> = ({ setIsModalOpen }) => {
+  const [uploadButtonEnabled, setUploadButtonEnabled] = useState(false)
+
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleClickOutside = (event: any) => {
+      if (containerRef.current && !containerRef?.current?.contains(event?.target)) {
+        setIsModalOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [containerRef])
 
   return (
-    <Container>
-      <ImageResizer />
-      {/*<input*/}
-      {/*  className={'hidden'}*/}
-      {/*  ref={imageInputRef}*/}
-      {/*  type={'file'}*/}
-      {/*  id={'image-input'}*/}
-      {/*  accept={'image/*'}*/}
-      {/*  name={'file'}*/}
-      {/*  onChange={onImageChange}*/}
-      {/*/>*/}
-      {/*<Dropzone onDrop={handleDrop} noClick noKeyboard>*/}
-      {/*  {({ getRootProps, getInputProps }) => (*/}
-      {/*    <div className={CENTER_FLEX} {...getRootProps()}>*/}
-      {/*      <input {...getInputProps()} />*/}
-      {/*    </div>*/}
-      {/*  )}*/}
-      {/*</Dropzone>*/}
-      <Button style={{ marginTop: '2.5rem' }} bgColor={'#b9b9b9'} color={'#fff'}>
-        업로드
-      </Button>
+    <Container ref={containerRef}>
+      <ImageResizer setUploadButtonEnabled={setUploadButtonEnabled} />
+      {uploadButtonEnabled && (
+        <Button style={{ marginTop: '2.5rem' }} bgColor={'#b9b9b9'} color={'#fff'}>
+          업로드
+        </Button>
+      )}
     </Container>
   )
 }
@@ -52,5 +53,5 @@ const Container = styled.div`
   border-radius: 13px;
   box-shadow: 0 8px 13px 5px rgba(0, 0, 0, 0.25);
   background-color: #fff;
-  z-index: 1;
+  z-index: 3;
 `

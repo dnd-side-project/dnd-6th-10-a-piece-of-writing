@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+
 import { CENTER_FLEX } from '@/styles/classNames'
 import { Label } from '@/components/form/register/RegisterMainForm'
 import { FlexDiv } from '@/components/style/div/FlexDiv'
@@ -10,7 +11,9 @@ import { TagCarousel } from '@/components/carousel'
 import { Button } from '@/components/button'
 import { ImageUploadButton } from '@/components/button/ImageUploadButton'
 import ImageUploadModal from '@/components/modal/ImageUploadModal'
+
 import 'rc-slider/assets/index.css'
+import 'cropperjs/dist/cropper.css'
 
 type Props = {}
 
@@ -31,7 +34,7 @@ const upload: React.FC<Props> = ({}) => {
 
   return (
     <>
-      {isModalOpen && <ImageUploadModal />}
+      {isModalOpen && <ImageUploadModal setIsModalOpen={setIsModalOpen} />}
       <div className={`w-full min-h-screen ${CENTER_FLEX} flex-col`}>
         <MainContainer>
           <div className={'flex h-580 w-full'}>

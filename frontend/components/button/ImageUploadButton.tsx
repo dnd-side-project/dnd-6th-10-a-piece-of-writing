@@ -1,6 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 import styled from 'styled-components'
+import classNames from 'classnames/bind'
 
 type Props = {
   onClick?: React.MouseEventHandler<HTMLDivElement>
@@ -8,11 +9,12 @@ type Props = {
   height?: string
   showExplain?: boolean
 }
+const cx = classNames.bind({})
 
 export const ImageUploadButton = ({ onClick, width = '184px', height = '184px', showExplain = false }: Props) => {
   return (
     <ImageUploadContainer width={width} height={height} onClick={onClick}>
-      <div className={'mt-10'}>
+      <div className={cx(showExplain && 'mt-10')}>
         <Image src={'/post_upload.svg'} width={25} height={25} />
       </div>
       {showExplain && <ExplainContainer>드래그 앤 드랍 혹은 클릭</ExplainContainer>}

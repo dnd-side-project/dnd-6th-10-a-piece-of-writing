@@ -6,7 +6,7 @@
     "dev": "PORT=3333 next dev",
     "build": "next build",
     "start": "PORT=3333 next start"
-  },  
+  },
   "dependencies": {
     "@types/react-avatar-editor": "^10.3.6",
     "@types/react-slick": "^0.23.8",
@@ -19,6 +19,7 @@
     "rc-slider": "^9.7.5",
     "react": "17.0.2",
     "react-avatar-editor": "^12.0.0",
+    "react-cropper": "^2.1.8",
     "react-dom": "17.0.2",
     "react-dropzone": "^11.5.3",
     "react-slick": "^0.28.1",
