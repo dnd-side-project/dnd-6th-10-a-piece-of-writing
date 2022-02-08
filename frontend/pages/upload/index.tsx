@@ -14,6 +14,7 @@ import ImageUploadModal from '@/components/modal/ImageUploadModal'
 
 import 'rc-slider/assets/index.css'
 import 'cropperjs/dist/cropper.css'
+import { uesToggles } from '@/hook/useToggles'
 
 type Props = {}
 
@@ -25,8 +26,29 @@ const sliderSettings: Settings = {
   variableWidth: true,
 }
 
+const FONTS = [
+  { name: '노토산스', eng: 'Noto Sans KR' },
+  { name: '나눔명조', eng: 'Noto Sans KR' },
+  { name: '나눔스퀘어', eng: 'Noto Sans KR' },
+  { name: '교보손글씨', eng: 'Noto Sans KR' },
+]
+
+const FONT_SIZES = [
+  { name: '작은 글씨', size: '12px' },
+  { name: '중간 글씨', size: '14px' },
+  { name: '큰 글씨', size: '16px' },
+  { name: '가장 큰 글씨', size: '20px' },
+]
+
 const upload: React.FC<Props> = ({}) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const { selectedIndex: fontIndex, isSelectedIndex: isSelectedFontIndex, onToggle: onClickFont } = uesToggles(FONTS, 0)
+  const {
+    selectedIndex: fontSizeIndex,
+    isSelectedIndex: isSelectedFontSizeIndex,
+    onToggle: onClickFontSize,
+  } = uesToggles(FONT_SIZES, 1)
+  const [text, setText] = useState('흰 봉투에 눈을 한 줌 옇고\n' + '글씨도 쓰지 말고\n' + '우표도 부치지 말고')
 
   const onClickImageUploadButton = () => {
     setIsModalOpen((isModalOpen) => !isModalOpen)
@@ -40,31 +62,41 @@ const upload: React.FC<Props> = ({}) => {
           <div className={'flex h-580 w-full'}>
             <ImageFormContainer>
               <ImageContainer className={'mt-20'}>
-                <ImageSpan>
-                  testtest test testtest test testtest test testtest test testtest test testtest test{' '}
-                </ImageSpan>
+                <ImageSpan fontSize={FONT_SIZES[fontSizeIndex].size}>{text}</ImageSpan>
               </ImageContainer>
               <UploadSpan className={'mt-2'}>사진으로 인식해 업로드하기</UploadSpan>
             </ImageFormContainer>
             <FormContainer>
               <Label className={'mb-2'}>쓰여질 문구</Label>
-              <TextField height={'180px'}>흰 봉투에 ~~~</TextField>
-              <TextLimit>0/200</TextLimit>
+              <TextField
+                onChange={(e) => {
+                  if (e?.target?.value.length >= 200) return setText(e.target.value.slice(0, 200))
+                  setText(e.target.value)
+                }}
+                height={'180px'}
+                value={text}
+              />
+              <TextLimit>{text.length}/200</TextLimit>
               <Label className={'mb-2'}>원본 출처</Label>
               <TextField height={'52px'}>책 제목-작가 / 영화제목/ 노래 제목 - 가수</TextField>
               <TextLimit>0/50</TextLimit>
               <FlexDiv width={'100%'} height={'36px'} margin={'1'} justify={'flex-start'}>
-                <button>노토산스</button>
-                <button>노토산스</button>
-                <button>노토산스</button>
-                <button>노토산스</button>
+                {FONTS.map((fontInfo, index) => (
+                  <FontButton onClick={onClickFont(index)} isClicked={isSelectedFontIndex(index)} fontSize={'14px'}>
+                    {fontInfo.name}
+                  </FontButton>
+                ))}
               </FlexDiv>
               <PlainDivider />
               <FlexDiv width={'100%'} height={'46px'} margin={'1'} justify={'flex-start'}>
-                <button>작은글씨</button>
-                <button>중간글씨</button>
-                <button>큰글씨</button>
-                <button>가장큰글씨</button>
+                {FONT_SIZES.map((fontSizeInfo, index) => (
+                  <FontButton
+                    fontSize={fontSizeInfo.size}
+                    onClick={onClickFontSize(index)}
+                    isClicked={isSelectedFontSizeIndex(index)}>
+                    {fontSizeInfo.name}
+                  </FontButton>
+                ))}
               </FlexDiv>
               <PlainDivider />
               <FlexDiv margin={'0'} justify={'flex-start'}>
@@ -75,7 +107,6 @@ const upload: React.FC<Props> = ({}) => {
               </FlexDiv>
             </FormContainer>
           </div>
-          {/*<FlexDiv>*/}
           <Slider {...sliderSettings}>
             {new Array(5).fill(undefined).map((_, i) => (
               <div className={'m-5'} key={`test_${i}`}>
@@ -144,6 +175,8 @@ const ImageContainer = styled.div`
   display: flex;
   width: 284px;
   height: 284px;
+  border-radius: 13px;
+  border: solid 1px #a1a1a1;
 `
 
 const ImageSpan = styled.span`
@@ -151,6 +184,8 @@ const ImageSpan = styled.span`
   width: 100%;
   align-items: center;
   padding: 24px;
+  white-space: pre-wrap;
+  font-size: ${(props: { fontSize?: string }) => props.fontSize};
 `
 
 const UploadSpan = styled.span`
@@ -171,7 +206,7 @@ const FormContainer = styled.div`
   height: 100%;
 `
 
-const TextField = styled.div<{ height: string }>`
+const TextField = styled.textarea<{ height: string }>`
   width: 100%;
   height: ${(props: any) => `${props.height}` || 'auto'};
   flex-grow: 0;
@@ -183,6 +218,7 @@ const TextField = styled.div<{ height: string }>`
   padding: 16px;
   border-radius: 13px;
   border: solid 1px #a1a1a1;
+  color: #a1a1a1;
 `
 
 const TextLimit = styled.div`
@@ -215,6 +251,17 @@ const FontColorButton = styled.button`
   font-size: 12px;
   background-color: ${(props: { bgColor?: string }) => props.bgColor || 'auto'};
   color: ${(props: { color?: string }) => props.color || 'black'};
+`
+
+type FontButtonProps = {
+  fontSize: string
+  isClicked?: boolean
+}
+
+const FontButton = styled.button`
+  color: ${(props: FontButtonProps) => (props.isClicked ? '#000' : '#a1a1a1')};
+  font-size: ${(props: FontButtonProps) => props.fontSize};
+  padding: 8px;
 `
 
 export default upload

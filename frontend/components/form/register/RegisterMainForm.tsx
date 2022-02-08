@@ -3,7 +3,7 @@ import { GrayInput } from '@/components/input'
 import { Button } from '@/components/button'
 import styled from 'styled-components'
 import { usePassword } from '@/hook/usePassword'
-import { useDebounce } from 'usehooks-ts'
+import { useDebounce } from 'react-use'
 import classNames from 'classnames/bind'
 import styles from '@/pages/register/register.module.scss'
 
@@ -30,8 +30,15 @@ const RegisterMainForm: React.FC<Props> = ({}) => {
   const { password, checkPassword, passwordCheck, onChangePassword, onChangePasswordCheck } = usePassword({
     setMessage,
   })
+  const [emailDebouncedValue, setEmailDebouncedValue] = useState('')
 
-  const emailDebouncedValue = useDebounce<string>(message.email, 500)
+  const [,] = useDebounce(
+    () => {
+      setEmailDebouncedValue(message.email)
+    },
+    500,
+    [message?.email],
+  )
 
   useEffect(() => {
     // 이메일 중복확인 테스트
