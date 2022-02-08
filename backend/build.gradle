@@ -21,6 +21,10 @@ dependencies {
     implementation('junit:junit:4.13.1')
     implementation('com.fasterxml.jackson.core:jackson-databind')
 
+//    GCloud Storage
+    implementation platform('com.google.cloud:libraries-bom:24.2.0')
+    implementation 'com.google.cloud:google-cloud-storage'
+
 //    validator
     implementation('org.hibernate:hibernate-validator:6.1.0.Final')
 
