@@ -1,12 +1,17 @@
-import { useState } from 'react'
+import { useSet } from 'react-use'
+import { useMemo } from 'react'
 
-export const uesToggles = (array: any[], defaultIndex = 0) => {
-  const [selectedIndex, setSelectedIndex] = useState(defaultIndex)
+export const uesToggles = (array: any[], defaultIndexes = [0]) => {
+  const [selectedIndexesSet, { has, toggle, reset }] = useSet(new Set(defaultIndexes))
+
+  const selectedIndexes = useMemo(() => {
+    return Array.from(selectedIndexesSet)
+  }, [selectedIndexesSet, selectedIndexesSet.size])
 
   const onToggle = (index: number) => () => {
-    setSelectedIndex(index)
+    toggle(index)
   }
-  const isSelectedIndex = (index: number) => index === selectedIndex
+  const isSelectedIndex = (index: number) => has(index)
 
-  return { selectedIndex, isSelectedIndex, onToggle }
+  return { selectedIndex: selectedIndexes, selectedIndexes, isSelectedIndex, onToggle, reset }
 }

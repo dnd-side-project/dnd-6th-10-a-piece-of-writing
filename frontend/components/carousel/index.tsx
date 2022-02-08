@@ -1,6 +1,8 @@
 import Slider, { Settings } from 'react-slick'
 import styled from 'styled-components'
 import { FlexDiv } from '@/components/style/div/FlexDiv'
+import Image from 'next/image'
+import React from 'react'
 
 const sliderSettings: Settings = {
   dots: false,
@@ -30,13 +32,12 @@ const Tag = ({ tagInfo }: { tagInfo: TagInfoType }) => {
   return (
     <TagContainer>
       <TagSpan>{tagInfo.name}</TagSpan>
-      {tagInfo.isChecked && <span>c</span>}
+      {tagInfo.isChecked && <Image src={'/post_check.svg'} width={20} height={20} />}
     </TagContainer>
   )
 }
 
 const TagContainer = styled.div`
-  width: 100px;
   height: 44px;
   margin-right: 8px;
   flex-grow: 0;

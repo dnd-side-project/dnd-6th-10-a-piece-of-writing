@@ -42,12 +42,16 @@ const FONT_SIZES = [
 
 const upload: React.FC<Props> = ({}) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const { selectedIndex: fontIndex, isSelectedIndex: isSelectedFontIndex, onToggle: onClickFont } = uesToggles(FONTS, 0)
+  const {
+    selectedIndex: fontIndex,
+    isSelectedIndex: isSelectedFontIndex,
+    onToggle: onClickFont,
+  } = uesToggles(FONTS, [0])
   const {
     selectedIndex: fontSizeIndex,
     isSelectedIndex: isSelectedFontSizeIndex,
     onToggle: onClickFontSize,
-  } = uesToggles(FONT_SIZES, 1)
+  } = uesToggles(FONT_SIZES, [1])
   const [text, setText] = useState('흰 봉투에 눈을 한 줌 옇고\n' + '글씨도 쓰지 말고\n' + '우표도 부치지 말고')
 
   const onClickImageUploadButton = () => {
