@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import Image from 'next/image'
+import Link from 'next/link'
 
 type Props = {}
 
@@ -9,7 +10,9 @@ const MainLayout: React.FC<Props> = ({ children }) => {
     <>
       <div className={`w-full flex flex-nowrap flex-col justify-center content-center align-middle`}>
         <MainBar>
-          <Image src={'/logo_vertical.svg'} width={84} height={22} />
+          <Link href={'/'}>
+            <Image className={'cursor-pointer'} src={'/logo_vertical.svg'} width={84} height={22} />
+          </Link>
           <div> </div>
           <div> </div>
           <div className={`flex gap-4`}>
