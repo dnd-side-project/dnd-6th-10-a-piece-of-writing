@@ -9,7 +9,7 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-public class SignDto {
+public class MemberInfoDto {
 
     @NotBlank
     @Email

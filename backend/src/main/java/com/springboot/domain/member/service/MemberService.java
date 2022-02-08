@@ -3,13 +3,11 @@ package com.springboot.domain.member.service;
 import com.springboot.domain.common.error.exception.EntityNotFoundException;
 import com.springboot.domain.common.error.exception.ErrorCode;
 import java.util.Optional;
-import javassist.bytecode.annotation.MemberValue;
 import lombok.RequiredArgsConstructor;
 import com.springboot.domain.member.model.Member;
 import com.springboot.domain.member.repository.MemberRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -28,7 +26,15 @@ public class MemberService implements UserDetailsService {
         return memberRepository.findMemberByEmail(email);
     }
 
+    public void deleteMemberByEmail(Member member) {
+        memberRepository.delete(member);
+    }
+
     public Member save(Member member) {
         return memberRepository.save(member);
     }
+
+//    public Member modMemberByUserEmail(Member member) {
+//        memberRepository.
+//    }
 }
