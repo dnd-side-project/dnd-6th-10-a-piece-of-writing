@@ -14,6 +14,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import com.springboot.domain.auth.Authority;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,6 +32,7 @@ public class Member implements UserDetails {
 
     @Column(nullable = true)
     @Builder.Default
+    @Setter
     private String nickname = "닉네임을 설정해주세요";
 
     @Column(nullable = true)
