@@ -2,12 +2,12 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { GrayInput } from '@/components/input'
 import { Button } from '@/components/button'
 import styled from 'styled-components'
-import { usePassword } from '@/hook/usePassword'
+import { emailAtom, registerMessageAtom, useRegister } from '@/hook/usePassword'
 import { useDebounce } from 'react-use'
 import classNames from 'classnames/bind'
 import styles from '@/pages/register/register.module.scss'
-
-type Props = {}
+import { useAtom } from 'jotai'
+import { useAtomValue } from 'jotai/utils'
 
 export type RegisterMessage = {
   email: string
@@ -17,19 +17,15 @@ export type RegisterMessage = {
 
 const cx = classNames.bind(styles)
 
-const isValidEmail = (email: string): boolean => {
-  // eslint-disable-next-line no-useless-escape
-  const mail_format =
-    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-  return Boolean(email.match(mail_format) && email.match(mail_format)?.length !== 0)
+type Props = {
+  onClickRegister: () => void
 }
 
-const RegisterMainForm: React.FC<Props> = ({}) => {
-  const [email, setEmail] = useState('')
-  const [message, setMessage] = useState<RegisterMessage>({ email: '', password: '', passwordCheck: '' })
-  const { password, checkPassword, passwordCheck, onChangePassword, onChangePasswordCheck } = usePassword({
-    setMessage,
-  })
+const RegisterMainForm: React.FC<Props> = ({ onClickRegister }) => {
+  const [email, setEmail] = useAtom(emailAtom)
+  const message = useAtomValue(registerMessageAtom)
+  const { password, check, passwordCheck, onChangePassword, onChangePasswordCheck, allConditionSatisfied } =
+    useRegister()
   const [emailDebouncedValue, setEmailDebouncedValue] = useState('')
 
   const [,] = useDebounce(
@@ -47,14 +43,17 @@ const RegisterMainForm: React.FC<Props> = ({}) => {
   const onChangeEmail = useCallback(
     (e) => {
       setEmail(e.target.value)
-      setMessage({ ...message, email: isValidEmail(e.target.value) ? '' : '올바른 이메일 형식이 아닙니다.' })
     },
     [email, setEmail],
   )
 
-  const onClickRegister = () => {
-    if (!checkPassword()) return
-
+  const _onClickRegister = () => {
+    if (!check) return
+    if (!allConditionSatisfied) {
+      alert('잘못된 이메일 혹은 비밀번호입니다!')
+      return
+    }
+    onClickRegister()
     // 회원가입 api
   }
 
@@ -85,7 +84,7 @@ const RegisterMainForm: React.FC<Props> = ({}) => {
         onChange={onChangePasswordCheck}
       />
       <div className={cx('w-full', 'text-red-400', 'mb-1')}>{message.passwordCheck}</div>
-      <Button className={cx('text-white', 'h-52', 'w-386 mt-2')} onClick={onClickRegister}>
+      <Button className={cx('text-white', 'h-52', 'w-386 mt-2')} onClick={_onClickRegister}>
         회원가입
       </Button>
     </div>

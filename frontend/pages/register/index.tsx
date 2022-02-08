@@ -16,14 +16,8 @@ const register: React.FC<Props> = ({}) => {
   const [page, setPage] = useAtom(resgisterPageAtom)
   return (
     <div className={cx('w-full', 'flex-col', CENTER_FLEX)}>
-      {page === 1 && <RegisterMainForm />}
+      {page === 1 && <RegisterMainForm onClickRegister={() => setPage(2)} />}
       {page === 2 && <RegisterNicknameForm />}
-      <button
-        onClick={() => {
-          setPage(2)
-        }}>
-        test
-      </button>
     </div>
   )
 }
