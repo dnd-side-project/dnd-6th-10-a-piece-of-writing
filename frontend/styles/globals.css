@@ -46,11 +46,13 @@ a {
 }
 
 
-.slick-prev {
+.slick-prev:before {
   left: 3% !important;
   z-index: 1;
+  color: black !important;
 }
-.slick-next {
+.slick-next:before {
   right: 3% !important;
   z-index: 1;
+  color: black !important;
 }

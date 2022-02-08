@@ -5,27 +5,17 @@ import { CENTER_FLEX } from '@/styles/classNames'
 import { Label } from '@/components/form/register/RegisterMainForm'
 import { FlexDiv } from '@/components/style/div/FlexDiv'
 import { PlainDivider } from '@/components/divider'
-import { ImageCardMd } from '@/components/card/imageCard'
-import Slider, { Settings } from 'react-slick'
 import { TagCarousel } from '@/components/carousel'
 import { Button } from '@/components/button'
-import { ImageUploadButton } from '@/components/button/ImageUploadButton'
 import ImageUploadModal from '@/components/modal/ImageUploadModal'
 
 import 'rc-slider/assets/index.css'
 import 'cropperjs/dist/cropper.css'
 import { uesToggles } from '@/hook/useToggles'
 import Image from 'next/image'
+import ImageCarousel from '@/components/carousel/ImageCarousel'
 
 type Props = {}
-
-const sliderSettings: Settings = {
-  dots: false,
-  infinite: false,
-  speed: 500,
-  arrows: true,
-  variableWidth: true,
-}
 
 const FONTS = [
   { name: '노토산스', eng: 'Noto Sans KR' },
@@ -126,30 +116,18 @@ const upload: React.FC<Props> = ({}) => {
                   글씨 색{textColor === 'black' && <Image src={'/post_check.svg'} width={20} height={20} />}
                 </FontColorButton>
                 <FontColorButton onClick={() => setTextColor('#fff')} color={'#fff'} bgColor={'#444444'}>
-                  글씨 색
-                  {textColor !== 'black' && <Image src={'/post_check.svg'} fill={'#fff'} width={20} height={20} />}
+                  글씨 색{textColor !== 'black' && <Image src={'/post_check.svg'} width={20} height={20} />}
                 </FontColorButton>
               </FlexDiv>
             </FormContainer>
           </div>
-          <Slider {...sliderSettings}>
-            {new Array(5).fill(undefined).map((_, i) => (
-              <div className={'m-5'} key={`test_${i}`}>
-                <ImageCardMd>
-                  <h3>{i}</h3>
-                </ImageCardMd>
-              </div>
-            ))}
-            <div className={'m-5'}>
-              <ImageUploadButton onClick={onClickImageUploadButton} />
-            </div>
-          </Slider>
+          <ImageCarousel onClickImageUploadButton={onClickImageUploadButton} />
           <div className={'my-5'}>관련된 주제를 골라주세요</div>
           <TagCarousel
             tags={DUMMY_TAGS.map((tagInfo, i) => ({ ...tagInfo, isChecked: isSelectedTag(i) }))}
             onClickTag={onClickTag}
           />
-          <FlexDiv margin={'100px'} gap={'20px'}>
+          <FlexDiv margin={'100px 0'} gap={'20px'}>
             <Button>업로드 없이 이미지만 저장하기</Button>
             <Button>업로드</Button>
           </FlexDiv>
