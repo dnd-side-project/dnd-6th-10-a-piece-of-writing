@@ -34,6 +34,7 @@ const FONT_SIZES = [
 const upload: React.FC<Props> = ({}) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [text, setText] = useState('흰 봉투에 눈을 한 줌 옇고\n' + '글씨도 쓰지 말고\n' + '우표도 부치지 말고')
+  const [source, setSource] = useState('책 제목-작가 / 영화제목/ 노래 제목 - 가수')
   const [textColor, setTextColor] = useState('black')
 
   const {
@@ -85,8 +86,15 @@ const upload: React.FC<Props> = ({}) => {
               />
               <TextLimit>{text.length}/200</TextLimit>
               <Label className={'mb-2'}>원본 출처</Label>
-              <TextField height={'52px'} value={'책 제목-작가 / 영화제목/ 노래 제목 - 가수'} />
-              <TextLimit>0/50</TextLimit>
+              <TextField
+                height={'52px'}
+                onChange={(e) => {
+                  if (e?.target?.value.length >= 50) return setSource(e.target.value.slice(0, 50))
+                  setSource(e.target.value)
+                }}
+                value={source}
+              />
+              <TextLimit>{source.length}/50</TextLimit>
               <FlexDiv width={'100%'} height={'36px'} margin={'1'} justify={'flex-start'}>
                 {FONTS.map((fontInfo, index) => (
                   <FontButton
