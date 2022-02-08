@@ -15,6 +15,7 @@ import ImageUploadModal from '@/components/modal/ImageUploadModal'
 import 'rc-slider/assets/index.css'
 import 'cropperjs/dist/cropper.css'
 import { uesToggles } from '@/hook/useToggles'
+import Image from 'next/image'
 
 type Props = {}
 
@@ -42,24 +43,31 @@ const FONT_SIZES = [
 
 const upload: React.FC<Props> = ({}) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [text, setText] = useState('흰 봉투에 눈을 한 줌 옇고\n' + '글씨도 쓰지 말고\n' + '우표도 부치지 말고')
+  const [textColor, setTextColor] = useState('black')
+
   const {
     selectedIndex: fontIndex,
     isSelectedIndex: isSelectedFontIndex,
     onToggle: onClickFont,
-  } = uesToggles(FONTS, [0])
+  } = uesToggles({ defaultIndexes: [0] })
   const {
     selectedIndex: fontSizeIndex,
     isSelectedIndex: isSelectedFontSizeIndex,
     onToggle: onClickFontSize,
-  } = uesToggles(FONT_SIZES, [1])
-  const [text, setText] = useState('흰 봉투에 눈을 한 줌 옇고\n' + '글씨도 쓰지 말고\n' + '우표도 부치지 말고')
+  } = uesToggles({ defaultIndexes: [1] })
+  const {
+    selectedIndexes: tagIndexes,
+    isSelectedIndex: isSelectedTag,
+    onToggle: onClickTag,
+  } = uesToggles({ defaultIndexes: [0], singleMode: false })
 
   const onClickImageUploadButton = () => {
     setIsModalOpen((isModalOpen) => !isModalOpen)
   }
 
-  const selectedFontFamily = FONTS[fontIndex].eng
-  const selectedFontSize = FONT_SIZES[fontSizeIndex].size
+  const selectedFontFamily = FONTS[fontIndex]?.eng
+  const selectedFontSize = FONT_SIZES[fontSizeIndex]?.size
 
   return (
     <>
@@ -69,7 +77,7 @@ const upload: React.FC<Props> = ({}) => {
           <div className={'flex h-580 w-full'}>
             <ImageFormContainer>
               <ImageContainer className={'mt-20'}>
-                <ImageSpan fontSize={selectedFontSize} fontFamily={selectedFontFamily}>
+                <ImageSpan color={textColor} fontSize={selectedFontSize} fontFamily={selectedFontFamily}>
                   {text}
                 </ImageSpan>
               </ImageContainer>
@@ -114,9 +122,12 @@ const upload: React.FC<Props> = ({}) => {
               </FlexDiv>
               <PlainDivider />
               <FlexDiv margin={'0'} justify={'flex-start'}>
-                <FontColorButton>글씨 색</FontColorButton>
-                <FontColorButton color={'#fff'} bgColor={'#444444'}>
+                <FontColorButton onClick={() => setTextColor('black')}>
+                  글씨 색{textColor === 'black' && <Image src={'/post_check.svg'} width={20} height={20} />}
+                </FontColorButton>
+                <FontColorButton onClick={() => setTextColor('#fff')} color={'#fff'} bgColor={'#444444'}>
                   글씨 색
+                  {textColor !== 'black' && <Image src={'/post_check.svg'} fill={'#fff'} width={20} height={20} />}
                 </FontColorButton>
               </FlexDiv>
             </FormContainer>
@@ -134,7 +145,10 @@ const upload: React.FC<Props> = ({}) => {
             </div>
           </Slider>
           <div className={'my-5'}>관련된 주제를 골라주세요</div>
-          <TagCarousel tags={DUMMY_TAGS} />
+          <TagCarousel
+            tags={DUMMY_TAGS.map((tagInfo, i) => ({ ...tagInfo, isChecked: isSelectedTag(i) }))}
+            onClickTag={onClickTag}
+          />
           <FlexDiv margin={'100px'} gap={'20px'}>
             <Button>업로드 없이 이미지만 저장하기</Button>
             <Button>업로드</Button>
@@ -196,6 +210,7 @@ const ImageContainer = styled.div`
 type FontProps = {
   fontSize?: string
   fontFamily?: string
+  color?: string
 }
 
 const ImageSpan = styled.span`
@@ -204,6 +219,7 @@ const ImageSpan = styled.span`
   align-items: center;
   padding: 24px;
   white-space: pre-wrap;
+  color: ${(props: FontProps) => props.color || 'black'};
   font-size: ${(props: FontProps) => props.fontSize};
   font-family: ${(props: FontProps) => props.fontFamily || 'Noto Sans KR'};
 `
@@ -256,7 +272,6 @@ const TextLimit = styled.div`
 `
 
 const FontColorButton = styled.button`
-  width: 58px;
   height: 36px;
   flex-grow: 0;
   display: flex;

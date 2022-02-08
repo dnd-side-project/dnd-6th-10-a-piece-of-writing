@@ -1,17 +1,31 @@
 import { useSet } from 'react-use'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
-export const uesToggles = (array: any[], defaultIndexes = [0]) => {
-  const [selectedIndexesSet, { has, toggle, reset }] = useSet(new Set(defaultIndexes))
+type Props = {
+  defaultIndexes: number[]
+  singleMode?: boolean // 1개만 선택가능한 토글일 때
+}
+
+export const uesToggles = (props: Props) => {
+  const { singleMode = true, defaultIndexes } = props
+  const [selectedIndexesSet, { has, remove, toggle, reset }] = useSet(new Set(defaultIndexes))
 
   const selectedIndexes = useMemo(() => {
     return Array.from(selectedIndexesSet)
-  }, [selectedIndexesSet, selectedIndexesSet.size])
+  }, [selectedIndexesSet, selectedIndexesSet?.size])
+
+  // const selectedIndexes = Array.from(selectedIndexesSet)
 
   const onToggle = (index: number) => () => {
+    if (singleMode) {
+      reset()
+      remove(defaultIndexes[0])
+      toggle(index)
+      return
+    }
     toggle(index)
   }
-  const isSelectedIndex = (index: number) => has(index)
+  const isSelectedIndex = useCallback((index: number) => has(index), [selectedIndexesSet, has])
 
-  return { selectedIndex: selectedIndexes, selectedIndexes, isSelectedIndex, onToggle, reset }
+  return { selectedIndex: selectedIndexes[0], selectedIndexes, isSelectedIndex, onToggle, reset }
 }
