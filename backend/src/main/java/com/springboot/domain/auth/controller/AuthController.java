@@ -19,8 +19,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import com.springboot.domain.member.service.MemberService;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -115,9 +113,9 @@ public class AuthController {
     @PostMapping(value = "/sign")
     public ResponseEntity<?> sign(
             @Valid @RequestBody MemberInfoDto memberInfoDto) {
-        Optional<Member> member = memberService.findMemberByEmail(memberInfoDto.getEmail());
+        Member member = memberService.findMemberByEmail(memberInfoDto.getEmail());
 
-        if (member.isPresent()) {
+        if (member != null) {
             throw new BusinessException(ErrorCode.EMAIL_DUPLICATION);
         }
 
@@ -134,6 +132,7 @@ public class AuthController {
     @Operation(summary = "withdrawal api", description = "회원 탈퇴 api -- 이메일과 JWT 토큰 모두 보내줘야 함")
     @PostMapping(value = "/withdrawal")
     public ResponseEntity<?> withdrawal(
+            @Parameter(description = "이메일", required = true)
             @RequestBody String email,
             @Parameter(description = "access 토큰", required = true)
             @RequestHeader(value = "X-AUTH_TOKEN") String accessToken,

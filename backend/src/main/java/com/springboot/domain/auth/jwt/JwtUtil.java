@@ -8,6 +8,7 @@ import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.springboot.domain.common.error.exception.ErrorCode;
+import com.springboot.domain.member.model.Member;
 import com.springboot.domain.member.service.MemberService;
 import java.util.Date;
 import java.util.HashMap;
