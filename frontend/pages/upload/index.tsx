@@ -28,9 +28,9 @@ const sliderSettings: Settings = {
 
 const FONTS = [
   { name: '노토산스', eng: 'Noto Sans KR' },
-  { name: '나눔명조', eng: 'Noto Sans KR' },
-  { name: '나눔스퀘어', eng: 'Noto Sans KR' },
-  { name: '교보손글씨', eng: 'Noto Sans KR' },
+  { name: '나눔명조', eng: 'NanumMyeongjo' },
+  { name: '나눔스퀘어', eng: 'NanumSquare' },
+  { name: '교보손글씨', eng: 'KyoboHandwriting' },
 ]
 
 const FONT_SIZES = [
@@ -54,6 +54,9 @@ const upload: React.FC<Props> = ({}) => {
     setIsModalOpen((isModalOpen) => !isModalOpen)
   }
 
+  const selectedFontFamily = FONTS[fontIndex].eng
+  const selectedFontSize = FONT_SIZES[fontSizeIndex].size
+
   return (
     <>
       {isModalOpen && <ImageUploadModal setIsModalOpen={setIsModalOpen} />}
@@ -62,7 +65,9 @@ const upload: React.FC<Props> = ({}) => {
           <div className={'flex h-580 w-full'}>
             <ImageFormContainer>
               <ImageContainer className={'mt-20'}>
-                <ImageSpan fontSize={FONT_SIZES[fontSizeIndex].size}>{text}</ImageSpan>
+                <ImageSpan fontSize={selectedFontSize} fontFamily={selectedFontFamily}>
+                  {text}
+                </ImageSpan>
               </ImageContainer>
               <UploadSpan className={'mt-2'}>사진으로 인식해 업로드하기</UploadSpan>
             </ImageFormContainer>
@@ -78,11 +83,15 @@ const upload: React.FC<Props> = ({}) => {
               />
               <TextLimit>{text.length}/200</TextLimit>
               <Label className={'mb-2'}>원본 출처</Label>
-              <TextField height={'52px'}>책 제목-작가 / 영화제목/ 노래 제목 - 가수</TextField>
+              <TextField height={'52px'} value={'책 제목-작가 / 영화제목/ 노래 제목 - 가수'} />
               <TextLimit>0/50</TextLimit>
               <FlexDiv width={'100%'} height={'36px'} margin={'1'} justify={'flex-start'}>
                 {FONTS.map((fontInfo, index) => (
-                  <FontButton onClick={onClickFont(index)} isClicked={isSelectedFontIndex(index)} fontSize={'14px'}>
+                  <FontButton
+                    fontSize={'14px'}
+                    fontFamily={fontInfo.eng}
+                    onClick={onClickFont(index)}
+                    isClicked={isSelectedFontIndex(index)}>
                     {fontInfo.name}
                   </FontButton>
                 ))}
@@ -92,6 +101,7 @@ const upload: React.FC<Props> = ({}) => {
                 {FONT_SIZES.map((fontSizeInfo, index) => (
                   <FontButton
                     fontSize={fontSizeInfo.size}
+                    fontFamily={selectedFontFamily}
                     onClick={onClickFontSize(index)}
                     isClicked={isSelectedFontSizeIndex(index)}>
                     {fontSizeInfo.name}
@@ -179,13 +189,19 @@ const ImageContainer = styled.div`
   border: solid 1px #a1a1a1;
 `
 
+type FontProps = {
+  fontSize?: string
+  fontFamily?: string
+}
+
 const ImageSpan = styled.span`
   display: flex;
   width: 100%;
   align-items: center;
   padding: 24px;
   white-space: pre-wrap;
-  font-size: ${(props: { fontSize?: string }) => props.fontSize};
+  font-size: ${(props: FontProps) => props.fontSize};
+  font-family: ${(props: FontProps) => props.fontFamily || 'Noto Sans KR'};
 `
 
 const UploadSpan = styled.span`
@@ -253,14 +269,14 @@ const FontColorButton = styled.button`
   color: ${(props: { color?: string }) => props.color || 'black'};
 `
 
-type FontButtonProps = {
-  fontSize: string
+type FontButtonProps = FontProps & {
   isClicked?: boolean
 }
 
 const FontButton = styled.button`
   color: ${(props: FontButtonProps) => (props.isClicked ? '#000' : '#a1a1a1')};
   font-size: ${(props: FontButtonProps) => props.fontSize};
+  font-family: ${(props: FontButtonProps) => props.fontFamily || 'Noto Sans KR'};
   padding: 8px;
 `
 

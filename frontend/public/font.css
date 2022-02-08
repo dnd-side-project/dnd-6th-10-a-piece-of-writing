@@ -1,0 +1,68 @@
+@font-face {
+    font-family: 'Noto Sans KR';
+    font-weight: 300;
+    src: url('/fonts/NotoSansKR/NotoSansKR-Light.otf') format('woff2'),
+    url('/fonts/NotoSansKR/NotoSansKR-Light.otf') format('woff'),
+    url('/fonts/NotoSansKR/NotoSansKR-Light.otf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Noto Sans KR';
+    font-weight: 400;
+    src: url('/fonts/NotoSansKR/NotoSansKR-Regular.otf') format('woff2'),
+    url('/fonts/NotoSansKR/NotoSansKR-Regular.otf') format('woff'),
+    url('/fonts/NotoSansKR/NotoSansKR-Regular.otf') format('truetype');
+}
+@font-face {
+    font-family: 'Noto Sans KR';
+    font-weight: 500;
+    src: url('/fonts/NotoSansKR/NotoSansKR-Medium.otf') format('woff2');
+}
+
+@font-face {
+    font-family: 'Noto Sans KR';
+    font-weight: 700;
+    src: url('/fonts/NotoSansKR/NotoSansKR-Bold.otf') format('woff2'),
+    url('/fonts/NotoSansKR/NotoSansKR-Bold.otf') format('woff'),
+    url('/fonts/NotoSansKR/NotoSansKR-Bold.otf') format('truetype');
+}
+
+@font-face {
+    font-family: "NanumMyeongjo";
+    font-display: fallback;
+    font-weight: 400;
+    font-style: normal;
+    src: url("/fonts/NanumMyeongjo/NanumMyeongjo.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "NanumSquareLight";
+    src: url(/fonts/NanumSquare/NanumSquareL.eot);
+    src: url(/fonts/NanumSquare/NanumSquareL.eot?#iefix) format('embedded-opentype'),
+    url(/fonts/NanumSquare/NanumSquareL.woff) format('woff'),
+    url(/fonts/NanumSquare/NanumSquareL.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: "NanumSquare";
+    src: url(/fonts/NanumSquare/NanumSquareR.eot);
+    src: url(/fonts/NanumSquare/NanumSquareR.eot?#iefix) format('embedded-opentype'),
+    url(/fonts/NanumSquare/NanumSquareR.woff2) format('woff2'),
+    url(/fonts/NanumSquare/NanumSquareR.woff) format('woff'),
+    url(/fonts/NanumSquare/NanumSquareR.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: "NanumSquareBold";
+    src: url(/fonts/NanumSquare/NanumSquareB.eot);
+    src: url(/fonts/NanumSquare/NanumSquareB.eot?#iefix) format('embedded-opentype'),
+    url(/fonts/NanumSquare/NanumSquareB.woff2) format('woff2'),
+    url(/fonts/NanumSquare/NanumSquareB.woff) format('woff'),
+    url(/fonts/NanumSquare/NanumSquareB.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: "KyoboHandwriting";
+    src: url("/fonts/KyoboHandwriting/KyoboHandwriting2020pdy.otf") format('otf'),
+    url("/fonts/KyoboHandwriting/KyoboHandwriting2020pdy.ttf") format('truetype');
+}
