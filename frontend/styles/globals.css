@@ -1,14 +1,9 @@
+@import "public/font.css";
+@import "reset.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-}
 
 a {
   color: inherit;
@@ -17,6 +12,7 @@ a {
 
 * {
   box-sizing: border-box;
+  font-family:  'Noto Sans KR', sans-serif;
 }
 
 @layer utilities {
@@ -29,14 +25,34 @@ a {
       break-inside: avoid;
     }
   }
+  .h-52 {
+    height: 52px;
+  }
+  .h-580 {
+    height: 580px;
+  }
+  .w-386 {
+    width: 386px;
+  }
+  ml-24px {
+    margin-left: 24px;
+  }
+  ml-48px {
+    margin-left: 48px;
+  }
+  ml-359px {
+    margin-left: 359px;
+  }
 }
 
 
-.slick-prev {
+.slick-prev:before {
   left: 3% !important;
   z-index: 1;
+  color: black !important;
 }
-.slick-next {
+.slick-next:before {
   right: 3% !important;
   z-index: 1;
+  color: black !important;
 }
