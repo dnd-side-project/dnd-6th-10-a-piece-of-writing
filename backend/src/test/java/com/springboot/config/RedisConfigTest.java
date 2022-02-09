@@ -17,7 +17,7 @@ class RedisConfigTest {
     @Test
     void testString() {
         ValueOperations<String, String> valueOperations = redisStringTemplate.opsForValue();
-        String key = "string_key";
+        String key = "string_key_";
 
         valueOperations.set(key, "test_value");
 
