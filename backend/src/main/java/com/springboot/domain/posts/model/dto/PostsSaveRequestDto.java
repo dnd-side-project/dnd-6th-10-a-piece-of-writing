@@ -11,7 +11,7 @@ public class PostsSaveRequestDto {
 //    private String title;
     private String content;
     private String author;
-    private String reference;
+    private String ref;
 
 //    @Builder
 //    public PostsSaveRequestDto(String title, String content, String author){
@@ -21,8 +21,8 @@ public class PostsSaveRequestDto {
 //    }
 
     @Builder
-    public PostsSaveRequestDto(String reference, String content, String author){
-        this.reference=reference;
+    public PostsSaveRequestDto(String ref, String content, String author){
+        this.ref=ref;
         this.content=content;
         this.author=author;
     }
@@ -37,7 +37,7 @@ public class PostsSaveRequestDto {
 
     public Posts toEntity(){
         return Posts.builder()
-                .reference(reference)
+                .ref(ref)
                 .content(content)
                 .author(author)
                 .build();

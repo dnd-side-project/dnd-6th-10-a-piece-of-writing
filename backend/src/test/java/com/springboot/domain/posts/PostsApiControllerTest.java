@@ -66,12 +66,12 @@ public class PostsApiControllerTest {
         //given
 //        String title = "title";
         String content = "content";
-        String reference = "reference";
+        String ref = "reference";
         PostsSaveRequestDto requestDto = PostsSaveRequestDto.builder()
 //                .title(title)
                 .content(content)
                 .author("author")
-                .reference(reference)
+                .ref(ref)
                 .build();
 
         String url = "http://localhost:" + port + "/api/v1/posts";
@@ -93,7 +93,7 @@ public class PostsApiControllerTest {
         List<Posts> all = postsRepository.findAll();
 //        assertThat(all.get(0).getTitle()).isEqualTo(title);
         assertThat(all.get(0).getContent()).isEqualTo(content);
-        assertThat(all.get(0).getReference()).isEqualTo(reference);
+        assertThat(all.get(0).getRef()).isEqualTo(ref);
     }
 
 //    @Test

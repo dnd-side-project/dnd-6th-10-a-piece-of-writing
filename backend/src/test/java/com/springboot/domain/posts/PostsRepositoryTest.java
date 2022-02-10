@@ -28,13 +28,13 @@ public class PostsRepositoryTest {
     @Test
     public void 게시글저장_불러오기() {
         //given
-        String reference = "테스트 레퍼런스";
+        String ref = "테스트 레퍼런스";
         String content = "테스트 본문";
 
         postsRepository.save(Posts.builder()
                 .content(content)
                 .author("stam0325@gmail.com")
-                .reference(reference)
+                .ref(ref)
                 .build());
 
         //when
@@ -44,7 +44,7 @@ public class PostsRepositoryTest {
         Posts posts = postsList.get(0);
 //        assertThat(posts.getTitle()).isEqualTo(title);
         assertThat(posts.getContent()).isEqualTo(content);
-        assertThat(posts.getReference()).isEqualTo(reference);
+        assertThat(posts.getRef()).isEqualTo(ref);
     }
 
 //    @Test

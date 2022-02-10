@@ -27,15 +27,15 @@ public class Posts {
     private String author;
 
     @Column(columnDefinition = "TEXT")
-    private String reference;
+    private String ref;
 
     @Builder
-    public Posts(String content, String author, String reference){
+    public Posts(String content, String author, String ref){
 //    public Posts(String title, String content, String author){
 //        this.title=title;
         this.content = content;
         this.author = author;
-        this.reference = reference;
+        this.ref = ref;
     }
 
 //    public void update(String title, String content){
