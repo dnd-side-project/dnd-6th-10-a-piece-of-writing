@@ -111,7 +111,8 @@ public class AuthController {
 
     @Operation(summary = "email duplication check api", description = "이메일 중복 확인 api")
     @GetMapping(value = "/email/{email}")
-    public ResponseEntity<?> email(@PathVariable String email) {
+    public ResponseEntity<?> email(
+            @Parameter(description = "이메일", required = true) @PathVariable String email) {
         if(memberService.checkEmailDuplicate(email)) {
             throw new BusinessException(ErrorCode.EMAIL_DUPLICATION);
         }
