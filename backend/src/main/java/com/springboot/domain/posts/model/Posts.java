@@ -10,8 +10,8 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
-//public class Posts extends BaseTimeEntity{
-public class Posts {
+public class Posts extends BaseTimeEntity{
+//public class Posts {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,8 +38,8 @@ public class Posts {
         this.ref = ref;
     }
 
-//    public void update(String title, String content){
-//        this.title=title;
-//        this.content=content;
-//    }
+    public void update(String ref, String content){
+        this.ref=ref;
+        this.content=content;
+    }
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
 import com.springboot.domain.posts.model.Posts;
 import com.springboot.domain.posts.model.PostsRepository;
+import com.springboot.domain.posts.model.dto.PostsUpdateRequestDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -83,7 +84,6 @@ public class PostsApiControllerTest {
                 .andExpect(status().isOk());
 
         //when
-//        ResponseEntity<Object> responseEntity = restTemplate.postForEntity(url,requestDto,Object.class);
 //        ResponseEntity<Long> responseEntity = restTemplate.postForEntity(url,requestDto,Long.class);
 //
 //        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -96,37 +96,37 @@ public class PostsApiControllerTest {
         assertThat(all.get(0).getRef()).isEqualTo(ref);
     }
 
-//    @Test
-//    @WithMockUser(roles="USER")
-//    public void Posts_수정된다() throws Exception {
-//        //given
-//        Posts savedPosts = postsRepository.save(Posts.builder()
-//                .title("title")
-//                .content("content")
-//                .author("author")
-//                .build());
-//
-//        Long updateId = savedPosts.getId();
-//        String expectedTitle = "title2";
-//        String expectedContent = "content2";
-//
-//        PostsUpdateRequestDto requestDto = PostsUpdateRequestDto.builder()
-//                .title(expectedTitle)
-//                .content(expectedContent)
-//                .build();
-//
-//        String url = "http://localhost:" + port + "/api/v1/posts/" + updateId;
-//
-//        //when
-//        mvc.perform(put(url)
-//                .contentType(MediaType.APPLICATION_JSON_UTF8)
-//                .content(new ObjectMapper().writeValueAsString(requestDto)))
-//                .andExpect(status().isOk());
-//
-//        //then
-//        List<Posts> all = postsRepository.findAll();
-//        assertThat(all.get(0).getTitle()).isEqualTo(expectedTitle);
-//        assertThat(all.get(0).getContent()).isEqualTo(expectedContent);
-//    }
+    @Test
+    @WithMockUser(roles="USER")
+    public void Posts_수정된다() throws Exception {
+        //given
+        Posts savedPosts = postsRepository.save(Posts.builder()
+                .ref("reference")
+                .content("content")
+                .author("author")
+                .build());
+
+        Long updateId = savedPosts.getId();
+        String expectedRef = "reference2";
+        String expectedContent = "content2";
+
+        PostsUpdateRequestDto requestDto = PostsUpdateRequestDto.builder()
+                .ref(expectedRef)
+                .content(expectedContent)
+                .build();
+
+        String url = "http://localhost:" + port + "/api/v1/posts/" + updateId;
+
+        //when
+        mvc.perform(put(url)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(new ObjectMapper().writeValueAsString(requestDto)))
+                .andExpect(status().isOk());
+
+        //then
+        List<Posts> all = postsRepository.findAll();
+        assertThat(all.get(0).getRef()).isEqualTo(expectedRef);
+        assertThat(all.get(0).getContent()).isEqualTo(expectedContent);
+    }
 
 }
