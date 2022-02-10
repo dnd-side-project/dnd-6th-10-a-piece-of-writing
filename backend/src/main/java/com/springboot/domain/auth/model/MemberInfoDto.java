@@ -11,10 +11,10 @@ import lombok.Getter;
 @AllArgsConstructor
 public class MemberInfoDto {
 
-    @NotBlank
-    @Email
+    @NotBlank(message = "email이 입력되지 않았습니다")
+    @Email(message = "email 형식이 올바르지 않습니다")
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "비밀번호가 입력되지 않았습니다")
     private String password;
 }
