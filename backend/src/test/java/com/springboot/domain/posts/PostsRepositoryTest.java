@@ -11,6 +11,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -68,4 +69,61 @@ public class PostsRepositoryTest {
         assertThat(posts.getCreatedDate()).isAfter(now);
         assertThat(posts.getModifiedDate()).isAfter(now);
     }
+
+    @Test
+    public void 게시글_삭제() {
+        //given
+        String ref = "테스트 레퍼런스";
+        String content = "테스트 본문";
+
+        Posts saved = postsRepository.save(Posts.builder()
+                .content(content)
+                .author("stam0325@gmail.com")
+                .ref(ref)
+                .build());
+
+        //when
+//        List<Posts> postsList = postsRepository.findAll();
+
+//        Posts posts = postsList.get(0);
+
+        //then
+        postsRepository.delete(saved);
+
+        List<Posts> deleted = postsRepository.findAll();
+        assertThat(deleted).isEmpty();
+
+//        try {
+//            List<Posts> temp = postsRepository.findAll();
+//            assertThat(temp.size()).isEqualTo(0);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+    }
+
+//    @Test
+//    public void 게시글_1개조회() {
+//        //given
+//        String ref = "테스트 레퍼런스";
+//        String content = "테스트 본문";
+//
+//        postsRepository.save(Posts.builder()
+//                .content(content)
+//                .author("stam0325@gmail.com")
+//                .ref(ref)
+//                .build());
+//
+//        //when
+//        List<Posts> postsList = postsRepository.findAll();
+//
+//        //then
+//        Posts posts = postsList.get(0);
+//        long id = posts.getId();
+//        Optional<Posts> entity = postsRepository.findById(id);
+//
+//        assertThat(posts.getContent()).isEqualTo(content);
+//        assertThat(posts.getRef()).isEqualTo(ref);
+//    }
+
+
 }
