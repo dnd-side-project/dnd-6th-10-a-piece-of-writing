@@ -25,5 +25,8 @@ public interface PostsService {
     public PostsResponseDto findById(Long id);
 
     public List<PostsListResponseDto> findAllPostsOrderById();
-    
+
+    public String postsImgUpload();
+
+    public String postsImgExtractWords();
 }

@@ -53,4 +53,14 @@ public class PostsServiceImpl implements PostsService{
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public String postsImgUpload() {
+        return null;
+    }
+
+    @Override
+    public String postsImgExtractWords() {
+        return null;
+    }
+
 }
