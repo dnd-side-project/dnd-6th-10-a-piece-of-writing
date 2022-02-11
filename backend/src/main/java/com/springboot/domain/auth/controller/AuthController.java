@@ -16,11 +16,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import com.springboot.domain.member.service.MemberService;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -29,6 +26,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -37,7 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/auth")
+@RequestMapping(value = "/api/v1/auth")
 public class AuthController {
 
     private final MemberService memberService;
@@ -51,7 +49,7 @@ public class AuthController {
     @PostMapping(value = "/login")
     public ResponseEntity<ResponseDto> login(
             @Valid @RequestBody MemberInfoDto memberInfoDto) {
-        Member member = (Member) memberService.loadUserByUsername(memberInfoDto.getEmail());
+        Member member = memberService.findMemberByEmail(memberInfoDto.getEmail());
 
         if (!passwordEncoder.matches(memberInfoDto.getPassword(), member.getPassword())) {
             throw new InvalidValueException(ErrorCode.PASSWORD_INPUT_INVALID.getMessage(),
@@ -111,19 +109,23 @@ public class AuthController {
                 HttpStatus.valueOf(ErrorCode.EXPIRED_REFRESH_TOKEN.getStatus()));
     }
 
+    @Operation(summary = "email duplication check api", description = "이메일 중복 확인 api")
+    @GetMapping(value = "/email/{email}")
+    public ResponseEntity<?> email(
+            @Parameter(description = "이메일", required = true) @PathVariable String email) {
+        if(memberService.checkEmailDuplicate(email)) {
+            throw new BusinessException(ErrorCode.EMAIL_DUPLICATION);
+        }
+        return responseServiceImpl.successResult(SuccessCode.EMAIL_DUPLICATION_CHECK_SUCCESS);
+    }
+
     @Operation(summary = "sign api", description = "회원 가입 api")
     @PostMapping(value = "/sign")
     public ResponseEntity<?> sign(
             @Valid @RequestBody MemberInfoDto memberInfoDto) {
-        Optional<Member> member = memberService.findMemberByEmail(memberInfoDto.getEmail());
-
-        if (member.isPresent()) {
-            throw new BusinessException(ErrorCode.EMAIL_DUPLICATION);
-        }
 
         String password = passwordEncoder.encode(memberInfoDto.getPassword());
-        Member newMember = Member.builder().email(memberInfoDto.getEmail()).password(password)
-                .build();
+        Member newMember = Member.builder().email(memberInfoDto.getEmail()).password(password).build();
 
         memberService.save(newMember);
 
@@ -134,6 +136,7 @@ public class AuthController {
     @Operation(summary = "withdrawal api", description = "회원 탈퇴 api -- 이메일과 JWT 토큰 모두 보내줘야 함")
     @PostMapping(value = "/withdrawal")
     public ResponseEntity<?> withdrawal(
+            @Parameter(description = "이메일", required = true)
             @RequestBody String email,
             @Parameter(description = "access 토큰", required = true)
             @RequestHeader(value = "X-AUTH_TOKEN") String accessToken,
@@ -145,8 +148,7 @@ public class AuthController {
                     ErrorCode.HEADER_MISSING_ERROR);
         }
 
-        Member member = (Member) memberService.loadUserByUsername(email);
-
+        Member member = memberService.findMemberByEmail(email);
         memberService.deleteMemberByEmail(member);
 
 //      회원 탈퇴 관련 로직이 더 추가될 수 있음
