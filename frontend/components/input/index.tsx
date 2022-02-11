@@ -1,9 +1,16 @@
 import React from 'react'
-import classNames from 'classnames/bind'
-import styles from './input.module.scss'
+import styled from 'styled-components'
 
-const cx = classNames.bind(styles)
-
-export const Input = ({ ...props }) => {
-  return <input className={cx('text-field')} {...props} />
-}
+export const GrayInput = styled.input`
+  width: ${(props) => props.width || '386px'};
+  height: ${(props) => props.height || '52px'};
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 16px;
+  border-radius: 13px;
+  border: solid 1px #a1a1a1;
+`

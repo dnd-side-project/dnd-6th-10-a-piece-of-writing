@@ -25,9 +25,12 @@ public enum ErrorCode {
 
     // Auth
     LOGIN_INPUT_INVALID(400, "A001", "Login input is invalid"),
+    PASSWORD_INPUT_INVALID(400, "A002", "password input is invalid"),
 
     // Member
     EMAIL_DUPLICATION(400, "M001", "Email is Duplication"),
+    NICKNAME_MISSING(400, "M002", "Nickname is Missing"),
+    NICKNAME_DUPLICATION(400, "M003", "Nickname is Duplication"),
 
     ;
     private final String code;

@@ -7,6 +7,7 @@ import com.springboot.domain.auth.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -40,7 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/auth/**").permitAll()
-                .antMatchers("/swagger-ui/**").permitAll()
+                .antMatchers("/v3/api-docs", "/v2/api-docs", "/swagger-resources/**",
+                        "/swagger-ui/**", "/webjars/**", "/swagger-ui/index.html**").permitAll()
                 .antMatchers("/profile", "/home", "/hello", "health").permitAll()
                 // Posts 기능 테스트 위한 url 추가
                 .antMatchers("/api/v1/**").hasRole("USER")
