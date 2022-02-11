@@ -2,7 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.4.1'
     id 'io.spring.dependency-management' version '1.0.10.RELEASE'
     id 'java'
-    id 'base' // github action ?? 빌드 과정?�서 'Build with Gradle' ?�류가 발생?�여 추�?
+    id 'base' // github action ?? 빌드 과정?�서 'Build with Gradle' ?�류가 발생?�여 추�?
 }
 
 group 'com'
@@ -21,11 +21,9 @@ dependencies {
     implementation('junit:junit:4.13.1')
     implementation('com.fasterxml.jackson.core:jackson-databind')
 
-    // h2
-    implementation('com.h2database:h2')
-
     // testRestTemplate
     implementation('org.apache.httpcomponents:httpclient:4.5.13')
+
 //    GCloud Storage
     implementation platform('com.google.cloud:libraries-bom:24.2.0')
     implementation 'com.google.cloud:google-cloud-storage'
