@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+  <h2>성공 응답 코드</h2>
+  <p>Auth Code</p>
+  <ul>
+    <li>LOGIN_SUCCESS("login success", "SA001", 200)</li>
+    <li>LOGOUT_SUCCESS("logout success", "SA002", 200)</li>
+    <li>REISSUE_SUCCESS("reissue access token success", "SA003", 200)</li>
+    <li>EMAIL_DUPLICATION_CHECK_SUCCESS("email is available", "SA004", 200)</li>
+    <li>SIGN_SUCCESS("sign-in success", "SA005", 200)</li>
+    <li>WITHDRAWAL_SUCCESS("withdrawal success", "SA006", 200)</li>
+  </ul>
+  <p>Member Code</p>
+  <ul>
+    <li>MOD_NICKNAME_SUCCESS("modify nickname success", "SM001", 200)</li>
+  </ul>
+
+  <h2>실패 응답 코드</h2>
+  <p>Common</p>
+  <ul>
+    <li>INVALID_INPUT_VALUE(400, "C001", " Invalid Input Value")</li>
+    <li>METHOD_NOT_ALLOWED(405, "C002", " Invalid Input Value")</li>
+    <li>ENTITY_NOT_FOUND(400, "C003", " Entity Not Found")</li>
+    <li>INTERNAL_SERVER_ERROR(500, "C004", "Server Error")</li>
+    <li>INVALID_TYPE_VALUE(400, "C005", " Invalid Type Value")</li>
+    <li>HANDLE_ACCESS_DENIED(403, "C006", "Access is Denied")</li>
+    <li>HEADER_MISSING_ERROR(400, "C007", "Header is missing")</li>
+  </ul>
+  <p>JWT Code</p>
+  <ul>
+    <li>EXPIRED_ACCESS_TOKEN(403, "J001", "Expired access token")</li>
+    <li>EXPIRED_REFRESH_TOKEN(403, "J001", "Expired refresh token")</li>
+    <li>UNSUPPORTED_JWT(403, "J002", "Unsupported Jwt")</li>
+    <li>SIGNATURE_INVALID_JWT(403, "J003", "Signature Invalid Jwt")</li>
+    <li>JWT_NOT_FOUND(403, "J004", "Jwt Not Found")</li>
+    <li>AUTHENTICATION_FAILED(403, "J005", "Authentication Failed")</li>
+    <li>INVALID_ACCESS_TOKEN(400, "J006", "Tokens have already been logged out")</li>
+  </ul>
+  <p>Auth Code</p>
+  <ul>
+    <li>LOGIN_INPUT_INVALID(400, "A001", "Login input is invalid")</li>
+    <li>PASSWORD_INPUT_INVALID(400, "A002", "password input is invalid")</li>
+  </ul>
+  <p>Member Code</p>
+  <ul>
+    <li>EMAIL_DUPLICATION(400, "M001", "Email is Duplication")</li>
+    <li>NICKNAME_MISSING(400, "M002", "Nickname is Missing")</li>
+    <li>NICKNAME_DUPLICATION(400, "M003", "Nickname is Duplication")</li>
+  </ul>
+</body>
+</html>

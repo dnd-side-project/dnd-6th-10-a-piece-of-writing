@@ -18,7 +18,7 @@ public enum ErrorCode {
     EXPIRED_ACCESS_TOKEN(403, "J001", "Expired access token"),
     EXPIRED_REFRESH_TOKEN(403, "J001", "Expired refresh token"),
     UNSUPPORTED_JWT(403, "J002", "Unsupported Jwt"),
-    SIGNATURE_INVALID_JWT(403, "JOO3", "Signature Invalid Jwt"),
+    SIGNATURE_INVALID_JWT(403, "J003", "Signature Invalid Jwt"),
     JWT_NOT_FOUND(403, "J004", "Jwt Not Found"),
     AUTHENTICATION_FAILED(403, "J005", "Authentication Failed"),
     INVALID_ACCESS_TOKEN(400, "J006", "Tokens have already been logged out"),
