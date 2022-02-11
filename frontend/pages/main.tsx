@@ -1,5 +1,6 @@
 import React from 'react'
-import MainTitle from '@/components/main/MainTitle'
+
+import MainTitle from '@/components/_main/MainTitle'
 
 export default function main() {
   return (
