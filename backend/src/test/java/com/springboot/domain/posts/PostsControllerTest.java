@@ -1,8 +1,8 @@
 package com.springboot.domain.posts;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
 import com.springboot.domain.posts.model.Posts;
+import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
 import com.springboot.domain.posts.model.PostsRepository;
 //import com.springboot.domain.posts.model.dto.PostsUpdateRequestDto;
 import org.junit.jupiter.api.AfterEach;
@@ -31,7 +31,7 @@ import java.util.List;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class PostsApiControllerTest {
+public class PostsControllerTest {
 
     @LocalServerPort
     private int port;

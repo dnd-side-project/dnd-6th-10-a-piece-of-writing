@@ -12,13 +12,13 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1")
-public class PostsApiController {
+@RequestMapping("/api/v1/posts")
+public class PostsController {
 
     private final PostsService postsService;
 
     // 업로드
-    @PostMapping("/posts")
+    @PostMapping
     public Long save(@RequestBody PostsSaveRequestDto requestDto){
         return postsService.save(requestDto);
     }
@@ -30,21 +30,21 @@ public class PostsApiController {
 //    }
 
     // 삭제
-    @DeleteMapping("/posts/{id}")
+    @DeleteMapping("/{id}")
     public Long delete(@PathVariable Long id) {
         postsService.delete(id);
         return id;
     }
 
     // 1개 검색
-    @GetMapping("/posts/{id}")
+    @GetMapping("/{id}")
     public PostsResponseDto findById(@PathVariable Long id){
         return postsService.findById(id);
     }
 
     // 전체 내림차순 검색
-    @GetMapping("/posts")
+    @GetMapping
     public List<PostsListResponseDto> findAllDesc(){
-        return postsService.findAllDesc();
+        return postsService.findAllPostsOrderById();
     }
 }
