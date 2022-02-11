@@ -1,40 +1,22 @@
 package com.springboot.domain.member.service;
 
-import com.springboot.domain.common.error.exception.EntityNotFoundException;
-import com.springboot.domain.common.error.exception.ErrorCode;
-import java.util.Optional;
-import lombok.RequiredArgsConstructor;
+import com.springboot.domain.auth.model.UserDetailsImpl;
+import javax.transaction.Transactional;
 import com.springboot.domain.member.model.Member;
-import com.springboot.domain.member.repository.MemberRepository;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.stereotype.Service;
 
-@RequiredArgsConstructor
-@Service
-public class MemberService implements UserDetailsService {
+public interface MemberService {
+    public Member findMemberByEmail(String email);
 
-    private final MemberRepository memberRepository;
+    public Member findMemberByNickname(String nickname);
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws EntityNotFoundException {
-        return memberRepository.findMemberByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.ENTITY_NOT_FOUND));
-    }
+    public void deleteMemberByEmail(Member member);
 
-    public Optional<Member> findMemberByEmail(String email) {
-        return memberRepository.findMemberByEmail(email);
-    }
+    public Member save(Member member);
 
-    public void deleteMemberByEmail(Member member) {
-        memberRepository.delete(member);
-    }
+    @Transactional
+    public void modMemberNicknameByUserEmail(UserDetailsImpl userDetailsImpl, String nickname);
 
-    public Member save(Member member) {
-        return memberRepository.save(member);
-    }
+    public boolean checkNicknameDuplicate(String nickname);
 
-//    public Member modMemberByUserEmail(Member member) {
-//        memberRepository.
-//    }
+    public boolean checkEmailDuplicate(String email);
 }

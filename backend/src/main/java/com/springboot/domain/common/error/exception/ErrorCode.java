@@ -29,6 +29,8 @@ public enum ErrorCode {
 
     // Member
     EMAIL_DUPLICATION(400, "M001", "Email is Duplication"),
+    NICKNAME_MISSING(400, "M002", "Nickname is Missing"),
+    NICKNAME_DUPLICATION(400, "M003", "Nickname is Duplication"),
 
     ;
     private final String code;

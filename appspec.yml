@@ -16,6 +16,8 @@ permissions:
 
 # 387p.
 hooks:
+  BeforeInstall:
+    - location: scripts/clean.sh # 기존에 존재하는 파일 삭제 (프론트)
   AfterInstall:
     - location: scripts/stop.sh # 엔진엑스와 연결되어 있지 않은 스프링 부트를 종료합니다.
       timeout: 60
