@@ -1,5 +1,6 @@
-package com.dms.domain.posts;
+package com.springboot.domain.posts.model;
 
+import com.springboot.domain.posts.model.Posts;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
