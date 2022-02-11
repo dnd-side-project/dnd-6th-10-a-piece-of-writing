@@ -1,12 +1,14 @@
 import React, { useRef, useState } from 'react'
-import Dropzone from 'react-dropzone'
-import { CENTER_FLEX } from '@/styles/classNames'
-import AvatarEditor from 'react-avatar-editor'
-import { CropSlider } from '@/components/slider'
+
 import classNames from 'classnames/bind'
-import { ImageUploadButton } from '@/components/button/ImageUploadButton'
+import AvatarEditor from 'react-avatar-editor'
+import Dropzone from 'react-dropzone'
+
 import { Button } from '@/components/button'
+import { ImageUploadButton } from '@/components/button/ImageUploadButton'
 import { ImageUploadCropper } from '@/components/modal/ImageUploadCropper'
+import { CropSlider } from '@/components/slider'
+import { CENTER_FLEX } from '@/styles/classNames'
 
 const cx = classNames.bind({})
 

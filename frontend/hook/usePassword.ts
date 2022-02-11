@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react'
+
 import { RegisterMessage } from '@/components/form/register/RegisterMainForm'
 
 export const usePassword = ({ setMessage }: { setMessage: React.Dispatch<React.SetStateAction<RegisterMessage>> }) => {

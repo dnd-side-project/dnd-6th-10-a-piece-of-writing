@@ -1,10 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { GrayInput } from '@/components/input'
-import { Button } from '@/components/button'
-import styled from 'styled-components'
-import { usePassword } from '@/hook/usePassword'
-import { useDebounce } from 'react-use'
+
 import classNames from 'classnames/bind'
+import { useDebounce } from 'react-use'
+import styled from 'styled-components'
+
+import { Button } from '@/components/button'
+import { GrayInput } from '@/components/input'
+import { usePassword } from '@/hook/usePassword'
 import styles from '@/pages/register/register.module.scss'
 
 type Props = {}

@@ -1,10 +1,11 @@
 import React, { useRef, useState } from 'react'
+
+import classNames from 'classnames/bind'
 import AvatarEditor from 'react-avatar-editor'
 import Dropzone from 'react-dropzone'
 
 import dragAndDropImage from '@/public/drag-and-drop.png'
 import { CENTER_FLEX } from '@/styles/classNames'
-import classNames from 'classnames/bind'
 import 'rc-slider/assets/index.css'
 
 import { Button } from '@/components/button'

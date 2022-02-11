@@ -1,7 +1,8 @@
 import React from 'react'
+
+import classNames from 'classnames/bind'
 import Image from 'next/image'
 import styled from 'styled-components'
-import classNames from 'classnames/bind'
 
 type Props = {
   onClick?: React.MouseEventHandler<HTMLDivElement>

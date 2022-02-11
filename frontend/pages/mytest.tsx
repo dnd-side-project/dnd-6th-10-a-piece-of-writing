@@ -1,5 +1,7 @@
 import React from 'react'
+
 import Slider, { Settings } from 'react-slick'
+
 import { ImageCardSm } from '@/components/card/imageCard'
 
 export default function SimpleSlider() {
