@@ -40,12 +40,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/**.html").permitAll()
                 .antMatchers("/api/v1/auth/**").permitAll()
-                .antMatchers("/api/v1/test").permitAll()
                 .antMatchers("/v3/api-docs", "/v2/api-docs", "/swagger-resources/**",
                         "/swagger-ui/**", "/webjars/**", "/swagger-ui/index.html**").permitAll()
-                // Posts 기능 테스트 위한 url 추가
+                .antMatchers("/profile", "/home", "/hello", "health").permitAll()
                 .anyRequest().hasRole("USER")
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtil, valueOperations),
