@@ -1,7 +1,9 @@
 import React, { useCallback } from 'react'
-import { RegisterMessage } from '@/components/form/register/RegisterMainForm'
+
 import { atom, useAtom } from 'jotai'
 import { useAtomValue } from 'jotai/utils'
+
+import { RegisterMessage } from '@/components/form/register/RegisterMainForm'
 
 const isValidEmail = (email: string): boolean => {
   // eslint-disable-next-line no-useless-escape

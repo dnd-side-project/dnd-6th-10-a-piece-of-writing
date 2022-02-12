@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
+
 import classNames from 'classnames/bind'
-import styles from '@/pages/register/register.module.scss'
-import { GrayInput } from '@/components/input'
-import { Label } from '@/components/form/register/RegisterMainForm'
+
 import { Button } from '@/components/button'
+import { Label } from '@/components/form/register/RegisterMainForm'
+import { GrayInput } from '@/components/input'
+import styles from '@/pages/register/register.module.scss'
 import { CENTER_FLEX } from '@/styles/classNames'
 
 type Props = {}

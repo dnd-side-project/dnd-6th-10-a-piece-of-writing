@@ -1,8 +1,10 @@
+import React from 'react'
+
+import Image from 'next/image'
 import Slider, { Settings } from 'react-slick'
 import styled from 'styled-components'
+
 import { FlexDiv } from '@/components/style/div/FlexDiv'
-import Image from 'next/image'
-import React from 'react'
 
 const sliderSettings: Settings = {
   dots: false,
