@@ -94,7 +94,7 @@ const MainForm: React.FC<Props> = ({}) => {
               글씨 색{textColor === 'black' && <Image src={'/post_check.svg'} width={20} height={20} />}
             </FontColorButton>
             <FontColorButton onClick={() => setTextColor('#fff')} color={'#fff'} bgColor={'#444444'}>
-              글씨 색{textColor !== 'black' && <Image src={'/post_check.svg'} width={20} height={20} />}
+              글씨 색{textColor !== 'black' && <Image src={'/post_check_white.svg'} width={20} height={20} />}
             </FontColorButton>
           </FlexDiv>
         </FormContainer>
