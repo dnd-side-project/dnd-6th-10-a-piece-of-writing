@@ -18,7 +18,7 @@ import styled from 'styled-components'
 type Props = {}
 
 const Upload: React.FC<Props> = ({}) => {
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false)
 
   const {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -28,12 +28,12 @@ const Upload: React.FC<Props> = ({}) => {
   } = uesToggles({ defaultIndexes: [0], singleMode: false })
 
   const onClickImageUploadButton = () => {
-    setIsModalOpen((isModalOpen) => !isModalOpen)
+    setIsUploadModalOpen((isUploadModalOpen) => !isUploadModalOpen)
   }
 
   return (
     <>
-      {isModalOpen && <ImageUploadModal setIsModalOpen={setIsModalOpen} />}
+      {isUploadModalOpen && <ImageUploadModal setIsModalOpen={setIsUploadModalOpen} />}
       <div className={`w-full min-h-screen ${CENTER_FLEX} flex-col flex-nowrap align-middle`}>
         <div className={`w-full ${CENTER_FLEX} flex-nowrap`}>
           <MainContainer>

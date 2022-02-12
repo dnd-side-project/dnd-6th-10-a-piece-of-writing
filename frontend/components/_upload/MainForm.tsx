@@ -5,6 +5,7 @@ import styled from 'styled-components'
 
 import { PlainDivider } from '@/components/divider'
 import { Label } from '@/components/form/register/RegisterMainForm'
+import LetterRecognitionModal from '@/components/modal/LetterRecognitionModal'
 import { FlexDiv } from '@/components/style/div/FlexDiv'
 import { FONT_SIZES, FONTS } from '@/constant/font'
 import { uesToggles } from '@/hook/useToggles'
@@ -17,6 +18,7 @@ const MainForm: React.FC<Props> = ({}) => {
   const [text, setText] = useState('흰 봉투에 눈을 한 줌 옇고\n' + '글씨도 쓰지 말고\n' + '우표도 부치지 말고')
   const [source, setSource] = useState('책 제목-작가 / 영화제목/ 노래 제목 - 가수')
   const [textColor, setTextColor] = useState('black')
+  const [isRecognitionModalOpen, setIsRecognitionModalOpen] = useState(false)
 
   const {
     selectedIndex: fontIndex,
@@ -34,13 +36,20 @@ const MainForm: React.FC<Props> = ({}) => {
 
   return (
     <>
+      {isRecognitionModalOpen && <LetterRecognitionModal setIsModalOpen={setIsRecognitionModalOpen} />}
       <ImageFormContainer>
         <ImageContainer className={'mt-10 md:mt-20'}>
           <ImageSpan color={textColor} fontSize={selectedFontSize} fontFamily={selectedFontFamily}>
             {text}
           </ImageSpan>
         </ImageContainer>
-        <UploadSpan className={'mt-2'}>사진으로 인식해 업로드하기</UploadSpan>
+        <UploadSpan
+          className={'mt-2'}
+          onClick={() => {
+            setIsRecognitionModalOpen(true)
+          }}>
+          사진으로 인식해 업로드하기
+        </UploadSpan>
       </ImageFormContainer>
       <div className={`${CENTER_FLEX} w-full md:w-1/2`}>
         <FormContainer>
@@ -133,9 +142,9 @@ const ImageSpan = styled.span`
   align-items: center;
   padding: 24px;
   white-space: pre-wrap;
-  color: ${(props: FontProps) => props.color || 'black'};
+  color: ${(props: FontProps) => props.color ?? 'black'};
   font-size: ${(props: FontProps) => props.fontSize};
-  font-family: ${(props: FontProps) => props.fontFamily || 'Noto Sans KR'};
+  font-family: ${(props: FontProps) => props.fontFamily ?? 'Noto Sans KR'};
 `
 
 const UploadSpan = styled.span`
@@ -146,6 +155,7 @@ const UploadSpan = styled.span`
   font-size: 14px;
   text-decoration: underline;
   color: #5b5b5b;
+  cursor: pointer;
 `
 
 const FormContainer = styled.div`
