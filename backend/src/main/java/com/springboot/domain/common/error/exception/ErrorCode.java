@@ -32,6 +32,12 @@ public enum ErrorCode {
     NICKNAME_MISSING(400, "M002", "Nickname is Missing"),
     NICKNAME_DUPLICATION(400, "M003", "Nickname is Duplication"),
 
+    // Posts
+    IMAGE_URL_INPUT_INVALID(400, "P001", "Image url is invalid"),
+    IMAGE_INPUT_INVALID(400, "P002", "Image file is invalid"),
+    CREDENTIAL_ERROR(500, "P003", "Server credential file error"),
+    VISION_API_ERROR(500, "P004", "Vision api set error : Google api Error"),
+
     ;
     private final String code;
     private final String message;
