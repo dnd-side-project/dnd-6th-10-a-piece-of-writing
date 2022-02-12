@@ -7,9 +7,9 @@ import com.auth0.jwt.exceptions.InvalidClaimException;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.springboot.domain.auth.model.UserDetailsImpl;
+import com.springboot.domain.auth.service.UserDetailsServiceImpl;
 import com.springboot.domain.common.error.exception.ErrorCode;
-import com.springboot.domain.member.model.Member;
-import com.springboot.domain.member.service.MemberService;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 @Getter
@@ -35,7 +34,7 @@ public class JwtUtil {
     private final long AUTH_TIME = 1000 * 60 * 30; // 30min
     private final long REFRESH_TIME = 1000 * 60 * 60 * 24 * 7; // 7days
 
-    private final MemberService memberService;
+    private final UserDetailsServiceImpl userDetailsServiceImpl;
     private final ValueOperations<String, String> valueOperations;
 
     public Algorithm getAlgorithm() {
@@ -66,9 +65,9 @@ public class JwtUtil {
 
     public Authentication getAuthentication(String token) {
         String email = JWT.require(this.getAlgorithm()).build().verify(token).getSubject();
-        UserDetails userDetails = memberService.loadUserByUsername(email);
-        return new UsernamePasswordAuthenticationToken(userDetails, null,
-                userDetails.getAuthorities());
+        UserDetailsImpl userDetailsImpl = userDetailsServiceImpl.loadUserByUsername(email);
+        return new UsernamePasswordAuthenticationToken(userDetailsImpl, null,
+                userDetailsImpl.getAuthorities());
     }
 
     public String resolveAccessToken(HttpServletRequest request) {

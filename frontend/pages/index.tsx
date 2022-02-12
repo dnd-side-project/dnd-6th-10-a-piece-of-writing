@@ -1,11 +1,10 @@
 import React from 'react'
+
 import DummyCard from '@/components/card/DummyCard'
-import { FlexDiv } from '@/components/style/div/FlexDiv'
 import { PlainDivider } from '@/components/divider'
+import { FlexDiv } from '@/components/style/div/FlexDiv'
 
-type Props = {}
-
-const index: React.FC<Props> = ({}) => {
+const index = () => {
   return (
     <>
       <FlexDiv>
@@ -22,7 +21,6 @@ const index: React.FC<Props> = ({}) => {
       <PlainDivider />
       <h1>기타</h1>
       <div className={'grid grid-cols-3 gap-2 w-full h-64 p-5'}>
-        <DummyCard href={'/login/sample'} title={'기타'} content={'기타 (서비스와 상관없음, 테스트용)'} />
         <DummyCard href={'/main'} title={'가변 게시글'} content={'기타 (서비스와 상관없음, 테스트용)'} />
       </div>
     </>
