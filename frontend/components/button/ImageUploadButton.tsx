@@ -42,8 +42,8 @@ const ImageUploadContainer = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  width: ${(props: ImageUploadContainerProps) => props.width || '184px'};
-  height: ${(props: ImageUploadContainerProps) => props.height || '184px'};
+  width: ${(props: ImageUploadContainerProps) => props.width ?? '184px'};
+  height: ${(props: ImageUploadContainerProps) => props.height ?? '184px'};
   border-radius: 13px;
   border: dashed 2px #2c2c2c;
 `

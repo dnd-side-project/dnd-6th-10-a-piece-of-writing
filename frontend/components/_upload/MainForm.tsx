@@ -8,7 +8,7 @@ import { Label } from '@/components/form/register/RegisterMainForm'
 import LetterRecognitionModal from '@/components/modal/LetterRecognitionModal'
 import { FlexDiv } from '@/components/style/div/FlexDiv'
 import { FONT_SIZES, FONTS } from '@/constant/font'
-import { uesToggles } from '@/hook/useToggles'
+import { useToggles } from '@/hook/useToggles'
 import { BreakPoints } from '@/styles/breakPoint'
 import { CENTER_FLEX } from '@/styles/classNames'
 
@@ -24,12 +24,12 @@ const MainForm: React.FC<Props> = ({}) => {
     selectedIndex: fontIndex,
     isSelectedIndex: isSelectedFontIndex,
     onToggle: onClickFont,
-  } = uesToggles({ defaultIndexes: [0] })
+  } = useToggles({ defaultIndexes: [0] })
   const {
     selectedIndex: fontSizeIndex,
     isSelectedIndex: isSelectedFontSizeIndex,
     onToggle: onClickFontSize,
-  } = uesToggles({ defaultIndexes: [1] })
+  } = useToggles({ defaultIndexes: [1] })
 
   const selectedFontFamily = FONTS[fontIndex]?.eng
   const selectedFontSize = FONT_SIZES[fontSizeIndex]?.size
@@ -76,7 +76,7 @@ const MainForm: React.FC<Props> = ({}) => {
           <FlexDiv width={'100%'} height={'36px'} margin={'1'} justify={'flex-start'}>
             {FONTS.map((fontInfo, index) => (
               <FontButton
-                key={`FontButton_${index}`}
+                key={`FontButton_info_${index}`}
                 fontSize={'14px'}
                 fontFamily={fontInfo.eng}
                 onClick={onClickFont(index)}
@@ -89,6 +89,7 @@ const MainForm: React.FC<Props> = ({}) => {
           <FlexDiv width={'100%'} height={'46px'} margin={'1'} justify={'flex-start'}>
             {FONT_SIZES.map((fontSizeInfo, index) => (
               <FontButton
+                key={`FontButton_size_${index}`}
                 fontSize={fontSizeInfo.size}
                 fontFamily={selectedFontFamily}
                 onClick={onClickFontSize(index)}
@@ -171,7 +172,7 @@ const FormContainer = styled.div`
 
 const TextField = styled.textarea<{ height: string }>`
   width: 100%;
-  height: ${(props: any) => `${props.height}` || 'auto'};
+  height: ${(props: any) => `${props.height}` ?? 'auto'};
   flex-grow: 0;
   display: flex;
   flex-direction: row;
@@ -211,8 +212,8 @@ const FontColorButton = styled.button`
   border-radius: 13px;
   border: solid 1px #b9b9b9;
   font-size: 12px;
-  background-color: ${(props: { bgColor?: string }) => props.bgColor || 'auto'};
-  color: ${(props: { color?: string }) => props.color || 'black'};
+  background-color: ${(props: { bgColor?: string }) => props.bgColor ?? 'auto'};
+  color: ${(props: { color?: string }) => props.color ?? 'black'};
 `
 
 type FontButtonProps = FontProps & {
@@ -222,7 +223,7 @@ type FontButtonProps = FontProps & {
 const FontButton = styled.button`
   color: ${(props: FontButtonProps) => (props.isClicked ? '#000' : '#a1a1a1')};
   font-size: ${(props: FontButtonProps) => props.fontSize};
-  font-family: ${(props: FontButtonProps) => props.fontFamily || 'Noto Sans KR'};
+  font-family: ${(props: FontButtonProps) => props.fontFamily ?? 'Noto Sans KR'};
   padding: 8px;
 `
 

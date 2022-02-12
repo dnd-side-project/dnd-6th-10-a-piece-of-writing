@@ -7,9 +7,9 @@ import ImageUploadModal from '@/components/modal/ImageUploadModal'
 import { FlexDiv } from '@/components/style/div/FlexDiv'
 
 import 'rc-slider/assets/index.css'
-import 'cropperjs/dist/cropper.css'
+
 import MainForm from '@/components/_upload/MainForm'
-import { uesToggles } from '@/hook/useToggles'
+import { useToggles } from '@/hook/useToggles'
 import { BreakPoints } from '@/styles/breakPoint'
 import { CENTER_FLEX } from '@/styles/classNames'
 
@@ -25,10 +25,10 @@ const Upload: React.FC<Props> = ({}) => {
     selectedIndexes: tagIndexes,
     isSelectedIndex: isSelectedTag,
     onToggle: onClickTag,
-  } = uesToggles({ defaultIndexes: [0], singleMode: false })
+  } = useToggles({ defaultIndexes: [0], singleMode: false })
 
   const onClickImageUploadButton = () => {
-    setIsUploadModalOpen((isUploadModalOpen) => !isUploadModalOpen)
+    setIsUploadModalOpen((_isUploadModalOpen) => !_isUploadModalOpen)
   }
 
   return (

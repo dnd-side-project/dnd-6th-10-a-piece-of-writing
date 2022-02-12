@@ -14,7 +14,7 @@ type Props = {}
 
 const cx = classNames.bind(styles)
 
-const register: React.FC<Props> = ({}) => {
+const Register: React.FC<Props> = ({}) => {
   const [page, setPage] = useAtom(resgisterPageAtom)
   return (
     <div className={cx('w-full', 'flex-col', CENTER_FLEX)}>
@@ -24,4 +24,4 @@ const register: React.FC<Props> = ({}) => {
   )
 }
 
-export default register
+export default Register

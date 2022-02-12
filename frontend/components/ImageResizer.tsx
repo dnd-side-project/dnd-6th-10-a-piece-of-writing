@@ -16,6 +16,7 @@ type Props = {
   setUploadButtonEnabled: React.Dispatch<React.SetStateAction<boolean>>
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const ImageResizer = ({ setUploadButtonEnabled }: Props) => {
   const [zoom, setZoom] = useState(1)
   const [width, setWidth] = useState(250)

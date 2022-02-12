@@ -14,6 +14,7 @@ type Props = {
 
 export const ImageUploadCropper = ({ originImage, setOriginImage }: Props) => {
   const [src, setSrc] = useState(originImage)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [images, setImages] = useState<string[]>([])
   const [cropResult, setCropResult] = useState('')
 
