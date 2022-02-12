@@ -1,5 +1,6 @@
-package com.springboot.domain.auth.model;
+package com.springboot.domain.auth.service;
 
+import com.springboot.domain.auth.model.UserDetailsImpl;
 import com.springboot.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
