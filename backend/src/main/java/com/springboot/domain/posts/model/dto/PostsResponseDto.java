@@ -15,7 +15,7 @@ public class PostsResponseDto {
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
 
-    public PostsResponseDto(Posts entity){
+    public PostsResponseDto(Posts entity) {
         this.id = entity.getId();
         this.ref = entity.getRef();
         this.content = entity.getContent();

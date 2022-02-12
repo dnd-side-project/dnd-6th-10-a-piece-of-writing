@@ -1,6 +1,8 @@
 package com.springboot.domain.posts.model;
 
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,38 +10,30 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Getter
-@NoArgsConstructor
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Posts extends BaseTimeEntity{
-//public class Posts {
+public class Posts extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @Column(length=500,nullable = false)
+//    @Column(nullable = false)
 //    private String title;
 
-    @Column(columnDefinition = "TEXT",nullable = false)
+    @Column(nullable = false)
     private String content;
 
-    @Column(columnDefinition = "TEXT",nullable = false)
+    @Column(nullable = false)
     private String author;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(nullable = false)
     private String ref;
 
-    @Builder
-    public Posts(String content, String author, String ref){
-//    public Posts(String title, String content, String author){
-//        this.title=title;
-        this.content = content;
-        this.author = author;
+    public void update(String ref, String content) {
         this.ref = ref;
-    }
-
-    public void update(String ref, String content){
-        this.ref=ref;
-        this.content=content;
+        this.content = content;
     }
 }
