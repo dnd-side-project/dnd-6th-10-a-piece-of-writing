@@ -19,9 +19,9 @@ public class PostsSaveRequestDto {
 
     public Posts toEntity() {
         return Posts.builder()
-                .ref(ref)
-                .content(content)
-                .author(author)
-                .build();
+            .ref(ref)
+            .content(content)
+            .author(author)
+            .build();
     }
 }

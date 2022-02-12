@@ -22,7 +22,8 @@ public class ProfileControllerTest {
     public void profileTest() throws Exception {
         String expected = "default";
 
-        ResponseEntity<String> response = restTemplate.getForEntity("/api/v1/test/profile", String.class);
+        ResponseEntity<String> response = restTemplate.getForEntity("/api/v1/test/profile",
+            String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isEqualTo(expected);
     }

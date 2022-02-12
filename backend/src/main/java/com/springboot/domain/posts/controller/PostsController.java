@@ -19,7 +19,7 @@ public class PostsController {
 
     // 업로드
     @PostMapping
-    public Long save(@RequestBody PostsSaveRequestDto requestDto){
+    public Long save(@RequestBody PostsSaveRequestDto requestDto) {
         return postsService.save(requestDto);
     }
 
@@ -38,13 +38,13 @@ public class PostsController {
 
     // 1개 검색
     @GetMapping("/{id}")
-    public PostsResponseDto findById(@PathVariable Long id){
+    public PostsResponseDto findById(@PathVariable Long id) {
         return postsService.findById(id);
     }
 
     // 전체 내림차순 검색
     @GetMapping
-    public List<PostsListResponseDto> findAllDesc(){
+    public List<PostsListResponseDto> findAllDesc() {
         return postsService.findAllPostsOrderById();
     }
 }

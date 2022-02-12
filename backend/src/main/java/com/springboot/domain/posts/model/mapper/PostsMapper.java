@@ -1,4 +1,4 @@
-package com.springboot.domain.posts.model.Mapper;
+package com.springboot.domain.posts.model.mapper;
 
 import com.springboot.domain.posts.model.Posts;
 import com.springboot.domain.posts.model.dto.PostsListResponseDto;

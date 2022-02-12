@@ -29,10 +29,10 @@ public class PostsRepositoryTest {
         String content = "테스트 본문";
 
         postsRepository.save(Posts.builder()
-                .content(content)
-                .author("stam0325@gmail.com")
-                .ref(ref)
-                .build());
+            .content(content)
+            .author("stam0325@gmail.com")
+            .ref(ref)
+            .build());
 
         //when
         List<Posts> postsList = postsRepository.findAll();
@@ -49,17 +49,18 @@ public class PostsRepositoryTest {
         //given
         LocalDateTime now = LocalDateTime.of(2019, 6, 4, 0, 0, 0);
         postsRepository.save(Posts.builder()
-                .ref("reference")
-                .content("content")
-                .author("author")
-                .build());
+            .ref("reference")
+            .content("content")
+            .author("author")
+            .build());
         //when
         List<Posts> postsList = postsRepository.findAll();
 
         //then
         Posts posts = postsList.get(0);
 
-        System.out.println(">>>>>>>>> createDate=" + posts.getCreatedDate() + ", modifiedDate=" + posts.getModifiedDate());
+        System.out.println(">>>>>>>>> createDate=" + posts.getCreatedDate() + ", modifiedDate="
+            + posts.getModifiedDate());
 
         assertThat(posts.getCreatedDate()).isAfter(now);
         assertThat(posts.getModifiedDate()).isAfter(now);
@@ -73,10 +74,10 @@ public class PostsRepositoryTest {
         String content = "테스트 본문";
 
         Posts saved = postsRepository.save(Posts.builder()
-                .content(content)
-                .author("stam0325@gmail.com")
-                .ref(ref)
-                .build());
+            .content(content)
+            .author("stam0325@gmail.com")
+            .ref(ref)
+            .build());
 
         //when
 //        List<Posts> postsList = postsRepository.findAll();

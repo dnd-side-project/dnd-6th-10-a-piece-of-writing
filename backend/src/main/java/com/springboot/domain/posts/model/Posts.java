@@ -32,8 +32,8 @@ public class Posts extends BaseTimeEntity {
     @Column(nullable = false)
     private String ref;
 
-    public void update(String ref, String content) {
-        this.ref = ref;
-        this.content = content;
-    }
+//    public void update(String ref, String content) {
+//        this.ref = ref;
+//        this.content = content;
+//    }
 }

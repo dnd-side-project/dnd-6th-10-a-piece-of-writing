@@ -55,9 +55,9 @@ public class PostsControllerTest {
     @BeforeEach
     public void setup() {
         mvc = MockMvcBuilders
-                .webAppContextSetup(context)
-                .apply(springSecurity())
-                .build();
+            .webAppContextSetup(context)
+            .apply(springSecurity())
+            .build();
 
         accessToken = jwtUtil.createAuthToken("tester");
     }
@@ -70,19 +70,19 @@ public class PostsControllerTest {
         String content = "content";
         String ref = "reference";
         PostsSaveRequestDto requestDto = PostsSaveRequestDto.builder()
-                .content(content)
-                .author("author")
-                .ref(ref)
-                .build();
+            .content(content)
+            .author("author")
+            .ref(ref)
+            .build();
 
         String url = "http://localhost:" + port + "/api/v1/posts";
 
         //when
         mvc.perform(post(url)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .header("X-AUTH_TOKEN", accessToken)
-                        .content(new ObjectMapper().writeValueAsString(requestDto)))
-                .andExpect(status().isOk());
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("X-AUTH_TOKEN", accessToken)
+                .content(new ObjectMapper().writeValueAsString(requestDto)))
+            .andExpect(status().isOk());
 
         //when
 //        ResponseEntity<Long> responseEntity = restTemplate.postForEntity(url,requestDto,Long.class);
@@ -103,19 +103,19 @@ public class PostsControllerTest {
     public void Posts_삭제된다() throws Exception {
         //given
         Posts saved = postsRepository.save(Posts.builder()
-                .content("content")
-                .author("author")
-                .ref("reference")
-                .build());
+            .content("content")
+            .author("author")
+            .ref("reference")
+            .build());
 
         Long savedId = saved.getId();
 
         String url = "http://localhost:" + port + "/api/v1/posts/" + savedId;
 
         mvc.perform(delete(url)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .header("X-AUTH_TOKEN", accessToken))
-                .andExpect(status().isOk());
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("X-AUTH_TOKEN", accessToken))
+            .andExpect(status().isOk());
 
     }
 
