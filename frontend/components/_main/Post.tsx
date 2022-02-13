@@ -55,7 +55,7 @@ const PostContainer = styled.div`
   background-color: #e8e8e8;
 `
 
-const IconContainer = styled.div`
+export const IconContainer = styled.div`
   width: 32px;
   height: 32px;
   display: flex;

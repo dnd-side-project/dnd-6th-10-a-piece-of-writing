@@ -3,4 +3,7 @@ module.exports = {
   experimental: {
     styledComponent: true,
   },
+  images: {
+    domains: ['fakeimg.pl'],
+  },
 }
