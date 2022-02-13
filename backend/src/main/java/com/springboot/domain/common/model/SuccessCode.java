@@ -22,6 +22,8 @@ public enum SuccessCode {
 
 //    Posts
     EXTRACT_SUCCESS("Extract words success", "PM001", 200),
+    SAVE_POSTS_SUCCESS("Save Posts success","PM002",200),
+    DELETE_POSTS_SUCCESS("Delete Posts success","PM003",200)
     ;
 
     private final String message;

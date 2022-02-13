@@ -28,8 +28,11 @@ public class PostsController {
 
     // 업로드
     @PostMapping
-    public Long save(@RequestBody PostsSaveRequestDto requestDto) {
-        return postsService.save(requestDto);
+    public ResponseEntity<ResponseDto> save(@RequestBody PostsSaveRequestDto requestDto) {
+
+        Long savedPostId = postsService.save(requestDto);
+
+        return responseServiceImpl.successResult(SuccessCode.SAVE_POSTS_SUCCESS,savedPostId);
     }
 
     // 수정
@@ -40,9 +43,11 @@ public class PostsController {
 
     // 삭제
     @DeleteMapping("/{id}")
-    public Long delete(@PathVariable Long id) {
-        postsService.delete(id);
-        return id;
+    public ResponseEntity<ResponseDto> delete(@PathVariable Long id) {
+
+        Long DeletedPostId = postsService.delete(id);
+
+        return responseServiceImpl.successResult(SuccessCode.DELETE_POSTS_SUCCESS,DeletedPostId);
     }
 
     // 1개 검색

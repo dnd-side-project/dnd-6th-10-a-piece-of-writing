@@ -7,7 +7,6 @@ import com.springboot.domain.posts.model.dto.PostsResponseDto;
 import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
 //import com.springboot.domain.posts.model.dto.PostsUpdateRequestDto;
 
-import java.io.IOException;
 import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,7 +16,7 @@ public interface PostsService {
 
 //    public Long update(Long id, PostsUpdateRequestDto requestDto);
 
-    public void delete(Long id);
+    public Long delete(Long id);
 
     public PostsResponseDto findById(Long id);
 
