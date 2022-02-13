@@ -1,5 +1,6 @@
 import React from 'react'
 
+import Link from 'next/link'
 import styled from 'styled-components'
 
 import { Button } from '@/components/button'
@@ -18,9 +19,11 @@ const Withdraw: React.FC<Props> = ({}) => {
         </div>
         <FlexDiv margin={'7rem 0 0 0'} direction={'column'}>
           <Button width={'285px'}>탈퇴하기</Button>
-          <Button className={'mt-4'} width={'285px'}>
-            취소하기
-          </Button>
+          <Link href={'/'} passHref>
+            <Button className={'mt-4'} bgColor={'#8e8e8e'} width={'285px'}>
+              취소하기
+            </Button>
+          </Link>
         </FlexDiv>
       </MainContainer>
     </FlexDiv>
