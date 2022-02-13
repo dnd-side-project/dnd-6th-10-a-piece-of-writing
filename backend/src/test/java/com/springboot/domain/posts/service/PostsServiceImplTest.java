@@ -1,5 +1,6 @@
 package com.springboot.domain.posts.service;
 
+import com.google.auth.oauth2.GoogleCredentials;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -31,14 +32,17 @@ class PostsServiceImplTest {
     @DisplayName("사진 업로드 서비스 코드 테스트")
     @Test
     void postsImgUpload() throws Exception {
-        String url = postsService.postsImgUpload(multipartFile, "javaTest");
+        GoogleCredentials credentials = postsService.getCredentials();
+        String url = postsService.postsImgUpload(credentials, multipartFile, "javaTest");
         assertThat(url).isEqualTo("https://storage.googleapis.com/example-ocr-test/javaTest");
     }
 
     @DisplayName("사진 텍스트 추출 코드 테스트")
     @Test
     void postsImgExtractWords() throws Exception {
-        String result = postsService.postsImgExtractWords(multipartFile, "javaTest");
+        GoogleCredentials credentials = postsService.getCredentials();
+        String url = postsService.postsImgUpload(credentials, multipartFile, "javaTest");
+        String result = postsService.postsImgExtractWords(credentials, multipartFile, url);
         assertThat(result).isEqualTo("Test\n");
     }
 
