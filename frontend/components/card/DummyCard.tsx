@@ -1,5 +1,7 @@
 import React from 'react'
+
 import Link from 'next/link'
+
 import { FlexDiv } from '@/components/style/div/FlexDiv'
 
 type Props = {
@@ -12,7 +14,7 @@ const DummyCard: React.FC<Props> = ({ title, content, href = '#' }) => {
   return (
     <FlexDiv>
       <Link href={href}>
-        <a className="h-36 w-72 group block max-w-xs rounded-lg p-6 bg-whitering-1 ring-slate-900/5 shadow-lg hover:bg-sky-500 hover:ring-sky-500">
+        <a className="h-36 w-72 group block max-w-xs rounded-lg p-6 bg-whitering-1 ring-slate-900/5 shadow-lg bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-sky-500 hover:ring-sky-500">
           <div className="flex items-center space-x-3">
             <h3 className="text-slate-900 group-hover:text-white text-sm font-semibold">{title}</h3>
           </div>

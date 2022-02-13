@@ -1,9 +1,8 @@
-import React from 'react'
 import styled from 'styled-components'
 
 export const GrayInput = styled.input`
-  width: ${(props) => props.width || '386px'};
-  height: ${(props) => props.height || '52px'};
+  width: ${(props) => props.width ?? '386px'};
+  height: ${(props) => props.height ?? '52px'};
   flex-grow: 0;
   display: flex;
   flex-direction: row;

@@ -1,18 +1,15 @@
 package com.springboot.domain.posts.service;
 
 
-import com.springboot.domain.posts.model.Posts;
+import com.google.auth.oauth2.GoogleCredentials;
 import com.springboot.domain.posts.model.dto.PostsListResponseDto;
 import com.springboot.domain.posts.model.dto.PostsResponseDto;
 import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
-import com.springboot.domain.posts.model.PostsRepository;
 //import com.springboot.domain.posts.model.dto.PostsUpdateRequestDto;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface PostsService {
 
@@ -26,7 +23,11 @@ public interface PostsService {
 
     public List<PostsListResponseDto> findAllPostsOrderById();
 
-    public String postsImgUpload();
+    public String getFileUuid();
 
-    public String postsImgExtractWords();
+    public GoogleCredentials getCredentials();
+
+    public String postsImgUpload(GoogleCredentials credentials, MultipartFile multipartFile, String fileName);
+
+    public String postsImgExtractWords(GoogleCredentials credentials, MultipartFile multipartFile, String imageUrl);
 }
