@@ -2,12 +2,10 @@ package com.springboot.domain.posts;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springboot.domain.auth.jwt.JwtUtil;
-import com.springboot.domain.posts.model.Entity.Posts;
-import com.springboot.domain.posts.model.dto.PostsListResponseDto;
+import com.springboot.domain.posts.model.entity.Posts;
 import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
 import com.springboot.domain.posts.repository.PostsRepository;
 //import com.springboot.domain.posts.model.dto.PostsUpdateRequestDto;
-import java.util.ArrayList;
 import java.util.stream.IntStream;
 import javax.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,8 +25,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;

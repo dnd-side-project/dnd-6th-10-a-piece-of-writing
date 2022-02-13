@@ -1,6 +1,9 @@
 package com.springboot.domain.posts;
 
-import com.springboot.domain.posts.model.Entity.Posts;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.springboot.domain.posts.model.entity.Posts;
+import com.springboot.domain.posts.model.entity.QPosts;
 import com.springboot.domain.posts.repository.PostsRepository;
 import java.util.stream.IntStream;
 import javax.transaction.Transactional;
@@ -130,6 +133,26 @@ public class PostsRepositoryTest {
         result.get().forEach(posts -> System.out.println(posts.getId()+posts.getContent()+posts.getAuthor()));
     }
 
+    //검색내용포함_게시물_검색
+    @Test
+    public void test_query_dsl(){
+
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("id").descending());
+
+        QPosts posts = QPosts.posts;
+
+        String keyword = "1";
+
+        BooleanBuilder builder = new BooleanBuilder();
+
+        BooleanExpression expression = posts.content.contains(keyword);
+
+        builder.and(expression);
+
+        Page<Posts> result = postsRepository.findAll(builder, pageable);
+
+        result.stream().forEach(System.out::println);
+    }
 
 
 

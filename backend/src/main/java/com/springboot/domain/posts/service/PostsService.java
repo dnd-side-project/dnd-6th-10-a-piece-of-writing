@@ -22,6 +22,8 @@ public interface PostsService {
 
     public List<PostsListResponseDto> findAllPostsOrderByIdDesc(int page);
 
+    public List<PostsListResponseDto> findPostsContainingContent(int page, String content);
+
     public String getFileUuid();
 
     public GoogleCredentials getCredentials();

@@ -16,12 +16,15 @@ import com.google.cloud.vision.v1.Image;
 import com.google.cloud.vision.v1.ImageAnnotatorClient;
 import com.google.cloud.vision.v1.ImageAnnotatorSettings;
 import com.google.cloud.vision.v1.ImageSource;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.springboot.domain.common.error.exception.BusinessException;
 import com.springboot.domain.common.error.exception.ErrorCode;
-import com.springboot.domain.posts.model.Entity.Posts;
+import com.springboot.domain.posts.model.entity.Posts;
 import com.springboot.domain.posts.model.dto.PostsListResponseDto;
 import com.springboot.domain.posts.model.dto.PostsResponseDto;
 import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
+import com.springboot.domain.posts.model.entity.QPosts;
 import com.springboot.domain.posts.repository.PostsRepository;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -96,10 +99,24 @@ public class PostsServiceImpl implements PostsService {
         return postsRepository.findAll(pageable).stream()
             .map(PostsListResponseDto::new)
             .collect(Collectors.toList());
+    }
 
-//        return postsRepository.findAllByOrderById(pageable).stream()
-//            .map(PostsListResponseDto::new)
-//            .collect(Collectors.toList());
+    @Override
+    public List<PostsListResponseDto> findPostsContainingContent(int page, String content) {
+
+        Pageable pageable = PageRequest.of(page,10, Sort.by("id").descending());
+
+        QPosts posts = QPosts.posts;
+
+        BooleanBuilder builder = new BooleanBuilder();
+
+        BooleanExpression expression = posts.content.contains(content);
+
+        builder.and(expression);
+
+        return postsRepository.findAll(builder, pageable).stream()
+            .map(PostsListResponseDto::new)
+            .collect(Collectors.toList());
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.springboot.domain.posts.model.Entity;
+package com.springboot.domain.posts.model.entity;
 
 
 import lombok.AccessLevel;

@@ -68,8 +68,18 @@ public class PostsController {
         List<PostsListResponseDto> posts = postsService.findAllPostsOrderByIdDesc(page);
 
         return responseServiceImpl.successResult(SuccessCode.SELECT_ALL_POSTS_SUCCESS,posts);
-
     }
+
+    // 검색 내용 포함 게시물 조회
+    @Operation(summary = "select posts containing searched content api", description = "검색된 내용을 포함한 게시물 조회 api. request 받은 내용 기준으로 화면에서 글귀를 최신 순으로 페이지당 10개씩 조회.")
+    @GetMapping("/content/{content}/page/{page}")
+    public ResponseEntity<ResponseDto> findPostsContainingContent(@PathVariable int page, @PathVariable String content) {
+
+        List<PostsListResponseDto> posts = postsService.findPostsContainingContent(page,content);
+
+        return responseServiceImpl.successResult(SuccessCode.SELECT_POSTS_CONTATINING_CONTENT_SUCCESS,posts);
+    }
+
 
     @ApiOperation(value = "이미지 텍스트 추출", notes = "이미지를 전송해 텍스트를 추출한다.")
     @PostMapping(value = "/img-extract", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
