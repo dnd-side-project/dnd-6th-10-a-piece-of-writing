@@ -1,6 +1,6 @@
 package com.springboot.domain.posts.model.dto;
 
-import com.springboot.domain.posts.model.Posts;
+import com.springboot.domain.posts.model.Entity.Posts;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

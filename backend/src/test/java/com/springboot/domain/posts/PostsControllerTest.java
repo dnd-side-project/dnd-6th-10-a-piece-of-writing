@@ -2,12 +2,11 @@ package com.springboot.domain.posts;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springboot.domain.auth.jwt.JwtUtil;
-import com.springboot.domain.posts.model.Posts;
+import com.springboot.domain.posts.model.Entity.Posts;
 import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
-import com.springboot.domain.posts.model.PostsRepository;
+import com.springboot.domain.posts.repository.PostsRepository;
 //import com.springboot.domain.posts.model.dto.PostsUpdateRequestDto;
 import javax.transaction.Transactional;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +18,6 @@ import org.springframework.http.*;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 

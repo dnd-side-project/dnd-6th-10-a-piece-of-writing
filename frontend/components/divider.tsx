@@ -5,7 +5,7 @@ interface PlainDividerProps {
 }
 
 export const PlainDivider = styled.div`
-  width: ${(props: PlainDividerProps) => props.width || '100%'};
+  width: ${(props: PlainDividerProps) => props.width ?? '100%'};
   height: 1px;
   flex-grow: 0;
   margin: 11px 0 12px;

@@ -1,13 +1,15 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { GrayInput } from '@/components/input'
-import { Button } from '@/components/button'
-import styled from 'styled-components'
-import { emailAtom, registerMessageAtom, useRegister } from '@/hook/usePassword'
-import { useDebounce } from 'react-use'
+
 import classNames from 'classnames/bind'
-import styles from '@/pages/register/register.module.scss'
 import { useAtom } from 'jotai'
 import { useAtomValue } from 'jotai/utils'
+import { useDebounce } from 'react-use'
+import styled from 'styled-components'
+
+import { Button } from '@/components/button'
+import { GrayInput } from '@/components/input'
+import { emailAtom, registerMessageAtom, useRegister } from '@/hook/usePassword'
+import styles from '@/pages/register/register.module.scss'
 
 export type RegisterMessage = {
   email: string

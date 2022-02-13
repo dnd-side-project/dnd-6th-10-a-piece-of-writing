@@ -7,9 +7,10 @@ module.exports = {
     jest: true,
   },
   parserOptions: {
-    project: './tsconfig.json',
+    project: './tsconfig.eslint.json',
   },
   rules: {
+    'react-hooks/rules-of-hooks': 'error',
     'prettier/prettier': 'error',
     'arrow-body-style': 'off',
     'prefer-arrow-callback': 'off',
@@ -47,7 +48,7 @@ module.exports = {
     'no-empty': ['error', { allowEmptyCatch: true }],
     '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', ignoreRestSiblings: true }],
     '@typescript-eslint/naming-convention': [
-      'error',
+      'warn',
       {
         selector: 'parameter',
         format: ['strictCamelCase'], // Change if you want to.
@@ -142,4 +143,5 @@ module.exports = {
       ],
     },
   ],
+  ignorePatterns: ['./tailwind.config.js', './postcss.config.js'],
 }

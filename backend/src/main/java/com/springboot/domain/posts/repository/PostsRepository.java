@@ -1,7 +1,7 @@
-package com.springboot.domain.posts.model;
+package com.springboot.domain.posts.repository;
 
+import com.springboot.domain.posts.model.Entity.Posts;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 

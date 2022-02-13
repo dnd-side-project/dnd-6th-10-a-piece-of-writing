@@ -1,7 +1,7 @@
 package com.springboot.domain.posts;
 
-import com.springboot.domain.posts.model.Posts;
-import com.springboot.domain.posts.model.PostsRepository;
+import com.springboot.domain.posts.model.Entity.Posts;
+import com.springboot.domain.posts.repository.PostsRepository;
 import javax.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

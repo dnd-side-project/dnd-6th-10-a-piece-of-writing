@@ -1,5 +1,7 @@
 import React from 'react'
+
 import Slider from 'rc-slider'
+
 import { CENTER_FLEX } from '@/styles/classNames'
 
 type Props = {
@@ -18,7 +20,7 @@ export const CropSlider: React.FC<Props> = ({
   step = undefined,
   name,
   value,
-  setValue = (n) => {},
+  setValue = (_) => {},
   className = `w-full ${CENTER_FLEX}`,
 }) => {
   return (
