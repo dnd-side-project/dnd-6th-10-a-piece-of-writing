@@ -20,7 +20,7 @@ public interface PostsService {
 
     public PostsResponseDto findById(Long id);
 
-    public List<PostsListResponseDto> findAllPostsOrderById();
+    public List<PostsListResponseDto> findAllPostsOrderByIdDesc(int page);
 
     public String getFileUuid();
 

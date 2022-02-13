@@ -10,6 +10,7 @@ import com.springboot.domain.posts.model.dto.PostsResponseDto;
 import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
 import com.springboot.domain.posts.service.PostsService;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,7 @@ public class PostsController {
     private final ResponseServiceImpl responseServiceImpl;
 
     // 업로드
+    @Operation(summary = "save posts api", description = "글귀 업로드 api")
     @PostMapping
     public ResponseEntity<ResponseDto> save(@RequestBody PostsSaveRequestDto requestDto) {
 
@@ -42,6 +44,7 @@ public class PostsController {
 //    }
 
     // 삭제
+    @Operation(summary = "delete posts api", description = "글귀 삭제 api")
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseDto> delete(@PathVariable Long id) {
 
@@ -57,9 +60,15 @@ public class PostsController {
     }
 
     // 전체 내림차순 검색
-    @GetMapping
-    public List<PostsListResponseDto> findAllDesc() {
-        return postsService.findAllPostsOrderById();
+    @Operation(summary = "select all posts api", description = "모든 글귀 검색 api. request 받은 페이지 기준으로 메인 화면에서 글귀를 최신 순으로 페이지당 10개씩 조회.")
+    @GetMapping("/page/{page}")
+    public ResponseEntity<ResponseDto> findAllPostsOrderByIdDesc(@PathVariable int page) {
+//        return postsService.findAllPostsOrderById();
+
+        List<PostsListResponseDto> posts = postsService.findAllPostsOrderByIdDesc(page);
+
+        return responseServiceImpl.successResult(SuccessCode.SELECT_ALL_POSTS_SUCCESS,posts);
+
     }
 
     @ApiOperation(value = "이미지 텍스트 추출", notes = "이미지를 전송해 텍스트를 추출한다.")

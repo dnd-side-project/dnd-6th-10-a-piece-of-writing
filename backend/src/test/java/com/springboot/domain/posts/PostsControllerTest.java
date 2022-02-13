@@ -3,9 +3,12 @@ package com.springboot.domain.posts;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springboot.domain.auth.jwt.JwtUtil;
 import com.springboot.domain.posts.model.Entity.Posts;
+import com.springboot.domain.posts.model.dto.PostsListResponseDto;
 import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
 import com.springboot.domain.posts.repository.PostsRepository;
 //import com.springboot.domain.posts.model.dto.PostsUpdateRequestDto;
+import java.util.ArrayList;
+import java.util.stream.IntStream;
 import javax.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,11 +17,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.*;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -115,6 +125,53 @@ public class PostsControllerTest {
                 .header("X-AUTH_TOKEN", accessToken))
             .andExpect(status().isOk());
 
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "tester", roles = "USER")
+    public void Posts_모두_조회한다() throws Exception {
+        //given
+        int num=20;
+        int size=10;
+
+        IntStream.rangeClosed(1,num).forEach(i -> {
+            Posts posts = Posts.builder()
+                .content("sample content "+i)
+                .author("sample author "+i)
+                .ref("sample ref "+i)
+                .build();
+
+            postsRepository.save(posts);
+        });
+
+        Sort sortByPostId = Sort.by("id").descending();
+
+        for(int i=1;i<num;i++){
+            int page = (int)(i/size);
+
+            String url = "http://localhost:" + port + "/api/v1/posts/page/"+String.valueOf(page);
+
+            //when
+            mvc.perform(MockMvcRequestBuilders.get(url)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .header("X-AUTH_TOKEN", accessToken))
+                .andExpect(status().isOk());
+
+            Pageable pageable = PageRequest.of(page,size,sortByPostId);
+
+            Page<Posts> result = postsRepository.findAll(pageable);
+
+            int j=page*size;
+
+            // then
+            for (Posts posts : result) {
+                assertThat(posts.getContent()).isEqualTo("sample content "+(num-j));
+                assertThat(posts.getAuthor()).isEqualTo("sample author "+(num-j));
+                assertThat(posts.getRef()).isEqualTo("sample ref "+(num-j));
+                j+=1;
+            }
+        }
     }
 
 //    @Test

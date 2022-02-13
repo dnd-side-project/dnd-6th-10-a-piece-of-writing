@@ -2,11 +2,16 @@ package com.springboot.domain.posts;
 
 import com.springboot.domain.posts.model.Entity.Posts;
 import com.springboot.domain.posts.repository.PostsRepository;
+import java.util.stream.IntStream;
 import javax.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
@@ -97,6 +102,60 @@ public class PostsRepositoryTest {
 //            e.printStackTrace();
 //        }
     }
+
+    // 테스트 위한 다량 데이터 등록 테스트
+    @Test
+    public void testInsertDummies(){
+        IntStream.rangeClosed(1,100).forEach(i -> {
+            Posts posts = Posts.builder()
+                .content("sample content "+i)
+                .author("sample author "+i)
+                .ref("sample ref "+i)
+                .build();
+
+            postsRepository.save(posts);
+        });
+    }
+
+    // 페이지 정렬 테스트
+    @Test
+    public void testSort(){
+
+        Sort sortByPostId = Sort.by("id").descending();
+
+        Pageable pageable = PageRequest.of(0,10,sortByPostId);
+
+        Page<Posts> result = postsRepository.findAll(pageable);
+
+        result.get().forEach(posts -> System.out.println(posts.getId()+posts.getContent()+posts.getAuthor()));
+    }
+
+
+
+
+    //    @Test
+//    public void 게시글_1개조회() {
+//        //given
+//        String ref = "테스트 레퍼런스";
+//        String content = "테스트 본문";
+//
+//        postsRepository.save(Posts.builder()
+//                .content(content)
+//                .author("stam0325@gmail.com")
+//                .ref(ref)
+//                .build());
+//
+//        //when
+//        List<Posts> postsList = postsRepository.findAll();
+//
+//        //then
+//        Posts posts = postsList.get(0);
+//        long id = posts.getId();
+//        Optional<Posts> entity = postsRepository.findById(id);
+//
+//        assertThat(posts.getContent()).isEqualTo(content);
+//        assertThat(posts.getRef()).isEqualTo(ref);
+//    }
 
 //    @Test
 //    public void 게시글_1개조회() {

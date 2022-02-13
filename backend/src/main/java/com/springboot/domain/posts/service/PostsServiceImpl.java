@@ -33,6 +33,9 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -78,11 +81,25 @@ public class PostsServiceImpl implements PostsService {
         return new PostsResponseDto(entity);
     }
 
+//    @Override
+//    public List<PostsListResponseDto> findAllPostsOrderById() {
+//        return postsRepository.findAllByOrderById().stream()
+//                .map(PostsListResponseDto::new)
+//                .collect(Collectors.toList());
+//    }
+
     @Override
-    public List<PostsListResponseDto> findAllPostsOrderById() {
-        return postsRepository.findAllByOrderById().stream()
-                .map(PostsListResponseDto::new)
-                .collect(Collectors.toList());
+    public List<PostsListResponseDto> findAllPostsOrderByIdDesc(int page) {
+
+        Pageable pageable = PageRequest.of(page,10, Sort.by("id").descending());
+
+        return postsRepository.findAll(pageable).stream()
+            .map(PostsListResponseDto::new)
+            .collect(Collectors.toList());
+
+//        return postsRepository.findAllByOrderById(pageable).stream()
+//            .map(PostsListResponseDto::new)
+//            .collect(Collectors.toList());
     }
 
     @Override
