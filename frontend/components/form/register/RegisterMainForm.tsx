@@ -8,8 +8,9 @@ import styled from 'styled-components'
 
 import { Button } from '@/components/button'
 import { GrayInput } from '@/components/input'
-import { emailAtom, registerMessageAtom, useRegister } from '@/hook/usePassword'
+import { emailAtom, isValidEmail, registerMessageAtom, useRegister } from '@/hook/usePassword'
 import styles from '@/pages/register/register.module.scss'
+import { emailCheck } from '@/server/user'
 
 export type RegisterMessage = {
   email: string
@@ -29,17 +30,29 @@ const RegisterMainForm: React.FC<Props> = ({ onClickRegister }) => {
   const { password, check, passwordCheck, onChangePassword, onChangePasswordCheck, allConditionSatisfied } =
     useRegister()
   const [emailDebouncedValue, setEmailDebouncedValue] = useState('')
+  const [emailMessage, setEmailMessage] = useState('')
 
   const [,] = useDebounce(
     () => {
-      setEmailDebouncedValue(message.email)
+      setEmailDebouncedValue(email)
     },
     500,
-    [message?.email],
+    [email],
   )
 
   useEffect(() => {
-    // 이메일 중복확인 테스트
+    if (!isValidEmail(email)) return
+    emailCheck(email)
+      .then((res) => {
+        if (res.success) {
+          setEmailMessage('')
+          return
+        }
+        setEmailMessage(res.message)
+      })
+      .catch((e) => {
+        console.error(e)
+      })
   }, [emailDebouncedValue])
 
   const onChangeEmail = useCallback(
@@ -66,8 +79,11 @@ const RegisterMainForm: React.FC<Props> = ({ onClickRegister }) => {
         <br /> 함께 음미해보세요
       </MainSpan>
       <Label>이메일</Label>
-      <GrayInput className="w-386 h-52" placeholder={'이메일'} value={email} onChange={onChangeEmail} />
-      <div className={cx('w-full', 'text-red-400', 'mb-1')}>{emailDebouncedValue}</div>
+      {/*<div className="flex w-386 h-52">*/}
+      <GrayInput className="w-3/4 h-52" placeholder={'이메일'} value={email} onChange={onChangeEmail} />
+      {/*<button>중복 체크</button>*/}
+      {/*</div>*/}
+      <div className={cx('w-full', 'text-red-400', 'mb-1')}>{emailMessage || message.email}</div>
       <Label>비밀번호</Label>
       <GrayInput
         className="w-386 h-52"
