@@ -1,11 +1,12 @@
 import React from 'react'
 
-import styles from './login.module.scss'
-
 import classNames from 'classnames/bind'
-import { CENTER_FLEX } from '@/styles/classNames'
-import { GrayInput } from '@/components/input'
+
 import { Button } from '@/components/button'
+import { GrayInput } from '@/components/input'
+import { CENTER_FLEX } from '@/styles/classNames'
+
+import styles from './login.module.scss'
 
 type Props = {}
 

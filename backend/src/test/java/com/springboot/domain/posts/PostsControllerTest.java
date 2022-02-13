@@ -1,11 +1,12 @@
 package com.springboot.domain.posts;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.springboot.domain.auth.jwt.JwtUtil;
+import com.springboot.domain.posts.model.Entity.Posts;
 import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
-import com.springboot.domain.posts.model.Posts;
-import com.springboot.domain.posts.model.PostsRepository;
+import com.springboot.domain.posts.repository.PostsRepository;
 //import com.springboot.domain.posts.model.dto.PostsUpdateRequestDto;
-import org.junit.jupiter.api.AfterEach;
+import javax.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,21 +18,19 @@ import org.springframework.http.*;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.List;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class PostsApiControllerTest {
+public class PostsControllerTest {
 
     @LocalServerPort
     private int port;
@@ -45,7 +44,11 @@ public class PostsApiControllerTest {
     @Autowired
     private WebApplicationContext context;
 
+    @Autowired
+    private JwtUtil jwtUtil;
+
     private MockMvc mvc;
+    private String accessToken;
 
     @BeforeEach
     public void setup() {
@@ -53,15 +56,13 @@ public class PostsApiControllerTest {
                 .webAppContextSetup(context)
                 .apply(springSecurity())
                 .build();
-    }
 
-    @AfterEach
-    public void tearDown() throws Exception {
-        postsRepository.deleteAll();
+        accessToken = jwtUtil.createAuthToken("tester");
     }
 
     @Test
-    @WithMockUser(roles="USER")
+    @Transactional
+    @WithMockUser(username = "tester", roles = "USER")
     public void Posts_등록된다() throws Exception {
         //given
         String content = "content";
@@ -76,8 +77,9 @@ public class PostsApiControllerTest {
 
         //when
         mvc.perform(post(url)
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(new ObjectMapper().writeValueAsString(requestDto)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("X-AUTH_TOKEN", accessToken)
+                        .content(new ObjectMapper().writeValueAsString(requestDto)))
                 .andExpect(status().isOk());
 
         //when
@@ -94,7 +96,8 @@ public class PostsApiControllerTest {
     }
 
     @Test
-    @WithMockUser(roles="USER")
+    @Transactional
+    @WithMockUser(roles = "USER")
     public void Posts_삭제된다() throws Exception {
         //given
         Posts saved = postsRepository.save(Posts.builder()
@@ -105,17 +108,12 @@ public class PostsApiControllerTest {
 
         Long savedId = saved.getId();
 
-        String url = "http://localhost:"+port+"/api/v1/posts/"+savedId;
+        String url = "http://localhost:" + port + "/api/v1/posts/" + savedId;
 
-        HttpEntity<Posts> savedEntity = new HttpEntity<>(saved);
-
-        this.mvc.perform(MockMvcRequestBuilders
-                        .delete(url)
-                        .contentType(MediaType.APPLICATION_JSON))
-                        .andExpect(status().isOk());
-
-        List<Posts> deleted = postsRepository.findAll();
-        assertThat(deleted).isEmpty();
+        mvc.perform(delete(url)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("X-AUTH_TOKEN", accessToken))
+                .andExpect(status().isOk());
 
     }
 

@@ -1,7 +1,9 @@
 import React, { useRef, useState } from 'react'
+
 import { Cropper } from 'react-cropper'
-import { Button } from '@/components/button'
 import styled from 'styled-components'
+
+import { Button } from '@/components/button'
 
 type ImageSrc = string
 
@@ -12,6 +14,7 @@ type Props = {
 
 export const ImageUploadCropper = ({ originImage, setOriginImage }: Props) => {
   const [src, setSrc] = useState(originImage)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [images, setImages] = useState<string[]>([])
   const [cropResult, setCropResult] = useState('')
 

@@ -1,59 +1,33 @@
 package com.springboot.domain.posts.service;
 
 
-import com.springboot.domain.posts.model.Posts;
+import com.google.auth.oauth2.GoogleCredentials;
 import com.springboot.domain.posts.model.dto.PostsListResponseDto;
 import com.springboot.domain.posts.model.dto.PostsResponseDto;
 import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
-import com.springboot.domain.posts.model.PostsRepository;
 //import com.springboot.domain.posts.model.dto.PostsUpdateRequestDto;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.web.multipart.MultipartFile;
 
-@RequiredArgsConstructor
-@Service
-public class PostsService {
+public interface PostsService {
 
-    private final PostsRepository postsRepository;
+    public Long save(PostsSaveRequestDto requestDto);
 
-    @Transactional
-    public Long save(PostsSaveRequestDto requestDto){
-        return postsRepository.save(requestDto.toEntity()).getId();
-    }
+//    public Long update(Long id, PostsUpdateRequestDto requestDto);
 
-//    @Transactional
-//    public Long update(Long id, PostsUpdateRequestDto requestDto){
-//        Posts posts = postsRepository.findById(id)
-//                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
-//
-//        posts.update(requestDto.getRef(),requestDto.getContent());
-//
-//        return id;
-//    }
+    public void delete(Long id);
 
-    @Transactional
-    public void delete (Long id) {
-        Posts posts = postsRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. id=" + id));
+    public PostsResponseDto findById(Long id);
 
-        postsRepository.delete(posts);
-    }
+    public List<PostsListResponseDto> findAllPostsOrderById();
 
-    public PostsResponseDto findById(Long id){
-        Posts entity = postsRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id="+id));
+    public String getFileUuid();
 
-        return new PostsResponseDto(entity);
-    }
+    public GoogleCredentials getCredentials();
 
-    @org.springframework.transaction.annotation.Transactional(readOnly = true)
-    public List<PostsListResponseDto> findAllDesc() {
-        return postsRepository.findAllDesc().stream()
-                .map(PostsListResponseDto::new)
-                .collect(Collectors.toList());
-    }
+    public String postsImgUpload(GoogleCredentials credentials, MultipartFile multipartFile, String fileName);
 
+    public String postsImgExtractWords(GoogleCredentials credentials, MultipartFile multipartFile, String imageUrl);
 }

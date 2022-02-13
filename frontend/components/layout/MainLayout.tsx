@@ -1,7 +1,8 @@
 import React from 'react'
-import styled from 'styled-components'
+
 import Image from 'next/image'
 import Link from 'next/link'
+import styled from 'styled-components'
 
 type Props = {}
 
@@ -17,7 +18,7 @@ const MainLayout: React.FC<Props> = ({ children }) => {
           <div> </div>
           <div className={`flex gap-4`}>
             <Image src={'/menu_search.svg'} width={24} height={24} />
-            <Image src={'/profile_profile.svg'} width={24} height={24} />
+            <Image src={'/profile.svg'} width={24} height={24} />
           </div>
         </MainBar>
         {children}

@@ -19,6 +19,9 @@ public enum SuccessCode {
 
 //    Member
     MOD_NICKNAME_SUCCESS("modify nickname success", "SM001", 200),
+
+//    Posts
+    EXTRACT_SUCCESS("Extract words success", "PM001", 200),
     ;
 
     private final String message;

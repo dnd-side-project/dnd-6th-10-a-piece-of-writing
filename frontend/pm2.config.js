@@ -5,7 +5,7 @@ module.exports = {
       script: 'yarn',
       args: `start`,
       cwd: './',
-      instances: process.env.NUM_PM2_INSTANCES || 1,
+      instances: process.env.NUM_PM2_INSTANCES ?? 1,
       interpreter: '/bin/bash',
       env: {
         NODE_ENV: 'production',

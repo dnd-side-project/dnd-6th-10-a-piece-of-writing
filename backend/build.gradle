@@ -2,7 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.4.1'
     id 'io.spring.dependency-management' version '1.0.10.RELEASE'
     id 'java'
-    id 'base' // github action ?? 빌드 과정?�서 'Build with Gradle' ?�류가 발생?�여 추�?
+    id 'base'
 }
 
 group 'com'
@@ -21,14 +21,15 @@ dependencies {
     implementation('junit:junit:4.13.1')
     implementation('com.fasterxml.jackson.core:jackson-databind')
 
-    // h2
-    implementation('com.h2database:h2')
-
-    // testRestTemplate
+// testRestTemplate
     implementation('org.apache.httpcomponents:httpclient:4.5.13')
+
 //    GCloud Storage
     implementation platform('com.google.cloud:libraries-bom:24.2.0')
-    implementation 'com.google.cloud:google-cloud-storage'
+    implementation('com.google.cloud:google-cloud-storage')
+
+//    Google Vision API
+    implementation('com.google.cloud:google-cloud-vision')
 
 //    validator
     implementation('org.hibernate:hibernate-validator:6.1.0.Final')
@@ -49,13 +50,13 @@ dependencies {
     annotationProcessor('org.mapstruct:mapstruct-processor:1.4.2.Final')
     testAnnotationProcessor('org.mapstruct:mapstruct-processor:1.4.2.Final')
 
-    //    Security
+//    Security
     implementation('org.springframework.boot:spring-boot-starter-security')
 
-    //    JWT
+//    JWT
     implementation('com.auth0:java-jwt:3.18.3')
 
-    // testing
+// testing
     testImplementation('org.springframework.boot:spring-boot-starter-test')
     testImplementation("org.springframework.security:spring-security-test")
 

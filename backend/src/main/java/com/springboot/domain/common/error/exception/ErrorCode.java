@@ -18,7 +18,7 @@ public enum ErrorCode {
     EXPIRED_ACCESS_TOKEN(403, "J001", "Expired access token"),
     EXPIRED_REFRESH_TOKEN(403, "J001", "Expired refresh token"),
     UNSUPPORTED_JWT(403, "J002", "Unsupported Jwt"),
-    SIGNATURE_INVALID_JWT(403, "JOO3", "Signature Invalid Jwt"),
+    SIGNATURE_INVALID_JWT(403, "J003", "Signature Invalid Jwt"),
     JWT_NOT_FOUND(403, "J004", "Jwt Not Found"),
     AUTHENTICATION_FAILED(403, "J005", "Authentication Failed"),
     INVALID_ACCESS_TOKEN(400, "J006", "Tokens have already been logged out"),
@@ -31,6 +31,12 @@ public enum ErrorCode {
     EMAIL_DUPLICATION(400, "M001", "Email is Duplication"),
     NICKNAME_MISSING(400, "M002", "Nickname is Missing"),
     NICKNAME_DUPLICATION(400, "M003", "Nickname is Duplication"),
+
+    // Posts
+    IMAGE_URL_INPUT_INVALID(400, "P001", "Image url is invalid"),
+    IMAGE_INPUT_INVALID(400, "P002", "Image file is invalid"),
+    CREDENTIAL_ERROR(500, "P003", "Server credential file error"),
+    VISION_API_ERROR(500, "P004", "Vision api set error : Google api Error"),
 
     ;
     private final String code;

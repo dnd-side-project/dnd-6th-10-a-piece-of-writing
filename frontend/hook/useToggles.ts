@@ -1,12 +1,13 @@
-import { useSet } from 'react-use'
 import { useCallback, useMemo } from 'react'
+
+import { useSet } from 'react-use'
 
 type Props = {
   defaultIndexes: number[]
   singleMode?: boolean // 1개만 선택가능한 토글일 때
 }
 
-export const uesToggles = (props: Props) => {
+export const useToggles = (props: Props) => {
   const { singleMode = true, defaultIndexes } = props
   const [selectedIndexesSet, { has, remove, toggle, reset }] = useSet(new Set(defaultIndexes))
 
