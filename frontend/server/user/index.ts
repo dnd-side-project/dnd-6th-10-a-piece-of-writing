@@ -13,14 +13,28 @@ export const emailCheck = async (email: string): Promise<RESPONSE_TYPE> => {
     }
   } catch (e) {
     if (e.response.status === 404) {
-      return {
-        success: false,
-        message: '중복된 이메일입니다!',
-      }
+      return { success: false, message: '중복된 이메일입니다!' }
     }
   }
-  return {
-    success: false,
-    message: '오류가 발생했습니다!',
+  return { success: false, message: '오류가 발생했습니다!' }
+}
+
+type SignUpData = {
+  email: string
+  password: string
+  nickname: string
+}
+
+export const signUp = async (data: SignUpData): Promise<RESPONSE_TYPE> => {
+  try {
+    const result = await baxios.post(`/auth/sign`, data)
+    if (result.status === 200) {
+      return { success: true, message: '회원 가입에 성공했습니다!' }
+    }
+  } catch (e) {
+    if (e.response.status === 404) {
+      return { success: false, message: '회원 가입에 실패했습니다!' }
+    }
   }
+  return { success: false, message: '오류가 발생했습니다!' }
 }

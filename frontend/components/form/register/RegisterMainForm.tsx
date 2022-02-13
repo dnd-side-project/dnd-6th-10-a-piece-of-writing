@@ -2,13 +2,14 @@ import React, { useCallback, useEffect, useState } from 'react'
 
 import classNames from 'classnames/bind'
 import { useAtom } from 'jotai'
-import { useAtomValue } from 'jotai/utils'
+import { useAtomValue, useUpdateAtom } from 'jotai/utils'
 import { useDebounce } from 'react-use'
 import styled from 'styled-components'
 
 import { Button } from '@/components/button'
 import { GrayInput } from '@/components/input'
 import { emailAtom, isValidEmail, registerMessageAtom, useRegister } from '@/hook/usePassword'
+import { registerPageAtom } from '@/pages/register'
 import styles from '@/pages/register/register.module.scss'
 import { emailCheck } from '@/server/user'
 
@@ -20,12 +21,11 @@ export type RegisterMessage = {
 
 const cx = classNames.bind(styles)
 
-type Props = {
-  onClickRegister: () => void
-}
+type Props = {}
 
-const RegisterMainForm: React.FC<Props> = ({ onClickRegister }) => {
+const RegisterMainForm: React.FC<Props> = ({}) => {
   const [email, setEmail] = useAtom(emailAtom)
+  const setPage = useUpdateAtom(registerPageAtom)
   const message = useAtomValue(registerMessageAtom)
   const { password, check, passwordCheck, onChangePassword, onChangePasswordCheck, allConditionSatisfied } =
     useRegister()
@@ -62,14 +62,13 @@ const RegisterMainForm: React.FC<Props> = ({ onClickRegister }) => {
     [email, setEmail],
   )
 
-  const _onClickRegister = () => {
+  const onClickRegister = () => {
     if (!check) return
     if (!allConditionSatisfied) {
       alert('잘못된 이메일 혹은 비밀번호입니다!')
       return
     }
-    onClickRegister()
-    // 회원가입 api
+    setPage(2)
   }
 
   return (
@@ -102,7 +101,7 @@ const RegisterMainForm: React.FC<Props> = ({ onClickRegister }) => {
         onChange={onChangePasswordCheck}
       />
       <div className={cx('w-full', 'text-red-400', 'mb-1')}>{message.passwordCheck}</div>
-      <Button className={cx('text-white', 'h-52', 'w-386 mt-2')} onClick={_onClickRegister}>
+      <Button className={cx('text-white', 'h-52', 'w-386 mt-2')} onClick={onClickRegister}>
         회원가입
       </Button>
     </div>

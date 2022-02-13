@@ -1,9 +1,9 @@
 import React from 'react'
 
 import classNames from 'classnames/bind'
-import { useAtom } from 'jotai'
+import { atom } from 'jotai'
+import { useAtomValue } from 'jotai/utils'
 
-import { resgisterPageAtom } from '@/atom/register'
 import RegisterMainForm from '@/components/form/register/RegisterMainForm'
 import RegisterNicknameForm from '@/components/form/register/RegisterNicknameForm'
 import { CENTER_FLEX } from '@/styles/classNames'
@@ -14,11 +14,13 @@ type Props = {}
 
 const cx = classNames.bind(styles)
 
+export const registerPageAtom = atom(1)
+
 const Register: React.FC<Props> = ({}) => {
-  const [page, setPage] = useAtom(resgisterPageAtom)
+  const page = useAtomValue(registerPageAtom)
   return (
     <div className={cx('w-full', 'flex-col', CENTER_FLEX)}>
-      {page === 1 && <RegisterMainForm onClickRegister={() => setPage(2)} />}
+      {page === 1 && <RegisterMainForm />}
       {page === 2 && <RegisterNicknameForm />}
     </div>
   )

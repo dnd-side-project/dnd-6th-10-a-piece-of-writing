@@ -12,7 +12,7 @@ export const isValidEmail = (email: string): boolean => {
   return Boolean(email.match(mail_format) && email.match(mail_format)?.length !== 0)
 }
 
-const passwordAtom = atom('')
+export const passwordAtom = atom('')
 const passwordCheckAtom = atom('')
 const allConditionSatisfiedAtom = atom(
   (get) =>

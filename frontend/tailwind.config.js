@@ -7,7 +7,7 @@ module.exports = {
       xl: '1280px',
     },
     fontSize: {
-      h1: ['54px'],
+      h1: ['48px'],
       h2: ['32px'],
       h3: ['24px'],
       h4: ['21px'],
