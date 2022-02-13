@@ -19,9 +19,18 @@ const PostCard: React.FC<Props> = ({ imageUrl }) => {
         <div className={'w-full flex mb-6'}>
           <Image src={'/profile.svg'} width={24} height={24} alt={'profile'} />
           <p className={'text-overline'}>유저 닉네임</p>
-          <Image src={'/dots-vertical.svg'} width={24} height={24} alt={'dots-vertical'} />
+          <div className={'ml-auto cursor-pointer'}>
+            <Image src={'/dots-vertical.svg'} width={24} height={24} alt={'dots-vertical'} />
+          </div>
         </div>
         <Image className={'rounded-xl'} src={imageUrl} alt={'post'} width={386} height={386} />
+        <div className={'flex flex-nowrap gap-1 my-6 whitespace-nowrap overflow-hidden hover:overflow-visible'}>
+          <TagContainer>감성</TagContainer>
+          <TagContainer>나만의글</TagContainer>
+          <TagContainer>명언</TagContainer>
+          <TagContainer>로맨틱</TagContainer>
+          <TagContainer>기분전환</TagContainer>
+        </div>
         <FlexDiv justify={'space-between'}>
           <IconContainer>
             <Image src={'/like.svg'} width={24} height={24} alt={'like'} />
@@ -45,4 +54,13 @@ const PostCard: React.FC<Props> = ({ imageUrl }) => {
 const PostCardContainer = styled.div`
   width: 386px;
 `
+
+const TagContainer = styled(FlexDiv)`
+  height: 44px;
+  border-radius: 30px;
+  font-size: 14px;
+  padding: 12px 24px;
+  border: solid 1px #a1a1a1;
+`
+
 export default PostCard

@@ -11,6 +11,7 @@ interface FlexDivProps {
   margin?: string
   padding?: string
   gap?: string
+  wrap?: string
 }
 
 export const FlexDiv = styled.div`
@@ -24,4 +25,5 @@ export const FlexDiv = styled.div`
   margin: ${(p: FlexDivProps) => (p.margin ? p.margin : 'auto')};
   padding: ${(p: FlexDivProps) => (p.padding ? p.padding : 'auto')};
   gap: ${(p: FlexDivProps) => (p.gap ? p.gap : 'none')};
+  flex-wrap: ${(p: FlexDivProps) => (p.wrap ? p.wrap : 'wrap')};
 `
