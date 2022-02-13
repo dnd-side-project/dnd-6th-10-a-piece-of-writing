@@ -27,7 +27,7 @@ public interface PostsService {
 
     public GoogleCredentials getCredentials();
 
-    public String postsImgUpload(MultipartFile multipartFile, String fileName);
+    public String postsImgUpload(GoogleCredentials credentials, MultipartFile multipartFile, String fileName);
 
-    public String postsImgExtractWords(MultipartFile multipartFile, String imageUrl);
+    public String postsImgExtractWords(GoogleCredentials credentials, MultipartFile multipartFile, String imageUrl);
 }

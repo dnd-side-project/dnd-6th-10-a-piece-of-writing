@@ -1,5 +1,6 @@
 package com.springboot.domain.posts.controller;
 
+import com.google.auth.oauth2.GoogleCredentials;
 import com.springboot.domain.auth.model.UserDetailsImpl;
 import com.springboot.domain.common.error.exception.BusinessException;
 import com.springboot.domain.common.error.exception.ErrorCode;
@@ -73,8 +74,9 @@ public class PostsController {
     public ResponseEntity<ResponseDto> imageExtract(ExtractWordDto extractWordDto) {
         MultipartFile file = extractWordDto.getFile();
 
-        String imageUrl = postsService.postsImgUpload(file, postsService.getFileUuid());
-        String result = postsService.postsImgExtractWords(file, imageUrl);
+        GoogleCredentials credentials = postsService.getCredentials();
+        String imageUrl = postsService.postsImgUpload(credentials, file, postsService.getFileUuid());
+        String result = postsService.postsImgExtractWords(credentials, file, imageUrl);
 
         return responseServiceImpl.successResult(SuccessCode.EXTRACT_SUCCESS, result);
     }
