@@ -107,6 +107,7 @@ public class PostsServiceImpl implements PostsService {
 
     @Override
     public String postsImgUpload(MultipartFile multipartFile, String fileName) {
+        if(multipartFile.getSize() == 0) throw new BusinessException(ErrorCode.IMAGE_INPUT_INVALID);
         String projectId = "decent-destiny-321408";
         String bucketName = "example-ocr-test";
 
@@ -126,9 +127,7 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Override
-    public String postsImgExtractWords(MultipartFile multipartFile, String fileName) {
-        String imageUrl = postsImgUpload(multipartFile, fileName);
-
+    public String postsImgExtractWords(MultipartFile multipartFile, String imageUrl) {
         List<AnnotateImageRequest> requests = new ArrayList<>();
 
         ImageSource imgSource = ImageSource.newBuilder().setImageUri(imageUrl).build();

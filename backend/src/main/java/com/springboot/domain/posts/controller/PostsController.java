@@ -6,13 +6,16 @@ import com.springboot.domain.common.error.exception.ErrorCode;
 import com.springboot.domain.common.model.ResponseDto;
 import com.springboot.domain.common.model.SuccessCode;
 import com.springboot.domain.common.service.ResponseServiceImpl;
+import com.springboot.domain.posts.model.dto.ExtractWordDto;
 import com.springboot.domain.posts.model.dto.PostsListResponseDto;
 import com.springboot.domain.posts.model.dto.PostsResponseDto;
 import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
 //import com.springboot.domain.posts.model.dto.PostsUpdateRequestDto;
 import com.springboot.domain.posts.service.PostsService;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.Parameter;
 import java.io.IOException;
+import javax.validation.Valid;
 import javax.validation.constraints.Null;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -65,14 +68,13 @@ public class PostsController {
         return postsService.findAllPostsOrderById();
     }
 
+    @ApiModelProperty(value = "이미지 텍스트 추출", notes = "이미지를 전송해 텍스트를 추출한다.")
     @PostMapping(value = "/img-extract", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ResponseDto> imageExtract(
-            @Parameter(description = "\"file\" = bytes[]", required = true)
-            MultipartHttpServletRequest request) {
-        MultipartFile file = request.getFile("file");
-        if(file == null) throw new BusinessException(ErrorCode.IMAGE_INPUT_INVALID);
+    public ResponseEntity<ResponseDto> imageExtract(ExtractWordDto extractWordDto) {
+        MultipartFile file = extractWordDto.getFile();
 
-        String result = postsService.postsImgExtractWords(file, postsService.getFileUuid());
+        String imageUrl = postsService.postsImgUpload(file, postsService.getFileUuid());
+        String result = postsService.postsImgExtractWords(file, imageUrl);
 
         return responseServiceImpl.successResult(SuccessCode.EXTRACT_SUCCESS, result);
     }

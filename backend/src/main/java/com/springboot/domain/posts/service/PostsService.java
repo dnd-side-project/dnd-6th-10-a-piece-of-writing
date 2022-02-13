@@ -29,5 +29,5 @@ public interface PostsService {
 
     public String postsImgUpload(MultipartFile multipartFile, String fileName);
 
-    public String postsImgExtractWords(MultipartFile multipartFile, String fileName);
+    public String postsImgExtractWords(MultipartFile multipartFile, String imageUrl);
 }
