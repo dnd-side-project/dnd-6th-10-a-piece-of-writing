@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import { Button } from '@/components/button'
 import { ImageUploadButton } from '@/components/button/ImageUploadButton'
 import { FlexDiv } from '@/components/style/div/FlexDiv'
+import { extractImage } from '@/server/post/image'
 
 type Props = {
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -48,6 +49,14 @@ const LetterRecognitionModal: React.FC<Props> = ({ setIsModalOpen }) => {
     imageInputRef?.current?.click()
   }
 
+  const onClickExtractButton = () => {
+    const formData = new FormData()
+    formData.append('file', image)
+    void extractImage(formData).then((res) => {
+      console.log({ frontRes: res })
+    })
+  }
+
   return (
     <Container ref={containerRef}>
       <CloseButton
@@ -85,7 +94,8 @@ const LetterRecognitionModal: React.FC<Props> = ({ setIsModalOpen }) => {
           style={{ marginTop: '2.5rem' }}
           color={'#fff'}
           bgColor={uploadButtonEnabled ? '#2c2c2c' : '#b9b9b9'}
-          cursor={uploadButtonEnabled ? 'pointer' : 'auto'}>
+          cursor={uploadButtonEnabled ? 'pointer' : 'auto'}
+          onClick={onClickExtractButton}>
           변환하기
         </Button>
       </FlexDiv>
@@ -108,7 +118,7 @@ const Container = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   width: 996px;
-  height: 780px;
+  min-height: 780px;
   margin: 176px 462px 128px 72px;
   border-radius: 13px;
   box-shadow: 0 8px 13px 5px rgba(0, 0, 0, 0.25);

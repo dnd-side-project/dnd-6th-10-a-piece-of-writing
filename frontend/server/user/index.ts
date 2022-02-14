@@ -1,3 +1,4 @@
+import { SESSION_STORAGE_KEY_ACCESS_TOKEN, SESSION_STORAGE_KEY_REFRESH_TOKEN } from '@/constant'
 import baxios from '@/server/axios/baxios'
 
 type RESPONSE_TYPE = {
@@ -35,6 +36,21 @@ export const signUp = async (data: SignUpData): Promise<RESPONSE_TYPE> => {
     if (e.response.status === 404) {
       return { success: false, message: '회원 가입에 실패했습니다!' }
     }
+  }
+  return { success: false, message: '오류가 발생했습니다!' }
+}
+
+export const login = async (data: { email: string; password: string }): Promise<RESPONSE_TYPE> => {
+  try {
+    const result = await baxios.post('/auth/login', data)
+    console.log({ data: result.data })
+    if (result.status === 200) {
+      window.sessionStorage.setItem(SESSION_STORAGE_KEY_ACCESS_TOKEN, result?.data?.data?.['access-token'])
+      window.sessionStorage.setItem(SESSION_STORAGE_KEY_REFRESH_TOKEN, result?.data?.data?.['refresh-token-uuid'])
+      return { success: true, message: '로그인에 성공했습니다!' }
+    }
+  } catch (e) {
+    return { success: false, message: '로그인에 실패했습니다!' }
   }
   return { success: false, message: '오류가 발생했습니다!' }
 }
