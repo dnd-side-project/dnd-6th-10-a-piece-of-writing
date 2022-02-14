@@ -3,7 +3,10 @@ import React from 'react'
 import Image from 'next/image'
 import styled from 'styled-components'
 
-import { IconContainer } from '@/components/_main/Post'
+import CommentButton from '@/components/button/CommentButton'
+import DownloadButton from '@/components/button/DownloadButton'
+import LikeButton from '@/components/button/LikeButton'
+import ShareButton from '@/components/button/ShareButton'
 import CommentCard from '@/components/card/CommentCard'
 
 import { FlexDiv } from '../style/div/FlexDiv'
@@ -32,18 +35,10 @@ const PostCard: React.FC<Props> = ({ imageUrl }) => {
           <TagContainer>기분전환</TagContainer>
         </div>
         <FlexDiv justify={'space-between'}>
-          <IconContainer>
-            <Image src={'/like.svg'} width={24} height={24} alt={'like'} />
-          </IconContainer>
-          <IconContainer>
-            <Image src={'/comment.svg'} width={24} height={24} alt={'comment'} />
-          </IconContainer>
-          <IconContainer>
-            <Image src={'/download.svg'} width={24} height={24} alt={'download'} />
-          </IconContainer>
-          <IconContainer>
-            <Image src={'/share.svg'} width={24} height={24} alt={'share'} />
-          </IconContainer>
+          <LikeButton />
+          <CommentButton />
+          <DownloadButton />
+          <ShareButton />
         </FlexDiv>
         <CommentCard nickName={'유저 닉네임'} text={'댓글 내용'} />
       </PostCardContainer>
