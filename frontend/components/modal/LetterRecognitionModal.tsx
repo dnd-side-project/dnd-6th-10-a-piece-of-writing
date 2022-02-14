@@ -7,6 +7,7 @@ import { Button } from '@/components/button'
 import { ImageUploadButton } from '@/components/button/ImageUploadButton'
 import { FlexDiv } from '@/components/style/div/FlexDiv'
 import { extractImage } from '@/server/post/image'
+import { BreakPoints } from '@/styles/breakPoint'
 
 type Props = {
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -65,8 +66,8 @@ const LetterRecognitionModal: React.FC<Props> = ({ setIsModalOpen }) => {
         }}>
         <Image src={'/close.svg'} width={24} height={24} />
       </CloseButton>
-      <FlexDiv margin={'2rem 0'}>
-        <p className={'text-h3 mb-auto'}>사진 속 글자를 인식해서 업로드됩니다!</p>
+      <FlexDiv margin={'3.5rem 0'}>
+        <p className={'text-link mb-auto md:text-h3 mx-5'}>사진 속 글자를 인식해서 업로드됩니다!</p>
       </FlexDiv>
       <FlexDiv direction={'column'} height={'90%'}>
         {image === '' ? (
@@ -117,11 +118,15 @@ const Container = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 996px;
-  min-height: 780px;
-  margin: 176px 462px 128px 72px;
+  max-width: 996px;
+  width: 90%;
+  margin-top: 176px;
   border-radius: 13px;
   box-shadow: 0 8px 13px 5px rgba(0, 0, 0, 0.25);
   background-color: #fff;
   z-index: 3;
+  min-height: 480px;
+  @media screen and (min-width: ${BreakPoints.md}) {
+    min-height: 780px;
+  }
 `

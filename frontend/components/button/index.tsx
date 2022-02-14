@@ -9,8 +9,6 @@ interface ButtonProps {
 }
 
 export const Button = styled.button`
-  width: ${(props: ButtonProps) => props.width ?? '386px'};
-  height: ${(props: ButtonProps) => props.height ?? '52px'};
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -20,6 +18,11 @@ export const Button = styled.button`
   border-radius: 13px;
   background-color:  ${(props: ButtonProps) => props.bgColor ?? '#2c2c2c'};
   cursor: ${(props: ButtonProps) => props.cursor ?? 'pointer'};
+  width: 80%;
+  height: ${(props: ButtonProps) => props.height ?? '52px'};
+  @media screen and (min-width: 500px) {
+    width: ${(props: ButtonProps) => props.width ?? '386px'};
+  }
 }
 
 
