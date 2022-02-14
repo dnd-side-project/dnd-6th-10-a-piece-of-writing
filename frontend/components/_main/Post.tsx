@@ -52,9 +52,17 @@ const PostContainer = styled.div`
   background-color: #e8e8e8;
 `
 
+interface IconContainerProps {
+  width?: string
+  height?: string
+  color?: string
+  bgColor?: string
+  cursor?: string
+}
+
 export const IconContainer = styled.div`
-  width: 32px;
-  height: 32px;
+  width: ${(props: IconContainerProps) => props.width ?? '32px'};
+  height: ${(props: IconContainerProps) => props.height ?? '32px'};
   display: flex;
   flex-direction: row;
   justify-content: flex-start;

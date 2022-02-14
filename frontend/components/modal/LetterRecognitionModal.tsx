@@ -120,7 +120,7 @@ const Container = styled.div`
   transform: translate(-50%, -50%);
   max-width: 996px;
   width: 90%;
-  margin-top: 176px;
+  margin-top: 100px;
   border-radius: 13px;
   box-shadow: 0 8px 13px 5px rgba(0, 0, 0, 0.25);
   background-color: #fff;
@@ -128,5 +128,6 @@ const Container = styled.div`
   min-height: 480px;
   @media screen and (min-width: ${BreakPoints.md}) {
     min-height: 780px;
+    margin-top: 176px;
   }
 `

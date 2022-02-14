@@ -14,8 +14,10 @@ export const ImageCardSm = styled.div`
 `
 
 export const ImageCardMd = styled.div`
+  position: relative;
   width: 184px;
   height: 184px;
   border-radius: 13px;
   background-color: #f7f7f7;
+  cursor: pointer;
 `

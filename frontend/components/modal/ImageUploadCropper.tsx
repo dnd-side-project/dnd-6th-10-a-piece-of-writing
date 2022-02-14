@@ -1,8 +1,10 @@
 import React, { useRef, useState } from 'react'
 
+import { useUpdateAtom } from 'jotai/utils'
 import { Cropper } from 'react-cropper'
 import styled from 'styled-components'
 
+import { addedImagesAtom, isUploadModalOpenAtom, selectedBackgroundImageIndexAtom } from '@/atom/post'
 import { Button } from '@/components/button'
 
 type ImageSrc = string
@@ -14,20 +16,25 @@ type Props = {
 
 export const ImageUploadCropper = ({ originImage, setOriginImage }: Props) => {
   const [src, setSrc] = useState(originImage)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [images, setImages] = useState<string[]>([])
+  const setImages = useUpdateAtom(addedImagesAtom)
+  const setIsUploadModalOpen = useUpdateAtom(isUploadModalOpenAtom)
+  const setSelectedBackgroundImageIndex = useUpdateAtom(selectedBackgroundImageIndexAtom)
+
   const [cropResult, setCropResult] = useState('')
 
   const cropperRef = useRef<any>(null)
 
-  console.log({ cropperRef: cropperRef.current })
-
   const cropImage = () => {
-    if (typeof cropperRef.current?.getCroppedCanvas() === 'undefined') {
+    const croppedData = cropperRef.current?.cropper.getCroppedCanvas()
+    if (croppedData === 'undefined') {
       return
     }
-    setCropResult(cropperRef.current?.getCroppedCanvas().toDataURL())
-    setImages((images) => [...images, cropperRef.current.getCroppedCanvas().toDataURL()])
+    croppedData?.toBlob((blob: Blob) => {
+      setCropResult(croppedData?.toDataURL())
+      setImages((_images) => [..._images, { url: croppedData.toDataURL(), blob }])
+      setIsUploadModalOpen(false)
+      setSelectedBackgroundImageIndex((index) => index + 1)
+    })
   }
 
   const useDefaultImage = () => {
@@ -50,9 +57,7 @@ export const ImageUploadCropper = ({ originImage, setOriginImage }: Props) => {
           zoomOnWheel={false}
           dragMode={'move'}
           src={src}
-          ref={(cropper: any) => {
-            cropperRef.current = cropper.cropper
-          }}
+          ref={cropperRef}
         />
       </div>
       <ButtonContainerDiv>
