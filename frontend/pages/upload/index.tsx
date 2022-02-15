@@ -34,6 +34,7 @@ const Upload: React.FC<Props> = ({}) => {
   } = useToggles({ defaultIndexes: [0], singleMode: false })
 
   const onClickImageUploadButton = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
     setIsUploadModalOpen((_isUploadModalOpen) => !_isUploadModalOpen)
   }
 
