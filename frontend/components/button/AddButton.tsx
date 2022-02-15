@@ -1,21 +1,29 @@
 import React from 'react'
 
 import Image from 'next/image'
+import Link from 'next/link'
 import styled from 'styled-components'
 
 import { FlexDiv } from '@/components/style/div/FlexDiv'
 
-type Props = {}
+type Props = { sticky?: boolean; href?: string }
 
-const AddButton: React.FC<Props> = ({}) => {
+const AddButton: React.FC<Props> = ({ sticky = false, href = '/upload' }) => {
   return (
-    <AddButtonContainer>
-      <Image src={'/add.svg'} width={24} height={24} alt={'add'} />
+    <AddButtonContainer sticky={sticky}>
+      <Link href={href}>
+        <Image src={'/add.svg'} width={24} height={24} alt={'add'} />
+      </Link>
     </AddButtonContainer>
   )
 }
 
+type AddButtonContainerProps = { sticky?: boolean }
+
 const AddButtonContainer = styled(FlexDiv)`
+  position: ${(props: AddButtonContainerProps) => (props.sticky ? 'sticky' : 'static')};
+  margin-right: ${(props: AddButtonContainerProps) => (props.sticky ? '1.5rem' : 0)};
+  bottom: ${(props: AddButtonContainerProps) => (props.sticky ? '1rem' : 'auto')};
   width: 40px;
   height: 40px;
   cursor: pointer;
