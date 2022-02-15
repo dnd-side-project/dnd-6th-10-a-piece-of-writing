@@ -6,7 +6,7 @@ import com.springboot.domain.common.model.SuccessCode;
 import com.springboot.domain.common.service.ResponseServiceImpl;
 import com.springboot.domain.posts.model.dto.ExtractWordDto;
 import com.springboot.domain.posts.model.dto.PostsListResponseDto;
-import com.springboot.domain.posts.model.dto.PostsResponseDto;
+//import com.springboot.domain.posts.model.dto.PostsResponseDto;
 import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
 import com.springboot.domain.posts.service.PostsService;
 import io.swagger.annotations.ApiOperation;
@@ -53,11 +53,11 @@ public class PostsController {
         return responseServiceImpl.successResult(SuccessCode.DELETE_POSTS_SUCCESS,DeletedPostId);
     }
 
-    // 1개 검색
-    @GetMapping("/{id}")
-    public PostsResponseDto findById(@PathVariable Long id) {
-        return postsService.findById(id);
-    }
+//    // 1개 검색
+//    @GetMapping("/{id}")
+//    public PostsResponseDto findById(@PathVariable Long id) {
+//        return postsService.findById(id);
+//    }
 
     // 전체 내림차순 검색
     @Operation(summary = "select all posts api", description = "모든 글귀 검색 api. request 받은 페이지 기준으로 메인 화면에서 글귀를 최신 순으로 페이지당 10개씩 조회.")

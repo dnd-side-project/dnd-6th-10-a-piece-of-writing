@@ -22,7 +22,7 @@ import com.springboot.domain.common.error.exception.BusinessException;
 import com.springboot.domain.common.error.exception.ErrorCode;
 import com.springboot.domain.posts.model.entity.Posts;
 import com.springboot.domain.posts.model.dto.PostsListResponseDto;
-import com.springboot.domain.posts.model.dto.PostsResponseDto;
+//import com.springboot.domain.posts.model.dto.PostsResponseDto;
 import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
 import com.springboot.domain.posts.model.entity.QPosts;
 import com.springboot.domain.posts.repository.PostsRepository;
@@ -77,13 +77,13 @@ public class PostsServiceImpl implements PostsService {
         return id;
     }
 
-    @Override
-    public PostsResponseDto findById(Long id) {
-        Posts entity = postsRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
-
-        return new PostsResponseDto(entity);
-    }
+//    @Override
+//    public PostsResponseDto findById(Long id) {
+//        Posts entity = postsRepository.findById(id)
+//                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
+//
+//        return new PostsResponseDto(entity);
+//    }
 
 //    @Override
 //    public List<PostsListResponseDto> findAllPostsOrderById() {

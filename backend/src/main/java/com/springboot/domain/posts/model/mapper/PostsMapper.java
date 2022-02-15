@@ -2,7 +2,7 @@ package com.springboot.domain.posts.model.mapper;
 
 import com.springboot.domain.posts.model.entity.Posts;
 import com.springboot.domain.posts.model.dto.PostsListResponseDto;
-import com.springboot.domain.posts.model.dto.PostsResponseDto;
+//import com.springboot.domain.posts.model.dto.PostsResponseDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -13,5 +13,5 @@ public interface PostsMapper {
 
     PostsListResponseDto postsToPostsListResponseDto(Posts posts);
 
-    PostsResponseDto postsToPostsResponseDto(Posts posts);
+//    PostsResponseDto postsToPostsResponseDto(Posts posts);
 }

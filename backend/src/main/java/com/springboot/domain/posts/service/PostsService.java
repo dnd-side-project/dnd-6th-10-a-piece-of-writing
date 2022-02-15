@@ -3,7 +3,7 @@ package com.springboot.domain.posts.service;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.springboot.domain.posts.model.dto.PostsListResponseDto;
-import com.springboot.domain.posts.model.dto.PostsResponseDto;
+//import com.springboot.domain.posts.model.dto.PostsResponseDto;
 import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
 //import com.springboot.domain.posts.model.dto.PostsUpdateRequestDto;
 
@@ -18,7 +18,7 @@ public interface PostsService {
 
     public Long delete(Long id);
 
-    public PostsResponseDto findById(Long id);
+//    public PostsResponseDto findById(Long id);
 
     public List<PostsListResponseDto> findAllPostsOrderByIdDesc(int page);
 
