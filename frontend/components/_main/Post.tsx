@@ -3,6 +3,11 @@ import React from 'react'
 import Image from 'next/image'
 import styled from 'styled-components'
 
+import CommentButton from '@/components/button/CommentButton'
+import DownloadButton from '@/components/button/DownloadButton'
+import LikeButton from '@/components/button/LikeButton'
+import ShareButton from '@/components/button/ShareButton'
+
 type Props = {}
 
 const Post: React.FC<Props> = ({}) => {
@@ -13,18 +18,10 @@ const Post: React.FC<Props> = ({}) => {
         <p className={'text-overline'}>유저 닉네임</p>
       </NickNameContainer>
       <div className={'mt-185px w-full flex flex-wrap justify-around'}>
-        <IconContainer>
-          <Image src={'/like.svg'} width={24} height={24} />
-        </IconContainer>
-        <IconContainer>
-          <Image src={'/comment.svg'} width={24} height={24} />
-        </IconContainer>
-        <IconContainer>
-          <Image src={'/download.svg'} width={24} height={24} />
-        </IconContainer>
-        <IconContainer>
-          <Image src={'/share.svg'} width={24} height={24} />
-        </IconContainer>
+        <LikeButton />
+        <CommentButton />
+        <DownloadButton />
+        <ShareButton />
       </div>
     </PostContainer>
   )
@@ -55,9 +52,17 @@ const PostContainer = styled.div`
   background-color: #e8e8e8;
 `
 
-const IconContainer = styled.div`
-  width: 32px;
-  height: 32px;
+interface IconContainerProps {
+  width?: string
+  height?: string
+  color?: string
+  bgColor?: string
+  cursor?: string
+}
+
+export const IconContainer = styled.div`
+  width: ${(props: IconContainerProps) => props.width ?? '32px'};
+  height: ${(props: IconContainerProps) => props.height ?? '32px'};
   display: flex;
   flex-direction: row;
   justify-content: flex-start;

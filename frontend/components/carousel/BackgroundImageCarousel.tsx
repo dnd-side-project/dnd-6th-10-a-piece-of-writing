@@ -1,7 +1,12 @@
 import React from 'react'
 
+import { useAtom } from 'jotai'
+import { useAtomValue } from 'jotai/utils'
+import Image from 'next/image'
 import Slider, { Settings } from 'react-slick'
 
+import { backgroundImagesAtom, selectedBackgroundImageIndexAtom } from '@/atom/post'
+import CheckButton from '@/components/button/CheckButton'
 import { ImageUploadButton } from '@/components/button/ImageUploadButton'
 import { ImageCardMd } from '@/components/card/imageCard'
 
@@ -23,13 +28,21 @@ const sliderSettings: Settings = {
   // prevArrow: <SamplePrevArrow />,
 }
 
-const ImageCarousel: React.FC<Props> = ({ onClickImageUploadButton }) => {
+const BackgroundImageCarousel: React.FC<Props> = ({ onClickImageUploadButton }) => {
+  const images = useAtomValue(backgroundImagesAtom)
+  const [selectedIndex, setSelectedIndex] = useAtom(selectedBackgroundImageIndexAtom)
+
   return (
     <Slider {...sliderSettings}>
-      {new Array(5).fill(undefined).map((_, i) => (
+      {images.map((image, i) => (
         <div className={'m-5'} key={`test_${i}`}>
-          <ImageCardMd>
-            <h3>{i}</h3>
+          <ImageCardMd onClick={() => setSelectedIndex(i)}>
+            {i === selectedIndex && (
+              <div className={'flex absolute left-4 top-4 z-10'}>
+                <CheckButton containerHeight={'24px'} containerWidth={'24px'} />
+              </div>
+            )}
+            <Image className={'rounded-xl'} src={image.url} width={184} height={184} alt={`bgImage_${i}`} />
           </ImageCardMd>
         </div>
       ))}
@@ -40,4 +53,4 @@ const ImageCarousel: React.FC<Props> = ({ onClickImageUploadButton }) => {
   )
 }
 
-export default ImageCarousel
+export default BackgroundImageCarousel

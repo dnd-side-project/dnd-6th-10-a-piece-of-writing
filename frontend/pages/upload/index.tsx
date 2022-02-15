@@ -1,12 +1,13 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import { Button } from '@/components/button'
 import { TagCarousel } from '@/components/carousel'
-import ImageCarousel from '@/components/carousel/ImageCarousel'
+import BackgroundImageCarousel from '@/components/carousel/BackgroundImageCarousel'
 import ImageUploadModal from '@/components/modal/ImageUploadModal'
 import { FlexDiv } from '@/components/style/div/FlexDiv'
 
 import 'rc-slider/assets/index.css'
+import 'cropperjs/dist/cropper.css'
 
 import MainForm from '@/components/_upload/MainForm'
 import { useToggles } from '@/hook/useToggles'
@@ -15,10 +16,14 @@ import { CENTER_FLEX } from '@/styles/classNames'
 
 import styled from 'styled-components'
 
+import { isUploadModalOpenAtom } from '@/atom/post'
+
+import { useAtom } from 'jotai'
+
 type Props = {}
 
 const Upload: React.FC<Props> = ({}) => {
-  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false)
+  const [isUploadModalOpen, setIsUploadModalOpen] = useAtom(isUploadModalOpenAtom)
 
   const {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -42,7 +47,7 @@ const Upload: React.FC<Props> = ({}) => {
         </div>
         <div className={`${CENTER_FLEX} mt-10 w-full flex-nowrap`}>
           <div className={'w-full md:w-5/6'}>
-            <ImageCarousel onClickImageUploadButton={onClickImageUploadButton} />
+            <BackgroundImageCarousel onClickImageUploadButton={onClickImageUploadButton} />
           </div>
         </div>
         <div className={`w-full ${CENTER_FLEX} flex-nowrap`}>
