@@ -174,6 +174,36 @@ public class PostsControllerTest {
             .andDo(print());
     }
 
+    // 검색 내용 포함 게시물 내림차순 조회 테스트 - author
+    @Test
+    @WithMockUser(username = "tester", roles = "USER")
+    public void Posts_author_검색한다() throws Exception {
+
+        //given
+        int page = 1;
+        int size = 10;
+
+        // content 검색
+        String type = "a";
+        String keyword = "3";
+
+        String searched_type = "/type/" + type;
+        String searched_keyword = "/keyword/" + keyword;
+        String searched_page = "/page/" + String.valueOf(page);
+        String url = "http://localhost:" + port + "/api/v1/posts"
+            + searched_type
+            + searched_keyword
+            + searched_page;
+
+        //when
+        mvc.perform(get(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("X-AUTH_TOKEN", accessToken))
+            .andExpect(status().isOk())
+            .andDo(print());
+    }
+
+
 
 
 //    @Test
