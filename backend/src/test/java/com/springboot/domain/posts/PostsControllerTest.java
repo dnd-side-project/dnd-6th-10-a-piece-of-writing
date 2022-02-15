@@ -2,6 +2,7 @@ package com.springboot.domain.posts;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springboot.domain.auth.jwt.JwtUtil;
+import com.springboot.domain.posts.controller.PostsController;
 import com.springboot.domain.posts.model.entity.Posts;
 import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
 import com.springboot.domain.posts.repository.PostsRepository;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -30,6 +32,7 @@ import org.springframework.web.context.WebApplicationContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.List;
@@ -123,52 +126,55 @@ public class PostsControllerTest {
 
     }
 
+    // 전체 게시물 내림차순 조회 테스트
     @Test
-    @Transactional
     @WithMockUser(username = "tester", roles = "USER")
     public void Posts_모두_조회한다() throws Exception {
         //given
-        int num=20;
-        int size=10;
+        int page = 1;
+        int size = 10;
 
-        IntStream.rangeClosed(1,num).forEach(i -> {
-            Posts posts = Posts.builder()
-                .content("sample content "+i)
-                .author("sample author "+i)
-                .ref("sample ref "+i)
-                .build();
+        String searched_page = "/page/" + String.valueOf(page);
+        String url = "http://localhost:" + port + "/api/v1/posts" + searched_page;
 
-            postsRepository.save(posts);
-        });
-
-        Sort sortByPostId = Sort.by("id").descending();
-
-        for(int i=1;i<num;i++){
-            int page = (int)(i/size);
-
-            String url = "http://localhost:" + port + "/api/v1/posts/page/"+String.valueOf(page);
-
-            //when
-            mvc.perform(MockMvcRequestBuilders.get(url)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .header("X-AUTH_TOKEN", accessToken))
-                .andExpect(status().isOk());
-
-            Pageable pageable = PageRequest.of(page,size,sortByPostId);
-
-            Page<Posts> result = postsRepository.findAll(pageable);
-
-            int j=page*size;
-
-            // then
-            for (Posts posts : result) {
-                assertThat(posts.getContent()).isEqualTo("sample content "+(num-j));
-                assertThat(posts.getAuthor()).isEqualTo("sample author "+(num-j));
-                assertThat(posts.getRef()).isEqualTo("sample ref "+(num-j));
-                j+=1;
-            }
-        }
+        //when
+        mvc.perform(get(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("X-AUTH_TOKEN", accessToken))
+            .andExpect(status().isOk())
+            .andDo(print());
     }
+
+    // 검색 내용 포함 게시물 내림차순 조회 테스트 - content
+    @Test
+    @WithMockUser(username = "tester", roles = "USER")
+    public void Posts_content_검색한다() throws Exception {
+
+        //given
+        int page = 1;
+        int size = 10;
+
+        // content 검색
+        String type = "c";
+        String keyword = "2";
+
+        String searched_type = "/type/" + type;
+        String searched_keyword = "/keyword/" + keyword;
+        String searched_page = "/page/" + String.valueOf(page);
+        String url = "http://localhost:" + port + "/api/v1/posts"
+            + searched_type
+            + searched_keyword
+            + searched_page;
+
+        //when
+        mvc.perform(get(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("X-AUTH_TOKEN", accessToken))
+            .andExpect(status().isOk())
+            .andDo(print());
+    }
+
+
 
 //    @Test
 //    @WithMockUser(roles="USER")

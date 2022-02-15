@@ -73,7 +73,7 @@ test {
 def querydslDir = "$buildDir/generated/querydsl"
 
 querydsl {
-    library = "com.querydsl:querydsl-apt"
+//    library = "com.querydsl:querydsl-apt"
     jpa = true
     querydslSourcesDir = querydslDir
 }
