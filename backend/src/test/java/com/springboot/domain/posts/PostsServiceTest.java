@@ -36,7 +36,7 @@ public class PostsServiceTest {
 
     // 목록 조회 테스트
     @Test
-    public void testList(){
+    public void testList() {
 
         PageRequestDto pageRequestDTO = PageRequestDto.builder()
             .page(1)
@@ -45,8 +45,8 @@ public class PostsServiceTest {
 
         PageResultDto<PostsListResponseDto, Posts> resultDTO = service.getList(pageRequestDTO);
 
-        System.out.println("PREV: "+resultDTO.isPrev());
-        System.out.println("NEXT: "+resultDTO.isNext());
+        System.out.println("PREV: " + resultDTO.isPrev());
+        System.out.println("NEXT: " + resultDTO.isNext());
         System.out.println("TOTAL: " + resultDTO.getTotalPage());
 
         System.out.println("-------------------------------------");
@@ -60,7 +60,7 @@ public class PostsServiceTest {
 
     // 조건부 목록 조회 테스트
     @Test
-    public void testSearch(){
+    public void testSearch() {
 
         PageRequestDto pageRequestDTO = PageRequestDto.builder()
             .page(1)
@@ -71,8 +71,8 @@ public class PostsServiceTest {
 
         PageResultDto<PostsListResponseDto, Posts> resultDTO = service.getList(pageRequestDTO);
 
-        System.out.println("PREV: "+resultDTO.isPrev());
-        System.out.println("NEXT: "+resultDTO.isNext());
+        System.out.println("PREV: " + resultDTO.isPrev());
+        System.out.println("NEXT: " + resultDTO.isNext());
         System.out.println("TOTAL: " + resultDTO.getTotalPage());
 
         System.out.println("-------------------------------------");

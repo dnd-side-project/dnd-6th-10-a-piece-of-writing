@@ -203,9 +203,6 @@ public class PostsControllerTest {
             .andDo(print());
     }
 
-
-
-
 //    @Test
 //    @WithMockUser(roles="USER")
 //    public void Posts_수정된다() throws Exception {

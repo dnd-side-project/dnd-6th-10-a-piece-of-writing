@@ -108,12 +108,12 @@ public class PostsRepositoryTest {
 
     // 테스트 위한 다량 데이터 등록 테스트
     @Test
-    public void testInsertDummies(){
-        IntStream.rangeClosed(1,100).forEach(i -> {
+    public void testInsertDummies() {
+        IntStream.rangeClosed(1, 100).forEach(i -> {
             Posts posts = Posts.builder()
-                .content("sample content "+i)
-                .author("sample author "+i)
-                .ref("sample ref "+i)
+                .content("sample content " + i)
+                .author("sample author " + i)
+                .ref("sample ref " + i)
                 .build();
 
             postsRepository.save(posts);
@@ -122,20 +122,21 @@ public class PostsRepositoryTest {
 
     // 페이지 정렬 테스트
     @Test
-    public void testSort(){
+    public void testSort() {
 
         Sort sortByPostId = Sort.by("id").descending();
 
-        Pageable pageable = PageRequest.of(0,10,sortByPostId);
+        Pageable pageable = PageRequest.of(0, 10, sortByPostId);
 
         Page<Posts> result = postsRepository.findAll(pageable);
 
-        result.get().forEach(posts -> System.out.println(posts.getId()+posts.getContent()+posts.getAuthor()));
+        result.get().forEach(
+            posts -> System.out.println(posts.getId() + posts.getContent() + posts.getAuthor()));
     }
 
     //검색내용포함_게시물_검색
     @Test
-    public void test_query_dsl(){
+    public void test_query_dsl() {
 
         Pageable pageable = PageRequest.of(0, 10, Sort.by("id").descending());
 
@@ -153,8 +154,6 @@ public class PostsRepositoryTest {
 
         result.stream().forEach(System.out::println);
     }
-
-
 
     //    @Test
 //    public void 게시글_1개조회() {

@@ -25,7 +25,7 @@ public enum SuccessCode {
     SAVE_POSTS_SUCCESS("Save Posts success","PM002",200),
     DELETE_POSTS_SUCCESS("Delete Posts success","PM003",200),
     SELECT_ALL_POSTS_SUCCESS("Select All Posts success","PM004",200),
-    SELECT_POSTS_CONTATINING_CONTENT_SUCCESS("Select Posts Contatining Content","PM005",200)
+    SELECT_POSTS_SEARCH_SUCCESS("Select Searched Posts","PM005",200)
     ;
 
     private final String message;
