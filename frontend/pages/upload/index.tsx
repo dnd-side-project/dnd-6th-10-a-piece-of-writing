@@ -8,6 +8,7 @@ import { FlexDiv } from '@/components/style/div/FlexDiv'
 
 import 'rc-slider/assets/index.css'
 import 'cropperjs/dist/cropper.css'
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
 
 import MainForm from '@/components/_upload/MainForm'
 import { useToggles } from '@/hook/useToggles'

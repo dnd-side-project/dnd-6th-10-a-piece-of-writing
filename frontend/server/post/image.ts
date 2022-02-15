@@ -1,7 +1,11 @@
 import baxios from '@/server/axios/baxios'
+import { RESPONSE_TYPE } from '@/server/user'
 
-export const extractImage = async (formData: FormData) => {
-  console.log({ formDataGet: formData.get('file') })
+interface ExtractImageResult extends RESPONSE_TYPE {
+  data?: string
+}
+
+export const extractImage = async (formData: FormData): Promise<ExtractImageResult> => {
   try {
     const res = await baxios({
       method: 'post',
@@ -11,6 +15,9 @@ export const extractImage = async (formData: FormData) => {
         'Content-Type': 'multipart/form-data',
       },
     })
-    console.log({ res })
-  } catch (e) {}
+    if (res.status === 200) return { success: true, message: '이미지 추출 성공!', data: res.data.data }
+    return { success: false, message: '이미지 추출 실패!' }
+  } catch (e) {
+    return { success: false, message: '이미지 추출 실패!' }
+  }
 }
