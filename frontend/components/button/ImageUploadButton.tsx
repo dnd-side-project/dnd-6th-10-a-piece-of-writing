@@ -4,6 +4,8 @@ import classNames from 'classnames/bind'
 import Image from 'next/image'
 import styled from 'styled-components'
 
+import { BreakPoints } from '@/styles/breakPoint'
+
 type Props = {
   onClick?: React.MouseEventHandler<HTMLDivElement>
   width?: string
@@ -42,10 +44,16 @@ const ImageUploadContainer = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  width: ${(props: ImageUploadContainerProps) => props.width ?? '184px'};
-  height: ${(props: ImageUploadContainerProps) => props.height ?? '184px'};
   border-radius: 13px;
   border: dashed 2px #2c2c2c;
+  font-size: 24px;
+  width: 184px;
+  height: 184px;
+  @media screen and (min-width: ${BreakPoints.md}) {
+    font-size: 36px;
+    width: ${(props: ImageUploadContainerProps) => props.width ?? '184px'};
+    height: ${(props: ImageUploadContainerProps) => props.height ?? '184px'};
+  }
 `
 
 const ExplainContainer = styled.div`

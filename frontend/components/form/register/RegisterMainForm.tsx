@@ -2,14 +2,16 @@ import React, { useCallback, useEffect, useState } from 'react'
 
 import classNames from 'classnames/bind'
 import { useAtom } from 'jotai'
-import { useAtomValue } from 'jotai/utils'
+import { useAtomValue, useUpdateAtom } from 'jotai/utils'
 import { useDebounce } from 'react-use'
 import styled from 'styled-components'
 
 import { Button } from '@/components/button'
 import { GrayInput } from '@/components/input'
-import { emailAtom, registerMessageAtom, useRegister } from '@/hook/usePassword'
+import { emailAtom, isValidEmail, registerMessageAtom, useRegister } from '@/hook/usePassword'
+import { registerPageAtom } from '@/pages/register'
 import styles from '@/pages/register/register.module.scss'
+import { emailCheck } from '@/server/user'
 
 export type RegisterMessage = {
   email: string
@@ -19,27 +21,38 @@ export type RegisterMessage = {
 
 const cx = classNames.bind(styles)
 
-type Props = {
-  onClickRegister: () => void
-}
+type Props = {}
 
-const RegisterMainForm: React.FC<Props> = ({ onClickRegister }) => {
+const RegisterMainForm: React.FC<Props> = ({}) => {
   const [email, setEmail] = useAtom(emailAtom)
+  const setPage = useUpdateAtom(registerPageAtom)
   const message = useAtomValue(registerMessageAtom)
   const { password, check, passwordCheck, onChangePassword, onChangePasswordCheck, allConditionSatisfied } =
     useRegister()
   const [emailDebouncedValue, setEmailDebouncedValue] = useState('')
+  const [emailMessage, setEmailMessage] = useState('')
 
   const [,] = useDebounce(
     () => {
-      setEmailDebouncedValue(message.email)
+      setEmailDebouncedValue(email)
     },
     500,
-    [message?.email],
+    [email],
   )
 
   useEffect(() => {
-    // 이메일 중복확인 테스트
+    if (!isValidEmail(email)) return
+    emailCheck(email)
+      .then((res) => {
+        if (res.success) {
+          setEmailMessage('')
+          return
+        }
+        setEmailMessage(res.message)
+      })
+      .catch((e) => {
+        console.error(e)
+      })
   }, [emailDebouncedValue])
 
   const onChangeEmail = useCallback(
@@ -49,14 +62,13 @@ const RegisterMainForm: React.FC<Props> = ({ onClickRegister }) => {
     [email, setEmail],
   )
 
-  const _onClickRegister = () => {
+  const onClickRegister = () => {
     if (!check) return
     if (!allConditionSatisfied) {
       alert('잘못된 이메일 혹은 비밀번호입니다!')
       return
     }
-    onClickRegister()
-    // 회원가입 api
+    setPage(2)
   }
 
   return (
@@ -66,8 +78,11 @@ const RegisterMainForm: React.FC<Props> = ({ onClickRegister }) => {
         <br /> 함께 음미해보세요
       </MainSpan>
       <Label>이메일</Label>
-      <GrayInput className="w-386 h-52" placeholder={'이메일'} value={email} onChange={onChangeEmail} />
-      <div className={cx('w-full', 'text-red-400', 'mb-1')}>{emailDebouncedValue}</div>
+      {/*<div className="flex w-386 h-52">*/}
+      <GrayInput className="w-3/4 h-52" placeholder={'이메일'} value={email} onChange={onChangeEmail} />
+      {/*<button>중복 체크</button>*/}
+      {/*</div>*/}
+      <div className={cx('w-full', 'text-red-400', 'mb-1')}>{emailMessage || message.email}</div>
       <Label>비밀번호</Label>
       <GrayInput
         className="w-386 h-52"
@@ -86,7 +101,7 @@ const RegisterMainForm: React.FC<Props> = ({ onClickRegister }) => {
         onChange={onChangePasswordCheck}
       />
       <div className={cx('w-full', 'text-red-400', 'mb-1')}>{message.passwordCheck}</div>
-      <Button className={cx('text-white', 'h-52', 'w-386 mt-2')} onClick={_onClickRegister}>
+      <Button className={cx('text-white', 'h-52', 'w-386 mt-2')} onClick={onClickRegister}>
         회원가입
       </Button>
     </div>
