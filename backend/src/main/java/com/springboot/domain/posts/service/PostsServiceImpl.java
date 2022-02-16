@@ -20,9 +20,11 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.springboot.domain.common.error.exception.BusinessException;
 import com.springboot.domain.common.error.exception.ErrorCode;
+import com.springboot.domain.posts.model.dto.PageRequestDto;
+import com.springboot.domain.posts.model.dto.PageResultDto;
 import com.springboot.domain.posts.model.entity.Posts;
 import com.springboot.domain.posts.model.dto.PostsListResponseDto;
-import com.springboot.domain.posts.model.dto.PostsResponseDto;
+//import com.springboot.domain.posts.model.dto.PostsResponseDto;
 import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
 import com.springboot.domain.posts.model.entity.QPosts;
 import com.springboot.domain.posts.repository.PostsRepository;
@@ -33,9 +35,11 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -71,7 +75,7 @@ public class PostsServiceImpl implements PostsService {
     @Transactional
     public Long delete(Long id) {
         Posts posts = postsRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. id=" + id));
+            .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 없습니다. id=" + id));
 
         postsRepository.delete(posts);
 
@@ -79,46 +83,37 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Override
-    public PostsResponseDto findById(Long id) {
-        Posts entity = postsRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
-
-        return new PostsResponseDto(entity);
-    }
-
-//    @Override
-//    public List<PostsListResponseDto> findAllPostsOrderById() {
-//        return postsRepository.findAllByOrderById().stream()
-//                .map(PostsListResponseDto::new)
-//                .collect(Collectors.toList());
-//    }
-
-    @Override
     public List<PostsListResponseDto> findAllPostsOrderByIdDesc(int page) {
 
-        Pageable pageable = PageRequest.of(page,10, Sort.by("id").descending());
+        // size = 10 임의 설정
+        int size = 10;
 
-        return postsRepository.findAll(pageable).stream()
-            .map(PostsListResponseDto::new)
-            .collect(Collectors.toList());
+        PageRequestDto pageRequestDTO = PageRequestDto.builder()
+            .page(page)
+            .size(size)
+            .build();
+
+        PageResultDto<PostsListResponseDto, Posts> resultDTO = getList(pageRequestDTO);
+
+        return resultDTO.getDtoList();
     }
 
     @Override
-    public List<PostsListResponseDto> findPostsContainingContent(int page, String content) {
+    public List<PostsListResponseDto> findAllPostsBySearch(int page, String keyword, String type) {
 
-        Pageable pageable = PageRequest.of(page,10, Sort.by("id").descending());
+        // size = 10 임의 설정
+        int size = 10;
 
-        QPosts posts = QPosts.posts;
+        PageRequestDto pageRequestDTO = PageRequestDto.builder()
+            .page(page)
+            .size(size)
+            .type(type)
+            .keyword(keyword)
+            .build();
 
-        BooleanBuilder builder = new BooleanBuilder();
+        PageResultDto<PostsListResponseDto, Posts> resultDTO = getList(pageRequestDTO);
 
-        BooleanExpression expression = posts.content.contains(content);
-
-        builder.and(expression);
-
-        return postsRepository.findAll(builder, pageable).stream()
-            .map(PostsListResponseDto::new)
-            .collect(Collectors.toList());
+        return resultDTO.getDtoList();
     }
 
     @Override
@@ -138,7 +133,8 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Override
-    public String postsImgUpload(GoogleCredentials credentials, MultipartFile multipartFile, String fileName) {
+    public String postsImgUpload(GoogleCredentials credentials, MultipartFile multipartFile,
+        String fileName) {
         try {
             byte[] bytes = multipartFile.getBytes();
 
@@ -146,7 +142,7 @@ public class PostsServiceImpl implements PostsService {
             String bucketName = "example-ocr-test";
 
             Storage storage = StorageOptions.newBuilder().setProjectId(projectId)
-                    .setCredentials(getCredentials()).build().getService();
+                .setCredentials(getCredentials()).build().getService();
 
             BlobId blobId = BlobId.of(bucketName, fileName);
             BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("image/jpeg").build();
@@ -161,20 +157,21 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Override
-    public String postsImgExtractWords(GoogleCredentials credentials, MultipartFile multipartFile, String imageUrl) {
+    public String postsImgExtractWords(GoogleCredentials credentials, MultipartFile multipartFile,
+        String imageUrl) {
         List<AnnotateImageRequest> requests = new ArrayList<>();
 
         ImageSource imgSource = ImageSource.newBuilder().setImageUri(imageUrl).build();
         Image img = Image.newBuilder().setSource(imgSource).build();
         Feature feat = Feature.newBuilder().setType(Feature.Type.TEXT_DETECTION).build();
         AnnotateImageRequest request =
-                AnnotateImageRequest.newBuilder().addFeatures(feat).setImage(img).build();
+            AnnotateImageRequest.newBuilder().addFeatures(feat).setImage(img).build();
         requests.add(request);
 
         try {
             ImageAnnotatorSettings imageAnnotatorSettings = ImageAnnotatorSettings.newBuilder()
-                    .setCredentialsProvider(FixedCredentialsProvider.create(getCredentials()))
-                    .build();
+                .setCredentialsProvider(FixedCredentialsProvider.create(getCredentials()))
+                .build();
 
             ImageAnnotatorClient client = ImageAnnotatorClient.create(imageAnnotatorSettings);
             BatchAnnotateImagesResponse response = client.batchAnnotateImages(requests);
@@ -188,5 +185,60 @@ public class PostsServiceImpl implements PostsService {
         } catch (IOException e) {
             throw new BusinessException(ErrorCode.VISION_API_ERROR);
         }
+    }
+
+    // Tools for Pagination
+    @Override
+    public PageResultDto<PostsListResponseDto, Posts> getList(PageRequestDto requestDTO) {
+
+        Pageable pageable = requestDTO.getPageable(Sort.by("id").descending());
+
+        BooleanBuilder booleanBuilder = getSearch(requestDTO); //검색 조건 처리
+
+        Page<Posts> result = postsRepository.findAll(booleanBuilder, pageable); //Querydsl 사용
+
+        Function<Posts, PostsListResponseDto> fn = (entity -> entityToDto(entity));
+
+//        Function<Posts, PostsListResponseDto> fn = (PostsListResponseDto::new);
+
+        return new PageResultDto<>(result, fn);
+    }
+
+    private BooleanBuilder getSearch(PageRequestDto requestDTO) {
+
+        String type = requestDTO.getType();
+
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+
+        QPosts qPosts = QPosts.posts;
+
+        String keyword = requestDTO.getKeyword();
+
+        BooleanExpression expression = qPosts.id.gt(0L); // id > 0 조건만 생성
+
+        booleanBuilder.and(expression);
+
+        if (type == null || type.trim().length() == 0) { //검색 조건이 없는 경우
+            return booleanBuilder;
+        }
+
+        //검색 조건을 작성하기
+        BooleanBuilder conditionBuilder = new BooleanBuilder();
+
+        // topic 적용 예정
+//        if(type.contains("t")){
+//            conditionBuilder.or(qPosts.topic.contains(keyword));
+//        }
+        if (type.contains("c")) {
+            conditionBuilder.or(qPosts.content.contains(keyword));
+        }
+        if (type.contains("a")) {
+            conditionBuilder.or(qPosts.author.contains(keyword));
+        }
+
+        //모든 조건 통합
+        booleanBuilder.and(conditionBuilder);
+
+        return booleanBuilder;
     }
 }
