@@ -1,6 +1,6 @@
 package com.springboot.domain.posts.model.dto;
 
-import com.springboot.domain.posts.model.Entity.Posts;
+import com.springboot.domain.posts.model.entity.Posts;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

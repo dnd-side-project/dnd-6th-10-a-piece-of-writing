@@ -11,25 +11,23 @@ import com.google.cloud.storage.StorageOptions;
 import com.google.cloud.vision.v1.AnnotateImageRequest;
 import com.google.cloud.vision.v1.AnnotateImageResponse;
 import com.google.cloud.vision.v1.BatchAnnotateImagesResponse;
-import com.google.cloud.vision.v1.EntityAnnotation;
 import com.google.cloud.vision.v1.Feature;
 import com.google.cloud.vision.v1.Image;
 import com.google.cloud.vision.v1.ImageAnnotatorClient;
 import com.google.cloud.vision.v1.ImageAnnotatorSettings;
 import com.google.cloud.vision.v1.ImageSource;
-import com.google.common.collect.Lists;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.springboot.domain.common.error.exception.BusinessException;
 import com.springboot.domain.common.error.exception.ErrorCode;
-import com.springboot.domain.common.error.exception.InvalidValueException;
-import com.springboot.domain.posts.model.Entity.Posts;
+import com.springboot.domain.posts.model.entity.Posts;
 import com.springboot.domain.posts.model.dto.PostsListResponseDto;
 import com.springboot.domain.posts.model.dto.PostsResponseDto;
 import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
+import com.springboot.domain.posts.model.entity.QPosts;
 import com.springboot.domain.posts.repository.PostsRepository;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -38,6 +36,9 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
@@ -52,6 +53,7 @@ public class PostsServiceImpl implements PostsService {
     @Override
     @Transactional
     public Long save(PostsSaveRequestDto requestDto) {
+
         return postsRepository.save(requestDto.toEntity()).getId();
     }
 
@@ -67,11 +69,13 @@ public class PostsServiceImpl implements PostsService {
 
     @Override
     @Transactional
-    public void delete(Long id) {
+    public Long delete(Long id) {
         Posts posts = postsRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. id=" + id));
 
         postsRepository.delete(posts);
+
+        return id;
     }
 
     @Override
@@ -82,11 +86,39 @@ public class PostsServiceImpl implements PostsService {
         return new PostsResponseDto(entity);
     }
 
+//    @Override
+//    public List<PostsListResponseDto> findAllPostsOrderById() {
+//        return postsRepository.findAllByOrderById().stream()
+//                .map(PostsListResponseDto::new)
+//                .collect(Collectors.toList());
+//    }
+
     @Override
-    public List<PostsListResponseDto> findAllPostsOrderById() {
-        return postsRepository.findAllByOrderById().stream()
-                .map(PostsListResponseDto::new)
-                .collect(Collectors.toList());
+    public List<PostsListResponseDto> findAllPostsOrderByIdDesc(int page) {
+
+        Pageable pageable = PageRequest.of(page,10, Sort.by("id").descending());
+
+        return postsRepository.findAll(pageable).stream()
+            .map(PostsListResponseDto::new)
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PostsListResponseDto> findPostsContainingContent(int page, String content) {
+
+        Pageable pageable = PageRequest.of(page,10, Sort.by("id").descending());
+
+        QPosts posts = QPosts.posts;
+
+        BooleanBuilder builder = new BooleanBuilder();
+
+        BooleanExpression expression = posts.content.contains(content);
+
+        builder.and(expression);
+
+        return postsRepository.findAll(builder, pageable).stream()
+            .map(PostsListResponseDto::new)
+            .collect(Collectors.toList());
     }
 
     @Override
