@@ -98,8 +98,7 @@ public class PostsControllerTest {
 //        assertThat(responseEntity.getBody()).isEqualTo(1);
 
         //then
-        List<Posts> all = postsRepository.findAll();
-//        assertThat(all.get(0).getTitle()).isEqualTo(title);
+        List<Posts> all = postsRepository.findAllByOrderByIdDesc();
         assertThat(all.get(0).getContent()).isEqualTo(content);
         assertThat(all.get(0).getRef()).isEqualTo(ref);
     }

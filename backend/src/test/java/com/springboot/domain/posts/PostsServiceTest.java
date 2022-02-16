@@ -39,10 +39,12 @@ public class PostsServiceTest {
     @Test
     public void testList() {
 
-        PageRequestDto pageRequestDTO = PageRequestDto.builder()
-            .page(1)
+//        PageRequestDto pageRequestDTO = PageRequestDto.builder()
+//            .page(1)
 //            .size(10)
-            .build();
+//            .build();
+
+        PageRequestDto pageRequestDTO = new PageRequestDto();
 
         PageResultDto<PostsListResponseDto, Posts> resultDTO = service.getList(pageRequestDTO);
 
@@ -65,7 +67,7 @@ public class PostsServiceTest {
 
         PageRequestDto pageRequestDTO = PageRequestDto.builder()
             .page(1)
-//            .size(10)
+            .size(10)
             .type("c")   //검색 조건 t : topic, c : content, a : author
             .keyword("2")  // 검색 키워드
             .build();

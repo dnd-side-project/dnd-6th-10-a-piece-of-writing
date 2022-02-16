@@ -80,7 +80,7 @@ dependencies {
             "javax.persistence:javax.persistence-api",
             "javax.annotation:javax.annotation-api",
             "com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
-
+    implementation group: 'com.querydsl', name: 'querydsl-core', version: '5.0.0'
 }
 
 // QueryDSL
