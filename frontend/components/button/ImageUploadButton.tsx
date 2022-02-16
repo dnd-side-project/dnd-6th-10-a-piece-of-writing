@@ -69,4 +69,5 @@ const ExplainContainer = styled.div`
   padding: 0.5rem 1rem;
   border: dashed 1px #b9b9b9;
   cursor: pointer;
+  text-align: center;
 `

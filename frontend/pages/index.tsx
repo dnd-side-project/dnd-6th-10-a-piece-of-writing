@@ -25,9 +25,7 @@ const index = () => {
           onClick={() => {
             try {
               emailCheck('test')
-            } catch (e) {
-              console.log(e)
-            }
+            } catch (e) {}
           }}>
           테스트
         </button>
