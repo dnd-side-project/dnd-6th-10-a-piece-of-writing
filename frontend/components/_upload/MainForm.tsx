@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 
+import { useAtom } from 'jotai'
 import Image from 'next/image'
 import styled from 'styled-components'
 
+import { isRecognitionModalOpenAtom, postTextAtom } from '@/atom/post'
 import { PlainDivider } from '@/components/divider'
 import { Label } from '@/components/form/register/RegisterMainForm'
 import LetterRecognitionModal from '@/components/modal/LetterRecognitionModal'
@@ -15,10 +17,10 @@ import { CENTER_FLEX } from '@/styles/classNames'
 type Props = {}
 
 const MainForm: React.FC<Props> = ({}) => {
-  const [text, setText] = useState('흰 봉투에 눈을 한 줌 옇고\n' + '글씨도 쓰지 말고\n' + '우표도 부치지 말고')
+  const [text, setText] = useAtom(postTextAtom)
   const [source, setSource] = useState('책 제목-작가 / 영화제목/ 노래 제목 - 가수')
   const [textColor, setTextColor] = useState('black')
-  const [isRecognitionModalOpen, setIsRecognitionModalOpen] = useState(false)
+  const [isRecognitionModalOpen, setIsRecognitionModalOpen] = useAtom(isRecognitionModalOpenAtom)
 
   const {
     selectedIndex: fontIndex,
@@ -36,7 +38,7 @@ const MainForm: React.FC<Props> = ({}) => {
 
   return (
     <>
-      {isRecognitionModalOpen && <LetterRecognitionModal setIsModalOpen={setIsRecognitionModalOpen} />}
+      {isRecognitionModalOpen && <LetterRecognitionModal />}
       <ImageFormContainer>
         <ImageContainer className={'mt-10 md:mt-20'}>
           <ImageSpan color={textColor} fontSize={selectedFontSize} fontFamily={selectedFontFamily}>

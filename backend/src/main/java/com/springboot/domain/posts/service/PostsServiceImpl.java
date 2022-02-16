@@ -40,6 +40,7 @@ import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
@@ -96,10 +97,9 @@ public class PostsServiceImpl implements PostsService {
     @Override
     public GoogleCredentials getCredentials() {
         try {
-            ClassPathResource resource = new ClassPathResource("gcloud-auth.json");
+            ClassPathResource resource = new ClassPathResource("/gcloud-auth.json");
 
-            return GoogleCredentials.fromStream(new FileInputStream(
-                    Paths.get(resource.getURI()).toFile()));
+            return GoogleCredentials.fromStream(resource.getInputStream());
         } catch (Exception e) {
             throw new BusinessException(ErrorCode.CREDENTIAL_ERROR);
         }

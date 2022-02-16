@@ -4,6 +4,7 @@ type ImageInfo = {
   url: string
   blob?: Blob
 }
+export const postTextAtom = atom('흰 봉투에 눈을 한 줌 옇고\n' + '글씨도 쓰지 말고\n' + '우표도 부치지 말고')
 
 export const backgroundImagesAtom = atom((get) => [...get(addedImagesAtom), ...get(previewImagesAtom)])
 export const addedImagesAtom = atom<ImageInfo[]>([])
@@ -18,3 +19,4 @@ export const selectedBackgroundImageAtom = atom<ImageInfo>(
 )
 
 export const isUploadModalOpenAtom = atom<boolean>(false)
+export const isRecognitionModalOpenAtom = atom<boolean>(false)
