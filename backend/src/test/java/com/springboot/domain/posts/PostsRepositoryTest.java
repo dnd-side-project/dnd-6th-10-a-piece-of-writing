@@ -7,6 +7,8 @@ import com.springboot.domain.posts.model.entity.QPosts;
 import com.springboot.domain.posts.repository.PostsRepository;
 import java.util.stream.IntStream;
 import javax.transaction.Transactional;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -88,26 +91,16 @@ public class PostsRepositoryTest {
             .build());
 
         //when
-//        List<Posts> postsList = postsRepository.findAll();
-
-//        Posts posts = postsList.get(0);
-
-        //then
         postsRepository.delete(saved);
 
+        //then
         List<Posts> deleted = postsRepository.findAll();
         assertThat(deleted).isEmpty();
-
-//        try {
-//            List<Posts> temp = postsRepository.findAll();
-//            assertThat(temp.size()).isEqualTo(0);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
     }
 
     // 테스트 위한 다량 데이터 등록 테스트
     @Test
+    @Transactional
     public void testInsertDummies() {
         IntStream.rangeClosed(1, 100).forEach(i -> {
             Posts posts = Posts.builder()
@@ -155,31 +148,8 @@ public class PostsRepositoryTest {
         result.stream().forEach(System.out::println);
     }
 
-    //    @Test
-//    public void 게시글_1개조회() {
-//        //given
-//        String ref = "테스트 레퍼런스";
-//        String content = "테스트 본문";
-//
-//        postsRepository.save(Posts.builder()
-//                .content(content)
-//                .author("stam0325@gmail.com")
-//                .ref(ref)
-//                .build());
-//
-//        //when
-//        List<Posts> postsList = postsRepository.findAll();
-//
-//        //then
-//        Posts posts = postsList.get(0);
-//        long id = posts.getId();
-//        Optional<Posts> entity = postsRepository.findById(id);
-//
-//        assertThat(posts.getContent()).isEqualTo(content);
-//        assertThat(posts.getRef()).isEqualTo(ref);
-//    }
 
-//    @Test
+    //    @Test
 //    public void 게시글_1개조회() {
 //        //given
 //        String ref = "테스트 레퍼런스";

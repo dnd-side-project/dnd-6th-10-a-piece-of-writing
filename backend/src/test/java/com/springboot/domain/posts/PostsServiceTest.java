@@ -6,6 +6,7 @@ import com.springboot.domain.posts.model.dto.PostsListResponseDto;
 import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
 import com.springboot.domain.posts.model.entity.Posts;
 import com.springboot.domain.posts.service.PostsService;
+import javax.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +20,9 @@ public class PostsServiceTest {
     @Autowired
     private PostsService service;
 
-
     // 등록 테스트
     @Test
+    @Transactional
     public void testRegister() {
 
         PostsSaveRequestDto PostsDTO = PostsSaveRequestDto.builder()
