@@ -5,6 +5,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.springboot.domain.posts.model.entity.Posts;
 import com.springboot.domain.posts.model.entity.QPosts;
 import com.springboot.domain.posts.repository.PostsRepository;
+import java.util.Optional;
 import java.util.stream.IntStream;
 import javax.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
@@ -46,7 +47,7 @@ public class PostsRepositoryTest {
             .build());
 
         //when
-        List<Posts> postsList = postsRepository.findAll();
+        List<Posts> postsList = postsRepository.findAllByOrderByIdDesc();
 
         //then
         Posts posts = postsList.get(0);
@@ -91,10 +92,10 @@ public class PostsRepositoryTest {
             .build());
 
         //when
-        postsRepository.delete(saved);
+        postsRepository.deleteById(saved.getId());
 
         //then
-        List<Posts> deleted = postsRepository.findAll();
+        Optional<Posts> deleted = postsRepository.findById(saved.getId());
         assertThat(deleted).isEmpty();
     }
 
