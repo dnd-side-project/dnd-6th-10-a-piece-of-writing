@@ -9,9 +9,10 @@ export const postTextAtom = atom('흰 봉투에 눈을 한 줌 옇고\n' + '글�
 export const backgroundImagesAtom = atom((get) => [...get(addedImagesAtom), ...get(previewImagesAtom)])
 export const addedImagesAtom = atom<ImageInfo[]>([])
 export const previewImagesAtom = atom<ImageInfo[]>([
-  { url: 'https://fakeimg.pl/100x100/' },
-  { url: 'https://fakeimg.pl/100x100/' },
-  { url: 'https://fakeimg.pl/100x100/' },
+  { url: 'https://picsum.photos/id/10/400/400' },
+  { url: 'https://picsum.photos/id/1022/400/400' },
+  { url: 'https://picsum.photos/id/1002/400/400' },
+  { url: 'https://picsum.photos/id/1019/400/400' },
 ])
 export const selectedBackgroundImageIndexAtom = atom<number>(0)
 export const selectedBackgroundImageAtom = atom<ImageInfo>(

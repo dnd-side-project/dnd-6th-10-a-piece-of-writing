@@ -4,6 +4,6 @@ module.exports = {
     styledComponent: true,
   },
   images: {
-    domains: ['fakeimg.pl'],
+    domains: ['fakeimg.pl', 'picsum.photos'],
   },
 }
