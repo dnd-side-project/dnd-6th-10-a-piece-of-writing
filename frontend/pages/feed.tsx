@@ -4,27 +4,30 @@ import styled from 'styled-components'
 
 import MainTitle from '@/components/_main/MainTitle'
 import Posts from '@/components/_main/Posts'
+import AddButton from '@/components/button/AddButton'
 import { TagCarousel } from '@/components/carousel'
 import { FlexDiv } from '@/components/style/div/FlexDiv'
-import { CENTER_FLEX } from '@/styles/classNames'
 
 type Props = {}
 
 const feed: React.FC<Props> = ({}) => {
   return (
-    <div className={`${CENTER_FLEX} flex-col w-full`}>
-      <MainContainer>
-        <MainTitle />
-        <FlexDiv margin={'2.5rem 0 0 0 '}>
-          <div className={'w-full'}>
-            <TagCarousel tags={DUMMY_TAGS} onClickTag={(_) => () => {}} />
-          </div>
-        </FlexDiv>
-        <FlexDiv width={'100%'}>
-          <Posts />
-        </FlexDiv>
-      </MainContainer>
-    </div>
+    <>
+      <div className={`flex flex-col-reverse flex-end items-center w-full`}>
+        <AddButton sticky={true} />
+        <MainContainer>
+          <MainTitle />
+          <FlexDiv margin={'2.5rem 0 0 0 '}>
+            <div className={'w-full'}>
+              <TagCarousel tags={DUMMY_TAGS} onClickTag={(_) => () => {}} />
+            </div>
+          </FlexDiv>
+          <FlexDiv width={'100%'}>
+            <Posts />
+          </FlexDiv>
+        </MainContainer>
+      </div>
+    </>
   )
 }
 
