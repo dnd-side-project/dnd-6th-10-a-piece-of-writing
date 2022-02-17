@@ -59,6 +59,17 @@ public class PostsControllerTest {
     private MockMvc mvc;
     private String accessToken;
 
+    private String local_address = "http://localhost";
+    private String deployed_address = "http://pieceofwriting.kro.kr";
+    private String current_address = "local";
+//    private String current_address = "deploy";
+    private String path = ":" + port + "/api/v1/posts";
+    private String url;
+    private String local_url;
+    private String deployed_url;
+    private String params;
+
+
     @BeforeEach
     public void setup() {
         mvc = MockMvcBuilders
@@ -82,7 +93,15 @@ public class PostsControllerTest {
             .ref(ref)
             .build();
 
-        String url = "http://localhost:" + port + "/api/v1/posts";
+        local_url = local_address + path;
+        deployed_url = deployed_address + path;
+
+        if (current_address.equals("local")){
+            url = local_url;
+        }
+        else{
+            url = deployed_url;
+        }
 
         //when
         mvc.perform(post(url)
@@ -116,7 +135,17 @@ public class PostsControllerTest {
 
         Long savedId = saved.getId();
 
-        String url = "http://localhost:" + port + "/api/v1/posts/" + savedId;
+        params = "/" + savedId;
+
+        local_url = local_address + path + params;
+        deployed_url = deployed_address + path + params;
+
+        if (current_address.equals("local")){
+            url = local_url;
+        }
+        else{
+            url = deployed_url;
+        }
 
         mvc.perform(delete(url)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -131,10 +160,25 @@ public class PostsControllerTest {
     public void Posts_모두_조회한다() throws Exception {
         //given
         int page = 1;
-        int size = 10;
+//        int size = 10;
+
+//        String searched_page = "/page/" + String.valueOf(page);
 
         String searched_page = "/page/" + String.valueOf(page);
-        String url = "http://localhost:" + port + "/api/v1/posts" + searched_page;
+
+        params = searched_page;
+
+        local_url = local_address + path + params;
+        deployed_url = deployed_address + path + params;
+
+        if (current_address.equals("local")){
+            url = local_url;
+        }
+        else{
+            url = deployed_url;
+        }
+
+//        String url = "http://localhost:" + port + "/api/v1/posts" + searched_page;
 
         //when
         mvc.perform(get(url)
@@ -151,7 +195,7 @@ public class PostsControllerTest {
 
         //given
         int page = 1;
-        int size = 10;
+//        int size = 10;
 
         // content 검색
         String type = "c";
@@ -160,10 +204,25 @@ public class PostsControllerTest {
         String searched_type = "/type/" + type;
         String searched_keyword = "/keyword/" + keyword;
         String searched_page = "/page/" + String.valueOf(page);
-        String url = "http://localhost:" + port + "/api/v1/posts"
-            + searched_type
+
+        params = searched_type
             + searched_keyword
             + searched_page;
+
+        local_url = local_address + path + params;
+        deployed_url = deployed_address + path + params;
+
+        if (current_address.equals("local")){
+            url = local_url;
+        }
+        else{
+            url = deployed_url;
+        }
+
+//        String url = "http://localhost:" + port + "/api/v1/posts"
+//            + searched_type
+//            + searched_keyword
+//            + searched_page;
 
         //when
         mvc.perform(get(url)
@@ -180,7 +239,7 @@ public class PostsControllerTest {
 
         //given
         int page = 1;
-        int size = 10;
+//        int size = 10;
 
         // content 검색
         String type = "a";
@@ -189,10 +248,25 @@ public class PostsControllerTest {
         String searched_type = "/type/" + type;
         String searched_keyword = "/keyword/" + keyword;
         String searched_page = "/page/" + String.valueOf(page);
-        String url = "http://localhost:" + port + "/api/v1/posts"
-            + searched_type
+
+        params = searched_type
             + searched_keyword
             + searched_page;
+
+        local_url = local_address + path + params;
+        deployed_url = deployed_address + path + params;
+
+        if (current_address.equals("local")){
+            url = local_url;
+        }
+        else{
+            url = deployed_url;
+        }
+
+//        String url = "http://localhost:" + port + "/api/v1/posts"
+//            + searched_type
+//            + searched_keyword
+//            + searched_page;
 
         //when
         mvc.perform(get(url)

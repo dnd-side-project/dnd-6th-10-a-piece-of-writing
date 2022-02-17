@@ -33,6 +33,11 @@ public class PostsRepositoryTest {
     @Autowired
     PostsRepository postsRepository;
 
+    @AfterEach
+    void tearDown(){
+        postsRepository.deleteAll();
+    }
+
     @Test
     @Transactional
     public void 게시글저장_불러오기() {
@@ -148,6 +153,8 @@ public class PostsRepositoryTest {
 
         result.stream().forEach(System.out::println);
     }
+
+
 
 
     //    @Test
