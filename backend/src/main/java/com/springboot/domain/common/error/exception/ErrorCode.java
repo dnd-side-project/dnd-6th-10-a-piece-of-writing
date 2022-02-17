@@ -30,7 +30,7 @@ public enum ErrorCode {
     // Member
     EMAIL_DUPLICATION(400, "M001", "이미 사용되는 이메일입니다"),
     NICKNAME_MISSING(400, "M002", "닉네임이 입력되지 않았습니다"),
-    NICKNAME_DUPLICATION(400, "M003", "닉네임이 중복되었습니다"),
+    NICKNAME_DUPLICATION(400, "M003", "이미 사용되는 닉네임입니다"),
 
     // Posts
     IMAGE_URL_INPUT_INVALID(400, "P001", "이미지 url이 유효하지 않습니다"),

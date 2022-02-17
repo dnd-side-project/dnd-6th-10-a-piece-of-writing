@@ -20,7 +20,6 @@ import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -36,6 +35,12 @@ public class AuthServiceImpl implements AuthService {
     private final RedisTemplate<String, String> redisTemplate;
     private final ValueOperations<String, String> valueOperations;
 
+    private void checkInputHeader(String accessToken, String refreshTokenUuid) {
+        if (accessToken == null || refreshTokenUuid == null) {
+            throw new BusinessException(ErrorCode.HEADER_MISSING_ERROR);
+        }
+    }
+
     @Override
     public ResponseEntity<? extends ResponseDto> login(LoginDto loginDto) {
         Member member = memberService.findMemberByEmail(loginDto.getEmail());
@@ -50,7 +55,10 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public ResponseEntity<? extends ResponseDto> logout(String accessToken, String refreshTokenUuid) {
+    public ResponseEntity<? extends ResponseDto> logout(String accessToken,
+            String refreshTokenUuid) {
+        checkInputHeader(accessToken, refreshTokenUuid);
+
         valueOperations.set(accessToken, accessToken, jwtUtil.getAUTH_TIME(),
                 TimeUnit.MILLISECONDS);
         redisTemplate.delete(refreshTokenUuid);
@@ -71,7 +79,10 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public ResponseEntity<? extends ResponseDto> withdrawal(String email, String accessToken, String refreshTokenUuid) {
+    public ResponseEntity<? extends ResponseDto> withdrawal(String email, String accessToken,
+            String refreshTokenUuid) {
+        checkInputHeader(accessToken, refreshTokenUuid);
+
         Member member = memberService.findMemberByEmail(email);
         memberService.deleteMemberByEmail(member);
 
@@ -86,6 +97,8 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public ResponseEntity<? extends ResponseDto> reissue(String refreshTokenUuid) {
+
+        checkInputHeader("null", refreshTokenUuid);
 
         String refreshToken = valueOperations.get(refreshTokenUuid);
         if (refreshToken != null) {
