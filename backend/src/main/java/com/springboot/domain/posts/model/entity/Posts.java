@@ -1,4 +1,4 @@
-package com.springboot.domain.posts.model.Entity;
+package com.springboot.domain.posts.model.entity;
 
 
 import lombok.AccessLevel;
@@ -32,8 +32,8 @@ public class Posts extends BaseTime {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String ref;
 
-    public void update(String ref, String content) {
-        this.ref = ref;
-        this.content = content;
-    }
+//    public void update(String ref, String content) {
+//        this.ref = ref;
+//        this.content = content;
+//    }
 }

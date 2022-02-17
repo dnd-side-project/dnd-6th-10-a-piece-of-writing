@@ -1,6 +1,13 @@
+buildscript {
+    ext {
+
+        queryDslVersion = "5.0.0"
+    }
+}
+
 plugins {
-    id 'org.springframework.boot' version '2.4.1'
-    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'org.springframework.boot' version '2.5.3'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'base'
 }
@@ -9,6 +16,13 @@ group 'com'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
+
+// QueryDSL
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
 
 repositories {
     mavenCentral()
@@ -21,7 +35,7 @@ dependencies {
     implementation('junit:junit:4.13.1')
     implementation('com.fasterxml.jackson.core:jackson-databind')
 
-// testRestTemplate
+//    testRestTemplate
     implementation('org.apache.httpcomponents:httpclient:4.5.13')
 
 //    GCloud Storage
@@ -56,10 +70,26 @@ dependencies {
 //    JWT
     implementation('com.auth0:java-jwt:3.18.3')
 
-// testing
+//    testing
     testImplementation('org.springframework.boot:spring-boot-starter-test')
     testImplementation("org.springframework.security:spring-security-test")
 
+    // QueryDSL
+    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+    annotationProcessor(
+            "javax.persistence:javax.persistence-api",
+            "javax.annotation:javax.annotation-api",
+            "com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
+    implementation group: 'com.querydsl', name: 'querydsl-core', version: '5.0.0'
+}
+
+// QueryDSL
+sourceSets {
+    main {
+        java {
+            srcDirs = ["$projectDir/src/main/java", "$projectDir/build/generated"]
+        }
+    }
 }
 
 test {

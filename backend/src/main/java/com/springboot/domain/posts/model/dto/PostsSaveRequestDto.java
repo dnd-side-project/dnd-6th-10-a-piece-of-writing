@@ -1,6 +1,6 @@
 package com.springboot.domain.posts.model.dto;
 
-import com.springboot.domain.posts.model.Entity.Posts;
+import com.springboot.domain.posts.model.entity.Posts;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,9 +19,9 @@ public class PostsSaveRequestDto {
 
     public Posts toEntity() {
         return Posts.builder()
-                .ref(ref)
-                .content(content)
-                .author(author)
-                .build();
+            .ref(ref)
+            .content(content)
+            .author(author)
+            .build();
     }
 }

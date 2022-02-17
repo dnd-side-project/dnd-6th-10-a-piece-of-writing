@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 
+import html2canvas from 'html2canvas'
 import { useAtom } from 'jotai'
+import { useAtomValue } from 'jotai/utils'
 import Image from 'next/image'
 import styled from 'styled-components'
 
-import { isRecognitionModalOpenAtom, postTextAtom } from '@/atom/post'
+import { isRecognitionModalOpenAtom, postTextAtom, selectedBackgroundImageAtom } from '@/atom/post'
 import { PlainDivider } from '@/components/divider'
 import { Label } from '@/components/form/register/RegisterMainForm'
 import LetterRecognitionModal from '@/components/modal/LetterRecognitionModal'
@@ -21,6 +23,9 @@ const MainForm: React.FC<Props> = ({}) => {
   const [source, setSource] = useState('책 제목-작가 / 영화제목/ 노래 제목 - 가수')
   const [textColor, setTextColor] = useState('black')
   const [isRecognitionModalOpen, setIsRecognitionModalOpen] = useAtom(isRecognitionModalOpenAtom)
+  const selectedBackgroundImage = useAtomValue(selectedBackgroundImageAtom)
+
+  const exportRef = useRef<HTMLDivElement>(null)
 
   const {
     selectedIndex: fontIndex,
@@ -36,11 +41,25 @@ const MainForm: React.FC<Props> = ({}) => {
   const selectedFontFamily = FONTS[fontIndex]?.eng
   const selectedFontSize = FONT_SIZES[fontSizeIndex]?.size
 
+  const exportAsImage = async (element: HTMLElement) => {
+    const canvas = await html2canvas(element)
+    const image = canvas.toDataURL('image/png', 1.0)
+    console.log({ image })
+  }
+
   return (
     <>
       {isRecognitionModalOpen && <LetterRecognitionModal />}
       <ImageFormContainer>
-        <ImageContainer className={'mt-10 md:mt-20'}>
+        <ImageContainer
+          className={'mt-10 md:mt-20'}
+          ref={exportRef}
+          style={{
+            backgroundImage: `url("${selectedBackgroundImage.url}")`,
+            backgroundPosition: 'center',
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
+          }}>
           <ImageSpan color={textColor} fontSize={selectedFontSize} fontFamily={selectedFontFamily}>
             {text}
           </ImageSpan>
@@ -51,6 +70,14 @@ const MainForm: React.FC<Props> = ({}) => {
             setIsRecognitionModalOpen(true)
           }}>
           사진으로 인식해 업로드하기
+        </UploadSpan>
+        <UploadSpan
+          className={'mt-2'}
+          onClick={() => {
+            const target = exportRef?.current
+            if (target) exportAsImage(target)
+          }}>
+          테스트
         </UploadSpan>
       </ImageFormContainer>
       <div className={`${CENTER_FLEX} w-full md:w-1/2`}>

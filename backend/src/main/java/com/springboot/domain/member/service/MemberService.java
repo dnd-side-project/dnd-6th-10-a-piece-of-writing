@@ -1,8 +1,10 @@
 package com.springboot.domain.member.service;
 
 import com.springboot.domain.auth.model.UserDetailsImpl;
+import com.springboot.domain.common.model.ResponseDto;
 import javax.transaction.Transactional;
 import com.springboot.domain.member.model.Member;
+import org.springframework.http.ResponseEntity;
 
 public interface MemberService {
     public Member findMemberByEmail(String email);
@@ -13,10 +15,9 @@ public interface MemberService {
 
     public Member save(Member member);
 
-    @Transactional
-    public void modMemberNicknameByUserEmail(UserDetailsImpl userDetailsImpl, String nickname);
+    public ResponseEntity<? extends ResponseDto> modMemberNicknameByUserEmail(UserDetailsImpl userDetailsImpl, String nickname);
 
-    public boolean checkNicknameDuplicate(String nickname);
+    public ResponseEntity<? extends ResponseDto> checkNicknameDuplicate(String nickname);
 
-    public boolean checkEmailDuplicate(String email);
+    public ResponseEntity<? extends ResponseDto> checkEmailDuplicate(String email);
 }
