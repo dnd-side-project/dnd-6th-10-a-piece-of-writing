@@ -18,7 +18,8 @@ public enum SuccessCode {
     WITHDRAWAL_SUCCESS("회원탈퇴 성공", "SA006", 200),
 
 //    Member
-    MOD_NICKNAME_SUCCESS("닉네임 설정 성공", "SM001", 200),
+    NICKNAME_DUPLICATION_CHECK_SUCCESS("닉네임이 사용 가능합니다", "SM001", 200),
+    MOD_NICKNAME_SUCCESS("닉네임 설정 성공", "SM002", 200),
 
 //    Posts
     EXTRACT_SUCCESS("텍스트 추출 성공", "PM001", 200),
