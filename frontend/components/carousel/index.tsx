@@ -14,18 +14,18 @@ const sliderSettings: Settings = {
   variableWidth: true,
 }
 
-type TagInfoType = { name: string; isChecked: boolean }
+type TagInfoType = { name: string; isChecked?: boolean }
 type TagCarouselProps = TagInfoType[]
 type Props = {
   tags: TagCarouselProps
-  onClickTag: (index: number) => () => void
+  onClickTag?: (index: number) => () => void
 }
 
 export const TagCarousel = ({ tags, onClickTag }: Props) => {
   return (
     <Slider {...sliderSettings}>
       {tags.map((tagInfo, i) => (
-        <Tag key={`TagContainer_${i}`} tagInfo={tagInfo} onClick={onClickTag(i)} />
+        <Tag key={`TagContainer_${i}`} tagInfo={tagInfo} onClick={onClickTag ? onClickTag(i) : () => {}} />
       ))}
       <AddTagButton>
         <FlexDiv height={'100%'}>+</FlexDiv>

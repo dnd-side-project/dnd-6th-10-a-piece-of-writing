@@ -1,11 +1,5 @@
 import { SESSION_STORAGE_KEY_ACCESS_TOKEN, SESSION_STORAGE_KEY_REFRESH_TOKEN } from '@/constant'
-import baxios from '@/server/axios/baxios'
-
-export type RESPONSE_TYPE = {
-  success: boolean
-  message: string
-  data?: any
-}
+import baxios, { RESPONSE_TYPE } from '@/server/axios/baxios'
 
 export const emailCheck = async (email: string): Promise<RESPONSE_TYPE> => {
   try {
