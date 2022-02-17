@@ -35,7 +35,7 @@ dependencies {
     implementation('junit:junit:4.13.1')
     implementation('com.fasterxml.jackson.core:jackson-databind')
 
-// testRestTemplate
+//    testRestTemplate
     implementation('org.apache.httpcomponents:httpclient:4.5.13')
 
 //    GCloud Storage
@@ -70,7 +70,7 @@ dependencies {
 //    JWT
     implementation('com.auth0:java-jwt:3.18.3')
 
-// testing
+//    testing
     testImplementation('org.springframework.boot:spring-boot-starter-test')
     testImplementation("org.springframework.security:spring-security-test")
 
