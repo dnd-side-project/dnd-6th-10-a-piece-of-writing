@@ -36,9 +36,9 @@
 
 Ex) 이슈번호가 67인 '로그인 기능' 이슈를 구현하는 브랜치를 생성하는 경우, 브랜치 이름을
 
-*feature/backend-Login 로 작성한다.
+*feature/backend-Login* 로 작성한다.
 
-*feature/frontend-PostsCard 로 작성한다.
+*feature/frontend-PostsCard* 로 작성한다.
 
 -> 논의 후 수정 예정
 
