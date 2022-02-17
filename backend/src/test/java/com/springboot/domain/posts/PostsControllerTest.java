@@ -77,12 +77,11 @@ public class PostsControllerTest {
             .apply(springSecurity())
             .build();
 
-        accessToken = jwtUtil.createAuthToken("tester");
+        accessToken = jwtUtil.createAuthToken("tester@gmail.com");
     }
 
     @Test
     @Transactional
-    @WithMockUser(username = "tester", roles = "USER")
     public void Posts_등록된다() throws Exception {
         //given
         String content = "content";
@@ -156,7 +155,6 @@ public class PostsControllerTest {
 
     // 전체 게시물 내림차순 조회 테스트
     @Test
-    @WithMockUser(username = "tester", roles = "USER")
     public void Posts_모두_조회한다() throws Exception {
         //given
         int page = 1;
@@ -190,7 +188,6 @@ public class PostsControllerTest {
 
     // 검색 내용 포함 게시물 내림차순 조회 테스트 - content
     @Test
-    @WithMockUser(username = "tester", roles = "USER")
     public void Posts_content_검색한다() throws Exception {
 
         //given
@@ -234,7 +231,6 @@ public class PostsControllerTest {
 
     // 검색 내용 포함 게시물 내림차순 조회 테스트 - author
     @Test
-    @WithMockUser(username = "tester", roles = "USER")
     public void Posts_author_검색한다() throws Exception {
 
         //given
