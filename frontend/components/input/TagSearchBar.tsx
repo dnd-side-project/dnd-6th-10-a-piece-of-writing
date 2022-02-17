@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react'
 
+import { useAtom } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
 import Image from 'next/image'
 import { useDebounce } from 'react-use'
 import styled from 'styled-components'
 
-import { tagSearchResultsAtom } from '@/atom/tag'
+import { tagSearchResultsAtom, tagSearchTextAtom } from '@/atom/tag'
 import { searchTag } from '@/server/tag'
 
 type Props = {}
 
 const TagSearchBar: React.FC<Props> = ({}) => {
-  const [text, setText] = useState('')
+  const [text, setText] = useAtom(tagSearchTextAtom)
   const [textForApi, setTextForApi] = useState('')
 
   const setTagSearchResults = useUpdateAtom(tagSearchResultsAtom)

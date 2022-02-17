@@ -3,36 +3,47 @@ import React from 'react'
 import { useAtomValue, useUpdateAtom } from 'jotai/utils'
 import styled from 'styled-components'
 
-import { addTagUpdateAtom, tagSearchResultsAtom } from '@/atom/tag'
-import { addTag as addTagServer } from '@/server/tag'
+import { addTagUpdateAtom, tagSearchResultsAtom, tagSearchTextAtom } from '@/atom/tag'
+import { addTag as addTagServer, TagInfo } from '@/server/tag'
 
 type Props = {}
 
 const TagSearchModal: React.FC<Props> = ({}) => {
+  const text = useAtomValue(tagSearchTextAtom)
   const tagSearchResults = useAtomValue(tagSearchResultsAtom)
   const addTag = useUpdateAtom(addTagUpdateAtom)
 
-  if (tagSearchResults?.length === 0) return null
+  const tagSearchExist = tagSearchResults?.length !== 0
 
-  const onClickTag = async (tagName: string) => {
+  const onClickAddTag = async (tagName: string) => {
     const res = await addTagServer(tagName)
     if (res.success) {
       if (res.data) addTag(res.data)
     }
   }
 
+  const onClickSelectTag = (tag: TagInfo) => {
+    if (tag) addTag(tag)
+  }
+
+  if (!tagSearchExist && !text) return null
+
   return (
     <Container>
-      {tagSearchResults.map((tagSearchResult) => (
-        <div
-          className={'cursor-pointer w-full p-4 text-link hover:bg-blue-100'}
-          key={`tagSearchResult_${tagSearchResult.id}`}
-          onClick={() => {
-            onClickTag(tagSearchResult.name)
-          }}>
-          <p className={'text-ellipsis overflow-hidden whitespace-nowrap'}>{tagSearchResult.name}</p>
+      {tagSearchExist ? (
+        tagSearchResults.map((tagSearchResult) => (
+          <div
+            className={'cursor-pointer w-full p-4 text-link hover:bg-blue-100'}
+            key={`tagSearchResult_${tagSearchResult.id}`}
+            onClick={() => onClickSelectTag(tagSearchResult)}>
+            <p className={'text-ellipsis overflow-hidden whitespace-nowrap'}>{tagSearchResult.name}</p>
+          </div>
+        ))
+      ) : (
+        <div className={'cursor-pointer w-full p-4 text-link hover:bg-blue-100'} onClick={() => onClickAddTag(text)}>
+          {`"${text}" 을 추가합니다.`}
         </div>
-      ))}
+      )}
     </Container>
   )
 }

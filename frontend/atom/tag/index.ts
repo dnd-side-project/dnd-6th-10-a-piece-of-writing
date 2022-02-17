@@ -2,6 +2,7 @@ import { atom } from 'jotai'
 
 import { TagInfo } from '@/server/tag'
 
+export const tagSearchTextAtom = atom('')
 export const tagsAtom = atom<TagInfo[]>([
   { id: '11', name: '사랑' },
   { id: '12', name: '태그1' },
