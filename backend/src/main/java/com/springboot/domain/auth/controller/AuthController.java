@@ -7,6 +7,7 @@ import com.springboot.domain.common.model.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import com.springboot.domain.member.service.MemberService;
 import org.springframework.http.ResponseEntity;
@@ -48,8 +49,7 @@ public class AuthController {
     @GetMapping(value = "/reissue")
     public ResponseEntity<? extends ResponseDto> reissue(
             @Parameter(description = "refresh 토큰", required = true)
-            @RequestHeader(value = "X-AUTH-REFRESH_TOKEN", required = true) String refreshTokenUuid) {
-
+            @RequestHeader(value = "X-AUTH-REFRESH_TOKEN") String refreshTokenUuid) {
         return authService.reissue(refreshTokenUuid);
     }
 
