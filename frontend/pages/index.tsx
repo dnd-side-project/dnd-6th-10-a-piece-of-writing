@@ -1,7 +1,7 @@
 import React from 'react'
 
 import DummyCard from '@/components/card/DummyCard'
-import { PlainDivider } from '@/components/divider'
+import { PlainDivider } from '@/components/Divider'
 import { FlexDiv } from '@/components/style/div/FlexDiv'
 import { emailCheck } from '@/server/user'
 

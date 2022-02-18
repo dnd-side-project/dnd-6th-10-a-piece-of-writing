@@ -7,8 +7,8 @@ export const emailCheck = async (email: string): Promise<RESPONSE_TYPE> => {
     if (result.status === 200) {
       return { success: true, message: '사용 가능한 이메일입니다!' }
     }
-  } catch (e) {
-    if (e.response.status === 404) {
+  } catch (e: any) {
+    if (e?.response?.status === 404) {
       return { success: false, message: '중복된 이메일입니다!' }
     }
   }
@@ -27,8 +27,8 @@ export const signUp = async (data: SignUpData): Promise<RESPONSE_TYPE> => {
     if (result.status === 200) {
       return { success: true, message: '회원 가입에 성공했습니다!' }
     }
-  } catch (e) {
-    if (e.response.status === 404) {
+  } catch (e: any) {
+    if (e?.response?.status === 404) {
       return { success: false, message: '회원 가입에 실패했습니다!' }
     }
   }
