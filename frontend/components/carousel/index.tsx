@@ -1,9 +1,9 @@
 import React from 'react'
 
-import Image from 'next/image'
 import Slider, { Settings } from 'react-slick'
 import styled from 'styled-components'
 
+import CheckButton, { CheckButtonColor } from '@/components/button/CheckButton'
 import { FlexDiv } from '@/components/style/div/FlexDiv'
 
 const sliderSettings: Settings = {
@@ -26,7 +26,7 @@ type Props = {
 export const TagCarousel = ({ tags, onClickTag, showAll, onClickAll = () => {} }: Props) => {
   return (
     <Slider {...sliderSettings}>
-      {showAll && <Tag tagInfo={{ name: '모두' }} onClick={onClickAll} />}
+      {showAll && <Tag tagInfo={{ name: '모두', isChecked: true }} onClick={onClickAll} />}
       {tags.map((tagInfo, i) => (
         <Tag key={`TagContainer_${i}`} tagInfo={tagInfo} onClick={onClickTag ? onClickTag(i) : () => {}} />
       ))}
@@ -41,7 +41,7 @@ export const Tag = ({ tagInfo, onClick }: { tagInfo: TagInfoType; onClick: () =>
   return (
     <TagContainer onClick={onClick} isChecked={tagInfo.isChecked}>
       <TagSpan>{tagInfo.name}</TagSpan>
-      {tagInfo.isChecked && <Image src={'/post_check.svg'} width={20} height={20} />}
+      {tagInfo.isChecked && <CheckButton noContainer width={20} height={20} color={CheckButtonColor.WHITE} />}
     </TagContainer>
   )
 }
@@ -63,14 +63,14 @@ const TagContainer = styled.div`
   border-radius: 30px;
   border: solid 1px #a1a1a1;
   cursor: pointer;
-  background-color: ${(props: TagContainerProps) => props.isChecked && '#F5F2E7'};
+  color: ${(props: TagContainerProps) => (props.isChecked ? 'white' : '#2c2c2c')};
+  background-color: ${(props: TagContainerProps) => props.isChecked && '#444444'};
 `
 
 const TagSpan = styled.div`
   flex-grow: 0;
   font-size: 14px;
   text-align: center;
-  color: #2c2c2c;
 `
 
 const AddTagButton = styled.div`
