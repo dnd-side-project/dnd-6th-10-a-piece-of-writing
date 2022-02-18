@@ -3,9 +3,9 @@ import React from 'react'
 import styled from 'styled-components'
 
 import MainTitle from '@/components/_main/MainTitle'
-import Posts from '@/components/_main/Posts'
 import AddButton from '@/components/button/AddButton'
 import { TagCarousel } from '@/components/carousel'
+import Posts from '@/components/Posts'
 import { FlexDiv } from '@/components/style/div/FlexDiv'
 
 type Props = {}

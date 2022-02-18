@@ -11,7 +11,7 @@ const UserTagCarousel: React.FC<Props> = ({}) => {
   const userTags = useAtomValue(tagSearchResultsAtom)
   return (
     <div className={'my-8 w-full'}>
-      <div className={'flex ml-2'}>
+      <div className={'ml-2'}>
         <TagCarousel showAll={true} tags={userTags} />
       </div>
     </div>
