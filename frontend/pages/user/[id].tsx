@@ -14,6 +14,7 @@ const User: React.FC<Props> = ({}) => {
   const router = useRouter()
   const { id } = router.query
   console.log({ id })
+  console.log(router.asPath)
 
   return (
     <>

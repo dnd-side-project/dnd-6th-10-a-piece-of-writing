@@ -12,7 +12,7 @@ type Props = {
 
 const UserInfo: React.FC<Props> = ({ nickname = '유저 닉네임', followed }) => {
   return (
-    <div className={`w-full ${CENTER_FLEX} flex-col`}>
+    <div className={`w-full ${CENTER_FLEX} flex-col mt-14`}>
       <ProfileImageCard editable={true} />
       <div className={'relative my-4 mb-5 w-64 text-center align-middle'}>
         <span className={'text-t16 font-semibold text-center'}>{nickname}</span>

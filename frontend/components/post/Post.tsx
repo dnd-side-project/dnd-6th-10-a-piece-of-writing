@@ -1,6 +1,7 @@
 import React from 'react'
 
 import Image from 'next/image'
+import { useHover } from 'react-use'
 import styled from 'styled-components'
 
 import CommentButton from '@/components/button/CommentButton'
@@ -11,20 +12,30 @@ import ShareButton from '@/components/button/ShareButton'
 type Props = {}
 
 const Post: React.FC<Props> = ({}) => {
-  return (
+  const element = (hovered: boolean) => (
     <PostContainer>
-      <NickNameContainer>
-        <Image src={'/profile.svg'} width={24} height={24} />
-        <p className={'text-overline'}>유저 닉네임</p>
-      </NickNameContainer>
-      <div className={'mt-185px w-full flex flex-wrap justify-around'}>
-        <LikeButton />
-        <CommentButton />
-        <DownloadButton />
-        <ShareButton />
-      </div>
+      {hovered ? (
+        <>
+          <NickNameContainer>
+            <Image src={'/profile.svg'} width={24} height={24} />
+            <p className={'text-overline'}>유저 닉네임</p>
+          </NickNameContainer>
+          <div className={'mt-185px w-full flex flex-wrap justify-around'}>
+            <LikeButton />
+            <CommentButton />
+            <DownloadButton />
+            <ShareButton />
+          </div>
+        </>
+      ) : (
+        ''
+      )}
     </PostContainer>
   )
+
+  const [hoverable] = useHover(element)
+
+  return <>{hoverable}</>
 }
 
 export default Post

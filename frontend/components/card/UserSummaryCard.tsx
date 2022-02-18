@@ -14,7 +14,7 @@ const UserSummaryCard: React.FC<Props> = ({ post = 0, followerCount = 0, followi
   return (
     <Conatiner>
       <div className={`${CENTER_FLEX} p-1 px-3 text-t16 font-medium ${HOVER_BLUE} cursor-pointer`}>{post} 글조각</div>
-      <div className={`${CENTER_FLEX} p-1 px-3 text-t16 font-medium ${HOVER_BLUE} cursor-pointer`}>
+      <div className={`${CENTER_FLEX} p-1 px-3 text-t16 font-medium cursor-pointer ${HOVER_BLUE} `}>
         {followerCount} 팔로워
       </div>
       <div className={`${CENTER_FLEX} p-1 px-3 text-t16 font-medium ${HOVER_BLUE} cursor-pointer`}>
