@@ -58,6 +58,7 @@ interface IconContainerProps {
   color?: string
   bgColor?: string
   cursor?: string
+  transparent?: boolean
 }
 
 export const IconContainer = styled.div`
@@ -70,6 +71,6 @@ export const IconContainer = styled.div`
   gap: 10px;
   padding: 4px;
   border-radius: 4px;
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: ${(props) => (props.transparent ? 'auto' : 'rgba(255, 255, 255, 0.7)')};
   cursor: pointer;
 `
