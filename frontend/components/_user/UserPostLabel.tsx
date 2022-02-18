@@ -8,12 +8,10 @@ type Props = {}
 
 const UserPostLabel: React.FC<Props> = ({}) => {
   return (
-    <div className={'w-full'}>
-      <Divider />
+    <div className={'w-full border-y-1 border-gray-200 border-solid mt-8'}>
       <div className={`${CENTER_FLEX} my-3`}>
         <Span>올린 글조각</Span>
       </div>
-      <Divider />
     </div>
   )
 }
@@ -24,12 +22,6 @@ const Span = styled.span`
   line-height: 1.5;
   letter-spacing: normal;
   color: #2c2c2c;
-`
-
-const Divider = styled.div`
-  width: 100vw;
-  height: 1px;
-  background-color: #e8e8e8;
 `
 
 export default UserPostLabel

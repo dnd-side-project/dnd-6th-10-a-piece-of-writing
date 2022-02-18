@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import MainTitle from '@/components/_main/MainTitle'
 import AddButton from '@/components/button/AddButton'
 import { TagCarousel } from '@/components/carousel'
-import Posts from '@/components/Posts'
+import Posts from '@/components/post/Posts'
 import { FlexDiv } from '@/components/style/div/FlexDiv'
 
 type Props = {}
