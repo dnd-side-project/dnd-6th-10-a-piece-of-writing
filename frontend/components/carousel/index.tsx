@@ -19,11 +19,14 @@ type TagCarouselProps = TagInfoType[]
 type Props = {
   tags: TagCarouselProps
   onClickTag?: (index: number) => () => void
+  showAll?: boolean
+  onClickAll?: () => void
 }
 
-export const TagCarousel = ({ tags, onClickTag }: Props) => {
+export const TagCarousel = ({ tags, onClickTag, showAll, onClickAll = () => {} }: Props) => {
   return (
     <Slider {...sliderSettings}>
+      {showAll && <Tag tagInfo={{ name: '모두' }} onClick={onClickAll} />}
       {tags.map((tagInfo, i) => (
         <Tag key={`TagContainer_${i}`} tagInfo={tagInfo} onClick={onClickTag ? onClickTag(i) : () => {}} />
       ))}
@@ -34,13 +37,17 @@ export const TagCarousel = ({ tags, onClickTag }: Props) => {
   )
 }
 
-const Tag = ({ tagInfo, onClick }: { tagInfo: TagInfoType; onClick: () => void }) => {
+export const Tag = ({ tagInfo, onClick }: { tagInfo: TagInfoType; onClick: () => void }) => {
   return (
     <TagContainer onClick={onClick} isChecked={tagInfo.isChecked}>
       <TagSpan>{tagInfo.name}</TagSpan>
       {tagInfo.isChecked && <Image src={'/post_check.svg'} width={20} height={20} />}
     </TagContainer>
   )
+}
+
+type TagContainerProps = {
+  isChecked?: boolean
 }
 
 const TagContainer = styled.div`
@@ -56,7 +63,7 @@ const TagContainer = styled.div`
   border-radius: 30px;
   border: solid 1px #a1a1a1;
   cursor: pointer;
-  background-color: ${(props: { isChecked?: boolean }) => props.isChecked && '#F5F2E7'};
+  background-color: ${(props: TagContainerProps) => props.isChecked && '#F5F2E7'};
 `
 
 const TagSpan = styled.div`

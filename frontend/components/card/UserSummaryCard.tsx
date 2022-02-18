@@ -2,7 +2,7 @@ import React from 'react'
 
 import styled from 'styled-components'
 
-import { CENTER_FLEX } from '@/styles/classNames'
+import { CENTER_FLEX, HOVER_BLUE } from '@/styles/classNames'
 
 type Props = {
   post?: number
@@ -13,9 +13,13 @@ type Props = {
 const UserSummaryCard: React.FC<Props> = ({ post = 0, followerCount = 0, followingCount = 0 }) => {
   return (
     <Conatiner>
-      <div className={`${CENTER_FLEX} text-t16 font-medium`}>{post} 글조각</div>
-      <div className={`${CENTER_FLEX} text-t16 font-medium`}>{followerCount} 팔로워</div>
-      <div className={`${CENTER_FLEX} text-t16 font-medium`}>{followingCount} 팔로잉</div>
+      <div className={`${CENTER_FLEX} p-1 px-3 text-t16 font-medium ${HOVER_BLUE} cursor-pointer`}>{post} 글조각</div>
+      <div className={`${CENTER_FLEX} p-1 px-3 text-t16 font-medium ${HOVER_BLUE} cursor-pointer`}>
+        {followerCount} 팔로워
+      </div>
+      <div className={`${CENTER_FLEX} p-1 px-3 text-t16 font-medium ${HOVER_BLUE} cursor-pointer`}>
+        {followingCount} 팔로잉
+      </div>
     </Conatiner>
   )
 }
