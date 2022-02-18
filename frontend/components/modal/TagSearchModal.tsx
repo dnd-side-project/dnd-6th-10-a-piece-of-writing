@@ -5,6 +5,7 @@ import styled from 'styled-components'
 
 import { addTagUpdateAtom, tagSearchResultsAtom, tagSearchTextAtom } from '@/atom/tag'
 import { addTag as addTagServer, TagInfo } from '@/server/tag'
+import { HOVER_BLUE } from '@/styles/classNames'
 
 type Props = {}
 
@@ -33,14 +34,14 @@ const TagSearchModal: React.FC<Props> = ({}) => {
       {tagSearchExist ? (
         tagSearchResults.map((tagSearchResult) => (
           <div
-            className={'cursor-pointer w-full p-4 text-link hover:bg-blue-100'}
+            className={`cursor-pointer w-full p-4 text-link ${HOVER_BLUE}`}
             key={`tagSearchResult_${tagSearchResult.id}`}
             onClick={() => onClickSelectTag(tagSearchResult)}>
             <p className={'text-ellipsis overflow-hidden whitespace-nowrap'}>{tagSearchResult.name}</p>
           </div>
         ))
       ) : (
-        <div className={'cursor-pointer w-full p-4 text-link hover:bg-blue-100'} onClick={() => onClickAddTag(text)}>
+        <div className={`cursor-pointer w-full p-4 text-link ${HOVER_BLUE}`} onClick={() => onClickAddTag(text)}>
           {`"${text}" 을 추가합니다.`}
         </div>
       )}

@@ -5,6 +5,7 @@ import Avatar from 'react-avatar'
 import styled from 'styled-components'
 
 import EditButton from '@/components/button/EditButton'
+import { HOVER_BLUE } from '@/styles/classNames'
 
 type Props = {
   imgSrc?: string
@@ -29,7 +30,7 @@ const ProfileImageCard: React.FC<Props> = ({
         <Avatar value={nickname} round={true} size={width} />
       )}
       {editable && (
-        <EditButtonContainer onClick={onClickEdit}>
+        <EditButtonContainer className={`${HOVER_BLUE}`} onClick={onClickEdit}>
           <EditButton transparent={true} />
         </EditButtonContainer>
       )}
@@ -54,6 +55,7 @@ const EditButtonContainer = styled.div`
   bottom: 0;
   right: 7px;
   cursor: pointer;
+  border-radius: 50%;
 `
 
 export default ProfileImageCard
