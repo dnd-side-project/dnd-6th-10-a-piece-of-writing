@@ -2,7 +2,7 @@ import React from 'react'
 
 import Image from 'next/image'
 
-import { IconContainer } from '@/components/_main/Post'
+import { IconContainer } from '@/components/container/IconContainer'
 
 type Props = {
   liked?: boolean

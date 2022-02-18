@@ -1,5 +1,4 @@
-import baxios from '@/server/axios/baxios'
-import { RESPONSE_TYPE } from '@/server/user'
+import baxios, { RESPONSE_TYPE } from '@/server/axios/baxios'
 
 interface ExtractImageResult extends RESPONSE_TYPE {
   data?: string
