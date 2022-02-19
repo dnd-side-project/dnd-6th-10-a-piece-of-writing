@@ -6,6 +6,7 @@ import com.springboot.domain.member.model.Member;
 import com.springboot.domain.posts.model.entity.Posts;
 import com.springboot.domain.posts.model.entity.QPosts;
 import com.springboot.domain.posts.repository.PostsRepository;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.IntStream;
 import org.junit.jupiter.api.AfterEach;
@@ -177,6 +178,28 @@ public class PostsRepositoryTest {
         System.out.println(posts);
         System.out.println(posts.getAuthor());
 
+    }
+
+    @Test
+    public void testReadWithAuthor() {
+
+        Object result = postsRepository.getPostsWithAuthor(300L);
+
+        Object[] arr = (Object[])result;
+
+        System.out.println("-------------------------------");
+        System.out.println(Arrays.toString(arr));
+
+    }
+
+    @Test
+    public void testGetPostsWithReply() {
+
+        List<Object[]> result = postsRepository.getPostsWithReply(300L);
+
+        for (Object[] arr : result) {
+            System.out.println(Arrays.toString(arr));
+        }
     }
 
     //    @Test
