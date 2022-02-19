@@ -25,7 +25,7 @@ const ProfileImageCard: React.FC<Props> = ({
   return (
     <Container>
       {imgSrc ? (
-        <Image src={imgSrc} width={width} height={width} />
+        <Image src={imgSrc} width={width} height={width} className="rounded-full" />
       ) : (
         <Avatar value={nickname} round={true} size={width} />
       )}
