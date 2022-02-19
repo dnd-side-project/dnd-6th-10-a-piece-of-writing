@@ -20,71 +20,72 @@ public class PostsServiceTest {
     @Autowired
     private PostsService service;
 
-    // 등록 테스트
-    @Test
-    @Transactional
-    public void testRegister() {
-
-        PostsSaveRequestDto PostsDTO = PostsSaveRequestDto.builder()
-            .ref("Sample Ref...")
-            .content("Sample Content...")
-            .author("user0")
-            .build();
-
-        System.out.println(service.save(PostsDTO));
-
-    }
-
-    // 목록 조회 테스트
-    @Test
-    public void testList() {
-
+    // 0219 변경 예정. author -> member
+//    // 등록 테스트
+//    @Test
+//    @Transactional
+//    public void testRegister() {
+//
+//        PostsSaveRequestDto PostsDTO = PostsSaveRequestDto.builder()
+//            .ref("Sample Ref...")
+//            .content("Sample Content...")
+//            .author("user0")
+//            .build();
+//
+//        System.out.println(service.save(PostsDTO));
+//
+//    }
+//
+//    // 목록 조회 테스트
+//    @Test
+//    public void testList() {
+//
+////        PageRequestDto pageRequestDTO = PageRequestDto.builder()
+////            .page(1)
+////            .size(10)
+////            .build();
+//
+//        PageRequestDto pageRequestDTO = new PageRequestDto();
+//
+//        PageResultDto<PostsListResponseDto, Posts> resultDTO = service.getList(pageRequestDTO);
+//
+//        System.out.println("PREV: " + resultDTO.isPrev());
+//        System.out.println("NEXT: " + resultDTO.isNext());
+//        System.out.println("TOTAL: " + resultDTO.getTotalPage());
+//
+//        System.out.println("-------------------------------------");
+//        for (PostsListResponseDto postsListResponseDto : resultDTO.getDtoList()) {
+//            System.out.println(postsListResponseDto);
+//        }
+//
+//        System.out.println("========================================");
+//        resultDTO.getPageList().forEach(i -> System.out.println(i));
+//    }
+//
+//    // 조건부 목록 조회 테스트
+//    @Test
+//    public void testSearch() {
+//
 //        PageRequestDto pageRequestDTO = PageRequestDto.builder()
 //            .page(1)
 //            .size(10)
+//            .type("c")   //검색 조건 t : topic, c : content, a : author
+//            .keyword("2")  // 검색 키워드
 //            .build();
-
-        PageRequestDto pageRequestDTO = new PageRequestDto();
-
-        PageResultDto<PostsListResponseDto, Posts> resultDTO = service.getList(pageRequestDTO);
-
-        System.out.println("PREV: " + resultDTO.isPrev());
-        System.out.println("NEXT: " + resultDTO.isNext());
-        System.out.println("TOTAL: " + resultDTO.getTotalPage());
-
-        System.out.println("-------------------------------------");
-        for (PostsListResponseDto postsListResponseDto : resultDTO.getDtoList()) {
-            System.out.println(postsListResponseDto);
-        }
-
-        System.out.println("========================================");
-        resultDTO.getPageList().forEach(i -> System.out.println(i));
-    }
-
-    // 조건부 목록 조회 테스트
-    @Test
-    public void testSearch() {
-
-        PageRequestDto pageRequestDTO = PageRequestDto.builder()
-            .page(1)
-            .size(10)
-            .type("c")   //검색 조건 t : topic, c : content, a : author
-            .keyword("2")  // 검색 키워드
-            .build();
-
-        PageResultDto<PostsListResponseDto, Posts> resultDTO = service.getList(pageRequestDTO);
-
-        System.out.println("PREV: " + resultDTO.isPrev());
-        System.out.println("NEXT: " + resultDTO.isNext());
-        System.out.println("TOTAL: " + resultDTO.getTotalPage());
-
-        System.out.println("-------------------------------------");
-        for (PostsListResponseDto postsListResponseDto : resultDTO.getDtoList()) {
-            System.out.println(postsListResponseDto);
-        }
-
-        System.out.println("========================================");
-        resultDTO.getPageList().forEach(i -> System.out.println(i));
-    }
+//
+//        PageResultDto<PostsListResponseDto, Posts> resultDTO = service.getList(pageRequestDTO);
+//
+//        System.out.println("PREV: " + resultDTO.isPrev());
+//        System.out.println("NEXT: " + resultDTO.isNext());
+//        System.out.println("TOTAL: " + resultDTO.getTotalPage());
+//
+//        System.out.println("-------------------------------------");
+//        for (PostsListResponseDto postsListResponseDto : resultDTO.getDtoList()) {
+//            System.out.println(postsListResponseDto);
+//        }
+//
+//        System.out.println("========================================");
+//        resultDTO.getPageList().forEach(i -> System.out.println(i));
+//    }
 
 }

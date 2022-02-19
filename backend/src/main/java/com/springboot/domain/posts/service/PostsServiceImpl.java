@@ -54,12 +54,13 @@ public class PostsServiceImpl implements PostsService {
 
     private final PostsRepository postsRepository;
 
-    @Override
-    @Transactional
-    public Long save(PostsSaveRequestDto requestDto) {
-
-        return postsRepository.save(requestDto.toEntity()).getId();
-    }
+    // 0219 변경 예정. author -> member
+//    @Override
+//    @Transactional
+//    public Long save(PostsSaveRequestDto requestDto) {
+//
+//        return postsRepository.save(requestDto.toEntity()).getId();
+//    }
 
 //    @Transactional
 //    public Long update(Long id, PostsUpdateRequestDto requestDto){
@@ -82,39 +83,41 @@ public class PostsServiceImpl implements PostsService {
         return id;
     }
 
-    @Override
-    public List<PostsListResponseDto> findAllPostsOrderByIdDesc(int page) {
+    // 0219 변경 예정. author -> member
+//    @Override
+//    public List<PostsListResponseDto> findAllPostsOrderByIdDesc(int page) {
+//
+//        // size = 10 임의 설정
+//        int size = 10;
+//
+//        PageRequestDto pageRequestDTO = PageRequestDto.builder()
+//            .page(page)
+//            .size(size)
+//            .build();
+//
+//        PageResultDto<PostsListResponseDto, Posts> resultDTO = getList(pageRequestDTO);
+//
+//        return resultDTO.getDtoList();
+//    }
 
-        // size = 10 임의 설정
-        int size = 10;
-
-        PageRequestDto pageRequestDTO = PageRequestDto.builder()
-            .page(page)
-            .size(size)
-            .build();
-
-        PageResultDto<PostsListResponseDto, Posts> resultDTO = getList(pageRequestDTO);
-
-        return resultDTO.getDtoList();
-    }
-
-    @Override
-    public List<PostsListResponseDto> findAllPostsBySearch(int page, String keyword, String type) {
-
-        // size = 10 임의 설정
-        int size = 10;
-
-        PageRequestDto pageRequestDTO = PageRequestDto.builder()
-            .page(page)
-            .size(size)
-            .type(type)
-            .keyword(keyword)
-            .build();
-
-        PageResultDto<PostsListResponseDto, Posts> resultDTO = getList(pageRequestDTO);
-
-        return resultDTO.getDtoList();
-    }
+    // 0219 변경 예정. author -> member
+//    @Override
+//    public List<PostsListResponseDto> findAllPostsBySearch(int page, String keyword, String type) {
+//
+//        // size = 10 임의 설정
+//        int size = 10;
+//
+//        PageRequestDto pageRequestDTO = PageRequestDto.builder()
+//            .page(page)
+//            .size(size)
+//            .type(type)
+//            .keyword(keyword)
+//            .build();
+//
+//        PageResultDto<PostsListResponseDto, Posts> resultDTO = getList(pageRequestDTO);
+//
+//        return resultDTO.getDtoList();
+//    }
 
     @Override
     public String getFileUuid() {
@@ -187,58 +190,60 @@ public class PostsServiceImpl implements PostsService {
         }
     }
 
-    // Tools for Pagination
-    @Override
-    public PageResultDto<PostsListResponseDto, Posts> getList(PageRequestDto requestDTO) {
+    // 0219 변경 예정. author -> member
+//    // Tools for Pagination
+//    @Override
+//    public PageResultDto<PostsListResponseDto, Posts> getList(PageRequestDto requestDTO) {
+//
+//        Pageable pageable = requestDTO.getPageable(Sort.by("id").descending());
+//
+//        BooleanBuilder booleanBuilder = getSearch(requestDTO); //검색 조건 처리
+//
+//        Page<Posts> result = postsRepository.findAll(booleanBuilder, pageable); //Querydsl 사용
+//
+//        Function<Posts, PostsListResponseDto> fn = (entity -> entityToDto(entity));
+//
+////        Function<Posts, PostsListResponseDto> fn = (PostsListResponseDto::new);
+//
+//        return new PageResultDto<>(result, fn);
+//    }
 
-        Pageable pageable = requestDTO.getPageable(Sort.by("id").descending());
-
-        BooleanBuilder booleanBuilder = getSearch(requestDTO); //검색 조건 처리
-
-        Page<Posts> result = postsRepository.findAll(booleanBuilder, pageable); //Querydsl 사용
-
-        Function<Posts, PostsListResponseDto> fn = (entity -> entityToDto(entity));
-
-//        Function<Posts, PostsListResponseDto> fn = (PostsListResponseDto::new);
-
-        return new PageResultDto<>(result, fn);
-    }
-
-    private BooleanBuilder getSearch(PageRequestDto requestDTO) {
-
-        String type = requestDTO.getType();
-
-        BooleanBuilder booleanBuilder = new BooleanBuilder();
-
-        QPosts qPosts = QPosts.posts;
-
-        String keyword = requestDTO.getKeyword();
-
-        BooleanExpression expression = qPosts.id.gt(0L); // id > 0 조건만 생성
-
-        booleanBuilder.and(expression);
-
-        if (type == null || type.trim().length() == 0) { //검색 조건이 없는 경우
-            return booleanBuilder;
-        }
-
-        //검색 조건을 작성하기
-        BooleanBuilder conditionBuilder = new BooleanBuilder();
-
-        // topic 적용 예정
-//        if(type.contains("t")){
-//            conditionBuilder.or(qPosts.topic.contains(keyword));
+    // 0219 변경 예정. author -> member
+//    private BooleanBuilder getSearch(PageRequestDto requestDTO) {
+//
+//        String type = requestDTO.getType();
+//
+//        BooleanBuilder booleanBuilder = new BooleanBuilder();
+//
+//        QPosts qPosts = QPosts.posts;
+//
+//        String keyword = requestDTO.getKeyword();
+//
+//        BooleanExpression expression = qPosts.id.gt(0L); // id > 0 조건만 생성
+//
+//        booleanBuilder.and(expression);
+//
+//        if (type == null || type.trim().length() == 0) { //검색 조건이 없는 경우
+//            return booleanBuilder;
 //        }
-        if (type.contains("c")) {
-            conditionBuilder.or(qPosts.content.contains(keyword));
-        }
-        if (type.contains("a")) {
-            conditionBuilder.or(qPosts.author.contains(keyword));
-        }
-
-        //모든 조건 통합
-        booleanBuilder.and(conditionBuilder);
-
-        return booleanBuilder;
-    }
+//
+//        //검색 조건을 작성하기
+//        BooleanBuilder conditionBuilder = new BooleanBuilder();
+//
+//        // topic 적용 예정
+////        if(type.contains("t")){
+////            conditionBuilder.or(qPosts.topic.contains(keyword));
+////        }
+//        if (type.contains("c")) {
+//            conditionBuilder.or(qPosts.content.contains(keyword));
+//        }
+//        if (type.contains("a")) {
+//            conditionBuilder.or(qPosts.author.contains(keyword));
+//        }
+//
+//        //모든 조건 통합
+//        booleanBuilder.and(conditionBuilder);
+//
+//        return booleanBuilder;
+//    }
 }

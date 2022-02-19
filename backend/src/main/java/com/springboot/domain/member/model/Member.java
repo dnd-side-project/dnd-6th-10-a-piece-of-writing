@@ -21,7 +21,8 @@ import lombok.Setter;
 public class Member{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long memberId;
+//    private Long memberId;
+    private Long id;
 
     @Column(nullable = true)
     @Builder.Default
@@ -41,4 +42,14 @@ public class Member{
     @Column(nullable = false)
     @Builder.Default
     private String authority = Authority.ROLE_USER;
+
+    // temp follow
+    @Builder.Default
+    private int follow=0;
+
+    @Builder.Default
+    private int follower=0;
+
+    @Builder.Default
+    private long memberId=0;
 }

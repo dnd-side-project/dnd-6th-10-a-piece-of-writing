@@ -17,11 +17,12 @@ public class PostsSaveRequestDto {
     private String author;
     private String ref;
 
-    public Posts toEntity() {
-        return Posts.builder()
-            .ref(ref)
-            .content(content)
-            .author(author)
-            .build();
-    }
+    // 0219 변경 예정. author -> member
+//    public Posts toEntity() {
+//        return Posts.builder()
+//            .ref(ref)
+//            .content(content)
+//            .author(author)
+//            .build();
+//    }
 }

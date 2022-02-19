@@ -80,197 +80,197 @@ public class PostsControllerTest {
         accessToken = jwtUtil.createAuthToken("tester@gmail.com");
     }
 
-    @Test
-    @Transactional
-    public void Posts_등록된다() throws Exception {
-        //given
-        String content = "content";
-        String ref = "reference";
-        PostsSaveRequestDto requestDto = PostsSaveRequestDto.builder()
-            .content(content)
-            .author("author")
-            .ref(ref)
-            .build();
-
-        local_url = local_address + path;
-        deployed_url = deployed_address + path;
-
-        if (current_address.equals("local")){
-            url = local_url;
-        }
-        else{
-            url = deployed_url;
-        }
-
-        //when
-        mvc.perform(post(url)
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("X-AUTH_TOKEN", accessToken)
-                .content(new ObjectMapper().writeValueAsString(requestDto)))
-            .andExpect(status().isOk());
-
-        //when
-//        ResponseEntity<Long> responseEntity = restTemplate.postForEntity(url,requestDto,Long.class);
+//    @Test
+//    @Transactional
+//    public void Posts_등록된다() throws Exception {
+//        //given
+//        String content = "content";
+//        String ref = "reference";
+//        PostsSaveRequestDto requestDto = PostsSaveRequestDto.builder()
+//            .content(content)
+//            .author("author")
+//            .ref(ref)
+//            .build();
 //
-//        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-//        assertThat(responseEntity.getBody()).isEqualTo(1);
-
-        //then
-        List<Posts> all = postsRepository.findAllByOrderByIdDesc();
-        assertThat(all.get(0).getContent()).isEqualTo(content);
-        assertThat(all.get(0).getRef()).isEqualTo(ref);
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser(roles = "USER")
-    public void Posts_삭제된다() throws Exception {
-        //given
-        Posts saved = postsRepository.save(Posts.builder()
-            .content("content")
-            .author("author")
-            .ref("reference")
-            .build());
-
-        Long savedId = saved.getId();
-
-        params = "/" + savedId;
-
-        local_url = local_address + path + params;
-        deployed_url = deployed_address + path + params;
-
-        if (current_address.equals("local")){
-            url = local_url;
-        }
-        else{
-            url = deployed_url;
-        }
-
-        mvc.perform(delete(url)
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("X-AUTH_TOKEN", accessToken))
-            .andExpect(status().isOk());
-
-    }
-
-    // 전체 게시물 내림차순 조회 테스트
-    @Test
-    public void Posts_모두_조회한다() throws Exception {
-        //given
-        int page = 1;
-//        int size = 10;
-
+//        local_url = local_address + path;
+//        deployed_url = deployed_address + path;
+//
+//        if (current_address.equals("local")){
+//            url = local_url;
+//        }
+//        else{
+//            url = deployed_url;
+//        }
+//
+//        //when
+//        mvc.perform(post(url)
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .header("X-AUTH_TOKEN", accessToken)
+//                .content(new ObjectMapper().writeValueAsString(requestDto)))
+//            .andExpect(status().isOk());
+//
+//        //when
+////        ResponseEntity<Long> responseEntity = restTemplate.postForEntity(url,requestDto,Long.class);
+////
+////        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+////        assertThat(responseEntity.getBody()).isEqualTo(1);
+//
+//        //then
+//        List<Posts> all = postsRepository.findAllByOrderByIdDesc();
+//        assertThat(all.get(0).getContent()).isEqualTo(content);
+//        assertThat(all.get(0).getRef()).isEqualTo(ref);
+//    }
+//
+//    @Test
+//    @Transactional
+//    @WithMockUser(roles = "USER")
+//    public void Posts_삭제된다() throws Exception {
+//        //given
+//        Posts saved = postsRepository.save(Posts.builder()
+//            .content("content")
+//            .author("author")
+//            .ref("reference")
+//            .build());
+//
+//        Long savedId = saved.getId();
+//
+//        params = "/" + savedId;
+//
+//        local_url = local_address + path + params;
+//        deployed_url = deployed_address + path + params;
+//
+//        if (current_address.equals("local")){
+//            url = local_url;
+//        }
+//        else{
+//            url = deployed_url;
+//        }
+//
+//        mvc.perform(delete(url)
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .header("X-AUTH_TOKEN", accessToken))
+//            .andExpect(status().isOk());
+//
+//    }
+//
+//    // 전체 게시물 내림차순 조회 테스트
+//    @Test
+//    public void Posts_모두_조회한다() throws Exception {
+//        //given
+//        int page = 1;
+////        int size = 10;
+//
+////        String searched_page = "/page/" + String.valueOf(page);
+//
 //        String searched_page = "/page/" + String.valueOf(page);
-
-        String searched_page = "/page/" + String.valueOf(page);
-
-        params = searched_page;
-
-        local_url = local_address + path + params;
-        deployed_url = deployed_address + path + params;
-
-        if (current_address.equals("local")){
-            url = local_url;
-        }
-        else{
-            url = deployed_url;
-        }
-
-//        String url = "http://localhost:" + port + "/api/v1/posts" + searched_page;
-
-        //when
-        mvc.perform(get(url)
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("X-AUTH_TOKEN", accessToken))
-            .andExpect(status().isOk())
-            .andDo(print());
-    }
-
-    // 검색 내용 포함 게시물 내림차순 조회 테스트 - content
-    @Test
-    public void Posts_content_검색한다() throws Exception {
-
-        //given
-        int page = 1;
-//        int size = 10;
-
-        // content 검색
-        String type = "c";
-        String keyword = "2";
-
-        String searched_type = "/type/" + type;
-        String searched_keyword = "/keyword/" + keyword;
-        String searched_page = "/page/" + String.valueOf(page);
-
-        params = searched_type
-            + searched_keyword
-            + searched_page;
-
-        local_url = local_address + path + params;
-        deployed_url = deployed_address + path + params;
-
-        if (current_address.equals("local")){
-            url = local_url;
-        }
-        else{
-            url = deployed_url;
-        }
-
-//        String url = "http://localhost:" + port + "/api/v1/posts"
-//            + searched_type
+//
+//        params = searched_page;
+//
+//        local_url = local_address + path + params;
+//        deployed_url = deployed_address + path + params;
+//
+//        if (current_address.equals("local")){
+//            url = local_url;
+//        }
+//        else{
+//            url = deployed_url;
+//        }
+//
+////        String url = "http://localhost:" + port + "/api/v1/posts" + searched_page;
+//
+//        //when
+//        mvc.perform(get(url)
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .header("X-AUTH_TOKEN", accessToken))
+//            .andExpect(status().isOk())
+//            .andDo(print());
+//    }
+//
+//    // 검색 내용 포함 게시물 내림차순 조회 테스트 - content
+//    @Test
+//    public void Posts_content_검색한다() throws Exception {
+//
+//        //given
+//        int page = 1;
+////        int size = 10;
+//
+//        // content 검색
+//        String type = "c";
+//        String keyword = "2";
+//
+//        String searched_type = "/type/" + type;
+//        String searched_keyword = "/keyword/" + keyword;
+//        String searched_page = "/page/" + String.valueOf(page);
+//
+//        params = searched_type
 //            + searched_keyword
 //            + searched_page;
-
-        //when
-        mvc.perform(get(url)
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("X-AUTH_TOKEN", accessToken))
-            .andExpect(status().isOk())
-            .andDo(print());
-    }
-
-    // 검색 내용 포함 게시물 내림차순 조회 테스트 - author
-    @Test
-    public void Posts_author_검색한다() throws Exception {
-
-        //given
-        int page = 1;
-//        int size = 10;
-
-        // content 검색
-        String type = "a";
-        String keyword = "3";
-
-        String searched_type = "/type/" + type;
-        String searched_keyword = "/keyword/" + keyword;
-        String searched_page = "/page/" + String.valueOf(page);
-
-        params = searched_type
-            + searched_keyword
-            + searched_page;
-
-        local_url = local_address + path + params;
-        deployed_url = deployed_address + path + params;
-
-        if (current_address.equals("local")){
-            url = local_url;
-        }
-        else{
-            url = deployed_url;
-        }
-
-//        String url = "http://localhost:" + port + "/api/v1/posts"
-//            + searched_type
+//
+//        local_url = local_address + path + params;
+//        deployed_url = deployed_address + path + params;
+//
+//        if (current_address.equals("local")){
+//            url = local_url;
+//        }
+//        else{
+//            url = deployed_url;
+//        }
+//
+////        String url = "http://localhost:" + port + "/api/v1/posts"
+////            + searched_type
+////            + searched_keyword
+////            + searched_page;
+//
+//        //when
+//        mvc.perform(get(url)
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .header("X-AUTH_TOKEN", accessToken))
+//            .andExpect(status().isOk())
+//            .andDo(print());
+//    }
+//
+//    // 검색 내용 포함 게시물 내림차순 조회 테스트 - author
+//    @Test
+//    public void Posts_author_검색한다() throws Exception {
+//
+//        //given
+//        int page = 1;
+////        int size = 10;
+//
+//        // content 검색
+//        String type = "a";
+//        String keyword = "3";
+//
+//        String searched_type = "/type/" + type;
+//        String searched_keyword = "/keyword/" + keyword;
+//        String searched_page = "/page/" + String.valueOf(page);
+//
+//        params = searched_type
 //            + searched_keyword
 //            + searched_page;
-
-        //when
-        mvc.perform(get(url)
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("X-AUTH_TOKEN", accessToken))
-            .andExpect(status().isOk())
-            .andDo(print());
-    }
+//
+//        local_url = local_address + path + params;
+//        deployed_url = deployed_address + path + params;
+//
+//        if (current_address.equals("local")){
+//            url = local_url;
+//        }
+//        else{
+//            url = deployed_url;
+//        }
+//
+////        String url = "http://localhost:" + port + "/api/v1/posts"
+////            + searched_type
+////            + searched_keyword
+////            + searched_page;
+//
+//        //when
+//        mvc.perform(get(url)
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .header("X-AUTH_TOKEN", accessToken))
+//            .andExpect(status().isOk())
+//            .andDo(print());
+//    }
 
 //    @Test
 //    @WithMockUser(roles="USER")

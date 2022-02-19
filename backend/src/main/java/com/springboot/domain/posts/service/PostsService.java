@@ -15,15 +15,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface PostsService {
 
-    public Long save(PostsSaveRequestDto requestDto);
+    // 0219 변경 예정. author -> member
+//    public Long save(PostsSaveRequestDto requestDto);
 
 //    public Long update(Long id, PostsUpdateRequestDto requestDto);
 
     public Long delete(Long id);
 
-    public List<PostsListResponseDto> findAllPostsOrderByIdDesc(int page);
-
-    public List<PostsListResponseDto> findAllPostsBySearch(int page, String content, String type);
+    // 0219 변경 예정. author -> member
+//    public List<PostsListResponseDto> findAllPostsOrderByIdDesc(int page);
+//
+//    public List<PostsListResponseDto> findAllPostsBySearch(int page, String content, String type);
 
     public String getFileUuid();
 
@@ -35,7 +37,8 @@ public interface PostsService {
     public String postsImgExtractWords(GoogleCredentials credentials, MultipartFile multipartFile,
         String imageUrl);
 
-    PageResultDto<PostsListResponseDto, Posts> getList(PageRequestDto requestDTO);
+    // 0219 변경 예정. author -> member
+//    PageResultDto<PostsListResponseDto, Posts> getList(PageRequestDto requestDTO);
 
     // PostsSaveRequestDto TO Posts Entity. PostsSave 적용 예정.
 //    default Guestbook dtoToEntity(GuestbookDTO dto) {
@@ -48,17 +51,18 @@ public interface PostsService {
 //        return entity;
 //    }
 
+    // 0219 변경 예정. author -> member
     // Posts Entity TO PostsListResponseDto
-    default PostsListResponseDto entityToDto(Posts entity) {
-
-        PostsListResponseDto dto = PostsListResponseDto.builder()
-            .id(entity.getId())
-            .content(entity.getContent())
-            .author(entity.getAuthor())
-            .createdDate(entity.getCreatedDate())
-            .modifiedDate(entity.getModifiedDate())
-            .build();
-
-        return dto;
-    }
+//    default PostsListResponseDto entityToDto(Posts entity) {
+//
+//        PostsListResponseDto dto = PostsListResponseDto.builder()
+//            .id(entity.getId())
+//            .content(entity.getContent())
+//            .author(entity.getAuthor())
+//            .createdDate(entity.getCreatedDate())
+//            .modifiedDate(entity.getModifiedDate())
+//            .build();
+//
+//        return dto;
+//    }
 }
