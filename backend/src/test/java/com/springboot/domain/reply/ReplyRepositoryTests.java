@@ -20,7 +20,7 @@ public class ReplyRepositoryTests {
 
         IntStream.rangeClosed(1, 300).forEach(i -> {
             //1부터 100까지의 임의의 번호
-            long id  = (long)(Math.random() * 100) + 1;
+            long id  = (long)(Math.random() * 100) + 202;
 
             Posts posts = Posts.builder().id(id).build();
 

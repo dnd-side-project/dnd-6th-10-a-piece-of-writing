@@ -9,11 +9,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import lombok.ToString;
 
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(exclude = "author")
 @Entity
 public class Posts extends BaseTime {
 
@@ -27,8 +29,13 @@ public class Posts extends BaseTime {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String ref;
 
-    @ManyToOne (fetch = FetchType.LAZY)
+//    @ManyToOne (fetch = FetchType.LAZY)
+    @ManyToOne (fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Member author;
+
+    public void setAuthor(Member author) {
+        this.author = author;
+    }
 
 //    public void update(String ref, String content) {
 //        this.ref = ref;

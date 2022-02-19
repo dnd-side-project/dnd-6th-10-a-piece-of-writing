@@ -9,5 +9,4 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 public interface PostsRepository extends JpaRepository<Posts, Long>, QuerydslPredicateExecutor<Posts> {
 
     List<Posts> findAllByOrderByIdDesc();
-
 }

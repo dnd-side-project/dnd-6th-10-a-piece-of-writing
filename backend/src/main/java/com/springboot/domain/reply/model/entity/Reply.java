@@ -25,7 +25,7 @@ public class Reply extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long replyId;
+    private Long id;
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String text;

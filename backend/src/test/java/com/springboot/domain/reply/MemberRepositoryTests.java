@@ -17,7 +17,7 @@ public class MemberRepositoryTests {
     @Test
     public void insertMembers() {
 
-        IntStream.rangeClosed(1, 100).forEach(i -> {
+        IntStream.rangeClosed(101, 300).forEach(i -> {
 
             Member member = Member.builder()
                     .email("user" + i + "@aaa.com")

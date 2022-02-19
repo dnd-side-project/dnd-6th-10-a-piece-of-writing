@@ -12,16 +12,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import com.springboot.domain.auth.Authority;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
 @Entity
 public class Member{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long memberId;
     private Long id;
 
     @Column(nullable = true)
@@ -49,7 +50,4 @@ public class Member{
 
     @Builder.Default
     private int follower=0;
-
-    @Builder.Default
-    private long memberId=0;
 }
