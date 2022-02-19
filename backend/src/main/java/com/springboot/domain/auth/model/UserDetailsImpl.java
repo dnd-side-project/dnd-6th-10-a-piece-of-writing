@@ -4,21 +4,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.springboot.domain.member.model.Member;
 import java.util.ArrayList;
 import java.util.Collection;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Getter
 @Builder
+@RequiredArgsConstructor
 public class UserDetailsImpl implements UserDetails {
 
     private final Member member;
-
-    public UserDetailsImpl(Member member) {
-        this.member = member;
-    }
 
     public String getNickname() { return this.member.getNickname(); }
 

@@ -24,28 +24,21 @@ import com.springboot.domain.posts.model.dto.PageRequestDto;
 import com.springboot.domain.posts.model.dto.PageResultDto;
 import com.springboot.domain.posts.model.entity.Posts;
 import com.springboot.domain.posts.model.dto.PostsListResponseDto;
-//import com.springboot.domain.posts.model.dto.PostsResponseDto;
 import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
 import com.springboot.domain.posts.model.entity.QPosts;
 import com.springboot.domain.posts.repository.PostsRepository;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
@@ -133,7 +126,7 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Override
-    public String postsImgUpload(GoogleCredentials credentials, MultipartFile multipartFile,
+    public String postsImgUpload(MultipartFile multipartFile,
         String fileName) {
         try {
             byte[] bytes = multipartFile.getBytes();
@@ -157,8 +150,7 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Override
-    public String postsImgExtractWords(GoogleCredentials credentials, MultipartFile multipartFile,
-        String imageUrl) {
+    public String postsImgExtractWords(MultipartFile multipartFile, String imageUrl) {
         List<AnnotateImageRequest> requests = new ArrayList<>();
 
         ImageSource imgSource = ImageSource.newBuilder().setImageUri(imageUrl).build();

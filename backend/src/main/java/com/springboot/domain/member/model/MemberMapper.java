@@ -1,5 +1,6 @@
 //package com.springboot.domain.member.model;
 //
+//import com.springboot.domain.member.model.Dto.MemberProfileDto;
 //import org.mapstruct.*;
 //import org.mapstruct.factory.Mappers;
 //
@@ -8,7 +9,5 @@
 //
 //    MemberMapper INSTANCE = Mappers.getMapper(MemberMapper.class);
 //
-//    Member RequestDtoToMember(MemberDto memberDto);
-//
-//    MemberDto memberToRequestDto(Member member);
+//    MemberProfileDto memberToMemberProfileDto(Member member);
 //}

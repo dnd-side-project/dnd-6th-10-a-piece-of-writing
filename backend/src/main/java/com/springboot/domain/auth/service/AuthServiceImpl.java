@@ -5,7 +5,6 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.springboot.domain.auth.jwt.JwtUtil;
 import com.springboot.domain.auth.model.LoginDto;
 import com.springboot.domain.auth.model.SignDto;
-import com.springboot.domain.common.error.ErrorResponse;
 import com.springboot.domain.common.error.exception.BusinessException;
 import com.springboot.domain.common.error.exception.ErrorCode;
 import com.springboot.domain.common.error.exception.InvalidValueException;
@@ -49,7 +48,6 @@ public class AuthServiceImpl implements AuthService {
             throw new InvalidValueException(ErrorCode.PASSWORD_INPUT_INVALID.getMessage(),
                     ErrorCode.PASSWORD_INPUT_INVALID);
         }
-
         return responseService.successResult(SuccessCode.LOGIN_SUCCESS,
                 jwtUtil.issueJwtTokenBody(member.getEmail()));
     }
@@ -62,20 +60,19 @@ public class AuthServiceImpl implements AuthService {
         valueOperations.set(accessToken, accessToken, jwtUtil.getAUTH_TIME(),
                 TimeUnit.MILLISECONDS);
         redisTemplate.delete(refreshTokenUuid);
-
         return responseService.successResult(SuccessCode.LOGOUT_SUCCESS);
     }
 
     @Override
     public ResponseEntity<? extends ResponseDto> sign(SignDto signDto) {
-        String password = passwordEncoder.encode(signDto.getPassword());
-        Member newMember = Member.builder().email(signDto.getEmail()).password(password)
+        Member newMember = Member.builder()
+                .email(signDto.getEmail())
+                .password(passwordEncoder.encode(signDto.getPassword()))
+                .nickname(signDto.getNickname())
                 .build();
-
-        memberService.save(newMember);
-
-        return responseService.successResult(SuccessCode.SIGN_SUCCESS,
-                jwtUtil.issueJwtTokenBody(newMember.getEmail()));
+        Long memberId = memberService.save(newMember).getId();
+        valueOperations.set("MP" + memberId, "basic");
+        return responseService.successResult(SuccessCode.SIGN_SUCCESS);
     }
 
     @Override
@@ -91,7 +88,6 @@ public class AuthServiceImpl implements AuthService {
         valueOperations.set(accessToken, accessToken, jwtUtil.getAUTH_TIME(),
                 TimeUnit.MILLISECONDS);
         redisTemplate.delete(refreshTokenUuid);
-
         return responseService.successResult(SuccessCode.WITHDRAWAL_SUCCESS);
     }
 
@@ -108,10 +104,8 @@ public class AuthServiceImpl implements AuthService {
 
             Map<String, String> body = new HashMap<>();
             body.put("access-token", accessToken);
-
             return responseService.successResult(SuccessCode.REISSUE_SUCCESS, body);
         }
-
         redisTemplate.delete(refreshTokenUuid);
         throw new BusinessException(ErrorCode.EXPIRED_REFRESH_TOKEN);
     }
