@@ -2,21 +2,21 @@ import React from 'react'
 
 import styled from 'styled-components'
 
-import Post from '@/components/_main/Post'
+import Post from '@/components/post/Post'
 
 type Props = {}
 
 const Posts: React.FC<Props> = ({}) => {
   return (
     <PostsContainer>
-      <Post></Post>
-      <Post></Post>
-      <Post></Post>
-      <Post></Post>
-      <Post></Post>
-      <Post></Post>
-      <Post></Post>
-      <Post></Post>
+      <Post />
+      <Post />
+      <Post />
+      <Post />
+      <Post />
+      <Post />
+      <Post />
+      <Post />
     </PostsContainer>
   )
 }

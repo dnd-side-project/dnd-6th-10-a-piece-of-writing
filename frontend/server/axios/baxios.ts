@@ -43,3 +43,9 @@ baxios.interceptors.response.use(
 )
 
 export default baxios
+
+export type RESPONSE_TYPE<T = any> = {
+  success: boolean
+  message: string
+  data?: T
+}

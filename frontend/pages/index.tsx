@@ -1,7 +1,7 @@
 import React from 'react'
 
 import DummyCard from '@/components/card/DummyCard'
-import { PlainDivider } from '@/components/divider'
+import { PlainDivider } from '@/components/Divider'
 import { FlexDiv } from '@/components/style/div/FlexDiv'
 import { emailCheck } from '@/server/user'
 
@@ -11,6 +11,7 @@ const index = () => {
       <p className={'text-h2 ml-20'}>Pages</p>
       <div className={'grid grid-cols-3 gap-2 w-full h-120 p-5'}>
         <DummyCard href={'/feed'} title={'메인'} content={'메인 피드입니다. (목업상태)'} />
+        <DummyCard href={'/user/123'} title={'유저프로필'} content={'유저 프로필입니다. (목업상태)'} />
         <DummyCard href={'/postcard'} title={'포스트'} content={'포스트 예시입니다. (목업상태)'} />
         <DummyCard href={'/withdraw'} title={'탈퇴'} content={'탈퇴하기 페이지'} />
         <DummyCard href={'/upload'} title={'업로드'} content={'게시글 업로드입니다. \n 배경사진 crop 기능까지 구현'} />

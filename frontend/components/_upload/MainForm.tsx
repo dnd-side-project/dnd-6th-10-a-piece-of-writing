@@ -7,7 +7,7 @@ import Image from 'next/image'
 import styled from 'styled-components'
 
 import { isRecognitionModalOpenAtom, postTextAtom, selectedBackgroundImageAtom } from '@/atom/post'
-import { PlainDivider } from '@/components/divider'
+import { PlainDivider } from '@/components/Divider'
 import { Label } from '@/components/form/register/RegisterMainForm'
 import LetterRecognitionModal from '@/components/modal/LetterRecognitionModal'
 import { FlexDiv } from '@/components/style/div/FlexDiv'

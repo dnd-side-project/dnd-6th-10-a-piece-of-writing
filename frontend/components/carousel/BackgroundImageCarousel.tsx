@@ -34,6 +34,9 @@ const BackgroundImageCarousel: React.FC<Props> = ({ onClickImageUploadButton }) 
 
   return (
     <Slider {...sliderSettings}>
+      <div className={'m-5 cursor-pointer'}>
+        <ImageUploadButton onClick={onClickImageUploadButton} />
+      </div>
       {images.map((image, i) => (
         <div className={'m-5'} key={`test_${i}`}>
           <ImageCardMd onClick={() => setSelectedIndex(i)}>
@@ -46,9 +49,6 @@ const BackgroundImageCarousel: React.FC<Props> = ({ onClickImageUploadButton }) 
           </ImageCardMd>
         </div>
       ))}
-      <div className={'m-5'}>
-        <ImageUploadButton onClick={onClickImageUploadButton} />
-      </div>
     </Slider>
   )
 }
