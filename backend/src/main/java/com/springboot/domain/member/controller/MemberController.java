@@ -29,12 +29,6 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @PreAuthorize("hasAnyAuthority('ROLE_USER')")
-    @GetMapping(value = "/user")
-    public Authentication getUserSecurityInfo() {
-        return SecurityContextHolder.getContext().getAuthentication();
-    }
-
     @Operation(summary = "nickname patch api", description = "닉네임 변경 api \npath에 nickname 필요")
     @PatchMapping(value = "/nickname/{nickname}")
     public ResponseEntity<?> modNickname(
