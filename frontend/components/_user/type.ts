@@ -1,30 +1,31 @@
 export type UserInfo = {
-  id: string
+  memberId: string
   nickname: string
-  image?: string
+  profileUrl?: string
   email?: string
   followed?: boolean
+  authority?: string
 }
 
 export const DUMMY_USER1: UserInfo = {
-  id: '1',
+  memberId: '1',
   nickname: '닉네임',
-  image: 'https://fakeimg.pl/100x100/',
+  profileUrl: 'https://fakeimg.pl/100x100/',
   email: 'ddrrpg@naver.com',
   followed: true,
 }
 export const DUMMY_USER2: UserInfo = {
-  id: '12',
+  memberId: '12',
   nickname: '닉네임2',
-  image: 'https://fakeimg.pl/100x100/',
+  profileUrl: 'https://fakeimg.pl/100x100/',
   email: 'ddrrpg@naver.com',
   followed: true,
 }
 
 export const DUMMY_USER3: UserInfo = {
-  id: '13',
+  memberId: '13',
   nickname: '닉네임3',
-  image: 'https://fakeimg.pl/100x100/',
+  profileUrl: 'https://fakeimg.pl/100x100/',
   email: 'ddrrpg@naver.com',
   followed: false,
 }

@@ -48,3 +48,23 @@ export const login = async (data: { email: string; password: string }): Promise<
   }
   return { success: false, message: '오류가 발생했습니다!' }
 }
+
+export const loadMe = async (): Promise<RESPONSE_TYPE> => {
+  try {
+    const result = await baxios.get('/member/user')
+
+    if (result.status === 200 && result.data?.principal?.member) {
+      return {
+        success: true,
+        data: result.data?.principal?.member,
+        message: '내 정보 로드 성공',
+      }
+    }
+    return {
+      success: false,
+      message: '내 정보 파싱 실패',
+    }
+  } catch (e) {
+    return { success: false, message: '내 정보 로드에 실패했습니다.' }
+  }
+}

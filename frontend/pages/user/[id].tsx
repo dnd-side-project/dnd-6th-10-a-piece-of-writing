@@ -7,10 +7,11 @@ import UserTagCarousel from '@/components/_user/UesrTagCarousel'
 import UserInfo from '@/components/_user/UserInfo'
 import UserPostLabel from '@/components/_user/UserPostLabel'
 import UserPosts from '@/components/_user/UserPosts'
+import { withAuthServerSideProps } from '@/server/withAuthServerSide'
 
-type Props = {}
+type ServerSideProps = { user }
 
-const User: React.FC<Props> = ({}) => {
+const User: React.FC<Props> = ({ user }) => {
   const router = useRouter()
   const { id } = router.query
   const isMe = true
@@ -39,5 +40,7 @@ const Container = styled.div`
     //width: auto;
   }
 `
+
+export const getServerSideProps = withAuthServerSideProps()
 
 export default User
