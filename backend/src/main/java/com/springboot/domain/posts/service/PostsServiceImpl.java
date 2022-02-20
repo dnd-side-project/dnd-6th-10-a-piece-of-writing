@@ -31,6 +31,7 @@ import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
 import com.springboot.domain.posts.model.entity.QPosts;
 import com.springboot.domain.posts.repository.PostsRepository;
 import com.springboot.domain.reply.model.entity.Reply;
+import com.springboot.domain.reply.repository.ReplyRepository;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -58,6 +59,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class PostsServiceImpl implements PostsService {
 
     private final PostsRepository postsRepository;
+
+    private final ReplyRepository replyRepository;
 
     // 0219 변경 예정. author -> member
 //    @Override
@@ -91,16 +94,27 @@ public class PostsServiceImpl implements PostsService {
 //        return id;
 //    }
 
-    @Override
+//    @Override
+//    @Transactional
+//    public Long delete(Long id) {
+//        Posts posts = postsRepository.findById(id)
+//            .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 없습니다. id=" + id));
+//
+//        postsRepository.delete(posts);
+//
+//        return id;
+//    }
     @Transactional
-    public Long delete(Long id) {
-        Posts posts = postsRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 없습니다. id=" + id));
+    @Override
+    public void removeWithReplies(Long id) {
 
-        postsRepository.delete(posts);
+        //댓글 부터 삭제
+        replyRepository.deleteById(id);
 
-        return id;
+        postsRepository.deleteById(id);
+
     }
+
 
     // 0219 변경 예정. author -> member
 //    @Override

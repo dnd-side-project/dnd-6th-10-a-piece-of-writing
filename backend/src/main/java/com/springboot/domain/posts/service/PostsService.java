@@ -20,11 +20,12 @@ public interface PostsService {
 
     // 0219 변경 예정. author -> member
 //    public Long save(PostsSaveRequestDto requestDto);
-    public Long save(PostsDto requestDto);
+    Long save(PostsDto requestDto);
 
 //    public Long update(Long id, PostsUpdateRequestDto requestDto);
 
-    public Long delete(Long id);
+//    public Long delete(Long id);
+    void removeWithReplies(Long id);
 
     // 0219 변경 예정. author -> member
 //    public List<PostsListResponseDto> findAllPostsOrderByIdDesc(int page);

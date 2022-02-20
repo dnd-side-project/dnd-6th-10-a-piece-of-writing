@@ -24,6 +24,7 @@ public class PostsServiceTest {
 
     // 0219 변경 예정. author -> member
     @DisplayName("[Service] Posts 등록 테스트")
+    @Transactional
     @Test
     public void testRegister() {
 
@@ -91,7 +92,16 @@ public class PostsServiceTest {
         System.out.println(postsDto);
     }
 
+    @DisplayName("[Service] 게시물 삭제 - 댓글과 함께")
+    @Test
+//    @Transactional
+    public void testRemove() {
 
+        Long id = 228L;
+
+        service.removeWithReplies(id);
+
+    }
 
 //
 //    // 조건부 목록 조회 테스트
