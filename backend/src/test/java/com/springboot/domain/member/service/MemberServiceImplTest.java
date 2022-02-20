@@ -9,6 +9,7 @@ import com.springboot.domain.relation.model.Relation;
 import com.springboot.domain.relation.repository.RelationRepository;
 import java.util.HashMap;
 import java.util.Map;
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -26,6 +27,9 @@ class MemberServiceImplTest {
 
     @Autowired
     RelationRepository relationRepository;
+
+    @Autowired
+    private EntityManager em;
 
     @BeforeEach
     @Transactional
@@ -55,6 +59,7 @@ class MemberServiceImplTest {
     @Test
     @Transactional
     void getFollowList() {
+        em.clear();
         String nickname = "tester03";
         Member member = memberService.findMemberByNickname(nickname);
         Assertions.assertEquals(member.getFollower().get(0).getFollowed().getId(), 2);
@@ -64,6 +69,7 @@ class MemberServiceImplTest {
     @Test
     @Transactional
     void getFollowerList() {
+        em.clear();
         String nickname = "tester03";
         Member member = memberService.findMemberByNickname(nickname);
         Assertions.assertEquals(member.getFollowed().get(0).getFollower().getId(), 2);
