@@ -4,21 +4,24 @@ import classNames from 'classnames/bind'
 import { useAtomValue } from 'jotai/utils'
 import styled from 'styled-components'
 
-import { meAtom } from '@/atom/user/me'
+import { UserInfo as UserInfoType } from '@/components/_user/type'
 import { Button } from '@/components/button'
 import { Label, MainSpan } from '@/components/form/register/RegisterMainForm'
 import { GrayInput } from '@/components/input'
 import { FlexDiv } from '@/components/style/div/FlexDiv'
+import useNeedLogin from '@/hook/useNeedLogin'
 import { registerMessageAtom, useRegister } from '@/hook/usePassword'
+import { useSsrMe } from '@/hook/useSsrMe'
+import { withAuthServerSideProps } from '@/server/withAuthServerSide'
 import { CENTER_FLEX } from '@/styles/classNames'
 
-type Props = {}
+type ServerSideProps = { me: UserInfoType }
 
 const cx = classNames.bind({})
 
-const Modify: React.FC<Props> = ({}) => {
-  // useNeedLogin()
-  const me = useAtomValue(meAtom)
+const Modify: React.FC<ServerSideProps> = ({ me }) => {
+  useSsrMe(me)
+  useNeedLogin()
   const message = useAtomValue(registerMessageAtom)
   const [nickname, setNickname] = useState(me?.nickname ?? '')
   const { password, checkPassword, passwordCheck, onChangePassword, onChangePasswordCheck } = useRegister()
@@ -83,5 +86,7 @@ export const Container = styled.div`
   gap: 8px;
   padding: 0;
 `
+
+export const getServerSideProps = withAuthServerSideProps()
 
 export default Modify

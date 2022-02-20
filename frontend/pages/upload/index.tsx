@@ -11,7 +11,10 @@ import 'cropperjs/dist/cropper.css'
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
 
 import MainForm from '@/components/_upload/MainForm'
+import useNeedLogin from '@/hook/useNeedLogin'
+import { useSsrMe } from '@/hook/useSsrMe'
 import { useToggles } from '@/hook/useToggles'
+import { withAuthServerSideProps } from '@/server/withAuthServerSide'
 import { BreakPoints } from '@/styles/breakPoint'
 import { CENTER_FLEX } from '@/styles/classNames'
 
@@ -21,9 +24,13 @@ import { isUploadModalOpenAtom } from '@/atom/post'
 
 import { useAtom } from 'jotai'
 
-type Props = {}
+import { UserInfo as UserInfoType } from '@/components/_user/type'
 
-const Upload: React.FC<Props> = ({}) => {
+type ServerSideProps = { me: UserInfoType }
+
+const Upload: React.FC<ServerSideProps> = ({ me }) => {
+  useSsrMe(me)
+  useNeedLogin()
   const [isUploadModalOpen, setIsUploadModalOpen] = useAtom(isUploadModalOpenAtom)
 
   const {
@@ -112,14 +119,14 @@ const MainContainer = styled.div`
   align-content: center;
   margin-top: 1em;
   width: 100%;
+  padding: 0.35rem;
   @media screen and (min-width: ${BreakPoints.md}) {
     width: 950px;
   }
 `
 
 const TagContainer = styled.div`
-  disp
-  lay: flex;
+  display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: center;
@@ -131,5 +138,7 @@ const TagContainer = styled.div`
     width: 950px;
   }
 `
+
+export const getServerSideProps = withAuthServerSideProps()
 
 export default Upload

@@ -3,18 +3,24 @@ import React, { useState } from 'react'
 import classNames from 'classnames/bind'
 import { useRouter } from 'next/router'
 
+import { UserInfo as UserInfoType } from '@/components/_user/type'
 import { Button } from '@/components/button'
 import { GrayInput } from '@/components/input'
+import useAlreadyLogin from '@/hook/useAlreadyLogin'
+import { useSsrMe } from '@/hook/useSsrMe'
 import { login } from '@/server/user'
+import { withAuthServerSideProps } from '@/server/withAuthServerSide'
 import { CENTER_FLEX } from '@/styles/classNames'
 
 import styles from './login.module.scss'
 
-type Props = {}
+type ServerSideProps = { me: UserInfoType }
 
 const cx = classNames.bind(styles)
 
-const Login: React.FC<Props> = ({}) => {
+const Login: React.FC<ServerSideProps> = ({ me }) => {
+  useSsrMe(me)
+  useAlreadyLogin()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const router = useRouter()
@@ -43,5 +49,7 @@ const Login: React.FC<Props> = ({}) => {
     </div>
   )
 }
+
+export const getServerSideProps = withAuthServerSideProps()
 
 export default Login
