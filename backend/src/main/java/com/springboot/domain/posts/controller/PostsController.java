@@ -77,7 +77,7 @@ public class PostsController {
             SuccessCode.SELECT_POSTS_SEARCH_SUCCESS, posts);
     }
 
-    @ApiOperation(value = "이미지 텍스트 추출", notes = "이미지를 전송해 텍스트를 추출한다.")
+    @ApiOperation(value = "이미지 텍스트 추출 api", notes = "이미지를 전송해 텍스트를 추출한다.")
     @PostMapping(value = "/img-extract", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ResponseDto> imageExtract(@Valid ExtractWordDto extractWordDto) {
         MultipartFile file = extractWordDto.getFile();

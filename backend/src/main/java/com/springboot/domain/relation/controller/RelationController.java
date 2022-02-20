@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RelationController {
     private final RelationService relationService;
 
-    @Operation(summary = "add relation api", description = "팔로우 관계 추가 api")
+    @Operation(summary = "팔로우 추가 api", description = "팔로우 관계 추가 api")
     @PostMapping
     public ResponseEntity<?> modProfile(@RequestBody @Valid CreateRelationDto createRelationDto) {
         return relationService.createRelation(createRelationDto.getFollower(), createRelationDto.getFollowed());

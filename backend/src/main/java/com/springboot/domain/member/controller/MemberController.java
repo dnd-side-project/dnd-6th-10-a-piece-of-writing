@@ -29,7 +29,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @Operation(summary = "nickname patch api", description = "닉네임 변경 api \npath에 nickname 필요")
+    @Operation(summary = "닉네임 설정 api", description = "닉네임 변경 api \npath에 nickname 필요")
     @PatchMapping(value = "/nickname/{nickname}")
     public ResponseEntity<?> modNickname(
             @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
@@ -37,7 +37,7 @@ public class MemberController {
         return memberService.modNickname(userDetailsImpl, nickname);
     }
 
-    @Operation(summary = "profile change api", description = "프로필 사진 변경 api")
+    @Operation(summary = "프로필 변경 api", description = "프로필 사진 변경 api")
     @PostMapping(value = "/profile")
     public ResponseEntity<?> modProfile(
             @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
@@ -45,7 +45,7 @@ public class MemberController {
         return memberService.modProfile(modProfileDto, userDetailsImpl);
     }
 
-    @Operation(summary = "get profile api", description = "프로필 조회 api")
+    @Operation(summary = "프로필 조회 api", description = "프로필 조회 api")
     @GetMapping(value = "/profile/{nickname}")
     public ResponseEntity<?> getMemberProfile(
             @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
@@ -53,14 +53,14 @@ public class MemberController {
         return memberService.getMemberProfile(userDetailsImpl, nickname);
     }
 
-    @Operation(summary = "팔로우 목록 api", description = "팔로우 목록 조회 api, path에 nickname 필요")
+    @Operation(summary = "팔로우 목록 조회 api", description = "팔로우 목록 조회 api")
     @GetMapping(value = "/follow/list/{nickname}")
     public ResponseEntity<? extends ResponseDto> getFollowList(
             @Parameter(description = "닉네임", required = true) @PathVariable String nickname) {
         return memberService.getFollowList(nickname);
     }
 
-    @Operation(summary = "팔로워 목록 api", description = "팔로워 목록 조회 api, path에  nickname 필요")
+    @Operation(summary = "팔로워 목록 조회 api", description = "팔로워 목록 조회 api")
     @GetMapping(value = "/follower/list/{nickname}")
     public ResponseEntity<? extends ResponseDto> getFollowerList(
             @Parameter(description = "닉네임", required = true) @PathVariable String nickname) {
