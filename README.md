@@ -32,15 +32,13 @@
 ## 브랜치 네이밍
 ⚙️ 네이밍 패턴
 
-브랜치 종류/이슈번호-간단한 설명	
+브랜치 종류/(backend,frontend) 간단한 설명	
 
-Ex) 이슈번호가 67인 '로그인 기능' 이슈를 구현하는 브랜치를 생성하는 경우, 브랜치 이름을
+Ex) backend에서 '로그인 기능' 이슈를 구현하는 브랜치를 생성하는 경우, 브랜치 이름을
 
 *feature/backend-Login* 로 작성한다.
 
 *feature/frontend-PostsCard* 로 작성한다.
-
--> 논의 후 수정 예정
 
 ## 커밋 메시지
 
@@ -93,7 +91,6 @@ Ex) 이슈번호가 67인 이슈의 기능을 구현한 뒤 커밋을 하는 상
 ### [ 팀원 & 파트 ]
 #### 🖥️ 프론트엔드
 - 서상혁 [Github](https://github.com/SeoSang)
-- 박해솔
 
 #### 🗄️ 백엔드
 - 신동민 [Github](https://github.com/carnival77)
