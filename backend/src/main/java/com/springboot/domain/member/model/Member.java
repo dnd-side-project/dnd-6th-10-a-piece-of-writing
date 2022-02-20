@@ -36,7 +36,7 @@ public class Member{
 
     @Builder.Default
     @Setter
-    private String profileUrl = "basic";
+    private String profileUrl = null;
 
     @Column(nullable = false)
     private String email;
