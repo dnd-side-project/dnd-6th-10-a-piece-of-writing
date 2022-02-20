@@ -6,9 +6,9 @@ import com.springboot.domain.member.model.Member;
 import com.springboot.domain.posts.model.dto.PageRequestDto;
 import com.springboot.domain.posts.model.dto.PageResultDto;
 import com.springboot.domain.posts.model.dto.PostsDto;
-import com.springboot.domain.posts.model.dto.PostsListResponseDto;
+//import com.springboot.domain.posts.model.dto.PostsListResponseDto;
 //import com.springboot.domain.posts.model.dto.PostsResponseDto;
-import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
+//import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
 //import com.springboot.domain.posts.model.dto.PostsUpdateRequestDto;
 
 import com.springboot.domain.posts.model.entity.Posts;

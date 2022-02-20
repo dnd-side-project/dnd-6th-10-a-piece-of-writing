@@ -2,7 +2,10 @@ package com.springboot.domain.posts;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springboot.domain.auth.jwt.JwtUtil;
+import com.springboot.domain.member.model.Member;
+import com.springboot.domain.member.repository.MemberRepository;
 import com.springboot.domain.posts.controller.PostsController;
+import com.springboot.domain.posts.model.dto.PostsDto;
 import com.springboot.domain.posts.model.entity.Posts;
 import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
 import com.springboot.domain.posts.repository.PostsRepository;
@@ -51,6 +54,9 @@ public class PostsControllerTest {
     private PostsRepository postsRepository;
 
     @Autowired
+    private MemberRepository memberRepository;
+
+    @Autowired
     private WebApplicationContext context;
 
     @Autowired
@@ -80,46 +86,50 @@ public class PostsControllerTest {
         accessToken = jwtUtil.createAuthToken("tester@gmail.com");
     }
 
-//    @Test
-//    @Transactional
-//    public void Posts_등록된다() throws Exception {
-//        //given
-//        String content = "content";
-//        String ref = "reference";
-//        PostsSaveRequestDto requestDto = PostsSaveRequestDto.builder()
-//            .content(content)
-//            .author("author")
-//            .ref(ref)
-//            .build();
+    @Test
+    @Transactional
+    public void Posts_등록된다() throws Exception {
+        //given
+        String content = "content";
+        String ref = "reference";
+
+        Member author = memberRepository.findAll().get(0);
+
+
+        PostsDto requestDto = PostsDto.builder()
+            .content(content)
+            .ref(ref)
+            .authorId(author.getId())
+            .build();
+
+        local_url = local_address + path;
+        deployed_url = deployed_address + path;
+
+        if (current_address.equals("local")){
+            url = local_url;
+        }
+        else{
+            url = deployed_url;
+        }
+
+        //when
+        mvc.perform(post(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("X-AUTH_TOKEN", accessToken)
+                .content(new ObjectMapper().writeValueAsString(requestDto)))
+            .andExpect(status().isOk());
+
+        //when
+//        ResponseEntity<Long> responseEntity = restTemplate.postForEntity(url,requestDto,Long.class);
 //
-//        local_url = local_address + path;
-//        deployed_url = deployed_address + path;
-//
-//        if (current_address.equals("local")){
-//            url = local_url;
-//        }
-//        else{
-//            url = deployed_url;
-//        }
-//
-//        //when
-//        mvc.perform(post(url)
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .header("X-AUTH_TOKEN", accessToken)
-//                .content(new ObjectMapper().writeValueAsString(requestDto)))
-//            .andExpect(status().isOk());
-//
-//        //when
-////        ResponseEntity<Long> responseEntity = restTemplate.postForEntity(url,requestDto,Long.class);
-////
-////        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-////        assertThat(responseEntity.getBody()).isEqualTo(1);
-//
-//        //then
-//        List<Posts> all = postsRepository.findAllByOrderByIdDesc();
-//        assertThat(all.get(0).getContent()).isEqualTo(content);
-//        assertThat(all.get(0).getRef()).isEqualTo(ref);
-//    }
+//        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+//        assertThat(responseEntity.getBody()).isEqualTo(1);
+
+        //then
+        List<Posts> all = postsRepository.findAllByOrderByIdDesc();
+        assertThat(all.get(0).getContent()).isEqualTo(content);
+        assertThat(all.get(0).getRef()).isEqualTo(ref);
+    }
 //
 //    @Test
 //    @Transactional

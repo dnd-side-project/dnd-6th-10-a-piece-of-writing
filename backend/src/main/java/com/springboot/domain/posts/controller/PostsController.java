@@ -5,9 +5,10 @@ import com.springboot.domain.common.model.ResponseDto;
 import com.springboot.domain.common.model.SuccessCode;
 import com.springboot.domain.common.service.ResponseServiceImpl;
 import com.springboot.domain.posts.model.dto.ExtractWordDto;
-import com.springboot.domain.posts.model.dto.PostsListResponseDto;
+import com.springboot.domain.posts.model.dto.PostsDto;
+//import com.springboot.domain.posts.model.dto.PostsListResponseDto;
 //import com.springboot.domain.posts.model.dto.PostsResponseDto;
-import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
+//import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
 import com.springboot.domain.posts.service.PostsService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,15 +29,15 @@ public class PostsController {
     private final ResponseServiceImpl responseServiceImpl;
 
     // 0219 변경 예정. author -> member
-//    // 업로드
-//    @Operation(summary = "save posts api", description = "글귀 업로드 api")
-//    @PostMapping
-//    public ResponseEntity<ResponseDto> save(@RequestBody PostsSaveRequestDto requestDto) {
-//
-//        Long savedPostId = postsService.save(requestDto);
-//
-//        return responseServiceImpl.successResult(SuccessCode.SAVE_POSTS_SUCCESS, savedPostId);
-//    }
+    // 업로드
+    @Operation(summary = "save posts api", description = "글귀 업로드 api")
+    @PostMapping
+    public ResponseEntity<ResponseDto> save(@RequestBody PostsDto requestDto) {
+
+        Long savedPostId = postsService.save(requestDto);
+
+        return responseServiceImpl.successResult(SuccessCode.SAVE_POSTS_SUCCESS, savedPostId);
+    }
 
     // 수정
 //    @PutMapping("/posts/{id}")

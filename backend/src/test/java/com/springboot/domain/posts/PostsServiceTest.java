@@ -1,5 +1,7 @@
 package com.springboot.domain.posts;
 
+import com.springboot.domain.member.model.Member;
+import com.springboot.domain.member.repository.MemberRepository;
 import com.springboot.domain.posts.model.dto.PageRequestDto;
 import com.springboot.domain.posts.model.dto.PageResultDto;
 import com.springboot.domain.posts.model.dto.PostsDto;
@@ -24,18 +26,21 @@ public class PostsServiceTest {
     @Autowired
     private PostsService service;
 
+    @Autowired
+    private MemberRepository memberRepository;
+
     // 0219 변경 예정. author -> member
     @DisplayName("[Service] Posts 등록 테스트")
     @Transactional
     @Test
     public void testRegister() {
 
+        Member author = memberRepository.findAll().get(0);
+
         PostsDto dto = PostsDto.builder()
             .ref("Save Test ref.")
             .content("Save Test content...")
-            .authorId(303L) //현재 데이터베이스에 존재하는 회원 정보
-//            .authorEmail("Test author email")
-//            .authorNickname("Test author Nickname")
+            .authorId(author.getId()) //현재 데이터베이스에 존재하는 회원 정보
             .build();
 
         Long id = service.save(dto);
