@@ -7,6 +7,9 @@ import com.springboot.domain.reply.repository.ReplyRepository;
 import java.util.Optional;
 import java.util.stream.IntStream;
 import javax.transaction.Transactional;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,23 +20,35 @@ public class ReplyRepositoryTests {
     @Autowired
     private ReplyRepository replyRepository;
 
+//    @BeforeEach
+//    public void tearDown(){
+//        replyRepository.deleteAll();
+//    }
+
+    @DisplayName("Reply 테스트 데이터 삽입")
     @Test
     @Transactional
     public void insertReply() {
 
         IntStream.rangeClosed(1, 300).forEach(i -> {
-            //1부터 100까지의 임의의 번호
-            long id = (long) (Math.random() * 100) + 202;
+            //1부터 300까지의 임의의 번호
+
+            long postsId = (long) (Math.random() * 100) + 202;
+            // 200 ~ 300 까지의 랜덤 id
 
             Posts posts = Posts.builder()
-                .id(id)
+                .id(postsId)
                 .build();
 
+            long replyerId = (long) (Math.random() * 100) + 202;
+            // 200 ~ 300 까지의 랜덤 id
+
             Member replyer = Member.builder().
-                id(id)
+                id(replyerId)
                 .build();
 
             Reply reply = Reply.builder()
+                .id((long)i)
                 .text("Reply......." + i)
                 .posts(posts)
                 .replyer(replyer)
@@ -46,6 +61,7 @@ public class ReplyRepositoryTests {
 
     }
 
+    @DisplayName("특정 ID Reply 와 연관된 Posts 조회")
     @Test
     public void readReply1() {
 
@@ -57,6 +73,11 @@ public class ReplyRepositoryTests {
         System.out.println(reply.getPosts());
 
     }
+
+//    @AfterEach
+//    public void tearDown2(){
+//        replyRepository.deleteAll();
+//    }
 
 
 }

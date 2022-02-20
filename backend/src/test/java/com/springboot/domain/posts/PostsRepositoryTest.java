@@ -1,5 +1,8 @@
 package com.springboot.domain.posts;
 
+import org.junit.jupiter.api.DisplayName;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.springboot.domain.member.model.Member;
@@ -34,6 +37,8 @@ public class PostsRepositoryTest {
 
     @Autowired
     PostsRepository postsRepository;
+
+    Logger logger = (Logger) LoggerFactory.getLogger(PostsRepositoryTest.class);
 
     // 테스트 후 데이터 삭제용
 //    @AfterEach
@@ -144,14 +149,14 @@ public class PostsRepositoryTest {
         result.stream().forEach(System.out::println);
     }
 
-    // 테스트 위한 다량 데이터 등록 테스트
+    @DisplayName("Posts 테스트 데이터 삽입")
     @Test
     @Transactional
     public void testInsertDummies() {
         IntStream.rangeClosed(1, 100).forEach(i -> {
 
             Member member = Member.builder()
-                .email("user"+i +"@aaa.com")
+                .email("user" + i + "@aaa.com")
                 .password("1111")
                 .build();
 
@@ -165,6 +170,7 @@ public class PostsRepositoryTest {
         });
     }
 
+    @DisplayName("특정 ID Posts 조회")
     @Test
     @Transactional
     public void testRead1() {
@@ -180,18 +186,20 @@ public class PostsRepositoryTest {
 
     }
 
+    @DisplayName("특정 ID Posts 와 연관된 Author 조회")
     @Test
     public void testReadWithAuthor() {
 
         Object result = postsRepository.getPostsWithAuthor(300L);
 
-        Object[] arr = (Object[])result;
+        Object[] arr = (Object[]) result;
 
         System.out.println("-------------------------------");
         System.out.println(Arrays.toString(arr));
 
     }
 
+    @DisplayName("특정 ID Posts 와 연관된 Reply 조회")
     @Test
     public void testGetPostsWithReply() {
 
@@ -201,6 +209,24 @@ public class PostsRepositoryTest {
             System.out.println(Arrays.toString(arr));
         }
     }
+
+    @DisplayName("전체 게시물 목록 조회 ( 게시물 + 작성자 + 댓글 작성자 ) 및 페이징 처리")
+    @Test
+    public void testWithAuthorReply(){
+
+        Pageable pageable = PageRequest.of(0,10, Sort.by("id").descending());
+
+        Page<Object[]> result = postsRepository.getPostsWithAuthorReply(pageable);
+
+        result.get().forEach(row -> {
+
+            Object[] arr = (Object[])row;
+
+            System.out.println(Arrays.toString(arr));
+        });
+    }
+
+
 
     //    @Test
 //    public void 게시글_1개조회() {
