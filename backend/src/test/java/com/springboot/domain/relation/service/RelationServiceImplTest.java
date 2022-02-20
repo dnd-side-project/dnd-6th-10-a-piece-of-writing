@@ -39,13 +39,8 @@ class RelationServiceImplTest {
 
         relationRepository.save(Relation.builder().follower(follower01).followed(followed).build());
         relationRepository.save(Relation.builder().follower(follower02).followed(followed).build());
-
         relationRepository.save(Relation.builder().follower(followed).followed(follower02).build());
 
-        // 01 과 02는 03을 팔로우한다
-        // 03 은 02를 맞팔한다
-
-        Assertions.assertEquals(followed.getFollowerCount(), 2);
-        Assertions.assertEquals(followed.getFollowCount(), 1);
+        Assertions.assertEquals(3, relationRepository.findAll().size());
     }
 }
