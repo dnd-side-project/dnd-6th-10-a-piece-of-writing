@@ -38,11 +38,11 @@ public class Reply extends BaseTime {
 //    private String replyer;
 
     @ManyToOne
-    @JoinColumn(name = "replyer_id")
+//    @JoinColumn(name = "replyer_id")
     private Member replyer;
 
     @ManyToOne
-    @JoinColumn(name = "posts_id")
+//    @JoinColumn(name = "posts_id")
     private Posts posts;
 
 }

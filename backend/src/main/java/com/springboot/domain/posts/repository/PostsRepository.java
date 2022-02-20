@@ -1,6 +1,7 @@
 package com.springboot.domain.posts.repository;
 
 import com.springboot.domain.posts.model.entity.Posts;
+import com.springboot.domain.posts.repository.search.SearchBoardRepository;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,7 +11,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 
-public interface PostsRepository extends JpaRepository<Posts, Long>, QuerydslPredicateExecutor<Posts> {
+public interface PostsRepository extends JpaRepository<Posts, Long>,
+    QuerydslPredicateExecutor<Posts>,
+    SearchBoardRepository {
 
     List<Posts> findAllByOrderByIdDesc();
 
@@ -23,7 +26,7 @@ public interface PostsRepository extends JpaRepository<Posts, Long>, QuerydslPre
     List<Object[]> getPostsWithReply(@Param("id") Long bno);
 
     //게시물 목록 조회 ( 게시물 + 작성자 + 댓글 작성자 ) 및 페이징 처리
-    @Query(value ="SELECT p, a, r " +
+    @Query(value = "SELECT p, a, r " +
         " FROM Posts p " +
         " LEFT JOIN p.author a " +
         " LEFT JOIN Reply r ON r.posts = p " +
@@ -32,7 +35,7 @@ public interface PostsRepository extends JpaRepository<Posts, Long>, QuerydslPre
     Page<Object[]> getPostsListsWithAuthorReply(Pageable pageable);
 
     //게시물 목록 조회 ( 게시물 + 작성자  ) 및 페이징 처리
-    @Query(value ="SELECT p, a" +
+    @Query(value = "SELECT p, a" +
         " FROM Posts p " +
         " LEFT JOIN p.author a " +
         " GROUP BY p")

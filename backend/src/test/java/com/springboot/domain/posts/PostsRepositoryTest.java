@@ -1,5 +1,8 @@
 package com.springboot.domain.posts;
 
+import com.springboot.domain.posts.model.dto.PageRequestDto;
+import com.springboot.domain.posts.model.dto.PageResultDto;
+import com.springboot.domain.posts.model.dto.PostsDto;
 import org.junit.jupiter.api.DisplayName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -153,7 +156,7 @@ public class PostsRepositoryTest {
     @Test
     @Transactional
     public void testInsertDummies() {
-        IntStream.rangeClosed(500,600).forEach(i -> {
+        IntStream.rangeClosed(500, 600).forEach(i -> {
 //        IntStream.rangeClosed(1, 100).forEach(i -> {
 
             Member member = Member.builder()
@@ -214,18 +217,39 @@ public class PostsRepositoryTest {
 
     @DisplayName("[Repository] 게시물 목록 조회 ( 게시물 + 작성자 + 댓글 작성자 ) 및 페이징 처리")
     @Test
-    public void testWithAuthorReply(){
+    public void testWithAuthorReply() {
 
-        Pageable pageable = PageRequest.of(0,10, Sort.by("id").descending());
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("id").descending());
 
         Page<Object[]> result = postsRepository.getPostsListsWithAuthorReply(pageable);
 
         result.get().forEach(row -> {
 
-            Object[] arr = (Object[])row;
+            Object[] arr = (Object[]) row;
 
             System.out.println(Arrays.toString(arr));
         });
+    }
+
+    @DisplayName("[Repository] JPQL search 테스트")
+    @Test
+    public void testSearch1() {
+
+        postsRepository.search1();
+
+    }
+
+    @DisplayName("[Repository] JPQL 페이지네이션 search 테스트")
+    @Test
+    public void testSearchPage() {
+
+        Pageable pageable =
+            PageRequest.of(0,10,
+                Sort.by("id").descending()
+                    .and(Sort.by("content").ascending()));
+
+        Page<Object[]> result = postsRepository.searchPage("c", "1", pageable);
+
     }
 
 

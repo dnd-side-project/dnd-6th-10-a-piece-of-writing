@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
@@ -101,6 +103,25 @@ public class PostsServiceTest {
 
         service.removeWithReplies(id);
 
+    }
+
+    @DisplayName("JPQL 페이지네이션 search 테스트 ")
+    @Test
+    public void testSearch(){
+
+        PageRequestDto pageRequestDTO = new PageRequestDto();
+        pageRequestDTO.setPage(1);
+        pageRequestDTO.setSize(10);
+        pageRequestDTO.setType("c");
+        pageRequestDTO.setKeyword("1");
+
+//        Pageable pageable = pageRequestDTO.getPageable(Sort.by("id").descending());
+
+        PageResultDto<PostsDto, Object[]> result = service.getList(pageRequestDTO);
+
+        for (PostsDto postsDto : result.getDtoList()) {
+            System.out.println(postsDto);
+        }
     }
 
 //

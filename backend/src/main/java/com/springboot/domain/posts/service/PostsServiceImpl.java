@@ -250,12 +250,12 @@ public class PostsServiceImpl implements PostsService {
 
         Function<Object[], PostsDto> fn = (en -> entityToDTO((Posts)en[0],(Member)en[1]));
 
-        Page<Object[]> result = postsRepository.getPostsListWithAuthor(
-                pageRequestDTO.getPageable(Sort.by("id").descending())  );
-//        Page<Object[]> result = postsRepository.searchPage(
-//            pageRequestDTO.getType(),
-//            pageRequestDTO.getKeyword(),
-//            pageRequestDTO.getPageable(Sort.by("bno").descending())  );
+//        Page<Object[]> result = postsRepository.getPostsListWithAuthor(
+//                pageRequestDTO.getPageable(Sort.by("id").descending())  );
+        Page<Object[]> result = postsRepository.searchPage(
+            pageRequestDTO.getType(),
+            pageRequestDTO.getKeyword(),
+            pageRequestDTO.getPageable(Sort.by("id").descending())  );
 
         return new PageResultDto<>(result, fn);
     }
