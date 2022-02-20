@@ -20,6 +20,7 @@ public interface PostsService {
 
     // 0219 변경 예정. author -> member
 //    public Long save(PostsSaveRequestDto requestDto);
+    public Long save(PostsDto requestDto);
 
 //    public Long update(Long id, PostsUpdateRequestDto requestDto);
 
@@ -43,12 +44,14 @@ public interface PostsService {
     // 0219 변경 예정. author -> member
 //    PageResultDto<PostsListResponseDto, Posts> getList(PageRequestDto requestDTO);
 
+
+    // PostsDto To Posts Entity
     default Posts dtoToEntity(PostsDto dto){
 
         Member author = Member.builder()
             .id(dto.getAuthorId())
-            .email(dto.getAuthorEmail())
-            .nickname(dto.getAuthorNickname())
+//            .email(dto.getAuthorEmail())
+//            .nickname(dto.getAuthorNickname())
             .build();
 
 //        Member replyer = Member.builder()

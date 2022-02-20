@@ -153,9 +153,11 @@ public class PostsRepositoryTest {
     @Test
     @Transactional
     public void testInsertDummies() {
-        IntStream.rangeClosed(1, 100).forEach(i -> {
+        IntStream.rangeClosed(500,600).forEach(i -> {
+//        IntStream.rangeClosed(1, 100).forEach(i -> {
 
             Member member = Member.builder()
+//                .id((long)i)
                 .email("user" + i + "@aaa.com")
                 .password("1111")
                 .build();

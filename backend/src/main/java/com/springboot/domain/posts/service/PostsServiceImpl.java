@@ -22,6 +22,7 @@ import com.springboot.domain.common.error.exception.BusinessException;
 import com.springboot.domain.common.error.exception.ErrorCode;
 import com.springboot.domain.posts.model.dto.PageRequestDto;
 import com.springboot.domain.posts.model.dto.PageResultDto;
+import com.springboot.domain.posts.model.dto.PostsDto;
 import com.springboot.domain.posts.model.entity.Posts;
 import com.springboot.domain.posts.model.dto.PostsListResponseDto;
 //import com.springboot.domain.posts.model.dto.PostsResponseDto;
@@ -39,6 +40,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -48,6 +50,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+@Log4j2
 @RequiredArgsConstructor
 @Service
 public class PostsServiceImpl implements PostsService {
@@ -61,6 +64,20 @@ public class PostsServiceImpl implements PostsService {
 //
 //        return postsRepository.save(requestDto.toEntity()).getId();
 //    }
+    @Override
+    @Transactional
+    public Long save(PostsDto requestDto) {
+
+//        return postsRepository.save(requestDto.toEntity()).getId();
+
+        log.info(requestDto);
+
+        Posts posts = dtoToEntity(requestDto);
+
+        postsRepository.save(posts);
+
+        return posts.getId();
+    }
 
 //    @Transactional
 //    public Long update(Long id, PostsUpdateRequestDto requestDto){

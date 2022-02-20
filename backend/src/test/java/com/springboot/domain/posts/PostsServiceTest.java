@@ -2,6 +2,7 @@ package com.springboot.domain.posts;
 
 import com.springboot.domain.posts.model.dto.PageRequestDto;
 import com.springboot.domain.posts.model.dto.PageResultDto;
+import com.springboot.domain.posts.model.dto.PostsDto;
 import com.springboot.domain.posts.model.dto.PostsListResponseDto;
 import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
 import com.springboot.domain.posts.model.entity.Posts;
@@ -21,20 +22,21 @@ public class PostsServiceTest {
     private PostsService service;
 
     // 0219 변경 예정. author -> member
-//    // 등록 테스트
-//    @Test
-//    @Transactional
-//    public void testRegister() {
-//
-//        PostsSaveRequestDto PostsDTO = PostsSaveRequestDto.builder()
-//            .ref("Sample Ref...")
-//            .content("Sample Content...")
-//            .author("user0")
-//            .build();
-//
-//        System.out.println(service.save(PostsDTO));
-//
-//    }
+    // 등록 테스트
+    @Test
+    public void testRegister() {
+
+        PostsDto dto = PostsDto.builder()
+            .ref("Save Test ref.")
+            .content("Save Test content...")
+            .authorId(303L) //현재 데이터베이스에 존재하는 회원 정보
+//            .authorEmail("Test author email")
+//            .authorNickname("Test author Nickname")
+            .build();
+
+        Long id = service.save(dto);
+
+    }
 //
 //    // 목록 조회 테스트
 //    @Test

@@ -30,8 +30,8 @@ public class Posts extends BaseTime {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String ref;
 
-//    @ManyToOne (fetch = FetchType.LAZY)
-    @ManyToOne (fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne (fetch = FetchType.LAZY)
+//    @ManyToOne (fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "author_id")
     private Member author;
 
