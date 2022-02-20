@@ -31,6 +31,7 @@ public class Posts extends BaseTime {
 
 //    @ManyToOne (fetch = FetchType.LAZY)
     @ManyToOne (fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "author_id")
     private Member author;
 
     public void setAuthor(Member author) {

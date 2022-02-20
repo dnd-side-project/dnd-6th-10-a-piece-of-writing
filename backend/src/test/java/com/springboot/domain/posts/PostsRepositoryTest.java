@@ -146,7 +146,7 @@ public class PostsRepositoryTest {
 
     // 테스트 위한 다량 데이터 등록 테스트
     @Test
-//    @Transactional
+    @Transactional
     public void testInsertDummies() {
         IntStream.rangeClosed(1, 100).forEach(i -> {
 

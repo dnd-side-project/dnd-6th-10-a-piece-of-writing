@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,9 +35,14 @@ public class Reply extends BaseTime {
 //    @ManyToOne
 //    private Member replyer;
 
-    private String replyer;
+//    private String replyer;
 
     @ManyToOne
+    @JoinColumn(name = "replyer_id")
+    private Member replyer;
+
+    @ManyToOne
+    @JoinColumn(name = "posts_id")
     private Posts posts;
 
 }
