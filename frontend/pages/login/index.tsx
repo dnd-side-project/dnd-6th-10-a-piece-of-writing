@@ -33,6 +33,7 @@ const Login: React.FC<ServerSideProps> = ({ me }) => {
   return (
     <div className={cx('w-full', 'h-screen', CENTER_FLEX)}>
       <div className={cx('Frame')}>
+        <span className={'text-t24 -mt-4 font-semibold'}>로그인</span>
         <GrayInput placeholder={'이메일'} value={email} onChange={(e) => setEmail(e.target.value)} />
         <GrayInput
           type={'password'}

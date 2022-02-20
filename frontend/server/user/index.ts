@@ -1,5 +1,6 @@
 import { Cookies } from 'react-cookie'
 
+import { UserInfo } from '@/components/_user/type'
 import { KEY_ACCESS_TOKEN, KEY_HEADER_ACCESS_TOKEN, KEY_HEADER_REFRESH_TOKEN, KEY_REFRESH_TOKEN } from '@/constant'
 import baxios, { RESPONSE_TYPE } from '@/server/axios/baxios'
 
@@ -45,8 +46,12 @@ export const login = async (data: { email: string; password: string }): Promise<
     if (result.status === 200) {
       window.sessionStorage.setItem(KEY_ACCESS_TOKEN, result?.data?.data?.['access-token'])
       window.sessionStorage.setItem(KEY_REFRESH_TOKEN, result?.data?.data?.['refresh-token-uuid'])
-      cookies.set(KEY_ACCESS_TOKEN, result?.data?.data?.['access-token'])
-      cookies.set(KEY_REFRESH_TOKEN, result?.data?.data?.['refresh-token-uuid'])
+      cookies.set(KEY_ACCESS_TOKEN, result?.data?.data?.['access-token'], {
+        secure: true,
+      })
+      cookies.set(KEY_REFRESH_TOKEN, result?.data?.data?.['refresh-token-uuid'], {
+        secure: true,
+      })
 
       return { success: true, message: '로그인에 성공했습니다!' }
     }
@@ -78,5 +83,50 @@ export const loadMe = async (accessToken: string, refreshToken: string): Promise
     }
   } catch (e) {
     return { success: false, message: '내 정보 로드에 실패했습니다.' }
+  }
+}
+
+/*
+  logout 함수
+  client 에서만 실행되어야 한다.
+ */
+export const logout = async (setMe: (me: UserInfo) => void): Promise<RESPONSE_TYPE> => {
+  try {
+    const result = await baxios.get('/auth/logout')
+    if (result.status === 200) {
+      setMe(null)
+      window.sessionStorage.clear()
+      cookies.remove(KEY_ACCESS_TOKEN, { secure: true })
+      cookies.remove(KEY_REFRESH_TOKEN, { secure: true })
+      return {
+        success: true,
+        message: '로그아웃에 성공했습니다.',
+      }
+    }
+    return {
+      success: false,
+      message: '로그아웃에 실패했습니다.',
+    }
+  } catch (e) {
+    return { success: false, message: '로그아웃 실패' }
+  }
+}
+
+export const modifyUser = async (nickname: string): Promise<RESPONSE_TYPE> => {
+  try {
+    const result = await baxios.patch(`/member/nickname/${nickname}`)
+    if (result.status === 200) {
+      return {
+        success: true,
+        data: nickname,
+        message: '내 정보 수정에 성공했습니다.',
+      }
+    }
+    return {
+      success: false,
+      message: '내 정보 수정에 실패했습니다.',
+    }
+  } catch (e) {
+    return { success: false, message: '에러 발생, 내 정보 수정에 실패했습니다.' }
   }
 }

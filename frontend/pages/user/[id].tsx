@@ -15,9 +15,10 @@ type ServerSideProps = { me: UserInfoType }
 
 const User: React.FC<ServerSideProps> = ({ me }) => {
   useSsrMe(me)
+  console.log({ me })
   const router = useRouter()
   const { id } = router.query
-  const isMe = me?.memberId === id
+  const isMe = me?.memberId === Number(id)
 
   return (
     <>
