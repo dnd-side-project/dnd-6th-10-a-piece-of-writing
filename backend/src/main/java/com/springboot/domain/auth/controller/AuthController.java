@@ -7,7 +7,6 @@ import com.springboot.domain.common.model.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import com.springboot.domain.member.service.MemberService;
 import org.springframework.http.ResponseEntity;

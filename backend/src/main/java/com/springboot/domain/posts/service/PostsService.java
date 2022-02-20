@@ -16,25 +16,14 @@ import org.springframework.web.multipart.MultipartFile;
 public interface PostsService {
 
     public Long save(PostsSaveRequestDto requestDto);
-
 //    public Long update(Long id, PostsUpdateRequestDto requestDto);
-
     public Long delete(Long id);
-
     public List<PostsListResponseDto> findAllPostsOrderByIdDesc(int page);
-
     public List<PostsListResponseDto> findAllPostsBySearch(int page, String content, String type);
-
     public String getFileUuid();
-
     public GoogleCredentials getCredentials();
-
-    public String postsImgUpload(GoogleCredentials credentials, MultipartFile multipartFile,
-        String fileName);
-
-    public String postsImgExtractWords(GoogleCredentials credentials, MultipartFile multipartFile,
-        String imageUrl);
-
+    public String postsImgUpload(MultipartFile multipartFile, String fileName);
+    public String postsImgExtractWords(MultipartFile multipartFile, String imageUrl);
     PageResultDto<PostsListResponseDto, Posts> getList(PageRequestDto requestDTO);
 
     // PostsSaveRequestDto TO Posts Entity. PostsSave 적용 예정.
