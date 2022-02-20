@@ -13,6 +13,7 @@ type Props = {}
 const User: React.FC<Props> = ({}) => {
   const router = useRouter()
   const { id } = router.query
+  const isMe = true
   console.log({ id })
   console.log(router.asPath)
 
@@ -20,8 +21,8 @@ const User: React.FC<Props> = ({}) => {
     <>
       <div className={'flex flex-col align-middle justify-center items-center w-full'}>
         <Container>
-          <UserInfo />
-          <UserPostLabel />
+          <UserInfo isMe={isMe} />
+          <UserPostLabel isMe={isMe} />
           <UserTagCarousel />
           <UserPosts />
         </Container>

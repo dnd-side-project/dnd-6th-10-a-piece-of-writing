@@ -11,6 +11,8 @@ const index = () => {
       <p className={'text-h2 ml-20'}>Pages</p>
       <div className={'grid grid-cols-3 gap-2 w-full h-120 p-5'}>
         <DummyCard href={'/feed'} title={'메인'} content={'메인 피드입니다. (목업상태)'} />
+        <DummyCard href={'/modify'} title={'수정'} content={'프로필 수정입니다. (목업상태)'} />
+        <DummyCard href={'/follower'} title={'팔로워'} content={'팔로워입니다. (목업상태)'} />
         <DummyCard href={'/user/123'} title={'유저프로필'} content={'유저 프로필입니다. (목업상태)'} />
         <DummyCard href={'/postcard'} title={'포스트'} content={'포스트 예시입니다. (목업상태)'} />
         <DummyCard href={'/withdraw'} title={'탈퇴'} content={'탈퇴하기 페이지'} />
