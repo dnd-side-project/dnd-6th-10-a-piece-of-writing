@@ -4,6 +4,7 @@ import com.springboot.domain.auth.model.UserDetailsImpl;
 import com.springboot.domain.common.model.ResponseDto;
 import com.springboot.domain.member.model.Dto.ModProfileDto;
 import com.springboot.domain.member.service.MemberService;
+import io.swagger.annotations.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import javax.validation.Valid;
@@ -31,7 +32,7 @@ public class MemberController {
 
     @Operation(summary = "닉네임 설정 api", description = "닉네임 변경 api \npath에 nickname 필요")
     @PatchMapping(value = "/nickname/{nickname}")
-    public ResponseEntity<?> modNickname(
+    public ResponseEntity<? extends ResponseDto> modNickname(
             @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
             @Parameter(description = "닉네임", required = true) @PathVariable @NotBlank String nickname) {
         return memberService.modNickname(userDetailsImpl, nickname);
@@ -39,15 +40,22 @@ public class MemberController {
 
     @Operation(summary = "프로필 변경 api", description = "프로필 사진 변경 api")
     @PostMapping(value = "/profile")
-    public ResponseEntity<?> modProfile(
+    public ResponseEntity<? extends ResponseDto> modProfile(
             @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
             @Valid ModProfileDto modProfileDto) {
         return memberService.modProfile(modProfileDto, userDetailsImpl);
     }
 
+    @Operation(summary = "내 프로필 조회 api", description = "프로필 조회 api")
+    @GetMapping(value = "/profile")
+    public ResponseEntity<? extends ResponseDto> getMyProfile(
+            @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
+        return memberService.getMyProfile(userDetailsImpl);
+    }
+
     @Operation(summary = "프로필 조회 api", description = "프로필 조회 api")
     @GetMapping(value = "/profile/{nickname}")
-    public ResponseEntity<?> getMemberProfile(
+    public ResponseEntity<? extends ResponseDto> getMemberProfile(
             @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
             @Parameter(description = "닉네임", required = true) @PathVariable @NotBlank String nickname) {
         return memberService.getMemberProfile(userDetailsImpl, nickname);

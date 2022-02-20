@@ -30,6 +30,8 @@ public interface MemberService {
     public ResponseEntity<? extends ResponseDto> modProfile(ModProfileDto modProfileDto,
             UserDetailsImpl userDetailsImpl);
 
+    public ResponseEntity<? extends ResponseDto> getMyProfile(UserDetailsImpl userDetailsImpl);
+
     public ResponseEntity<? extends ResponseDto> getMemberProfile(UserDetailsImpl userDetailsImpl, String nickname);
 
     public ResponseEntity<? extends ResponseDto> getFollowList(String nickname);

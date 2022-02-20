@@ -16,6 +16,7 @@ import com.springboot.domain.common.service.ResponseService;
 import com.springboot.domain.member.model.Dto.FollowListDto;
 import com.springboot.domain.member.model.Dto.MemberProfileDto;
 import com.springboot.domain.member.model.Dto.ModProfileDto;
+import com.springboot.domain.member.model.Dto.MyProfileDto;
 import com.springboot.domain.member.model.Member;
 import com.springboot.domain.member.repository.MemberRepository;
 import com.springboot.domain.posts.service.PostsService;
@@ -68,6 +69,12 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void deleteMemberByEmail(Member member) {
         memberRepository.delete(member);
+    }
+
+    @Override
+    public ResponseEntity<? extends ResponseDto> getMyProfile(UserDetailsImpl userDetailsImpl) {
+        return responseService.successResult(SuccessCode.GET_PROFILE_SUCCESS,
+                MyProfileDto.memberToDto(userDetailsImpl.getMember()));
     }
 
     @Override
