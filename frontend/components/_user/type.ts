@@ -5,7 +5,7 @@ export type UserInfo = {
   email?: string
   followed?: boolean
   authority?: string
-}
+} | null
 
 export const DUMMY_USER1: UserInfo = {
   memberId: '1',

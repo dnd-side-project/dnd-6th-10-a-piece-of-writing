@@ -1,14 +1,19 @@
 import React from 'react'
 
+import { GetServerSidePropsContext } from 'next'
+
+import { KEY_ACCESS_TOKEN, KEY_REFRESH_TOKEN } from '@/constant'
 import { loadMe } from '@/server/user'
 
 export function withAuthServerSideProps(getServerSidePropsFunc?: Function) {
-  return async (context: any) => {
-    const user = await loadMe()
+  return async (context: GetServerSidePropsContext) => {
+    console.log([context?.req?.cookies?.[KEY_ACCESS_TOKEN], context?.req?.cookies?.[KEY_REFRESH_TOKEN]])
+    const res = await loadMe(context?.req?.cookies?.[KEY_ACCESS_TOKEN], context?.req?.cookies?.[KEY_REFRESH_TOKEN])
+    const me = res.success ? res.data : null
     if (getServerSidePropsFunc) {
-      return { props: { user, data: await getServerSidePropsFunc(context, user) } }
+      return { props: { me, data: await getServerSidePropsFunc(context, me) } }
     }
-    return { props: { user, data: { props: { user } } } }
+    return { props: { me, data: { props: { me } } } }
   }
 }
 

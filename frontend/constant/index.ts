@@ -3,5 +3,8 @@ export const BACKEND_URL =
     ? 'http://www.pieceofwriting.kro.kr:8080'
     : 'http://www.pieceofwriting.kro.kr:8080'
 
-export const SESSION_STORAGE_KEY_ACCESS_TOKEN = 'apowa'
-export const SESSION_STORAGE_KEY_REFRESH_TOKEN = 'apowr'
+export const KEY_HEADER_ACCESS_TOKEN = 'X-AUTH_TOKEN'
+export const KEY_HEADER_REFRESH_TOKEN = 'X-AUTH-REFRESH_TOKEN'
+
+export const KEY_ACCESS_TOKEN = 'apowa'
+export const KEY_REFRESH_TOKEN = 'apowr'
