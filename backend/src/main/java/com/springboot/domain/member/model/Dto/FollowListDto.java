@@ -4,20 +4,20 @@ import com.springboot.domain.member.model.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
-public class MemberProfileDto {
+public class FollowListDto {
     private Long id;
     private String nickname;
     private String profileUrl;
-    private String email;
-    private int follow;
-    private int follower;
-    private boolean alreadyFollow;
+
+    public static FollowListDto entityToDto(Member member) {
+        return FollowListDto.builder()
+                .id(member.getId())
+                .nickname(member.getNickname())
+                .profileUrl(member.getProfileUrl())
+                .build();
+    }
 }

@@ -13,13 +13,16 @@ import com.springboot.domain.common.error.exception.ErrorCode;
 import com.springboot.domain.common.model.ResponseDto;
 import com.springboot.domain.common.model.SuccessCode;
 import com.springboot.domain.common.service.ResponseService;
+import com.springboot.domain.member.model.Dto.FollowListDto;
 import com.springboot.domain.member.model.Dto.MemberProfileDto;
 import com.springboot.domain.member.model.Dto.ModProfileDto;
 import com.springboot.domain.member.model.Member;
 import com.springboot.domain.member.repository.MemberRepository;
 import com.springboot.domain.posts.service.PostsService;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -129,13 +132,16 @@ public class MemberServiceImpl implements MemberService {
     }
 
     private boolean alreadyFollow(UserDetailsImpl userDetailsImpl, Long memberId) {
-        return userDetailsImpl.getMember().getFollower().stream().anyMatch(R -> R.getFollowed().getId() == memberId);
+        return userDetailsImpl.getMember().getFollower().stream()
+                .anyMatch(R -> R.getFollowed().getId() == memberId);
     }
 
     @Override
-    public ResponseEntity<? extends ResponseDto> getMemberProfile(UserDetailsImpl userDetailsImpl, String nickname) {
+    public ResponseEntity<? extends ResponseDto> getMemberProfile(UserDetailsImpl userDetailsImpl,
+            String nickname) {
         Member member = findMemberByNickname(nickname);
         MemberProfileDto memberProfileDto = MemberProfileDto.builder()
+                .id(member.getId())
                 .nickname(nickname)
                 .profileUrl(member.getProfileUrl())
                 .email(member.getEmail())
@@ -149,28 +155,26 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public ResponseEntity<? extends ResponseDto> getFollowList(String nickname) {
-        if(nickname == null) {
+        if (nickname == null) {
             throw new BusinessException(ErrorCode.PARAMETER_MISSING_ERROR);
         }
-        Map<String, String> data = new HashMap<>();
+        List<FollowListDto> data = new ArrayList<>();
         Member member = findMemberByNickname(nickname);
         member.getFollower().forEach(R -> {
-            Member friend = findMemberById(R.getFollowed().getId());
-            data.put(friend.getNickname(), friend.getProfileUrl());
+            data.add(FollowListDto.entityToDto(findMemberById(R.getFollowed().getId())));
         });
         return responseService.successResult(SuccessCode.GET_FOLLOW_LIST_SUCCESS, data);
     }
 
     @Override
     public ResponseEntity<? extends ResponseDto> getFollowerList(String nickname) {
-        if(nickname == null) {
+        if (nickname == null) {
             throw new BusinessException(ErrorCode.PARAMETER_MISSING_ERROR);
         }
-        Map<String, String> data = new HashMap<>();
+        List<FollowListDto> data = new ArrayList<>();
         Member member = findMemberByNickname(nickname);
         member.getFollowed().forEach(R -> {
-            Member friend = findMemberById(R.getFollower().getId());
-            data.put(friend.getNickname(), friend.getProfileUrl());
+            data.add(FollowListDto.entityToDto(findMemberById(R.getFollower().getId())));
         });
         return responseService.successResult(SuccessCode.GET_FOLLOWER_LIST_SUCCESS, data);
     }
