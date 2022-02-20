@@ -26,7 +26,8 @@ public enum SuccessCode {
     SAVE_POSTS_SUCCESS("게시물 저장 성공","PM002",200),
     DELETE_POSTS_SUCCESS("게시물 삭제 성공","PM003",200),
     SELECT_ALL_POSTS_SUCCESS("모든 게시물 조회","PM004",200),
-    SELECT_POSTS_SEARCH_SUCCESS("검색된 게시물 조회","PM005",200)
+    SELECT_POSTS_SEARCH_SUCCESS("검색된 게시물 조회","PM005",200),
+    SELECT_POSTS_SUCCESS("게시물 조회","PM006",200)
     ;
 
     private final String message;

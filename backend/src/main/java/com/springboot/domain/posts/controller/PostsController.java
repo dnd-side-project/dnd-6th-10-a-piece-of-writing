@@ -56,29 +56,48 @@ public class PostsController {
         return responseServiceImpl.successResult(SuccessCode.DELETE_POSTS_SUCCESS, DeletedPostId);
     }
 
-    // 0219 변경 예정. author -> member
-//    // 전체 게시물 내림차순 조회
-//    @Operation(summary = "select all posts api", description = "모든 글귀 검색 api. request 받은 페이지 기준으로 메인 화면에서 글귀를 최신 순으로 페이지당 size개씩 조회.")
-//    @GetMapping("/page/{page}")
-//    public ResponseEntity<ResponseDto> findAllPostsOrderByIdDesc(@PathVariable int page) {
-////        return postsService.findAllPostsOrderById();
-//
+    // 게시물 1개 조회
+    @Operation(summary = "select all posts api", description = "모든 글귀 검색 api. request 받은 페이지 기준으로 메인 화면에서 글귀를 최신 순으로 페이지당 10개씩 조회.")
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseDto> findAllPostsOrderByIdDesc(@PathVariable long id) {
+//        return postsService.findAllPostsOrderById();
+
 //        List<PostsListResponseDto> posts = postsService.findAllPostsOrderByIdDesc(page);
-//
-//        return responseServiceImpl.successResult(SuccessCode.SELECT_ALL_POSTS_SUCCESS, posts);
-//    }
-//
-//    // 검색 내용 포함 게시물 내림차순 조회
-//    @Operation(summary = "select posts containing searched content api", description = "검색된 type(c=content, a=author, t=topic)과 keyword를 포함한 게시물 조회 api. 검색 화면에서 글귀를 최신 순으로 페이지당 size개씩 조회.")
+
+        PostsDto postsDto = postsService.get(id);
+
+        return responseServiceImpl.successResult(SuccessCode.SELECT_POSTS_SUCCESS, postsDto);
+    }
+
+    // 0219 변경 예정. author -> member
+    // 전체 게시물 내림차순 조회
+    @Operation(summary = "select all posts api", description = "모든 글귀 검색 api. request 받은 페이지 기준으로 메인 화면에서 글귀를 최신 순으로 페이지당 size개씩 조회.")
+    @GetMapping("/list")
+    public ResponseEntity<ResponseDto> findAllPostsOrderByIdDesc(@RequestParam int page,
+        @RequestParam int size) {
+//        return postsService.findAllPostsOrderById();
+
+//        List<PostsListResponseDto> posts = postsService.findAllPostsOrderByIdDesc(page);
+
+        List<PostsDto> posts = postsService.findAllPostsOrderByIdDesc(page, size);
+
+        return responseServiceImpl.successResult(SuccessCode.SELECT_ALL_POSTS_SUCCESS, posts);
+    }
+
+    // 검색 내용 포함 게시물 내림차순 조회
+    @Operation(summary = "search posts api", description = "검색된 type(c=content, a=author, t=topic)과 keyword를 포함한 게시물 조회 api. 검색 화면에서 글귀를 최신 순으로 페이지당 size개씩 조회.")
 //    @GetMapping("/type/{type}/keyword/{keyword}/page/{page}")
-//    public ResponseEntity<ResponseDto> findAllPostsBySearch(@PathVariable int page,
-//        @PathVariable String keyword, @PathVariable String type) {
-//
+    @GetMapping("/search")
+    public ResponseEntity<ResponseDto> findAllPostsBySearch(@RequestParam int page,
+        @RequestParam int size, @RequestParam String keyword, @RequestParam String type) {
+
 //        List<PostsListResponseDto> posts = postsService.findAllPostsBySearch(page, keyword, type);
-//
-//        return responseServiceImpl.successResult(
-//            SuccessCode.SELECT_POSTS_SEARCH_SUCCESS, posts);
-//    }
+
+        List<PostsDto> posts = postsService.findAllPostsBySearch(page, size, keyword, type);
+
+        return responseServiceImpl.successResult(
+            SuccessCode.SELECT_POSTS_SEARCH_SUCCESS, posts);
+    }
 
     @ApiOperation(value = "이미지 텍스트 추출", notes = "이미지를 전송해 텍스트를 추출한다.")
     @PostMapping(value = "/img-extract", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

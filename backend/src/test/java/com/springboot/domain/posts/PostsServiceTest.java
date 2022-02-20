@@ -46,15 +46,15 @@ public class PostsServiceTest {
         Long id = service.save(dto);
 
     }
-//
-//    // 목록 조회 테스트
+
+    // 목록 조회 테스트
 //    @Test
 //    public void testList() {
 //
-////        PageRequestDto pageRequestDTO = PageRequestDto.builder()
-////            .page(1)
-////            .size(10)
-////            .build();
+//        PageRequestDto pageRequestDTO = PageRequestDto.builder()
+//            .page(1)
+//            .size(10)
+//            .build();
 //
 //        PageRequestDto pageRequestDTO = new PageRequestDto();
 //
@@ -110,7 +110,7 @@ public class PostsServiceTest {
 
     }
 
-    @DisplayName("JPQL 페이지네이션 search 테스트 ")
+    @DisplayName("[Service] 조건부 목록 조회 페이지네이션 search 테스트 ")
     @Test
     public void testSearch(){
 

@@ -94,7 +94,7 @@ public class PostsServiceImpl implements PostsService {
 //        return id;
 //    }
 
-//    @Override
+    //    @Override
 //    @Transactional
 //    public Long delete(Long id) {
 //        Posts posts = postsRepository.findById(id)
@@ -116,7 +116,6 @@ public class PostsServiceImpl implements PostsService {
         return id;
     }
 
-
     // 0219 변경 예정. author -> member
 //    @Override
 //    public List<PostsListResponseDto> findAllPostsOrderByIdDesc(int page) {
@@ -133,6 +132,19 @@ public class PostsServiceImpl implements PostsService {
 //
 //        return resultDTO.getDtoList();
 //    }
+
+    @Override
+    public List<PostsDto> findAllPostsOrderByIdDesc(int page, int size) {
+
+        PageRequestDto pageRequestDTO = PageRequestDto.builder()
+            .page(page)
+            .size(size)
+            .build();
+
+        PageResultDto<PostsDto, Object[]> resultDTO = getList(pageRequestDTO);
+
+        return resultDTO.getDtoList();
+    }
 
     // 0219 변경 예정. author -> member
 //    @Override
@@ -152,6 +164,20 @@ public class PostsServiceImpl implements PostsService {
 //
 //        return resultDTO.getDtoList();
 //    }
+    @Override
+    public List<PostsDto> findAllPostsBySearch(int page, int size, String keyword, String type) {
+
+        PageRequestDto pageRequestDTO = PageRequestDto.builder()
+            .page(page)
+            .size(size)
+            .type(type)
+            .keyword(keyword)
+            .build();
+
+        PageResultDto<PostsDto, Object[]> resultDTO = getList(pageRequestDTO);
+
+        return resultDTO.getDtoList();
+    }
 
     @Override
     public String getFileUuid() {
@@ -249,14 +275,14 @@ public class PostsServiceImpl implements PostsService {
 
 //        Function<Object[], PostsDto> fn = (en -> entityToDTO((Posts)en[0],(Member)en[1],(Reply)en[2]));
 
-        Function<Object[], PostsDto> fn = (en -> entityToDTO((Posts)en[0],(Member)en[1]));
+        Function<Object[], PostsDto> fn = (en -> entityToDTO((Posts) en[0], (Member) en[1]));
 
 //        Page<Object[]> result = postsRepository.getPostsListWithAuthor(
 //                pageRequestDTO.getPageable(Sort.by("id").descending())  );
         Page<Object[]> result = postsRepository.searchPage(
             pageRequestDTO.getType(),
             pageRequestDTO.getKeyword(),
-            pageRequestDTO.getPageable(Sort.by("id").descending())  );
+            pageRequestDTO.getPageable(Sort.by("id").descending()));
 
         return new PageResultDto<>(result, fn);
     }
@@ -266,9 +292,9 @@ public class PostsServiceImpl implements PostsService {
 
         Object result = postsRepository.getPostsWithAuthor(id);
 
-        Object[] arr = (Object[])result;
+        Object[] arr = (Object[]) result;
 
-        return entityToDTO((Posts) arr[0], (Member)arr[1]);
+        return entityToDTO((Posts) arr[0], (Member) arr[1]);
     }
 
     // 0219 변경 예정. author -> member

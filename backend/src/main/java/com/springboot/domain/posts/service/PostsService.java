@@ -24,13 +24,15 @@ public interface PostsService {
 
 //    public Long update(Long id, PostsUpdateRequestDto requestDto);
 
-//    public Long delete(Long id);
+    //    public Long delete(Long id);
     Long removeWithReplies(Long id);
 
     // 0219 변경 예정. author -> member
 //    public List<PostsListResponseDto> findAllPostsOrderByIdDesc(int page);
-//
-//    public List<PostsListResponseDto> findAllPostsBySearch(int page, String content, String type);
+    public List<PostsDto> findAllPostsOrderByIdDesc(int page, int size);
+
+    //    public List<PostsListResponseDto> findAllPostsBySearch(int page, String content, String type);
+    public List<PostsDto> findAllPostsBySearch(int page, int size, String content, String type);
 
     public String getFileUuid();
 
@@ -49,7 +51,7 @@ public interface PostsService {
     PostsDto get(Long id);
 
     // PostsDto To Posts Entity
-    default Posts dtoToEntity(PostsDto dto){
+    default Posts dtoToEntity(PostsDto dto) {
 
         Member author = Member.builder()
             .id(dto.getAuthorId())
