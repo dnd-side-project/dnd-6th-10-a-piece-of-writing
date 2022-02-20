@@ -4,14 +4,32 @@ import styled from 'styled-components'
 
 import { CENTER_FLEX } from '@/styles/classNames'
 
-type Props = {}
+type Props = { isMyPage?: boolean }
 
-const UserPostLabel: React.FC<Props> = ({}) => {
+const UserPostLabel: React.FC<Props> = ({ isMyPage = false }) => {
+  const isSelected = true
   return (
-    <div className={'w-full border-y-1 border-gray-200 border-solid mt-8'}>
-      <div className={`${CENTER_FLEX} my-3`}>
-        <Span>올린 글조각</Span>
-      </div>
+    <div className={'w-full border-solid mt-8'}>
+      {isMyPage ? (
+        <div className={'flex w-full'}>
+          <div
+            className={`w-1/2 ${CENTER_FLEX} hover:bg-blue-100 cursor-pointer border-solid border-y-1 border-y-gray-200 py-3 ${
+              isSelected ? 'border-b-gray-600' : ''
+            }`}>
+            <Span>나의 글조각</Span>
+          </div>
+          <div
+            className={`w-1/2 ${CENTER_FLEX} hover:bg-blue-100 cursor-pointer border-solid  border-y-1 border-y-gray-200 py-3 ${
+              !isSelected ? 'border-b-gray-600' : ''
+            }`}>
+            <Span>나의 좋아요</Span>
+          </div>
+        </div>
+      ) : (
+        <div className={`${CENTER_FLEX} py-3 border-solid border-y-1 border-gray-200`}>
+          <Span>올린 글조각</Span>
+        </div>
+      )}
     </div>
   )
 }

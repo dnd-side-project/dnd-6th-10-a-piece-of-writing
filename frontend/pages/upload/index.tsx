@@ -118,7 +118,8 @@ const MainContainer = styled.div`
 `
 
 const TagContainer = styled.div`
-  display: flex;
+  disp
+  lay: flex;
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: center;
