@@ -14,7 +14,7 @@ const Follower: React.FC<Props> = ({}) => {
     <div className={`w-full ${CENTER_FLEX}`}>
       <Container>
         <div className={'mb-10'}>
-          <FollowerLabel />
+          <FollowerLabel followerCount={20} />
         </div>
         <Followers followers={DUMMY_USERS} />
       </Container>
