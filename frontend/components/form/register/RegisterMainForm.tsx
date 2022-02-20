@@ -124,8 +124,6 @@ export const Label = styled.label`
 export const MainSpan = styled.span`
   height: 144px;
   margin-top: 198px;
-  margin-bottom: 58px;
-  font-size: 48px;
   font-weight: normal;
   font-stretch: normal;
   font-style: normal;
@@ -133,6 +131,13 @@ export const MainSpan = styled.span`
   letter-spacing: normal;
   text-align: left;
   color: #000;
+
+  font-size: 28px;
+  margin-bottom: 2px;
+  @media screen and (min-width: 500px) {
+    font-size: 48px;
+    margin-bottom: 58px;
+  }
 `
 
 export default RegisterMainForm
