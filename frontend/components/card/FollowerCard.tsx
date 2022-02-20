@@ -10,6 +10,7 @@ type Props = {
 }
 
 const FollowerCard: React.FC<Props> = ({ userInfo }) => {
+  if (!userInfo) return null
   return (
     <div className={'flex items-center'}>
       <div className={`flex items-center cursor-pointer ${HOVER_BLUE}`}>
