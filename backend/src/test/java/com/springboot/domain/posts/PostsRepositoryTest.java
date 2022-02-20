@@ -149,7 +149,7 @@ public class PostsRepositoryTest {
         result.stream().forEach(System.out::println);
     }
 
-    @DisplayName("Posts 테스트 데이터 삽입")
+    @DisplayName("[Repository] Posts 테스트 데이터 삽입")
     @Test
     @Transactional
     public void testInsertDummies() {
@@ -172,7 +172,7 @@ public class PostsRepositoryTest {
         });
     }
 
-    @DisplayName("특정 ID Posts 조회")
+    @DisplayName("[Repository] 특정 ID Posts 조회")
     @Test
     @Transactional
     public void testRead1() {
@@ -188,7 +188,7 @@ public class PostsRepositoryTest {
 
     }
 
-    @DisplayName("특정 ID Posts 와 연관된 Author 조회")
+    @DisplayName("[Repository] 특정 ID Posts 와 연관된 Author 조회")
     @Test
     public void testReadWithAuthor() {
 
@@ -201,7 +201,7 @@ public class PostsRepositoryTest {
 
     }
 
-    @DisplayName("특정 ID Posts 와 연관된 Reply 조회")
+    @DisplayName("[Repository] 특정 ID Posts 와 연관된 Reply 조회")
     @Test
     public void testGetPostsWithReply() {
 
@@ -212,13 +212,13 @@ public class PostsRepositoryTest {
         }
     }
 
-    @DisplayName("전체 게시물 목록 조회 ( 게시물 + 작성자 + 댓글 작성자 ) 및 페이징 처리")
+    @DisplayName("[Repository] 게시물 목록 조회 ( 게시물 + 작성자 + 댓글 작성자 ) 및 페이징 처리")
     @Test
     public void testWithAuthorReply(){
 
         Pageable pageable = PageRequest.of(0,10, Sort.by("id").descending());
 
-        Page<Object[]> result = postsRepository.getPostsWithAuthorReply(pageable);
+        Page<Object[]> result = postsRepository.getPostsListsWithAuthorReply(pageable);
 
         result.get().forEach(row -> {
 

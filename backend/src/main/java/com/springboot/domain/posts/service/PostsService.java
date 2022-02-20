@@ -43,6 +43,7 @@ public interface PostsService {
 
     // 0219 변경 예정. author -> member
 //    PageResultDto<PostsListResponseDto, Posts> getList(PageRequestDto requestDTO);
+    PageResultDto<PostsDto, Object[]> getList(PageRequestDto pageRequestDTO);
 
 
     // PostsDto To Posts Entity
@@ -88,4 +89,30 @@ public interface PostsService {
 //
 //        return dto;
 //    }
+
+    // Posts Entity TO PostsDto
+//    default PostsDto entityToDTO(Posts posts, Member author, Reply reply) {
+    default PostsDto entityToDTO(Posts posts, Member author) {
+
+        PostsDto dto = PostsDto.builder()
+            // posts
+            .id(posts.getId())
+            .content(posts.getContent())
+            .ref(posts.getRef())
+            .createdDate(posts.getCreatedDate())
+            .modifiedDate(posts.getModifiedDate())
+            // author
+            .authorId(author.getId())
+            .authorEmail(author.getEmail())
+            .authorNickname(author.getNickname())
+            // reply
+//            .replyText(reply.getText())
+//            .replyerId(reply.getReplyer().getId())
+//            .replyerNickname(reply.getReplyer().getNickname())
+//            .replyerEmail(reply.getReplyer().getEmail())
+
+            .build();
+
+        return dto;
+    }
 }

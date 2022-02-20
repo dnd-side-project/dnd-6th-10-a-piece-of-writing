@@ -22,9 +22,9 @@ public class PostsDto {
 
     private String content;
 
-    private LocalDateTime regDate;
+    private LocalDateTime createdDate;
 
-    private LocalDateTime modDate;
+    private LocalDateTime modifiedDate;
 
     // Author Info
     private Long authorId; //Author id
@@ -33,16 +33,16 @@ public class PostsDto {
 
     private String authorNickname; // Author nickname
 
-    // Reply Info
-    private Long replyId; // reply id
-
-    private String text; // reply text
-
-    // Reply - Replyer Info
-    private Long replyerId; // replyer id
-
-    private String replyerEmail; // replyer email
-
-    private String replyerNickname; // replyer nickname
+//    // Reply Info
+//    private Long replyId; // reply id
+//
+//    private String replyText; // reply text
+//
+//    // Reply - Replyer Info
+//    private Long replyerId; // replyer id
+//
+//    private String replyerEmail; // replyer email
+//
+//    private String replyerNickname; // replyer nickname
 
 }

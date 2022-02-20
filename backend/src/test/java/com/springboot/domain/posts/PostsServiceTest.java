@@ -8,6 +8,7 @@ import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
 import com.springboot.domain.posts.model.entity.Posts;
 import com.springboot.domain.posts.service.PostsService;
 import javax.transaction.Transactional;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class PostsServiceTest {
     private PostsService service;
 
     // 0219 변경 예정. author -> member
-    // 등록 테스트
+    @DisplayName("[Service] Posts 등록 테스트")
     @Test
     public void testRegister() {
 
@@ -63,6 +64,22 @@ public class PostsServiceTest {
 //        System.out.println("========================================");
 //        resultDTO.getPageList().forEach(i -> System.out.println(i));
 //    }
+
+    @DisplayName("[Service] 게시물 목록 조회 ( 게시물 + 작성자 ) 및 페이징 처리")
+    @Test
+    public void testList() {
+
+        //1페이지 10개
+        PageRequestDto pageRequestDTO = new PageRequestDto();
+
+        PageResultDto<PostsDto, Object[]> result = service.getList(pageRequestDTO);
+
+        for (PostsDto postsDTO : result.getDtoList()) {
+            System.out.println(postsDTO);
+        }
+
+    }
+
 //
 //    // 조건부 목록 조회 테스트
 //    @Test

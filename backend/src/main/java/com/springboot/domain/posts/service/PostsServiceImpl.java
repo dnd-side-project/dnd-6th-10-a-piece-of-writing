@@ -20,6 +20,7 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.springboot.domain.common.error.exception.BusinessException;
 import com.springboot.domain.common.error.exception.ErrorCode;
+import com.springboot.domain.member.model.Member;
 import com.springboot.domain.posts.model.dto.PageRequestDto;
 import com.springboot.domain.posts.model.dto.PageResultDto;
 import com.springboot.domain.posts.model.dto.PostsDto;
@@ -29,6 +30,7 @@ import com.springboot.domain.posts.model.dto.PostsListResponseDto;
 import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
 import com.springboot.domain.posts.model.entity.QPosts;
 import com.springboot.domain.posts.repository.PostsRepository;
+import com.springboot.domain.reply.model.entity.Reply;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -207,8 +209,8 @@ public class PostsServiceImpl implements PostsService {
         }
     }
 
+    // Tools for Pagination
     // 0219 변경 예정. author -> member
-//    // Tools for Pagination
 //    @Override
 //    public PageResultDto<PostsListResponseDto, Posts> getList(PageRequestDto requestDTO) {
 //
@@ -224,6 +226,25 @@ public class PostsServiceImpl implements PostsService {
 //
 //        return new PageResultDto<>(result, fn);
 //    }
+
+    @Override
+    public PageResultDto<PostsDto, Object[]> getList(PageRequestDto pageRequestDTO) {
+
+        log.info(pageRequestDTO);
+
+//        Function<Object[], PostsDto> fn = (en -> entityToDTO((Posts)en[0],(Member)en[1],(Reply)en[2]));
+
+        Function<Object[], PostsDto> fn = (en -> entityToDTO((Posts)en[0],(Member)en[1]));
+
+        Page<Object[]> result = postsRepository.getPostsListWithAuthor(
+                pageRequestDTO.getPageable(Sort.by("id").descending())  );
+//        Page<Object[]> result = postsRepository.searchPage(
+//            pageRequestDTO.getType(),
+//            pageRequestDTO.getKeyword(),
+//            pageRequestDTO.getPageable(Sort.by("bno").descending())  );
+
+        return new PageResultDto<>(result, fn);
+    }
 
     // 0219 변경 예정. author -> member
 //    private BooleanBuilder getSearch(PageRequestDto requestDTO) {
