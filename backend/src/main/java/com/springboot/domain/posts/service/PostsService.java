@@ -45,6 +45,7 @@ public interface PostsService {
 //    PageResultDto<PostsListResponseDto, Posts> getList(PageRequestDto requestDTO);
     PageResultDto<PostsDto, Object[]> getList(PageRequestDto pageRequestDTO);
 
+    PostsDto get(Long id);
 
     // PostsDto To Posts Entity
     default Posts dtoToEntity(PostsDto dto){

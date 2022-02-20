@@ -246,6 +246,16 @@ public class PostsServiceImpl implements PostsService {
         return new PageResultDto<>(result, fn);
     }
 
+    @Override
+    public PostsDto get(Long id) {
+
+        Object result = postsRepository.getPostsWithAuthor(id);
+
+        Object[] arr = (Object[])result;
+
+        return entityToDTO((Posts) arr[0], (Member)arr[1]);
+    }
+
     // 0219 변경 예정. author -> member
 //    private BooleanBuilder getSearch(PageRequestDto requestDTO) {
 //

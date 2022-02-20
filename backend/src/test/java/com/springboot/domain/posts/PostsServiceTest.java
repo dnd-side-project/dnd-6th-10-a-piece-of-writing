@@ -80,6 +80,19 @@ public class PostsServiceTest {
 
     }
 
+    @DisplayName("[Service] 게시물 조회 ( 게시물 + 작성자 )")
+    @Test
+    public void testGet() {
+
+        Long id = 300L;
+
+        PostsDto postsDto = service.get(id);
+
+        System.out.println(postsDto);
+    }
+
+
+
 //
 //    // 조건부 목록 조회 테스트
 //    @Test
