@@ -106,13 +106,14 @@ public class PostsServiceImpl implements PostsService {
 //    }
     @Transactional
     @Override
-    public void removeWithReplies(Long id) {
+    public Long removeWithReplies(Long id) {
 
         //댓글 부터 삭제
         replyRepository.deleteById(id);
 
         postsRepository.deleteById(id);
 
+        return id;
     }
 
 

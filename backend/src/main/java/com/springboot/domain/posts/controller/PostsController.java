@@ -46,14 +46,15 @@ public class PostsController {
 //    }
 
     // 삭제
-//    @Operation(summary = "delete posts api", description = "글귀 삭제 api")
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<ResponseDto> delete(@PathVariable Long id) {
-//
+    @Operation(summary = "delete posts api", description = "글귀 삭제 api")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ResponseDto> delete(@PathVariable Long id) {
+
 //        Long DeletedPostId = postsService.delete(id);
-//
-//        return responseServiceImpl.successResult(SuccessCode.DELETE_POSTS_SUCCESS, DeletedPostId);
-//    }
+        Long DeletedPostId = postsService.removeWithReplies(id);
+
+        return responseServiceImpl.successResult(SuccessCode.DELETE_POSTS_SUCCESS, DeletedPostId);
+    }
 
     // 0219 변경 예정. author -> member
 //    // 전체 게시물 내림차순 조회

@@ -10,9 +10,11 @@ import com.springboot.domain.posts.model.entity.Posts;
 import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
 import com.springboot.domain.posts.repository.PostsRepository;
 //import com.springboot.domain.posts.model.dto.PostsUpdateRequestDto;
+import com.springboot.domain.posts.service.PostsService;
 import java.util.stream.IntStream;
 import javax.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +59,9 @@ public class PostsControllerTest {
     private MemberRepository memberRepository;
 
     @Autowired
+    private PostsService postsService;
+
+    @Autowired
     private WebApplicationContext context;
 
     @Autowired
@@ -86,6 +91,7 @@ public class PostsControllerTest {
         accessToken = jwtUtil.createAuthToken("tester@gmail.com");
     }
 
+    @DisplayName("[Controller] Posts save")
     @Test
     @Transactional
     public void Posts_등록된다() throws Exception {
@@ -94,7 +100,6 @@ public class PostsControllerTest {
         String ref = "reference";
 
         Member author = memberRepository.findAll().get(0);
-
 
         PostsDto requestDto = PostsDto.builder()
             .content(content)
@@ -130,38 +135,44 @@ public class PostsControllerTest {
         assertThat(all.get(0).getContent()).isEqualTo(content);
         assertThat(all.get(0).getRef()).isEqualTo(ref);
     }
-//
-//    @Test
-//    @Transactional
-//    @WithMockUser(roles = "USER")
-//    public void Posts_삭제된다() throws Exception {
-//        //given
-//        Posts saved = postsRepository.save(Posts.builder()
-//            .content("content")
-//            .author("author")
-//            .ref("reference")
-//            .build());
-//
-//        Long savedId = saved.getId();
-//
-//        params = "/" + savedId;
-//
-//        local_url = local_address + path + params;
-//        deployed_url = deployed_address + path + params;
-//
-//        if (current_address.equals("local")){
-//            url = local_url;
-//        }
-//        else{
-//            url = deployed_url;
-//        }
-//
-//        mvc.perform(delete(url)
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .header("X-AUTH_TOKEN", accessToken))
-//            .andExpect(status().isOk());
-//
-//    }
+
+    @DisplayName("[Controller] Posts delete")
+    @Test
+    @Transactional
+    @WithMockUser(roles = "USER")
+    public void Posts_삭제된다() throws Exception {
+        //given
+        String content = "content";
+        String ref = "reference";
+
+        Member author = memberRepository.findAll().get(0);
+
+        PostsDto requestDto = PostsDto.builder()
+            .content(content)
+            .ref(ref)
+            .authorId(author.getId())
+            .build();
+
+        Long savedId = postsService.save(requestDto);
+
+        params = "/" + savedId;
+
+        local_url = local_address + path + params;
+        deployed_url = deployed_address + path + params;
+
+        if (current_address.equals("local")){
+            url = local_url;
+        }
+        else{
+            url = deployed_url;
+        }
+
+        mvc.perform(delete(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("X-AUTH_TOKEN", accessToken))
+            .andExpect(status().isOk());
+
+    }
 //
 //    // 전체 게시물 내림차순 조회 테스트
 //    @Test
