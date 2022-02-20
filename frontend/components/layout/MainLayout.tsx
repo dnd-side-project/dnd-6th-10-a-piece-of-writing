@@ -22,10 +22,12 @@ const MainLayout: React.FC<Props> = ({ children }) => {
           <div> </div>
           <div className={`flex gap-4`}>
             <Image src={'/menu_search.svg'} width={24} height={24} />
-            {me?.id && (
-              <Link href={`/user/${me?.id}`}>
-                <Image src={'/profile.svg'} width={24} height={24} />
-              </Link>
+            {me?.memberId && (
+              <div className={'flex cursor-pointer'}>
+                <Link href={`/user/${me?.memberId}`}>
+                  <Image src={'/profile.svg'} width={24} height={24} />
+                </Link>
+              </div>
             )}
           </div>
         </MainBar>

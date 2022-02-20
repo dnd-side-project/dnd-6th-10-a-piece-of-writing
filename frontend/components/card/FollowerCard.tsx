@@ -13,7 +13,7 @@ const FollowerCard: React.FC<Props> = ({ userInfo }) => {
   return (
     <div className={'flex items-center'}>
       <div className={`flex items-center cursor-pointer ${HOVER_BLUE}`}>
-        <ProfileImageCard imgSrc={userInfo?.image} nickname={userInfo.nickname} editable={false} />
+        <ProfileImageCard imgSrc={userInfo?.profileUrl} nickname={userInfo.nickname} editable={false} />
         <p className={'text-h4 ml-5 mr-1'}>{userInfo.nickname}</p>
       </div>
       <FollowButton followed={userInfo.followed} />

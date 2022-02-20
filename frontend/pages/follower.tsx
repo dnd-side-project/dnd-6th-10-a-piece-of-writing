@@ -4,12 +4,16 @@ import styled from 'styled-components'
 
 import FollowerLabel from '@/_follower/FollowerLabel'
 import Followers from '@/_follower/Followers'
-import { DUMMY_USERS } from '@/components/_user/type'
+import { DUMMY_USERS, UserInfo as UserInfoType } from '@/components/_user/type'
+import { useSsrMe } from '@/hook/useSsrMe'
+import { withAuthServerSideProps } from '@/server/withAuthServerSide'
 import { CENTER_FLEX } from '@/styles/classNames'
 
-type Props = {}
+type ServerSideProps = { me: UserInfoType }
 
-const Follower: React.FC<Props> = ({}) => {
+const Follower: React.FC<ServerSideProps> = ({ me }) => {
+  useSsrMe(me)
+
   return (
     <div className={`w-full ${CENTER_FLEX}`}>
       <Container>
@@ -39,5 +43,6 @@ const Container = styled.div`
     margin-left: 0;
   }
 `
+export const getServerSideProps = withAuthServerSideProps()
 
 export default Follower

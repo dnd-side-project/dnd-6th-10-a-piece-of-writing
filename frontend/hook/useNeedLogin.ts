@@ -11,7 +11,7 @@ const useNeedLogin = () => {
   useEffect(() => {
     if (!isLogined) {
       alert('로그인이 필요합니다!')
-      router.back()
+      router.push('/login')
     }
   }, [isLogined])
 }

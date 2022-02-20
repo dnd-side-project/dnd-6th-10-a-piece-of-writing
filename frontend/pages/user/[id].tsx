@@ -3,19 +3,22 @@ import React from 'react'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
+import { UserInfo as UserInfoType } from '@/components/_user/type'
 import UserTagCarousel from '@/components/_user/UesrTagCarousel'
 import UserInfo from '@/components/_user/UserInfo'
 import UserPostLabel from '@/components/_user/UserPostLabel'
 import UserPosts from '@/components/_user/UserPosts'
+import { useSsrMe } from '@/hook/useSsrMe'
+import { withAuthServerSideProps } from '@/server/withAuthServerSide'
 
-type Props = {}
+type ServerSideProps = { me: UserInfoType }
 
-const User: React.FC<Props> = ({}) => {
+const User: React.FC<ServerSideProps> = ({ me }) => {
+  useSsrMe(me)
+  console.log({ me })
   const router = useRouter()
   const { id } = router.query
-  const isMe = true
-  console.log({ id })
-  console.log(router.asPath)
+  const isMe = me?.memberId === Number(id)
 
   return (
     <>
@@ -39,5 +42,7 @@ const Container = styled.div`
     //width: auto;
   }
 `
+
+export const getServerSideProps = withAuthServerSideProps()
 
 export default User

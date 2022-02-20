@@ -3,13 +3,20 @@ import React from 'react'
 import Link from 'next/link'
 import styled from 'styled-components'
 
+import { UserInfo as UserInfoType } from '@/components/_user/type'
 import { Button } from '@/components/button'
 import { FlexDiv } from '@/components/style/div/FlexDiv'
+import useNeedLogin from '@/hook/useNeedLogin'
+import { useSsrMe } from '@/hook/useSsrMe'
+import { withAuthServerSideProps } from '@/server/withAuthServerSide'
 import { BreakPoints } from '@/styles/breakPoint'
 
-type Props = {}
+type ServerSideProps = { me: UserInfoType }
 
-const Withdraw: React.FC<Props> = ({}) => {
+const Withdraw: React.FC<ServerSideProps> = ({ me }) => {
+  useSsrMe(me)
+  useNeedLogin()
+
   return (
     <FlexDiv>
       <MainContainer>
@@ -36,5 +43,7 @@ const MainContainer = styled.div`
     margin-top: 15rem;
   }
 `
+
+export const getServerSideProps = withAuthServerSideProps()
 
 export default Withdraw

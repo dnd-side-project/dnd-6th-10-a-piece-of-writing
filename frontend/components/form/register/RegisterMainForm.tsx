@@ -78,10 +78,7 @@ const RegisterMainForm: React.FC<Props> = ({}) => {
         <br /> 함께 음미해보세요
       </MainSpan>
       <Label>이메일</Label>
-      {/*<div className="flex w-386 h-52">*/}
       <GrayInput className="w-3/4 h-52" placeholder={'이메일'} value={email} onChange={onChangeEmail} />
-      {/*<button>중복 체크</button>*/}
-      {/*</div>*/}
       <div className={cx('w-full', 'text-red-400', 'mb-1')}>{emailMessage || message.email}</div>
       <Label>비밀번호</Label>
       <GrayInput
