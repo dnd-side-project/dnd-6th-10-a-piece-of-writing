@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import classNames from 'classnames/bind'
 import { useAtomValue } from 'jotai/utils'
@@ -9,7 +9,7 @@ import { Button } from '@/components/button'
 import { Label, MainSpan } from '@/components/form/register/RegisterMainForm'
 import { GrayInput } from '@/components/input'
 import { FlexDiv } from '@/components/style/div/FlexDiv'
-import useNeedLogin from '@/hook/useNeedLogin'
+import { registerMessageAtom, useRegister } from '@/hook/usePassword'
 import { CENTER_FLEX } from '@/styles/classNames'
 
 type Props = {}
@@ -17,40 +17,54 @@ type Props = {}
 const cx = classNames.bind({})
 
 const Modify: React.FC<Props> = ({}) => {
-  useNeedLogin()
+  // useNeedLogin()
   const me = useAtomValue(meAtom)
+  const message = useAtomValue(registerMessageAtom)
+  const [nickname, setNickname] = useState(me?.nickname ?? '')
+  const { password, checkPassword, passwordCheck, onChangePassword, onChangePasswordCheck } = useRegister()
 
-  if (!me) {
-    return null
+  const onClickModify = () => {
+    if (!checkPassword()) {
+      return
+    }
   }
 
   return (
     <div className={`${CENTER_FLEX} px-4`}>
       <Container>
         <MainSpan>
-          글 한 조각,
-          <br /> 함께 음미해보세요
+          당신의 닉네임을
+          <br /> 수정합니다.
         </MainSpan>
         <Label>사용할 닉네임</Label>
-        <GrayInput className="w-3/4 h-52" placeholder={'이메일'} value={'email'} onChange={'onChangeEmail'} />
+        <GrayInput
+          className="w-3/4 h-52"
+          placeholder={'닉네임을 입력하세요'}
+          value={nickname}
+          onChange={(e) => {
+            setNickname(e.target.value)
+          }}
+        />
         <Label>비밀번호</Label>
         <GrayInput
           className="w-386 h-52"
           placeholder={'비밀번호'}
-          // value={password}
-          // onChange={onChangePassword}
+          value={password}
+          onChange={onChangePassword}
           type={'password'}
         />
+        <div className={cx('w-full', 'text-red-400', 'mb-1')}>{message.password}</div>
         <Label>비밀번호 확인</Label>
         <GrayInput
           className="w-386 h-52"
           placeholder={'비밀번호 확인'}
           type={'password'}
-          // value={''}
-          // onChange={onChangePasswordCheck}
+          value={passwordCheck}
+          onChange={onChangePasswordCheck}
         />
+        <div className={cx('w-full', 'text-red-400', 'mb-1')}>{message.passwordCheck}</div>
         <FlexDiv>
-          <Button className={cx('text-white', 'h-52', 'w-386 mt-2')} onClick={'onClickRegister'}>
+          <Button className={cx('text-white', 'h-52', 'w-386 mt-2')} onClick={onClickModify}>
             저장하기
           </Button>
         </FlexDiv>

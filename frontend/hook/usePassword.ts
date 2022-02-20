@@ -16,12 +16,12 @@ export const passwordAtom = atom('')
 const passwordCheckAtom = atom('')
 const allConditionSatisfiedAtom = atom(
   (get) =>
-    isValidEmail(get(emailAtom)) && get(passwordAtom) === get(passwordCheckAtom) && get(passwordAtom).length >= 9,
+    isValidEmail(get(emailAtom)) && get(passwordAtom) === get(passwordCheckAtom) && get(passwordAtom).length >= 8,
 )
 export const emailAtom = atom('')
 export const registerMessageAtom = atom<RegisterMessage>((get) => ({
   email: isValidEmail(get(emailAtom)) || get(emailAtom) === '' ? '' : '올바른 이메일 형식이 아닙니다.',
-  password: get(passwordAtom).length >= 9 || get(passwordAtom) === '' ? '' : '영문자, 숫자 포함 8~20자',
+  password: get(passwordAtom).length >= 8 || get(passwordAtom) === '' ? '' : '영문자, 숫자 포함 8~20자',
   passwordCheck:
     get(passwordAtom) === get(passwordCheckAtom) || get(passwordCheckAtom) === ''
       ? ''
@@ -49,9 +49,13 @@ export const useRegister = () => {
     [setPassword],
   )
 
-  const check = useCallback(() => {
+  const checkPassword = useCallback(() => {
     if (!password) {
       alert('비밀번호를 입력하세요.')
+      return false
+    }
+    if (!(password.length >= 8)) {
+      alert('비밀번호가 너무 짧습니다.')
       return false
     }
     if (!passwordCheck) {
@@ -66,9 +70,9 @@ export const useRegister = () => {
   }, [password, passwordCheck])
 
   return {
-    check,
     password,
     setPassword,
+    checkPassword,
     passwordCheck,
     setPasswordCheck,
     onChangePassword,

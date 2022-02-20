@@ -27,7 +27,7 @@ const RegisterMainForm: React.FC<Props> = ({}) => {
   const [email, setEmail] = useAtom(emailAtom)
   const setPage = useUpdateAtom(registerPageAtom)
   const message = useAtomValue(registerMessageAtom)
-  const { password, check, passwordCheck, onChangePassword, onChangePasswordCheck, allConditionSatisfied } =
+  const { password, checkPassword, passwordCheck, onChangePassword, onChangePasswordCheck, allConditionSatisfied } =
     useRegister()
   const [emailDebouncedValue, setEmailDebouncedValue] = useState('')
   const [emailMessage, setEmailMessage] = useState('')
@@ -63,7 +63,7 @@ const RegisterMainForm: React.FC<Props> = ({}) => {
   )
 
   const onClickRegister = () => {
-    if (!check) return
+    if (!checkPassword()) return
     if (!allConditionSatisfied) {
       alert('잘못된 이메일 혹은 비밀번호입니다!')
       return
