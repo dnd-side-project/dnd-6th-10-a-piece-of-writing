@@ -2,14 +2,17 @@ package com.springboot.domain.posts.service;
 
 
 import com.google.auth.oauth2.GoogleCredentials;
+import com.springboot.domain.member.model.Member;
 import com.springboot.domain.posts.model.dto.PageRequestDto;
 import com.springboot.domain.posts.model.dto.PageResultDto;
+import com.springboot.domain.posts.model.dto.PostsDto;
 import com.springboot.domain.posts.model.dto.PostsListResponseDto;
 //import com.springboot.domain.posts.model.dto.PostsResponseDto;
 import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
 //import com.springboot.domain.posts.model.dto.PostsUpdateRequestDto;
 
 import com.springboot.domain.posts.model.entity.Posts;
+import com.springboot.domain.reply.model.entity.Reply;
 import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -40,16 +43,33 @@ public interface PostsService {
     // 0219 변경 예정. author -> member
 //    PageResultDto<PostsListResponseDto, Posts> getList(PageRequestDto requestDTO);
 
-    // PostsSaveRequestDto TO Posts Entity. PostsSave 적용 예정.
-//    default Guestbook dtoToEntity(GuestbookDTO dto) {
-//        Guestbook entity = Guestbook.builder()
-//            .gno(dto.getGno())
-//            .title(dto.getTitle())
-//            .content(dto.getContent())
-//            .writer(dto.getWriter())
+    default Posts dtoToEntity(PostsDto dto){
+
+        Member author = Member.builder()
+            .id(dto.getAuthorId())
+            .email(dto.getAuthorEmail())
+            .nickname(dto.getAuthorNickname())
+            .build();
+
+//        Member replyer = Member.builder()
+//            .id(dto.getReplyerId())
+//            .email(dto.getReplyerEmail())
+//            .nickname(dto.getReplyerNickname())
 //            .build();
-//        return entity;
-//    }
+//
+//        Reply reply = Reply.builder()
+//            .id(dto.getReplyId())
+//            .text(dto.getText())
+//            .replyer(replyer)
+//            .build();
+
+        return Posts.builder()
+//            .id(dto.getId())
+            .ref(dto.getRef())
+            .content(dto.getContent())
+            .author(author)
+            .build();
+    }
 
     // 0219 변경 예정. author -> member
     // Posts Entity TO PostsListResponseDto
