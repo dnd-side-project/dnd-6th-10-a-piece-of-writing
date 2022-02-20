@@ -20,7 +20,7 @@ type Props = {}
 
 const MainForm: React.FC<Props> = ({}) => {
   const [text, setText] = useAtom(postTextAtom)
-  const [source, setSource] = useState('책 제목-작가 / 영화제목/ 노래 제목 - 가수')
+  const [source, setSource] = useState('')
   const [textColor, setTextColor] = useState('black')
   const [isRecognitionModalOpen, setIsRecognitionModalOpen] = useAtom(isRecognitionModalOpenAtom)
   const selectedBackgroundImage = useAtomValue(selectedBackgroundImageAtom)
@@ -63,6 +63,7 @@ const MainForm: React.FC<Props> = ({}) => {
           <ImageSpan color={textColor} fontSize={selectedFontSize} fontFamily={selectedFontFamily}>
             {text}
           </ImageSpan>
+          <SourceSpan color={'#a1a1a1'}>{source}</SourceSpan>
         </ImageContainer>
         <UploadSpan
           className={'mt-2'}
@@ -100,6 +101,7 @@ const MainForm: React.FC<Props> = ({}) => {
               setSource(e.target.value)
             }}
             value={source}
+            placeholder={'책 제목-작가 / 영화제목/ 노래 제목 - 가수'}
           />
           <TextLimit>{source.length}/50</TextLimit>
           <FlexDiv width={'100%'} height={'36px'} margin={'1'} justify={'flex-start'}>
@@ -158,6 +160,7 @@ const ImageContainer = styled.div`
   height: 284px;
   border-radius: 13px;
   border: solid 1px #a1a1a1;
+  position: relative;
 `
 
 type FontProps = {
@@ -169,12 +172,29 @@ type FontProps = {
 const ImageSpan = styled.span`
   display: flex;
   width: 100%;
+  max-height: 90%;
   align-items: center;
   padding: 24px;
   white-space: pre-wrap;
+  word-break: break-all;
+  overflow: hidden;
   color: ${(props: FontProps) => props.color ?? 'black'};
   font-size: ${(props: FontProps) => props.fontSize};
   font-family: ${(props: FontProps) => props.fontFamily ?? 'Noto Sans KR'};
+`
+
+const SourceSpan = styled.span`
+  display: flex;
+  position: absolute;
+  bottom: 2px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  white-space: pre-wrap;
+  word-break: break-all;
+  overflow: hidden;
+  font-size: 13px;
+  color: ${(props: FontProps) => props.color ?? 'black'};
 `
 
 const UploadSpan = styled.span`
