@@ -5,6 +5,7 @@ import com.springboot.domain.posts.model.entity.BaseTime;
 import com.springboot.domain.posts.model.entity.Posts;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,16 +33,16 @@ public class Reply extends BaseTime {
     private String text;
 
     // MemberId로 변경 예정
-//    @ManyToOne
-//    private Member replyer;
+    @ManyToOne
+    private Member replyer;
 
 //    private String replyer;
 
-    @ManyToOne
+//    @ManyToOne
 //    @JoinColumn(name = "replyer_id")
-    private Member replyer;
+//    private Member replyer;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "posts_id")
     private Posts posts;
 

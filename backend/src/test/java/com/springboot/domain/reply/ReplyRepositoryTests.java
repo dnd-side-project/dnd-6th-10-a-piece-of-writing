@@ -2,8 +2,10 @@ package com.springboot.domain.reply;
 
 import com.springboot.domain.member.model.Member;
 import com.springboot.domain.posts.model.entity.Posts;
+import com.springboot.domain.posts.repository.PostsRepository;
 import com.springboot.domain.reply.model.entity.Reply;
 import com.springboot.domain.reply.repository.ReplyRepository;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 import javax.transaction.Transactional;
@@ -13,12 +15,19 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @SpringBootTest
 public class ReplyRepositoryTests {
 
     @Autowired
     private ReplyRepository replyRepository;
+
+    @Autowired
+    private PostsRepository postsRepository;
+
+    private final Logger logger = (Logger) LoggerFactory.getLogger(ReplyRepositoryTests.class);
 
 //    @BeforeEach
 //    public void tearDown(){
@@ -46,9 +55,9 @@ public class ReplyRepositoryTests {
             Member replyer = Member.builder().
                 id(replyerId)
                 .build();
-
+//
             Reply reply = Reply.builder()
-                .id((long)i)
+                .id((long) i)
                 .text("Reply......." + i)
                 .posts(posts)
                 .replyer(replyer)
@@ -72,6 +81,20 @@ public class ReplyRepositoryTests {
         System.out.println(reply);
         System.out.println(reply.getPosts());
 
+    }
+
+    @DisplayName("특정 id의 Posts 에 달린 댓글 모두 조회")
+    @Test
+    public void testListByPosts() {
+
+        Posts posts = postsRepository.findAll().get(0);
+
+        logger.info(String.valueOf(posts.getId()));
+
+        List<Reply> replyList = replyRepository.getRepliesByPostsOrderById(
+            Posts.builder().id(posts.getId()).build());
+
+        replyList.forEach(reply -> System.out.println(reply));
     }
 
 //    @AfterEach
