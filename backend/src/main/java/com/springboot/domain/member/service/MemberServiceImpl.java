@@ -13,7 +13,7 @@ import com.springboot.domain.common.error.exception.ErrorCode;
 import com.springboot.domain.common.model.ResponseDto;
 import com.springboot.domain.common.model.SuccessCode;
 import com.springboot.domain.common.service.ResponseService;
-import com.springboot.domain.member.model.Dto.FollowListDto;
+import com.springboot.domain.member.model.Dto.FollowInfoDto;
 import com.springboot.domain.member.model.Dto.MemberProfileDto;
 import com.springboot.domain.member.model.Dto.ModProfileDto;
 import com.springboot.domain.member.model.Dto.MyProfileDto;
@@ -23,15 +23,11 @@ import com.springboot.domain.posts.model.dto.PostsListResponseDto;
 import com.springboot.domain.posts.model.entity.Posts;
 import com.springboot.domain.posts.service.PostsService;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -172,8 +168,8 @@ public class MemberServiceImpl implements MemberService {
         if (id == null) {
             throw new BusinessException(ErrorCode.PARAMETER_MISSING_ERROR);
         }
-        List<FollowListDto> data = findMemberById(id).getFollower()
-                .stream().map(R -> FollowListDto.entityToDto(findMemberById(R.getFollowed().getId())))
+        List<FollowInfoDto> data = findMemberById(id).getFollower()
+                .stream().map(R -> FollowInfoDto.entityToDto(findMemberById(R.getFollowed().getId())))
                 .collect(Collectors.toList());
         return responseService.successResult(SuccessCode.GET_FOLLOW_LIST_SUCCESS, data);
     }
@@ -183,8 +179,8 @@ public class MemberServiceImpl implements MemberService {
         if (id == null) {
             throw new BusinessException(ErrorCode.PARAMETER_MISSING_ERROR);
         }
-        List<FollowListDto> data = findMemberById(id).getFollowed()
-                .stream().map(R -> FollowListDto.entityToDto(findMemberById(R.getFollower().getId())))
+        List<FollowInfoDto> data = findMemberById(id).getFollowed()
+                .stream().map(R -> FollowInfoDto.entityToDto(findMemberById(R.getFollower().getId())))
                 .collect(Collectors.toList());
         return responseService.successResult(SuccessCode.GET_FOLLOWER_LIST_SUCCESS, data);
     }
