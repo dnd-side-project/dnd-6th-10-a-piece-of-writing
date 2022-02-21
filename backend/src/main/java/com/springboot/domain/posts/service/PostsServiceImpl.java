@@ -18,8 +18,12 @@ import com.google.cloud.vision.v1.ImageAnnotatorSettings;
 import com.google.cloud.vision.v1.ImageSource;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.springboot.domain.auth.model.UserDetailsImpl;
 import com.springboot.domain.common.error.exception.BusinessException;
 import com.springboot.domain.common.error.exception.ErrorCode;
+import com.springboot.domain.common.model.ResponseDto;
+import com.springboot.domain.member.model.Member;
+import com.springboot.domain.member.repository.MemberRepository;
 import com.springboot.domain.posts.model.dto.PageRequestDto;
 import com.springboot.domain.posts.model.dto.PageResultDto;
 import com.springboot.domain.posts.model.entity.Posts;
@@ -38,6 +42,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -46,6 +51,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class PostsServiceImpl implements PostsService {
 
     private final PostsRepository postsRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     @Transactional
@@ -194,6 +200,26 @@ public class PostsServiceImpl implements PostsService {
 //        Function<Posts, PostsListResponseDto> fn = (PostsListResponseDto::new);
 
         return new PageResultDto<>(result, fn);
+    }
+
+    private Posts findById(Long id) {
+        return postsRepository.findById(id).orElseThrow(() -> {
+            throw new BusinessException(ErrorCode.ENTITY_NOT_FOUND);
+        });
+    }
+
+    private Member findMemberById(Long id) {
+        return memberRepository.findMemberById(id).orElseThrow(() -> {
+            throw new BusinessException(ErrorCode.ENTITY_NOT_FOUND);
+        });
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> likePost(UserDetailsImpl userDetailsImpl, Long id) {
+        Posts posts = findById(id);
+        Member member = findMemberById(userDetailsImpl.getMember().getId());
+
+        return null;
     }
 
     private BooleanBuilder getSearch(PageRequestDto requestDTO) {

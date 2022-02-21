@@ -1,6 +1,7 @@
 package com.springboot.domain.posts.model.entity;
 
 
+import com.springboot.domain.member.model.Member;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,20 +21,13 @@ public class Posts extends BaseTime {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @Column(nullable = false)
-//    private String title;
-
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
     @Column(columnDefinition = "TEXT", nullable = false)
-    private String author;
-
-    @Column(columnDefinition = "TEXT", nullable = false)
     private String ref;
 
-//    public void update(String ref, String content) {
-//        this.ref = ref;
-//        this.content = content;
-//    }
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private Member author;
 }

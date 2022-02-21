@@ -2,6 +2,8 @@ package com.springboot.domain.posts.service;
 
 
 import com.google.auth.oauth2.GoogleCredentials;
+import com.springboot.domain.auth.model.UserDetailsImpl;
+import com.springboot.domain.common.model.ResponseDto;
 import com.springboot.domain.posts.model.dto.PageRequestDto;
 import com.springboot.domain.posts.model.dto.PageResultDto;
 import com.springboot.domain.posts.model.dto.PostsListResponseDto;
@@ -11,6 +13,7 @@ import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
 
 import com.springboot.domain.posts.model.entity.Posts;
 import java.util.List;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface PostsService {
@@ -25,6 +28,8 @@ public interface PostsService {
     public String postsImgUpload(MultipartFile multipartFile, String fileName);
     public String postsImgExtractWords(MultipartFile multipartFile, String imageUrl);
     PageResultDto<PostsListResponseDto, Posts> getList(PageRequestDto requestDTO);
+    public ResponseEntity<ResponseDto> likePost(UserDetailsImpl userDetailsImpl, Long id);
+
 
     // PostsSaveRequestDto TO Posts Entity. PostsSave 적용 예정.
 //    default Guestbook dtoToEntity(GuestbookDTO dto) {
