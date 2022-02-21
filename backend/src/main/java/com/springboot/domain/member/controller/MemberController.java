@@ -57,7 +57,7 @@ public class MemberController {
     }
 
     @Operation(summary = "팔로우 목록 조회 api", description = "팔로우 목록 조회 api")
-    @GetMapping(value = "/follower/list/{id}")
+    @GetMapping(value = "/follow/list/{id}")
     public ResponseEntity<? extends ResponseDto> getFollowList(
             @Parameter(description = "유저 id", required = true) @PathVariable Long id) {
         return memberService.getFollowList(id);
