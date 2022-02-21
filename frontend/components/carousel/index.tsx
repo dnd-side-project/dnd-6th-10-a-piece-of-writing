@@ -58,8 +58,8 @@ const TagContainer = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 10px;
-  padding: 12px 24px;
+  gap: 8px;
+  padding: 12px 20px;
   border-radius: 30px;
   border: solid 1px #a1a1a1;
   cursor: pointer;

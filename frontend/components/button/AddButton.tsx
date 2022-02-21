@@ -22,7 +22,7 @@ type AddButtonContainerProps = { sticky?: boolean }
 
 const AddButtonContainer = styled(FlexDiv)`
   position: ${(props: AddButtonContainerProps) => (props.sticky ? 'sticky' : 'static')};
-  margin-right: ${(props: AddButtonContainerProps) => (props.sticky ? '1.5rem' : 0)};
+  margin-right: ${(props: AddButtonContainerProps) => (props.sticky ? '1.5rem' : 'auto')};
   bottom: ${(props: AddButtonContainerProps) => (props.sticky ? '1rem' : 'auto')};
   width: 40px;
   height: 40px;

@@ -27,7 +27,7 @@ const User: React.FC<ServerSideProps> = ({ me }) => {
           <UserInfo isMe={isMe} />
           <UserPostLabel isMe={isMe} />
           <UserTagCarousel />
-          <UserPosts />
+          <UserPosts isMe={isMe} />
         </Container>
       </div>
     </>

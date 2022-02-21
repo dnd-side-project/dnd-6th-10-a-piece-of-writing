@@ -1,13 +1,16 @@
 import React from 'react'
 
-import Posts from '@/components/post/Posts'
+import NoResult from '@/components/NoResult'
 
-type Props = {}
+type Props = {
+  isMe?: boolean
+}
 
-const UserPosts: React.FC<Props> = ({}) => {
+const UserPosts: React.FC<Props> = ({ isMe = false }) => {
   return (
     <div className={'w-full'}>
-      <Posts />
+      <NoResult isMyPage={isMe} isOtherUserPage={!isMe} />
+      {/*<Posts />*/}
     </div>
   )
 }
