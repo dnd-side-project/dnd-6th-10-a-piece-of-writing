@@ -1,15 +1,18 @@
-package com.springboot.domain.posts;
+package com.springboot.domain.reply;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.springboot.domain.auth.jwt.JwtUtil;
 import com.springboot.domain.member.model.Member;
 import com.springboot.domain.member.repository.MemberRepository;
-import com.springboot.domain.posts.model.dto.PostsDto;
 import com.springboot.domain.posts.model.entity.Posts;
 import com.springboot.domain.posts.repository.PostsRepository;
-//import com.springboot.domain.posts.model.dto.PostsUpdateRequestDto;
 import com.springboot.domain.posts.service.PostsService;
-import com.springboot.domain.reply.ReplyControllerTests;
+import com.springboot.domain.reply.model.dto.ReplyDto;
+import com.springboot.domain.reply.model.entity.Reply;
+import com.springboot.domain.reply.repository.ReplyRepository;
+import com.springboot.domain.reply.service.ReplyService;
+import java.util.Optional;
 import javax.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,7 +25,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.*;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -38,13 +40,19 @@ import java.util.List;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class PostsControllerTest {
+public class ReplyControllerTests {
 
     @LocalServerPort
     private int port;
 
     @Autowired
     private TestRestTemplate restTemplate;
+
+    @Autowired
+    private ReplyService replyService;
+
+    @Autowired
+    private ReplyRepository replyRepository;
 
     @Autowired
     private PostsRepository postsRepository;
@@ -61,7 +69,7 @@ public class PostsControllerTest {
     @Autowired
     private JwtUtil jwtUtil;
 
-    Logger logger = LoggerFactory.getLogger(PostsControllerTest.class);
+    Logger logger = LoggerFactory.getLogger(ReplyControllerTests.class);
 
     private MockMvc mvc;
     private String accessToken;
@@ -70,7 +78,7 @@ public class PostsControllerTest {
     private String deployed_address = "http://pieceofwriting.kro.kr";
     private String current_address = "local";
     //    private String current_address = "deploy";
-    private String path = ":" + port + "/api/v1/posts";
+    private String path = ":" + port + "/api/v1/reply";
     private String url;
     private String local_url;
     private String deployed_url;
@@ -87,23 +95,26 @@ public class PostsControllerTest {
         accessToken = jwtUtil.createAuthToken("tester@gmail.com");
     }
 
-    @DisplayName("[Controller] Posts save")
+    @DisplayName("[Controller] Reply save")
     @Test
     @Transactional
-    public void Posts_등록된다() throws Exception {
+    public void Reply_등록된다() throws Exception {
         //given
-        String content = "content";
-        String ref = "reference";
+        String text = "text";
 
-        Member author = memberRepository.findAll().get(0);
+        Member replyer = memberRepository.findAll().get(0);
 
-        PostsDto requestDto = PostsDto.builder()
-            .content(content)
-            .ref(ref)
-            .authorId(author.getId())
+        Posts posts = postsRepository.findAll().get(0);
+
+        ReplyDto requestDto = ReplyDto.builder()
+            .text(text)
+            .replyerId(replyer.getId())
+            .replyerNickname(replyer.getNickname())
+            .replyerEmail(replyer.getEmail())
+            .postsId(posts.getId())
             .build();
 
-        logger.info("requestDTO : " + requestDto);
+        logger.info(requestDto.toString());
 
         local_url = local_address + path;
         deployed_url = deployed_address + path;
@@ -122,29 +133,35 @@ public class PostsControllerTest {
             .andExpect(status().isOk());
 
         //then
-        List<Posts> all = postsRepository.findAllByOrderByIdDesc();
-        assertThat(all.get(0).getContent()).isEqualTo(content);
-        assertThat(all.get(0).getRef()).isEqualTo(ref);
+        List<Reply> all = replyRepository.findAllByOrderByIdDesc();
+        assertThat(all.get(0).getText()).isEqualTo(text);
     }
 
-    @DisplayName("[Controller] Posts delete")
+    @DisplayName("[Controller] Reply delete")
     @Test
     @Transactional
-    @WithMockUser(roles = "USER")
-    public void Posts_삭제된다() throws Exception {
+    public void Reply_삭제된다() throws Exception {
         //given
-        String content = "content";
-        String ref = "reference";
+        String text = "text";
 
-        Member author = memberRepository.findAll().get(0);
+        Member replyer = memberRepository.findAll().get(0);
 
-        PostsDto requestDto = PostsDto.builder()
-            .content(content)
-            .ref(ref)
-            .authorId(author.getId())
+        Posts posts = postsRepository.findAll().get(0);
+
+        ReplyDto requestDto = ReplyDto.builder()
+            .text(text)
+            .replyerId(replyer.getId())
+            .replyerNickname(replyer.getNickname())
+            .replyerEmail(replyer.getEmail())
+            .postsId(posts.getId())
             .build();
 
-        Long savedId = postsService.save(requestDto);
+        logger.info(requestDto.toString());
+
+        // when
+        Long savedId = replyService.register(requestDto);
+
+        logger.info(savedId.toString());
 
         params = "/" + savedId;
 
@@ -161,16 +178,98 @@ public class PostsControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("X-AUTH_TOKEN", accessToken))
             .andExpect(status().isOk());
+
+        //then
+        Optional<Reply> deletedReply = replyRepository.findById(savedId);
+        assertThat(deletedReply).isEmpty();
     }
 
-    @DisplayName("게시물 1개 조회 테스트")
+    @DisplayName("[Controller] 댓글 수정 ")
     @Test
     @Transactional
-    public void Posts_조회한다() throws Exception {
+    public void testModify() throws Exception {
+
+        //given
+        String modifiedText = "Reply Service Modify test";
+
+        Reply reply = replyRepository.findAll().get(0);
+
+        logger.info("reply : " + reply.toString());
+
+        ReplyDto requestDto = replyService.entityToDTO(reply);
+
+        requestDto.setText(modifiedText);
+
+        logger.info("requestDto : " + requestDto.toString());
+
+        // when
+        params = "/" + reply.getId();
+
+        local_url = local_address + path + params;
+        deployed_url = deployed_address + path + params;
+
+        if (current_address.equals("local")) {
+            url = local_url;
+        } else {
+            url = deployed_url;
+        }
+
+        mvc.perform(put(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("X-AUTH_TOKEN", accessToken)
+                .content(new ObjectMapper().registerModule(new JavaTimeModule())
+                    .writeValueAsString(requestDto)))
+            .andExpect(status().isOk())
+            .andDo(print());
+
+        //then
+        Reply modifiedReply = replyRepository.getById(reply.getId());
+
+        logger.info("modifiedReply : " + modifiedReply.toString());
+
+        assertThat(modifiedReply.getText()).isEqualTo(modifiedText);
+    }
+
+    @DisplayName("[Controller] 댓글 초기 3개 조회 테스트")
+    @Test
+    @Transactional
+    public void Reply_조회한다() throws Exception {
         //given
         Posts posts = postsRepository.findAll().get(0);
 
         long id = posts.getId();
+
+//        long id = 1588L;
+
+        params = "/first/" + String.valueOf(id);
+
+        local_url = local_address + path + params;
+        deployed_url = deployed_address + path + params;
+
+        if (current_address.equals("local")) {
+            url = local_url;
+        } else {
+            url = deployed_url;
+        }
+
+        //when
+        mvc.perform(get(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("X-AUTH_TOKEN", accessToken))
+            .andExpect(status().isOk())
+            .andDo(print());
+    }
+
+    @DisplayName("[Controller] 댓글 모두 조회 테스트")
+    @Test
+    @Transactional
+    public void Reply_모두_조회한다() throws Exception {
+        //given
+        Posts posts = postsRepository.findAll().get(0);
+
+        long id = posts.getId();
+
+//        long id = 1588L;
 
         params = "/" + String.valueOf(id);
 
@@ -190,113 +289,5 @@ public class PostsControllerTest {
             .andExpect(status().isOk())
             .andDo(print());
     }
-
-    @DisplayName("전체 게시물 내림차순 조회 테스트")
-    @Test
-    @Transactional
-    public void Posts_모두_조회한다() throws Exception {
-        //given
-        int page = 1;
-        int size = 10;
-
-        String searched_page = "page=" + String.valueOf(page);
-        String searched_size = "size=" + String.valueOf(size);
-
-        params = "/list?" + searched_page
-            + "&" + searched_size;
-
-        local_url = local_address + path + params;
-        deployed_url = deployed_address + path + params;
-
-        if (current_address.equals("local")) {
-            url = local_url;
-        } else {
-            url = deployed_url;
-        }
-
-        //when
-        mvc.perform(get(url)
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("X-AUTH_TOKEN", accessToken))
-            .andExpect(status().isOk())
-            .andDo(print());
-    }
-
-    @DisplayName("검색 내용 포함 게시물 내림차순 조회 테스트 - content")
-    @Test
-    @Transactional
-    public void Posts_content_검색한다() throws Exception {
-
-        //given
-        int page = 1;
-        int size = 10;
-        String type = "c";
-        String keyword = "2";
-
-        String searched_page = "page=" + String.valueOf(page);
-        String searched_size = "size=" + String.valueOf(size);
-        String searched_type = "type=" + type;
-        String searched_keyword = "keyword=" + keyword;
-
-        params = "/search?" + searched_page
-            + "&" + searched_size
-            + "&" + searched_type
-            + "&" + searched_keyword;
-
-        local_url = local_address + path + params;
-        deployed_url = deployed_address + path + params;
-
-        if (current_address.equals("local")) {
-            url = local_url;
-        } else {
-            url = deployed_url;
-        }
-
-        //when
-        mvc.perform(get(url)
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("X-AUTH_TOKEN", accessToken))
-            .andExpect(status().isOk())
-            .andDo(print());
-    }
-
-    @DisplayName("검색 내용 포함 게시물 내림차순 조회 테스트 - author")
-    @Test
-    @Transactional
-    public void Posts_author_검색한다() throws Exception {
-
-        //given
-        int page = 1;
-        int size = 10;
-        String type = "a";
-        String keyword = "2";
-
-        String searched_page = "page=" + String.valueOf(page);
-        String searched_size = "size=" + String.valueOf(size);
-        String searched_type = "type=" + type;
-        String searched_keyword = "keyword=" + keyword;
-
-        params = "/search?" + searched_page
-            + "&" + searched_size
-            + "&" + searched_type
-            + "&" + searched_keyword;
-
-        local_url = local_address + path + params;
-        deployed_url = deployed_address + path + params;
-
-        if (current_address.equals("local")) {
-            url = local_url;
-        } else {
-            url = deployed_url;
-        }
-
-        //when
-        mvc.perform(get(url)
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("X-AUTH_TOKEN", accessToken))
-            .andExpect(status().isOk())
-            .andDo(print());
-    }
-
 
 }
