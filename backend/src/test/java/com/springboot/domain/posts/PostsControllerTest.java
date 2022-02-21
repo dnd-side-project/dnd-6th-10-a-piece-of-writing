@@ -89,7 +89,7 @@ public class PostsControllerTest {
 
     @DisplayName("[Controller] Posts save")
     @Test
-//    @Transactional
+    @Transactional
     public void Posts_등록된다() throws Exception {
         //given
         String content = "content";

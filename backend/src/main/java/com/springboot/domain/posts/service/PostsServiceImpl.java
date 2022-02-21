@@ -118,7 +118,7 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Override
-    public String postsImgUpload(GoogleCredentials credentials, MultipartFile multipartFile,
+    public String postsImgUpload(MultipartFile multipartFile,
         String fileName) {
         try {
             byte[] bytes = multipartFile.getBytes();
@@ -142,8 +142,7 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Override
-    public String postsImgExtractWords(GoogleCredentials credentials, MultipartFile multipartFile,
-        String imageUrl) {
+    public String postsImgExtractWords(MultipartFile multipartFile, String imageUrl) {
         List<AnnotateImageRequest> requests = new ArrayList<>();
 
         ImageSource imgSource = ImageSource.newBuilder().setImageUri(imageUrl).build();
