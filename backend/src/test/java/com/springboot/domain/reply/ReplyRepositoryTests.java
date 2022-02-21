@@ -70,7 +70,7 @@ public class ReplyRepositoryTests {
 
     }
 
-    @DisplayName("특정 ID Reply 와 연관된 Posts 조회")
+    @DisplayName("[Repository] 특정 ID Reply 와 연관된 Posts 조회")
     @Test
     public void readReply1() {
 
@@ -83,7 +83,7 @@ public class ReplyRepositoryTests {
 
     }
 
-    @DisplayName("특정 id의 Posts 에 달린 댓글 모두 조회")
+    @DisplayName("[Repository] 특정 id의 Posts 에 달린 댓글 entity 모두 조회")
     @Test
     public void testListByPosts() {
 
