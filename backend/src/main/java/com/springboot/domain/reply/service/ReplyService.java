@@ -10,7 +10,9 @@ public interface ReplyService {
 
     Long register(ReplyDto replyDTO); //댓글의 등록
 
-    List<ReplyDto> getList(Long postsId); //특정 게시물의 댓글 목록
+    List<ReplyDto> getFirstList(Long postsId); //특정 게시물의 초기 댓글 목록
+
+    List<ReplyDto> getList(Long postsId); //특정 게시물의 모든 댓글 목록
 
     Long modify(Long id, ReplyDto replyDTO); //댓글 수정
 

@@ -47,10 +47,30 @@ public class ReplyServiceTests {
 
         Long postsId = posts.getId();//데이터베이스에 존재하는 번호
 
+//        long postsId = 1588L;
+
         List<ReplyDto> replyDTOList = service.getList(postsId);
 
         replyDTOList.forEach(replyDTO -> System.out.println(replyDTO));
 
+    }
+
+    @DisplayName("[Service] 특정 id의 Posts 에 달린 댓글 dto 초기 3개 조회")
+    @Test
+    @Transactional
+    public void testGetFirstList() {
+
+        Posts posts = postsRepository.findAll().get(0);
+
+        Long postsId = posts.getId();//데이터베이스에 존재하는 번호
+
+//        long postsId = 1588L;
+
+        List<ReplyDto> replyDTOList = service.getFirstList(postsId);
+
+        replyDTOList.forEach(replyDTO -> System.out.println(replyDTO));
+
+        assertThat(replyDTOList.size()).isLessThan(4);
     }
 
     @DisplayName("[Service] Reply 등록 테스트")

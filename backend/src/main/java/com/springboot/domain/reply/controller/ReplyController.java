@@ -32,13 +32,25 @@ public class ReplyController {
 
     private final ResponseServiceImpl responseServiceImpl;
 
-    @Operation(summary = "select reply api", description = "댓글 조회 api. 게시물의 id를 보내면 그에 달린 댓글들을 조회한다.")
+    @Operation(summary = "select reply api", description = "모든 댓글 조회 api. 게시물의 id를 보내면 그에 달린 모든 댓글들을 조회한다.")
     @GetMapping(value = "/{postsId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseDto> getListByPosts(@PathVariable("postsId") Long postsId) {
 
         log.info("postsId: " + postsId);
 
         List<ReplyDto> replies = replyService.getList(postsId);
+
+//        return new ResponseEntity<>( replyService.getList(postsId), HttpStatus.OK);
+        return responseServiceImpl.successResult(SuccessCode.SELECT_REPLY_SUCCESS, replies);
+    }
+
+    @Operation(summary = "select first three reply api", description = "초기 3개 댓글 조회 api. 게시물의 id를 보내면 그에 달린 댓글 3개를 조회한다.")
+    @GetMapping(value = "/first/{postsId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseDto> getFirstListByPosts(@PathVariable("postsId") Long postsId) {
+
+        log.info("postsId: " + postsId);
+
+        List<ReplyDto> replies = replyService.getFirstList(postsId);
 
 //        return new ResponseEntity<>( replyService.getList(postsId), HttpStatus.OK);
         return responseServiceImpl.successResult(SuccessCode.SELECT_REPLY_SUCCESS, replies);

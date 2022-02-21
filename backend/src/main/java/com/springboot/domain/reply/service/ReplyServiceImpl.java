@@ -26,10 +26,20 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
     @Override
+    public List<ReplyDto> getFirstList(Long postsId) {
+
+        List<Reply> result = replyRepository
+            .getRepliesByPostsOrderByIdLimit3(Posts.builder().id(postsId).build());
+
+        return result.stream().map(reply -> entityToDTO(reply)).collect(Collectors.toList());
+    }
+
+    @Override
     public List<ReplyDto> getList(Long postsId) {
 
         List<Reply> result = replyRepository
-            .getRepliesByPostsOrderById(Posts.builder().id(postsId).build());
+//            .getRepliesByPostsOrderById(Posts.builder().id(postsId).build());
+            .getRepliesByPostsOrderByIdDesc(Posts.builder().id(postsId).build());
 
         return result.stream().map(reply -> entityToDTO(reply)).collect(Collectors.toList());
     }
