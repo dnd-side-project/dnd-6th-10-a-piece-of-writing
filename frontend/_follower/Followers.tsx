@@ -10,9 +10,9 @@ type Props = {
 const Followers: React.FC<Props> = ({ followers }) => {
   return (
     <div className={'flex flex-col gap-4'}>
-      {followers.map((follower) => (
-        <FollowerCard key={`FollowerCard_${follower.id}`} userInfo={follower} />
-      ))}
+      {followers.map((follower) =>
+        follower ? <FollowerCard key={`FollowerCard_${follower.memberId}`} userInfo={follower} /> : '',
+      )}
     </div>
   )
 }

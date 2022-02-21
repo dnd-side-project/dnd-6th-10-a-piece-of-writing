@@ -4,19 +4,25 @@ import classNames from 'classnames/bind'
 import { atom } from 'jotai'
 import { useAtomValue } from 'jotai/utils'
 
+import { UserInfo as UserInfoType } from '@/components/_user/type'
 import RegisterMainForm from '@/components/form/register/RegisterMainForm'
 import RegisterNicknameForm from '@/components/form/register/RegisterNicknameForm'
+import useAlreadyLogin from '@/hook/useAlreadyLogin'
+import { useSsrMe } from '@/hook/useSsrMe'
+import { withAuthServerSideProps } from '@/server/withAuthServerSide'
 import { CENTER_FLEX } from '@/styles/classNames'
 
 import styles from './register.module.scss'
 
-type Props = {}
+type ServerSideProps = { me: UserInfoType }
 
 const cx = classNames.bind(styles)
 
 export const registerPageAtom = atom(1)
 
-const Register: React.FC<Props> = ({}) => {
+const Register: React.FC<ServerSideProps> = ({ me }) => {
+  useSsrMe(me)
+  useAlreadyLogin()
   const page = useAtomValue(registerPageAtom)
   return (
     <div className={cx('w-full', 'flex-col', CENTER_FLEX)}>
@@ -25,5 +31,7 @@ const Register: React.FC<Props> = ({}) => {
     </div>
   )
 }
+
+export const getServerSideProps = withAuthServerSideProps()
 
 export default Register

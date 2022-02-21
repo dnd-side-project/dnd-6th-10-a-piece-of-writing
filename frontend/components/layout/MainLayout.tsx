@@ -1,12 +1,16 @@
 import React from 'react'
 
+import { useAtomValue } from 'jotai/utils'
 import Image from 'next/image'
 import Link from 'next/link'
 import styled from 'styled-components'
 
+import { meAtom } from '@/atom/user/me'
+
 type Props = {}
 
 const MainLayout: React.FC<Props> = ({ children }) => {
+  const me = useAtomValue(meAtom)
   return (
     <>
       <div className={`w-full flex flex-nowrap flex-col justify-center content-center align-middle`}>
@@ -18,7 +22,13 @@ const MainLayout: React.FC<Props> = ({ children }) => {
           <div> </div>
           <div className={`flex gap-4`}>
             <Image src={'/menu_search.svg'} width={24} height={24} />
-            <Image src={'/profile.svg'} width={24} height={24} />
+            {me?.memberId && (
+              <div className={'flex cursor-pointer'}>
+                <Link href={`/user/${me?.memberId}`}>
+                  <Image src={'/profile.svg'} width={24} height={24} />
+                </Link>
+              </div>
+            )}
           </div>
         </MainBar>
         {children}

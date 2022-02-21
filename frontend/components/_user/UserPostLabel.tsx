@@ -4,13 +4,13 @@ import styled from 'styled-components'
 
 import { CENTER_FLEX } from '@/styles/classNames'
 
-type Props = { isMyPage?: boolean }
+type Props = { isMe?: boolean }
 
-const UserPostLabel: React.FC<Props> = ({ isMyPage = false }) => {
+const UserPostLabel: React.FC<Props> = ({ isMe = false }) => {
   const isSelected = true
   return (
     <div className={'w-full border-solid mt-8'}>
-      {isMyPage ? (
+      {isMe ? (
         <div className={'flex w-full'}>
           <div
             className={`w-1/2 ${CENTER_FLEX} hover:bg-blue-100 cursor-pointer border-solid border-y-1 border-y-gray-200 py-3 ${

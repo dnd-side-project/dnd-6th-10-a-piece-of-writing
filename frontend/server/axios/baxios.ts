@@ -1,7 +1,13 @@
 import axios from 'axios'
 import * as https from 'https'
 
-import { BACKEND_URL, SESSION_STORAGE_KEY_ACCESS_TOKEN, SESSION_STORAGE_KEY_REFRESH_TOKEN } from '@/constant'
+import {
+  BACKEND_URL,
+  KEY_ACCESS_TOKEN,
+  KEY_HEADER_ACCESS_TOKEN,
+  KEY_HEADER_REFRESH_TOKEN,
+  KEY_REFRESH_TOKEN,
+} from '@/constant'
 
 // 백엔드로 보내는 axios
 const baxios = axios.create({
@@ -18,10 +24,11 @@ const baxios = axios.create({
 
 baxios.interceptors.request.use(
   function (config) {
-    const accessToken = window.sessionStorage.getItem(SESSION_STORAGE_KEY_ACCESS_TOKEN)
-    const refreshToken = window.sessionStorage.getItem(SESSION_STORAGE_KEY_REFRESH_TOKEN)
-    if (config.headers) config.headers['X-AUTH_TOKEN'] = accessToken ?? ''
-    if (config.headers) config.headers['X-AUTH-REFRESH_TOKEN'] = refreshToken ?? ''
+    if (config?.headers?.[KEY_HEADER_ACCESS_TOKEN]) return config
+    const accessToken = window.sessionStorage.getItem(KEY_ACCESS_TOKEN)
+    const refreshToken = window.sessionStorage.getItem(KEY_REFRESH_TOKEN)
+    if (config.headers) config.headers[KEY_HEADER_ACCESS_TOKEN] = accessToken ?? ''
+    if (config.headers) config.headers[KEY_HEADER_REFRESH_TOKEN] = refreshToken ?? ''
     return config
   },
   function (error) {

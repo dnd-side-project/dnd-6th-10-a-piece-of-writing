@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 public class ExtractWordDto {
 
+    @NotNull
     @ApiModelProperty(example = "image bytes[]")
-    private MultipartFile file = null;
+    private MultipartFile file;
 }

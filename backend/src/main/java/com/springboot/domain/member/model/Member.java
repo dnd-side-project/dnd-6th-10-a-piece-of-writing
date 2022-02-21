@@ -1,10 +1,17 @@
 package com.springboot.domain.member.model;
 
+import com.springboot.domain.relation.model.Relation;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,16 +28,15 @@ import lombok.Setter;
 public class Member{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long memberId;
+    private Long id;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
+    @Setter
+    private String nickname;
+
     @Builder.Default
     @Setter
-    private String nickname = "닉네임을 설정해주세요";
-
-    @Column(nullable = true)
-    @Builder.Default
-    private String profileUrl = "<basic img url>";
+    private String profileUrl = null;
 
     @Column(nullable = false)
     private String email;
@@ -41,4 +47,19 @@ public class Member{
     @Column(nullable = false)
     @Builder.Default
     private String authority = Authority.ROLE_USER;
+
+    @OneToMany(mappedBy = "follower", fetch = FetchType.EAGER)
+    @Builder.Default
+    private List<Relation> follower = new ArrayList<>(); // 내가 팔로우하는 relation
+
+    @OneToMany(mappedBy = "followed", fetch = FetchType.EAGER)
+    @Builder.Default
+    private List<Relation> followed = new ArrayList<>(); // 나를 팔로우하는 relation
+
+    public int getFollowCount() { // 내가 팔로우하는 relation의 수
+        return follower.size();
+    }
+    public int getFollowerCount() { // 나를 팔로우하는 relation의 수
+        return followed.size();
+    }
 }

@@ -13,6 +13,7 @@ public enum ErrorCode {
     INVALID_TYPE_VALUE(400, "C005", "입력 값 타입 오류입니다"),
     HANDLE_ACCESS_DENIED(403, "C006", "접근이 허용되지 않습니다"),
     HEADER_MISSING_ERROR(400, "C007", "헤더가 누락되었습니다"),
+    PARAMETER_MISSING_ERROR(400, "C008", "파라미터 값이 누락되었습니다"),
 
     // JWT
     EXPIRED_ACCESS_TOKEN(403, "J001", "만료된 access token"),
