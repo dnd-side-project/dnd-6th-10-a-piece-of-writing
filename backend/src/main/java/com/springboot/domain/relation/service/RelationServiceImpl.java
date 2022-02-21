@@ -1,5 +1,6 @@
 package com.springboot.domain.relation.service;
 
+import com.springboot.domain.auth.model.UserDetailsImpl;
 import com.springboot.domain.common.model.ResponseDto;
 import com.springboot.domain.common.model.SuccessCode;
 import com.springboot.domain.common.service.ResponseService;
@@ -20,10 +21,18 @@ public class RelationServiceImpl implements RelationService{
     private final MemberService memberService;
 
     @Override
-    public ResponseEntity<? extends ResponseDto> createRelation(String followerNickname, String followedNickname) {
-        Member follower = memberService.findMemberByNickname(followerNickname);
-        Member followed = memberService.findMemberByNickname(followedNickname);
+    public ResponseEntity<? extends ResponseDto> createRelation(UserDetailsImpl userDetails, Long id) {
+        Member follower = memberService.findMemberById(userDetails.getMember().getId());
+        Member followed = memberService.findMemberById(id);
         relationRepository.save(Relation.builder().follower(follower).followed(followed).build());
         return responseService.successResult(SuccessCode.FOLLOW_SUCCESS);
+    }
+
+    @Override
+    public ResponseEntity<? extends ResponseDto> deleteRelation(UserDetailsImpl userDetails, Long id) {
+        Member follower = memberService.findMemberById(userDetails.getMember().getId());
+        Member followed = memberService.findMemberById(id);
+        relationRepository.delete(Relation.builder().follower(follower).followed(followed).build());
+        return responseService.successResult(SuccessCode.UNFOLLOW_SUCCESS);
     }
 }
