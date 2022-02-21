@@ -25,7 +25,7 @@ public interface PostsService {
 //    public Long update(Long id, PostsUpdateRequestDto requestDto);
 
     //    public Long delete(Long id);
-    Long removeWithReplies(Long id);
+    Long removeWithReplies(Long postsId);
 
     // 0219 변경 예정. author -> member
 //    public List<PostsListResponseDto> findAllPostsOrderByIdDesc(int page);

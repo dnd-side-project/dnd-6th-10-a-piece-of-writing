@@ -3,6 +3,7 @@ package com.springboot.domain.reply.model.entity;
 import com.springboot.domain.member.model.Member;
 import com.springboot.domain.posts.model.entity.BaseTime;
 import com.springboot.domain.posts.model.entity.Posts;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -33,7 +34,9 @@ public class Reply extends BaseTime {
     private String text;
 
     // MemberId로 변경 예정
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+//    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinColumn(name = "replyer_id")
     private Member replyer;
 
 //    private String replyer;
@@ -43,7 +46,12 @@ public class Reply extends BaseTime {
 //    private Member replyer;
 
     @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "posts_id")
+//    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinColumn(name = "posts_id")
     private Posts posts;
+
+    public void changeText(String text){
+        this.text = text;
+    }
 
 }

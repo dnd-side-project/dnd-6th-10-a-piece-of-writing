@@ -1,5 +1,7 @@
 package com.springboot.domain.posts;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.springboot.domain.member.model.Member;
 import com.springboot.domain.member.repository.MemberRepository;
 import com.springboot.domain.posts.model.dto.PageRequestDto;
@@ -8,11 +10,21 @@ import com.springboot.domain.posts.model.dto.PostsDto;
 import com.springboot.domain.posts.model.dto.PostsListResponseDto;
 import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
 import com.springboot.domain.posts.model.entity.Posts;
+import com.springboot.domain.posts.repository.PostsRepository;
 import com.springboot.domain.posts.service.PostsService;
+import com.springboot.domain.reply.ReplyControllerTests;
+import com.springboot.domain.reply.model.dto.ReplyDto;
+import com.springboot.domain.reply.model.entity.Reply;
+import com.springboot.domain.reply.repository.ReplyRepository;
+import com.springboot.domain.reply.service.ReplyService;
+import java.util.List;
+import java.util.Optional;
 import javax.transaction.Transactional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
@@ -27,7 +39,18 @@ public class PostsServiceTest {
     private PostsService service;
 
     @Autowired
+    private ReplyService replyService;
+
+    @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private PostsRepository postsRepository;
+
+    @Autowired
+    private ReplyRepository replyRepository;
+
+    Logger logger = LoggerFactory.getLogger(PostsServiceTest.class);
 
     // 0219 변경 예정. author -> member
     @DisplayName("[Service] Posts 등록 테스트")
@@ -92,7 +115,11 @@ public class PostsServiceTest {
     @Test
     public void testGet() {
 
-        Long id = 300L;
+        Posts post = postsRepository.findAll().get(0);
+
+        Long id = post.getId();
+
+        logger.info("Post ID :" + id.toString());
 
         PostsDto postsDto = service.get(id);
 
@@ -101,18 +128,41 @@ public class PostsServiceTest {
 
     @DisplayName("[Service] 게시물 삭제 - 댓글과 함께")
     @Test
-//    @Transactional
+    @Transactional
     public void testRemove() {
 
-        Long id = 228L;
+        // given
+        Posts post = postsRepository.findAll().get(0);
 
-        service.removeWithReplies(id);
+        Long postsId = post.getId();
 
+        logger.info("Post ID :" + postsId.toString());
+
+        List<ReplyDto> replyDTOList = replyService.getList(postsId);
+
+        for (ReplyDto replydto : replyDTOList) {
+            logger.info("replyDTO :" + replydto.toString());
+        }
+
+        // when
+        Long deletedPostsId = service.removeWithReplies(postsId);
+
+        logger.info("deletedPostsId :" + deletedPostsId.toString());
+
+        Optional<Posts> deletedPosts = postsRepository.findById(deletedPostsId);
+
+        // then
+        assertThat(deletedPosts).isEmpty();
+
+        for (ReplyDto replydto : replyDTOList) {
+            Optional<Reply> deletedReply = replyRepository.findById(replydto.getId());
+            assertThat(deletedReply).isEmpty();
+        }
     }
 
     @DisplayName("[Service] 조건부 목록 조회 페이지네이션 search 테스트 ")
     @Test
-    public void testSearch(){
+    public void testSearch() {
 
         PageRequestDto pageRequestDTO = new PageRequestDto();
         pageRequestDTO.setPage(1);

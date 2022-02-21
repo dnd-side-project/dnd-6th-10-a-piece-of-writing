@@ -10,11 +10,11 @@ public interface ReplyService {
 
     Long register(ReplyDto replyDTO); //댓글의 등록
 
-    List<ReplyDto> getList(Long bno); //특정 게시물의 댓글 목록
+    List<ReplyDto> getList(Long postsId); //특정 게시물의 댓글 목록
 
-    void modify(ReplyDto replyDTO); //댓글 수정
+    Long modify(ReplyDto replyDTO); //댓글 수정
 
-    void remove(Long rno); //댓글 삭제
+    Long remove(Long id); //댓글 삭제
 
     //ReplyDTO를 Reply 객체로 변환 Posts 객체의 처리가 수반됨
     default Reply dtoToEntity(ReplyDto dto) {

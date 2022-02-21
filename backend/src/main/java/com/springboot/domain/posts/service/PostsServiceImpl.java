@@ -106,14 +106,14 @@ public class PostsServiceImpl implements PostsService {
 //    }
     @Transactional
     @Override
-    public Long removeWithReplies(Long id) {
+    public Long removeWithReplies(Long postsId) {
 
         //댓글 부터 삭제
-        replyRepository.deleteById(id);
+        replyRepository.deleteByPostsId(postsId);
 
-        postsRepository.deleteById(id);
+        postsRepository.deleteById(postsId);
 
-        return id;
+        return postsId;
     }
 
     // 0219 변경 예정. author -> member

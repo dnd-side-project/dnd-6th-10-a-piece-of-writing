@@ -35,17 +35,29 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
     @Override
-    public void modify(ReplyDto replyDTO) {
+    public Long modify(ReplyDto replyDTO) {
 
-        Reply reply = dtoToEntity(replyDTO);
+        Reply reply = replyRepository.getById(replyDTO.getId());
 
-        replyRepository.save(reply);
+        if(reply != null) {
 
+            reply.changeText(replyDTO.getText());
+
+            replyRepository.save(reply);
+        }
+
+//        Reply reply = dtoToEntity(replyDTO);
+
+//        replyRepository.save(reply);
+
+        return reply.getId();
     }
 
     @Override
-    public void remove(Long rno) {
+    public Long remove(Long id) {
 
-        replyRepository.deleteById(rno);
+        replyRepository.deleteById(id);
+
+        return id;
     }
 }
