@@ -32,9 +32,13 @@ public interface MemberService {
 
     public ResponseEntity<? extends ResponseDto> getMyProfile(UserDetailsImpl userDetailsImpl);
 
-    public ResponseEntity<? extends ResponseDto> getMemberProfile(UserDetailsImpl userDetailsImpl, String nickname);
+    public ResponseEntity<? extends ResponseDto> getMemberProfile(UserDetailsImpl userDetailsImpl, Long id);
 
-    public ResponseEntity<? extends ResponseDto> getFollowList(String nickname);
+    public ResponseEntity<? extends ResponseDto> getFollowList(Long id);
 
-    public ResponseEntity<? extends ResponseDto> getFollowerList(String nickname);
+    public ResponseEntity<? extends ResponseDto> getFollowerList(Long id);
+
+    public ResponseEntity<? extends ResponseDto> getMyPostsList(UserDetailsImpl userDetails);
+
+    public ResponseEntity<? extends ResponseDto> getMyLikesList(UserDetailsImpl userDetails);
 }
