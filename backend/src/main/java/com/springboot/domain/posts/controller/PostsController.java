@@ -9,6 +9,7 @@ import com.springboot.domain.posts.model.dto.PostsDto;
 import com.springboot.domain.posts.service.PostsService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -78,15 +79,13 @@ public class PostsController {
             SuccessCode.SELECT_POSTS_SEARCH_SUCCESS, posts);
     }
 
-    @ApiOperation(value = "이미지 텍스트 추출", notes = "이미지를 전송해 텍스트를 추출한다.")
+    @ApiOperation(value = "이미지 텍스트 추출 api", notes = "이미지를 전송해 텍스트를 추출한다.")
     @PostMapping(value = "/img-extract", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ResponseDto> imageExtract(ExtractWordDto extractWordDto) {
+    public ResponseEntity<ResponseDto> imageExtract(@Valid ExtractWordDto extractWordDto) {
         MultipartFile file = extractWordDto.getFile();
 
-        GoogleCredentials credentials = postsService.getCredentials();
-        String imageUrl = postsService.postsImgUpload(credentials, file,
-            postsService.getFileUuid());
-        String result = postsService.postsImgExtractWords(credentials, file, imageUrl);
+        String imageUrl = postsService.postsImgUpload(file, postsService.getFileUuid());
+        String result = postsService.postsImgExtractWords(file, imageUrl);
 
         return responseServiceImpl.successResult(SuccessCode.EXTRACT_SUCCESS, result);
     }

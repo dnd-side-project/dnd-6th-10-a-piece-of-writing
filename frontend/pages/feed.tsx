@@ -3,14 +3,19 @@ import React from 'react'
 import styled from 'styled-components'
 
 import MainTitle from '@/components/_main/MainTitle'
+import { UserInfo as UserInfoType } from '@/components/_user/type'
 import AddButton from '@/components/button/AddButton'
 import { TagCarousel } from '@/components/carousel'
 import Posts from '@/components/post/Posts'
 import { FlexDiv } from '@/components/style/div/FlexDiv'
+import { useSsrMe } from '@/hook/useSsrMe'
+import { withAuthServerSideProps } from '@/server/withAuthServerSide'
 
-type Props = {}
+type ServerSideProps = { me: UserInfoType }
 
-const feed: React.FC<Props> = ({}) => {
+const Feed: React.FC<ServerSideProps> = ({ me }) => {
+  useSsrMe(me)
+
   return (
     <>
       <div className={`flex flex-col-reverse flex-end items-center w-full`}>
@@ -69,4 +74,6 @@ const DUMMY_TAGS = [
   },
 ]
 
-export default feed
+export const getServerSideProps = withAuthServerSideProps()
+
+export default Feed

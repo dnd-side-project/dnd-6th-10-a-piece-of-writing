@@ -25,14 +25,13 @@ public class Member{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
+    @Setter
+    private String nickname;
+
     @Builder.Default
     @Setter
-    private String nickname = "닉네임을 설정해주세요";
-
-    @Column(nullable = true)
-    @Builder.Default
-    private String profileUrl = "<basic img url>";
+    private String profileUrl = null;
 
     @Column(nullable = false)
     private String email;
@@ -44,10 +43,18 @@ public class Member{
     @Builder.Default
     private String authority = Authority.ROLE_USER;
 
-    // temp follow
+    @OneToMany(mappedBy = "follower", fetch = FetchType.EAGER)
     @Builder.Default
-    private int follow=0;
+    private List<Relation> follower = new ArrayList<>(); // 내가 팔로우하는 relation
 
+    @OneToMany(mappedBy = "followed", fetch = FetchType.EAGER)
     @Builder.Default
-    private int follower=0;
+    private List<Relation> followed = new ArrayList<>(); // 나를 팔로우하는 relation
+
+    public int getFollowCount() { // 내가 팔로우하는 relation의 수
+        return follower.size();
+    }
+    public int getFollowerCount() { // 나를 팔로우하는 relation의 수
+        return followed.size();
+    }
 }
