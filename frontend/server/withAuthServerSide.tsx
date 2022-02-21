@@ -8,6 +8,7 @@ import { loadMe } from '@/server/user'
 export function withAuthServerSideProps(getServerSidePropsFunc?: Function) {
   return async (context: GetServerSidePropsContext) => {
     const res = await loadMe(context?.req?.cookies?.[KEY_ACCESS_TOKEN], context?.req?.cookies?.[KEY_REFRESH_TOKEN])
+    console.log({ serversideRes: res })
     const me = res.success ? res.data : null
     if (getServerSidePropsFunc) {
       return { props: { me, data: await getServerSidePropsFunc(context, me) } }
