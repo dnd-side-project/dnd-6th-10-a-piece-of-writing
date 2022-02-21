@@ -41,16 +41,12 @@ public class Reply extends BaseTime {
 
 //    private String replyer;
 
-//    @ManyToOne
-//    @JoinColumn(name = "replyer_id")
-//    private Member replyer;
-
     @ManyToOne(fetch = FetchType.LAZY)
 //    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "posts_id")
     private Posts posts;
 
-    public void changeText(String text){
+    public void changeText(String text) {
         this.text = text;
     }
 

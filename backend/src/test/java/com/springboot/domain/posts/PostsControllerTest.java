@@ -121,12 +121,6 @@ public class PostsControllerTest {
                 .content(new ObjectMapper().writeValueAsString(requestDto)))
             .andExpect(status().isOk());
 
-        //when
-//        ResponseEntity<Long> responseEntity = restTemplate.postForEntity(url,requestDto,Long.class);
-//
-//        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-//        assertThat(responseEntity.getBody()).isEqualTo(1);
-
         //then
         List<Posts> all = postsRepository.findAllByOrderByIdDesc();
         assertThat(all.get(0).getContent()).isEqualTo(content);
@@ -296,11 +290,6 @@ public class PostsControllerTest {
             url = deployed_url;
         }
 
-//        String url = "http://localhost:" + port + "/api/v1/posts"
-//            + searched_type
-//            + searched_keyword
-//            + searched_page;
-
         //when
         mvc.perform(get(url)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -309,37 +298,5 @@ public class PostsControllerTest {
             .andDo(print());
     }
 
-//    @Test
-//    @WithMockUser(roles="USER")
-//    public void Posts_수정된다() throws Exception {
-//        //given
-//        Posts savedPosts = postsRepository.save(Posts.builder()
-//                .ref("reference")
-//                .content("content")
-//                .author("author")
-//                .build());
-//
-//        Long updateId = savedPosts.getId();
-//        String expectedRef = "reference2";
-//        String expectedContent = "content2";
-//
-//        PostsUpdateRequestDto requestDto = PostsUpdateRequestDto.builder()
-//                .ref(expectedRef)
-//                .content(expectedContent)
-//                .build();
-//
-//        String url = "http://localhost:" + port + "/api/v1/posts/" + updateId;
-//
-//        //when
-//        mvc.perform(put(url)
-//                .contentType(MediaType.APPLICATION_JSON_UTF8)
-//                .content(new ObjectMapper().writeValueAsString(requestDto)))
-//                .andExpect(status().isOk());
-//
-//        //then
-//        List<Posts> all = postsRepository.findAll();
-//        assertThat(all.get(0).getRef()).isEqualTo(expectedRef);
-//        assertThat(all.get(0).getContent()).isEqualTo(expectedContent);
-//    }
 
 }

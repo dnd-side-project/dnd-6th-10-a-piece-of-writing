@@ -15,13 +15,11 @@ public interface ReplyRepository extends JpaRepository<Reply, Long> {
     void deleteByPostsId(Long id);
 
     // 게시물로 댓글 전체 조회
-//    List<Reply> getRepliesByPostsOrderById(Posts posts);
     List<Reply> getRepliesByPostsOrderByIdDesc(Posts posts);
 
     // 게시물로 댓글 초기 3개 조회
     @Query(value = "select * from Reply r "
         + "order by r.id desc "
-//        + "where r.posts.id =:id "
         + "limit 3", nativeQuery = true)
     List<Reply> getRepliesByPostsOrderByIdLimit3(Posts posts);
 

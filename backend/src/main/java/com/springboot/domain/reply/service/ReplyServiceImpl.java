@@ -56,10 +56,6 @@ public class ReplyServiceImpl implements ReplyService {
             replyRepository.save(reply);
         }
 
-//        Reply reply = dtoToEntity(replyDTO);
-
-//        replyRepository.save(reply);
-
         return reply.getId();
     }
 

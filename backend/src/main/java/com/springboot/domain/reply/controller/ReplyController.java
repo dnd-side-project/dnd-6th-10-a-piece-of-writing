@@ -40,7 +40,6 @@ public class ReplyController {
 
         List<ReplyDto> replies = replyService.getList(postsId);
 
-//        return new ResponseEntity<>( replyService.getList(postsId), HttpStatus.OK);
         return responseServiceImpl.successResult(SuccessCode.SELECT_REPLY_SUCCESS, replies);
     }
 
@@ -52,8 +51,7 @@ public class ReplyController {
 
         List<ReplyDto> replies = replyService.getFirstList(postsId);
 
-//        return new ResponseEntity<>( replyService.getList(postsId), HttpStatus.OK);
-        return responseServiceImpl.successResult(SuccessCode.SELECT_REPLY_SUCCESS, replies);
+        return responseServiceImpl.successResult(SuccessCode.SELECT_FIRST_REPLY_SUCCESS, replies);
     }
 
     @Operation(summary = "save reply api", description = "댓글 생성 api")
@@ -64,7 +62,6 @@ public class ReplyController {
 
         Long saveReplyId = replyService.register(replyDTO);
 
-//        return new ResponseEntity<>(id, HttpStatus.OK);
         return responseServiceImpl.successResult(SuccessCode.SAVE_REPLY_SUCCESS, saveReplyId);
     }
 
@@ -76,7 +73,6 @@ public class ReplyController {
 
         Long deletedReplyId = replyService.remove(id);
 
-//        return new ResponseEntity<>("success", HttpStatus.OK);
         return responseServiceImpl.successResult(SuccessCode.DELETE_REPLY_SUCCESS, deletedReplyId);
     }
 
@@ -89,7 +85,6 @@ public class ReplyController {
 
         long modifiedReplyId = replyService.modify(id, replyDTO);
 
-//        return new ResponseEntity<>("success", HttpStatus.OK);
         return responseServiceImpl.successResult(SuccessCode.MODIFY_REPLY_SUCCESS, modifiedReplyId);
     }
 

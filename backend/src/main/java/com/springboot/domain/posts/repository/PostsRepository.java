@@ -31,7 +31,6 @@ public interface PostsRepository extends JpaRepository<Posts, Long>,
         " LEFT JOIN p.author a " +
         " LEFT JOIN Reply r ON r.posts = p " +
         " GROUP BY p")
-//        countQuery ="SELECT count(b) FROM Board b")
     Page<Object[]> getPostsListsWithAuthorReply(Pageable pageable);
 
     //게시물 목록 조회 ( 게시물 + 작성자  ) 및 페이징 처리

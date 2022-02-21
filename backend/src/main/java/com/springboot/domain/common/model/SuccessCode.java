@@ -33,7 +33,8 @@ public enum SuccessCode {
     SAVE_REPLY_SUCCESS("댓글 생성 성공","RM001",200),
     DELETE_REPLY_SUCCESS("댓글 삭제 성공","RM002",200),
     MODIFY_REPLY_SUCCESS("댓글 수정 성공","RM003",200),
-    SELECT_REPLY_SUCCESS("댓글 조회 성공","RM004",200)
+    SELECT_REPLY_SUCCESS("댓글 모두 조회 성공","RM004",200),
+    SELECT_FIRST_REPLY_SUCCESS("댓글 초기 3개 조회 성공","PM005",200)
     ;
 
     private final String message;

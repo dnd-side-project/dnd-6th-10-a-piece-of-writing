@@ -43,80 +43,6 @@ public class PostsRepositoryTest {
 
     Logger logger = (Logger) LoggerFactory.getLogger(PostsRepositoryTest.class);
 
-    // 테스트 후 데이터 삭제용
-//    @AfterEach
-//    void tearDown(){
-//        postsRepository.deleteAll();
-//    }
-
-    // 0219 변경 예정. author -> member
-//    @Test
-//    @Transactional
-//    public void 게시글저장_불러오기() {
-//        //given
-//        String ref = "테스트 레퍼런스";
-//        String content = "테스트 본문";
-//
-//        postsRepository.save(Posts.builder()
-//            .content(content)
-//            .author("stam0325@gmail.com")
-//            .ref(ref)
-//            .build());
-//
-//        //when
-//        List<Posts> postsList = postsRepository.findAllByOrderByIdDesc();
-//
-//        //then
-//        Posts posts = postsList.get(0);
-//        assertThat(posts.getContent()).isEqualTo(content);
-//        assertThat(posts.getRef()).isEqualTo(ref);
-//    }
-//
-//    @Test
-//    @Transactional
-//    public void BaseTimeEntity_등록() {
-//        //given
-//        LocalDateTime now = LocalDateTime.of(2019, 6, 4, 0, 0, 0);
-//        postsRepository.save(Posts.builder()
-//            .ref("reference")
-//            .content("content")
-//            .author("author")
-//            .build());
-//        //when
-//        List<Posts> postsList = postsRepository.findAll();
-//
-//        //then
-//        Posts posts = postsList.get(0);
-//
-//        System.out.println(">>>>>>>>> createDate=" + posts.getCreatedDate() + ", modifiedDate="
-//            + posts.getModifiedDate());
-//
-//        assertThat(posts.getCreatedDate()).isAfter(now);
-//        assertThat(posts.getModifiedDate()).isAfter(now);
-//    }
-//
-//    @Test
-//    @Transactional
-//    public void 게시글_삭제() {
-//        //given
-//        String ref = "테스트 레퍼런스";
-//        String content = "테스트 본문";
-//
-//        Posts saved = postsRepository.save(Posts.builder()
-//            .content(content)
-//            .author("stam0325@gmail.com")
-//            .ref(ref)
-//            .build());
-//
-//        //when
-//        postsRepository.deleteById(saved.getId());
-//
-//        //then
-//        Optional<Posts> deleted = postsRepository.findById(saved.getId());
-//        assertThat(deleted).isEmpty();
-//    }
-//
-
     // 페이지 정렬 테스트
     @Test
     @Transactional
@@ -181,10 +107,6 @@ public class PostsRepositoryTest {
     @Test
     @Transactional
     public void testRead1() {
-
-//        Optional<Posts> result = postsRepository.findById(300L); //데이터베이스에 존재하는 번호
-//
-//        Posts posts = result.get();
 
         Posts posts = postsRepository.getById(300L);
 
@@ -251,39 +173,13 @@ public class PostsRepositoryTest {
     public void testSearchPage() {
 
         Pageable pageable =
-            PageRequest.of(0,10,
+            PageRequest.of(0, 10,
                 Sort.by("id").descending()
                     .and(Sort.by("content").ascending()));
 
         Page<Object[]> result = postsRepository.searchPage("c", "1", pageable);
 
     }
-
-
-
-    //    @Test
-//    public void 게시글_1개조회() {
-//        //given
-//        String ref = "테스트 레퍼런스";
-//        String content = "테스트 본문";
-//
-//        postsRepository.save(Posts.builder()
-//                .content(content)
-//                .author("stam0325@gmail.com")
-//                .ref(ref)
-//                .build());
-//
-//        //when
-//        List<Posts> postsList = postsRepository.findAll();
-//
-//        //then
-//        Posts posts = postsList.get(0);
-//        long id = posts.getId();
-//        Optional<Posts> entity = postsRepository.findById(id);
-//
-//        assertThat(posts.getContent()).isEqualTo(content);
-//        assertThat(posts.getRef()).isEqualTo(ref);
-//    }
 
 
 }

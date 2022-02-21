@@ -33,16 +33,4 @@ public class PostsDto {
 
     private String authorNickname; // Author nickname
 
-//    // Reply Info
-//    private Long replyId; // reply id
-//
-//    private String replyText; // reply text
-//
-//    // Reply - Replyer Info
-//    private Long replyerId; // replyer id
-//
-//    private String replyerEmail; // replyer email
-//
-//    private String replyerNickname; // replyer nickname
-
 }

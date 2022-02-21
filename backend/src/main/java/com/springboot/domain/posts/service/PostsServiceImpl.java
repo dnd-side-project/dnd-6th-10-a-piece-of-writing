@@ -48,18 +48,9 @@ public class PostsServiceImpl implements PostsService {
 
     private final ReplyRepository replyRepository;
 
-    // 0219 변경 예정. author -> member
-//    @Override
-//    @Transactional
-//    public Long save(PostsSaveRequestDto requestDto) {
-//
-//        return postsRepository.save(requestDto.toEntity()).getId();
-//    }
     @Override
     @Transactional
     public Long save(PostsDto requestDto) {
-
-//        return postsRepository.save(requestDto.toEntity()).getId();
 
         log.info(requestDto);
 
@@ -70,26 +61,6 @@ public class PostsServiceImpl implements PostsService {
         return posts.getId();
     }
 
-//    @Transactional
-//    public Long update(Long id, PostsUpdateRequestDto requestDto){
-//        Posts posts = postsRepository.findById(id)
-//                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
-//
-//        posts.update(requestDto.getRef(),requestDto.getContent());
-//
-//        return id;
-//    }
-
-    //    @Override
-//    @Transactional
-//    public Long delete(Long id) {
-//        Posts posts = postsRepository.findById(id)
-//            .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 없습니다. id=" + id));
-//
-//        postsRepository.delete(posts);
-//
-//        return id;
-//    }
     @Transactional
     @Override
     public Long removeWithReplies(Long postsId) {
@@ -101,23 +72,6 @@ public class PostsServiceImpl implements PostsService {
 
         return postsId;
     }
-
-    // 0219 변경 예정. author -> member
-//    @Override
-//    public List<PostsListResponseDto> findAllPostsOrderByIdDesc(int page) {
-//
-//        // size = 10 임의 설정
-//        int size = 10;
-//
-//        PageRequestDto pageRequestDTO = PageRequestDto.builder()
-//            .page(page)
-//            .size(size)
-//            .build();
-//
-//        PageResultDto<PostsListResponseDto, Posts> resultDTO = getList(pageRequestDTO);
-//
-//        return resultDTO.getDtoList();
-//    }
 
     @Override
     public List<PostsDto> findAllPostsOrderByIdDesc(int page, int size) {
@@ -132,24 +86,6 @@ public class PostsServiceImpl implements PostsService {
         return resultDTO.getDtoList();
     }
 
-    // 0219 변경 예정. author -> member
-//    @Override
-//    public List<PostsListResponseDto> findAllPostsBySearch(int page, String keyword, String type) {
-//
-//        // size = 10 임의 설정
-//        int size = 10;
-//
-//        PageRequestDto pageRequestDTO = PageRequestDto.builder()
-//            .page(page)
-//            .size(size)
-//            .type(type)
-//            .keyword(keyword)
-//            .build();
-//
-//        PageResultDto<PostsListResponseDto, Posts> resultDTO = getList(pageRequestDTO);
-//
-//        return resultDTO.getDtoList();
-//    }
     @Override
     public List<PostsDto> findAllPostsBySearch(int page, int size, String keyword, String type) {
 
@@ -236,24 +172,6 @@ public class PostsServiceImpl implements PostsService {
         }
     }
 
-    // Tools for Pagination
-    // 0219 변경 예정. author -> member
-//    @Override
-//    public PageResultDto<PostsListResponseDto, Posts> getList(PageRequestDto requestDTO) {
-//
-//        Pageable pageable = requestDTO.getPageable(Sort.by("id").descending());
-//
-//        BooleanBuilder booleanBuilder = getSearch(requestDTO); //검색 조건 처리
-//
-//        Page<Posts> result = postsRepository.findAll(booleanBuilder, pageable); //Querydsl 사용
-//
-//        Function<Posts, PostsListResponseDto> fn = (entity -> entityToDto(entity));
-//
-////        Function<Posts, PostsListResponseDto> fn = (PostsListResponseDto::new);
-//
-//        return new PageResultDto<>(result, fn);
-//    }
-
     @Override
     public PageResultDto<PostsDto, Object[]> getList(PageRequestDto pageRequestDTO) {
 
@@ -282,43 +200,4 @@ public class PostsServiceImpl implements PostsService {
 
         return entityToDTO((Posts) arr[0], (Member) arr[1]);
     }
-
-    // 0219 변경 예정. author -> member
-//    private BooleanBuilder getSearch(PageRequestDto requestDTO) {
-//
-//        String type = requestDTO.getType();
-//
-//        BooleanBuilder booleanBuilder = new BooleanBuilder();
-//
-//        QPosts qPosts = QPosts.posts;
-//
-//        String keyword = requestDTO.getKeyword();
-//
-//        BooleanExpression expression = qPosts.id.gt(0L); // id > 0 조건만 생성
-//
-//        booleanBuilder.and(expression);
-//
-//        if (type == null || type.trim().length() == 0) { //검색 조건이 없는 경우
-//            return booleanBuilder;
-//        }
-//
-//        //검색 조건을 작성하기
-//        BooleanBuilder conditionBuilder = new BooleanBuilder();
-//
-//        // topic 적용 예정
-////        if(type.contains("t")){
-////            conditionBuilder.or(qPosts.topic.contains(keyword));
-////        }
-//        if (type.contains("c")) {
-//            conditionBuilder.or(qPosts.content.contains(keyword));
-//        }
-//        if (type.contains("a")) {
-//            conditionBuilder.or(qPosts.author.contains(keyword));
-//        }
-//
-//        //모든 조건 통합
-//        booleanBuilder.and(conditionBuilder);
-//
-//        return booleanBuilder;
-//    }
 }
