@@ -33,19 +33,4 @@ public class Relation {
     @ManyToOne
     @JoinColumn(name = "followed", referencedColumnName = "id")
     private Member followed;
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Relation relation = (Relation) o;
-        return Objects.equals(follower.getId(), relation.getFollower().getId())
-                && Objects.equals(followed.getId(), relation.getFollowed().getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(follower.getId(), followed.getId());
-    }
 }
