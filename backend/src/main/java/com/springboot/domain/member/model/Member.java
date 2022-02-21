@@ -1,15 +1,18 @@
 package com.springboot.domain.member.model;
 
+import com.springboot.domain.posts.model.entity.Posts;
 import com.springboot.domain.relation.model.Relation;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AccessLevel;
@@ -55,6 +58,15 @@ public class Member{
     @OneToMany(mappedBy = "followed", fetch = FetchType.EAGER)
     @Builder.Default
     private List<Relation> followed = new ArrayList<>(); // 나를 팔로우하는 relation
+
+    @OneToMany(mappedBy = "author", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Builder.Default
+    private List<Posts> posts = new ArrayList<>(); // 내 글 목록
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "POSTS_ID")
+    @Builder.Default
+    private List<Posts> likes = new ArrayList<>(); // 좋아요 목록
 
     public int getFollowCount() { // 내가 팔로우하는 relation의 수
         return follower.size();

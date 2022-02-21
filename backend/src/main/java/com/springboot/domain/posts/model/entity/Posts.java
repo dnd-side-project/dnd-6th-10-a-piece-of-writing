@@ -28,6 +28,6 @@ public class Posts extends BaseTime {
     private String ref;
 
     @ManyToOne
-    @JoinColumn(name = "author_id")
+    @JoinColumn(name = "author")
     private Member author;
 }
