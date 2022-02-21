@@ -20,8 +20,11 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.springboot.domain.auth.model.UserDetailsImpl;
 import com.springboot.domain.common.error.exception.BusinessException;
+import com.springboot.domain.common.error.exception.EntityNotFoundException;
 import com.springboot.domain.common.error.exception.ErrorCode;
 import com.springboot.domain.common.model.ResponseDto;
+import com.springboot.domain.common.model.SuccessCode;
+import com.springboot.domain.common.service.ResponseService;
 import com.springboot.domain.member.model.Member;
 import com.springboot.domain.member.repository.MemberRepository;
 import com.springboot.domain.posts.model.dto.PageRequestDto;
@@ -52,29 +55,38 @@ public class PostsServiceImpl implements PostsService {
 
     private final PostsRepository postsRepository;
     private final MemberRepository memberRepository;
+    private final ResponseService responseService;
+
+    public Posts findPostsById(Long id) {
+        return postsRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.ENTITY_NOT_FOUND));
+    }
+
+    public Member findMemberById(Long id) {
+        return memberRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.ENTITY_NOT_FOUND));
+    }
 
     @Override
     @Transactional
     public Long save(PostsSaveRequestDto requestDto) {
+        String imageUrl = postsImgUpload(requestDto.getMultipartFile(), getFileUuid());
+        Posts posts = postsRepository.save(
+                Posts.builder()
+                        .id(requestDto.getId())
+                        .ref(requestDto.getRef())
+                        .author(findMemberById(requestDto.getId()))
+                        .imageUrl(imageUrl)
+                        .build());
 
-        return postsRepository.save(requestDto.toEntity()).getId();
+        return posts.getId();
     }
-
-//    @Transactional
-//    public Long update(Long id, PostsUpdateRequestDto requestDto){
-//        Posts posts = postsRepository.findById(id)
-//                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
-//
-//        posts.update(requestDto.getRef(),requestDto.getContent());
-//
-//        return id;
-//    }
 
     @Override
     @Transactional
     public Long delete(Long id) {
         Posts posts = postsRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 없습니다. id=" + id));
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 없습니다. id=" + id));
 
         postsRepository.delete(posts);
 
@@ -82,35 +94,36 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Override
-    public List<PostsListResponseDto> findAllPostsOrderByIdDesc(int page) {
+    public List<PostsListResponseDto> findAllPostsOrderByIdDesc(int page, Long userId) {
 
         // size = 10 임의 설정
         int size = 10;
 
         PageRequestDto pageRequestDTO = PageRequestDto.builder()
-            .page(page)
-            .size(size)
-            .build();
+                .page(page)
+                .size(size)
+                .build();
 
-        PageResultDto<PostsListResponseDto, Posts> resultDTO = getList(pageRequestDTO);
+        PageResultDto<PostsListResponseDto, Posts> resultDTO = getList(pageRequestDTO, userId);
 
         return resultDTO.getDtoList();
     }
 
     @Override
-    public List<PostsListResponseDto> findAllPostsBySearch(int page, String keyword, String type) {
+    public List<PostsListResponseDto> findAllPostsBySearch(
+            int page, String keyword, String type, Long userId) {
 
         // size = 10 임의 설정
         int size = 10;
 
         PageRequestDto pageRequestDTO = PageRequestDto.builder()
-            .page(page)
-            .size(size)
-            .type(type)
-            .keyword(keyword)
-            .build();
+                .page(page)
+                .size(size)
+                .type(type)
+                .keyword(keyword)
+                .build();
 
-        PageResultDto<PostsListResponseDto, Posts> resultDTO = getList(pageRequestDTO);
+        PageResultDto<PostsListResponseDto, Posts> resultDTO = getList(pageRequestDTO, userId);
 
         return resultDTO.getDtoList();
     }
@@ -133,7 +146,7 @@ public class PostsServiceImpl implements PostsService {
 
     @Override
     public String postsImgUpload(MultipartFile multipartFile,
-        String fileName) {
+            String fileName) {
         try {
             byte[] bytes = multipartFile.getBytes();
 
@@ -141,7 +154,7 @@ public class PostsServiceImpl implements PostsService {
             String bucketName = "example-ocr-test";
 
             Storage storage = StorageOptions.newBuilder().setProjectId(projectId)
-                .setCredentials(getCredentials()).build().getService();
+                    .setCredentials(getCredentials()).build().getService();
 
             BlobId blobId = BlobId.of(bucketName, fileName);
             BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("image/jpeg").build();
@@ -163,13 +176,13 @@ public class PostsServiceImpl implements PostsService {
         Image img = Image.newBuilder().setSource(imgSource).build();
         Feature feat = Feature.newBuilder().setType(Feature.Type.TEXT_DETECTION).build();
         AnnotateImageRequest request =
-            AnnotateImageRequest.newBuilder().addFeatures(feat).setImage(img).build();
+                AnnotateImageRequest.newBuilder().addFeatures(feat).setImage(img).build();
         requests.add(request);
 
         try {
             ImageAnnotatorSettings imageAnnotatorSettings = ImageAnnotatorSettings.newBuilder()
-                .setCredentialsProvider(FixedCredentialsProvider.create(getCredentials()))
-                .build();
+                    .setCredentialsProvider(FixedCredentialsProvider.create(getCredentials()))
+                    .build();
 
             ImageAnnotatorClient client = ImageAnnotatorClient.create(imageAnnotatorSettings);
             BatchAnnotateImagesResponse response = client.batchAnnotateImages(requests);
@@ -187,7 +200,7 @@ public class PostsServiceImpl implements PostsService {
 
     // Tools for Pagination
     @Override
-    public PageResultDto<PostsListResponseDto, Posts> getList(PageRequestDto requestDTO) {
+    public PageResultDto<PostsListResponseDto, Posts> getList(PageRequestDto requestDTO, Long userId) {
 
         Pageable pageable = requestDTO.getPageable(Sort.by("id").descending());
 
@@ -195,31 +208,29 @@ public class PostsServiceImpl implements PostsService {
 
         Page<Posts> result = postsRepository.findAll(booleanBuilder, pageable); //Querydsl 사용
 
-        Function<Posts, PostsListResponseDto> fn = (entity -> entityToDto(entity));
+        Function<Posts, PostsListResponseDto> fn = (entity -> entityToDto(entity, userId));
 
 //        Function<Posts, PostsListResponseDto> fn = (PostsListResponseDto::new);
 
         return new PageResultDto<>(result, fn);
     }
 
-    private Posts findById(Long id) {
-        return postsRepository.findById(id).orElseThrow(() -> {
-            throw new BusinessException(ErrorCode.ENTITY_NOT_FOUND);
-        });
-    }
-
-    private Member findMemberById(Long id) {
-        return memberRepository.findMemberById(id).orElseThrow(() -> {
-            throw new BusinessException(ErrorCode.ENTITY_NOT_FOUND);
-        });
+    @Override
+    public ResponseEntity<ResponseDto> likePost(UserDetailsImpl userDetailsImpl, Long id) {
+        Member member = findMemberById(userDetailsImpl.getMember().getId());
+        Posts posts = findPostsById(id);
+        member.getLikePostsList().add(posts);
+        posts.getLikeMemberList().add(member);
+        return responseService.successResult(SuccessCode.LIKE_SUCCESS);
     }
 
     @Override
-    public ResponseEntity<ResponseDto> likePost(UserDetailsImpl userDetailsImpl, Long id) {
-        Posts posts = findById(id);
+    public ResponseEntity<ResponseDto> disLikePost(UserDetailsImpl userDetailsImpl, Long id) {
         Member member = findMemberById(userDetailsImpl.getMember().getId());
-
-        return null;
+        Posts posts = findPostsById(id);
+        member.getLikePostsList().remove(posts);
+        posts.getLikeMemberList().remove(member);
+        return responseService.successResult(SuccessCode.DISLIKE_SUCCESS);
     }
 
     private BooleanBuilder getSearch(PageRequestDto requestDTO) {
@@ -251,7 +262,7 @@ public class PostsServiceImpl implements PostsService {
             conditionBuilder.or(qPosts.content.contains(keyword));
         }
         if (type.contains("a")) {
-            conditionBuilder.or(qPosts.author.contains(keyword));
+            conditionBuilder.or(qPosts.author.nickname.contains(keyword));
         }
 
         //모든 조건 통합
