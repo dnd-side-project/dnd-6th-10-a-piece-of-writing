@@ -66,14 +66,14 @@ export const loadMe = async (accessToken: string, refreshToken: string): Promise
     return { success: false, message: '토큰 값 없음' }
   }
   try {
-    const result = await baxios.get('/member/user', {
+    const result = await baxios.get('/member/profile', {
       headers: { [KEY_HEADER_ACCESS_TOKEN]: accessToken, [KEY_HEADER_REFRESH_TOKEN]: refreshToken },
     })
 
-    if (result.status === 200 && result.data?.principal?.member) {
+    if (result.status === 200 && result.data?.data?.id) {
       return {
         success: true,
-        data: result.data?.principal?.member,
+        data: result.data?.data,
         message: '내 정보 로드 성공',
       }
     }

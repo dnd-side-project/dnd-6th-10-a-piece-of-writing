@@ -9,7 +9,6 @@ export function withAuthServerSideProps(getServerSidePropsFunc?: Function) {
   return async (context: GetServerSidePropsContext) => {
     const res = await loadMe(context?.req?.cookies?.[KEY_ACCESS_TOKEN], context?.req?.cookies?.[KEY_REFRESH_TOKEN])
     const me = res.success ? res.data : null
-    console.log({ withAuthServerSideProps_me: me })
     if (getServerSidePropsFunc) {
       return { props: { me, data: await getServerSidePropsFunc(context, me) } }
     }
