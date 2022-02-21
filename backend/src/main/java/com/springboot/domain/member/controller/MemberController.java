@@ -23,7 +23,6 @@ import springfox.documentation.annotations.ApiIgnore;
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/v1/member")
 public class MemberController {
-
     private final MemberService memberService;
 
     @Operation(summary = "닉네임 설정 api", description = "닉네임 변경 api")

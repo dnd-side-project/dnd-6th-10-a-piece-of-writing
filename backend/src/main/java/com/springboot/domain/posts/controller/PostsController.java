@@ -20,11 +20,10 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/posts")
 public class PostsController {
-
     private final PostsService postsService;
 
     private final ResponseServiceImpl responseServiceImpl;
