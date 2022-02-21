@@ -1,6 +1,7 @@
 package com.springboot.domain.posts.controller;
 
 import com.google.auth.oauth2.GoogleCredentials;
+import com.springboot.domain.auth.model.UserDetailsImpl;
 import com.springboot.domain.common.model.ResponseDto;
 import com.springboot.domain.common.model.SuccessCode;
 import com.springboot.domain.common.service.ResponseServiceImpl;
@@ -15,9 +16,11 @@ import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RequiredArgsConstructor
 @RestController
@@ -86,5 +89,13 @@ public class PostsController {
         String result = postsService.postsImgExtractWords(file, imageUrl);
 
         return responseServiceImpl.successResult(SuccessCode.EXTRACT_SUCCESS, result);
+    }
+
+    @ApiOperation(value = "게시글 좋아요 api", notes = "게시글 좋아요 누르기 버튼에 할당되는 api")
+    @GetMapping(value = "/like/{id}")
+    public ResponseEntity<ResponseDto> likePost(
+            @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+            @PathVariable("id") Long id) {
+        return postsService.likePost(userDetailsImpl, id);
     }
 }
