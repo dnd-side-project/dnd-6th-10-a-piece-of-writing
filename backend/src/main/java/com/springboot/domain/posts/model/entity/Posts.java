@@ -1,7 +1,12 @@
 package com.springboot.domain.posts.model.entity;
 
 
+import com.springboot.domain.member.model.Dto.MemberBasicInfoDto;
 import com.springboot.domain.member.model.Member;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,7 +32,26 @@ public class Posts extends BaseTime {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String ref;
 
+    @Column(columnDefinition = "TEXT", nullable = false)
+    private String imageUrl;
+
     @ManyToOne
-    @JoinColumn(name = "author")
     private Member author;
+
+    @OneToMany(targetEntity = Member.class, fetch = FetchType.EAGER, orphanRemoval = true)
+    @CollectionTable(name = "like_member")
+    @Builder.Default
+    private Set<Member> likeMemberList = new HashSet<>();
+
+    public int getLikeMemberListSize() {
+        return likeMemberList.size();
+    }
+
+    public MemberBasicInfoDto getMemberBasicInfo() {
+        return MemberBasicInfoDto.builder()
+                .id(author.getId())
+                .nickname(author.getNickname())
+                .profileUrl(author.getProfileUrl())
+                .build();
+    }
 }
