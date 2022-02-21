@@ -65,7 +65,7 @@ public class Member{
     @Builder.Default
     private Set<Relation> followed = new HashSet<>(); // 나를 팔로우하는 relation
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "author", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private Set<Posts> postsList = new HashSet<>(); // 내 글 목록
 

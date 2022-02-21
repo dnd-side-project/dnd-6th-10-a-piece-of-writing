@@ -190,7 +190,7 @@ public class MemberServiceImpl implements MemberService {
         Long userId = userDetails.getMember().getId();
         List<PostsListResponseDto> list = userDetails.getMember().getPostsList()
                 .stream().map(P -> postsIdToDto(P.getId(), userId)).collect(Collectors.toList());
-        return responseService.successResult(SuccessCode.GET_LIKES_LIST_SUCCESS, list);
+        return responseService.successResult(SuccessCode.GET_POSTS_LIST_SUCCESS, list);
     }
 
     @Override
