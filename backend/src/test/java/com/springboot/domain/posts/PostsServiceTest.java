@@ -93,6 +93,7 @@ public class PostsServiceTest {
 
     @DisplayName("[Service] 게시물 목록 조회 ( 게시물 + 작성자 ) 및 페이징 처리")
     @Test
+    @Transactional
     public void testList() {
 
         //1페이지 10개
@@ -108,6 +109,7 @@ public class PostsServiceTest {
 
     @DisplayName("[Service] 게시물 조회 ( 게시물 + 작성자 )")
     @Test
+    @Transactional
     public void testGet() {
 
         Posts post = postsRepository.findAll().get(0);
@@ -149,14 +151,14 @@ public class PostsServiceTest {
         // then
         assertThat(deletedPosts).isEmpty();
 
-        for (ReplyDto replydto : replyDTOList) {
-            Optional<Reply> deletedReply = replyRepository.findById(replydto.getId());
-            assertThat(deletedReply).isEmpty();
-        }
+        List<ReplyDto> deletedReplyDTOList = replyService.getList(postsId);
+
+        assertThat(deletedReplyDTOList).isEmpty();
     }
 
     @DisplayName("[Service] 조건부 목록 조회 페이지네이션 search 테스트 ")
     @Test
+    @Transactional
     public void testSearch() {
 
         PageRequestDto pageRequestDTO = new PageRequestDto();

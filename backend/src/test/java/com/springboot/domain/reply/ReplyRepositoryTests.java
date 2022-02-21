@@ -34,49 +34,47 @@ public class ReplyRepositoryTests {
 //        replyRepository.deleteAll();
 //    }
 
-    @DisplayName("Reply 테스트 데이터 삽입")
-    @Test
-    @Transactional
-    public void insertReply() {
-
-        IntStream.rangeClosed(1, 300).forEach(i -> {
-            //1부터 300까지의 임의의 번호
-
-            long postsId = (long) (Math.random() * 100) + 202;
-            // 200 ~ 300 까지의 랜덤 id
-
-            Posts posts = Posts.builder()
-                .id(postsId)
-                .build();
-
-            long replyerId = (long) (Math.random() * 100) + 202;
-            // 200 ~ 300 까지의 랜덤 id
-
-            Member replyer = Member.builder().
-                id(replyerId)
-                .build();
+//    @DisplayName("Reply 테스트 데이터 삽입")
+//    @Test
+//    @Transactional
+//    public void insertReply() {
 //
-            Reply reply = Reply.builder()
-                .id((long) i)
-                .text("Reply......." + i)
-                .posts(posts)
-                .replyer(replyer)
-//                .replyer("guest")
-                .build();
-
-            replyRepository.save(reply);
-
-        });
-
-    }
+//        IntStream.rangeClosed(1, 300).forEach(i -> {
+//            //1부터 300까지의 임의의 번호
+//
+//            long postsId = (long) (Math.random() * 100) + 202;
+//            // 200 ~ 300 까지의 랜덤 id
+//
+//            Posts posts = Posts.builder()
+//                .id(postsId)
+//                .build();
+//
+//            long replyerId = (long) (Math.random() * 100) + 202;
+//            // 200 ~ 300 까지의 랜덤 id
+//
+//            Member replyer = Member.builder().
+//                id(replyerId)
+//                .build();
+//
+//            Reply reply = Reply.builder()
+//                .id((long) i)
+//                .text("Reply......." + i)
+//                .posts(posts)
+//                .replyer(replyer)
+//                .build();
+//
+//            replyRepository.save(reply);
+//
+//        });
+//
+//    }
 
     @DisplayName("[Repository] 특정 ID Reply 와 연관된 Posts 조회")
     @Test
+    @Transactional
     public void readReply1() {
 
-        Optional<Reply> result = replyRepository.findById(1L);
-
-        Reply reply = result.get();
+        Reply reply = replyRepository.findAll().get(0);
 
         System.out.println(reply);
         System.out.println(reply.getPosts());
@@ -85,6 +83,7 @@ public class ReplyRepositoryTests {
 
     @DisplayName("[Repository] 특정 id의 Posts 에 달린 댓글 entity 모두 조회")
     @Test
+    @Transactional
     public void testListByPosts() {
 
         Posts posts = postsRepository.findAll().get(0);

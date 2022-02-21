@@ -9,11 +9,14 @@ import com.springboot.domain.posts.model.entity.Posts;
 import com.springboot.domain.posts.repository.PostsRepository;
 //import com.springboot.domain.posts.model.dto.PostsUpdateRequestDto;
 import com.springboot.domain.posts.service.PostsService;
+import com.springboot.domain.reply.ReplyControllerTests;
 import javax.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -58,6 +61,8 @@ public class PostsControllerTest {
     @Autowired
     private JwtUtil jwtUtil;
 
+    Logger logger = LoggerFactory.getLogger(PostsControllerTest.class);
+
     private MockMvc mvc;
     private String accessToken;
 
@@ -84,7 +89,7 @@ public class PostsControllerTest {
 
     @DisplayName("[Controller] Posts save")
     @Test
-    @Transactional
+//    @Transactional
     public void Posts_등록된다() throws Exception {
         //given
         String content = "content";
@@ -97,6 +102,8 @@ public class PostsControllerTest {
             .ref(ref)
             .authorId(author.getId())
             .build();
+
+        logger.info("requestDTO : " + requestDto);
 
         local_url = local_address + path;
         deployed_url = deployed_address + path;
@@ -164,6 +171,7 @@ public class PostsControllerTest {
 
     @DisplayName("게시물 1개 조회 테스트")
     @Test
+    @Transactional
     public void Posts_조회한다() throws Exception {
         //given
         Posts posts = postsRepository.findAll().get(0);
@@ -191,6 +199,7 @@ public class PostsControllerTest {
 
     @DisplayName("전체 게시물 내림차순 조회 테스트")
     @Test
+    @Transactional
     public void Posts_모두_조회한다() throws Exception {
         //given
         int page = 1;
@@ -221,6 +230,7 @@ public class PostsControllerTest {
 
     @DisplayName("검색 내용 포함 게시물 내림차순 조회 테스트 - content")
     @Test
+    @Transactional
     public void Posts_content_검색한다() throws Exception {
 
         //given
@@ -258,6 +268,7 @@ public class PostsControllerTest {
 
     @DisplayName("검색 내용 포함 게시물 내림차순 조회 테스트 - author")
     @Test
+    @Transactional
     public void Posts_author_검색한다() throws Exception {
 
         //given
@@ -279,10 +290,9 @@ public class PostsControllerTest {
         local_url = local_address + path + params;
         deployed_url = deployed_address + path + params;
 
-        if (current_address.equals("local")){
+        if (current_address.equals("local")) {
             url = local_url;
-        }
-        else{
+        } else {
             url = deployed_url;
         }
 

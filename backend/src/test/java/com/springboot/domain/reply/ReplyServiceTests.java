@@ -40,6 +40,7 @@ public class ReplyServiceTests {
 
     @DisplayName("[Service] 특정 id의 Posts 에 달린 댓글 dto 모두 조회")
     @Test
+    @Transactional
     public void testGetList() {
 
         Posts posts = postsRepository.findAll().get(0);
@@ -137,11 +138,13 @@ public class ReplyServiceTests {
         logger.info("requestDto : " + requestDto.toString());
 
         // when
-        Long modifedReplyId = service.modify(requestDto);
+        Long modifedReplyId = service.modify(reply.getId(), requestDto);
 
-        Optional<Reply> modifiedReply = replyRepository.findById(modifedReplyId);
+        Reply modifiedReply = replyRepository.getById(modifedReplyId);
 
         // then
         logger.info(modifiedReply.toString());
+
+        assertThat(modifiedReply.getText()).isEqualTo(modifiedText);
     }
 }

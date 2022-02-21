@@ -119,6 +119,7 @@ public class PostsRepositoryTest {
 
     // 페이지 정렬 테스트
     @Test
+    @Transactional
     public void testSort() {
 
         Sort sortByPostId = Sort.by("id").descending();
@@ -133,6 +134,7 @@ public class PostsRepositoryTest {
 
     //검색내용포함_게시물_검색
     @Test
+    @Transactional
     public void test_query_dsl() {
 
         Pageable pageable = PageRequest.of(0, 10, Sort.by("id").descending());
@@ -152,28 +154,28 @@ public class PostsRepositoryTest {
         result.stream().forEach(System.out::println);
     }
 
-    @DisplayName("[Repository] Posts 테스트 데이터 삽입")
-    @Test
-    @Transactional
-    public void testInsertDummies() {
-        IntStream.rangeClosed(500, 600).forEach(i -> {
-//        IntStream.rangeClosed(1, 100).forEach(i -> {
-
-            Member member = Member.builder()
-//                .id((long)i)
-                .email("user" + i + "@aaa.com")
-                .password("1111")
-                .build();
-
-            Posts posts = Posts.builder()
-                .content("sample content " + i)
-                .author(member)
-                .ref("sample ref " + i)
-                .build();
-
-            postsRepository.save(posts);
-        });
-    }
+//    @DisplayName("[Repository] Posts 테스트 데이터 삽입")
+//    @Test
+//    @Transactional
+//    public void testInsertDummies() {
+//        IntStream.rangeClosed(500, 600).forEach(i -> {
+////        IntStream.rangeClosed(1, 100).forEach(i -> {
+//
+//            Member member = Member.builder()
+////                .id((long)i)
+//                .email("user" + i + "@aaa.com")
+//                .password("1111")
+//                .build();
+//
+//            Posts posts = Posts.builder()
+//                .content("sample content " + i)
+//                .author(member)
+//                .ref("sample ref " + i)
+//                .build();
+//
+//            postsRepository.save(posts);
+//        });
+//    }
 
     @DisplayName("[Repository] 특정 ID Posts 조회")
     @Test
@@ -193,6 +195,7 @@ public class PostsRepositoryTest {
 
     @DisplayName("[Repository] 특정 ID Posts 와 연관된 Author 조회")
     @Test
+    @Transactional
     public void testReadWithAuthor() {
 
         Object result = postsRepository.getPostsWithAuthor(300L);
@@ -206,6 +209,7 @@ public class PostsRepositoryTest {
 
     @DisplayName("[Repository] 특정 ID Posts 와 연관된 Reply 조회")
     @Test
+    @Transactional
     public void testGetPostsWithReply() {
 
         List<Object[]> result = postsRepository.getPostsWithReply(300L);
@@ -217,6 +221,7 @@ public class PostsRepositoryTest {
 
     @DisplayName("[Repository] 게시물 목록 조회 ( 게시물 + 작성자 + 댓글 작성자 ) 및 페이징 처리")
     @Test
+    @Transactional
     public void testWithAuthorReply() {
 
         Pageable pageable = PageRequest.of(0, 10, Sort.by("id").descending());
@@ -233,6 +238,7 @@ public class PostsRepositoryTest {
 
     @DisplayName("[Repository] JPQL search 테스트")
     @Test
+    @Transactional
     public void testSearch1() {
 
         postsRepository.search1();
@@ -241,6 +247,7 @@ public class PostsRepositoryTest {
 
     @DisplayName("[Repository] JPQL 페이지네이션 search 테스트")
     @Test
+    @Transactional
     public void testSearchPage() {
 
         Pageable pageable =

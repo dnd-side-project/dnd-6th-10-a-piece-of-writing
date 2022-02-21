@@ -7,7 +7,6 @@ import com.springboot.domain.member.model.Member;
 import com.springboot.domain.member.repository.MemberRepository;
 import com.springboot.domain.posts.model.entity.Posts;
 import com.springboot.domain.posts.repository.PostsRepository;
-//import com.springboot.domain.posts.model.dto.PostsUpdateRequestDto;
 import com.springboot.domain.posts.service.PostsService;
 import com.springboot.domain.reply.model.dto.ReplyDto;
 import com.springboot.domain.reply.model.entity.Reply;
@@ -218,13 +217,22 @@ public class ReplyControllerTests {
         mvc.perform(put(url)
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("X-AUTH_TOKEN", accessToken)
-                .content(new ObjectMapper().registerModule(new JavaTimeModule()).writeValueAsString(requestDto)))
+                .content(new ObjectMapper().registerModule(new JavaTimeModule())
+                    .writeValueAsString(requestDto)))
             .andExpect(status().isOk())
             .andDo(print());
+
+        //then
+        Reply modifiedReply = replyRepository.getById(reply.getId());
+
+        logger.info("modifiedReply : " + modifiedReply.toString());
+
+        assertThat(modifiedReply.getText()).isEqualTo(modifiedText);
     }
 
     @DisplayName("[Controller] 게시물 1개 조회 테스트")
     @Test
+    @Transactional
     public void Posts_조회한다() throws Exception {
         //given
         Posts posts = postsRepository.findAll().get(0);

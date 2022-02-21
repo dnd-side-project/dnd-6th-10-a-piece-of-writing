@@ -28,18 +28,18 @@ public class ReplyServiceImpl implements ReplyService {
     @Override
     public List<ReplyDto> getList(Long postsId) {
 
-        List<Reply> result =  replyRepository
-                .getRepliesByPostsOrderById(Posts.builder().id(postsId).build());
+        List<Reply> result = replyRepository
+            .getRepliesByPostsOrderById(Posts.builder().id(postsId).build());
 
         return result.stream().map(reply -> entityToDTO(reply)).collect(Collectors.toList());
     }
 
     @Override
-    public Long modify(ReplyDto replyDTO) {
+    public Long modify(Long id, ReplyDto replyDTO) {
 
-        Reply reply = replyRepository.getById(replyDTO.getId());
+        Reply reply = replyRepository.getById(id);
 
-        if(reply != null) {
+        if (reply != null) {
 
             reply.changeText(replyDTO.getText());
 

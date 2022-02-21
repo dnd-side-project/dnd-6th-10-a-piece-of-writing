@@ -54,7 +54,7 @@ public class PostsController {
     }
 
     // 게시물 1개 조회
-    @Operation(summary = "select all posts api", description = "모든 글귀 검색 api. request 받은 페이지 기준으로 메인 화면에서 글귀를 최신 순으로 페이지당 10개씩 조회.")
+    @Operation(summary = "select posts api", description = "글귀 검색 api")
     @GetMapping("/{id}")
     public ResponseEntity<ResponseDto> findAllPostsOrderByIdDesc(@PathVariable long id) {
 //        return postsService.findAllPostsOrderById();
@@ -86,7 +86,7 @@ public class PostsController {
 //    @GetMapping("/type/{type}/keyword/{keyword}/page/{page}")
     @GetMapping("/search")
     public ResponseEntity<ResponseDto> findAllPostsBySearch(@RequestParam int page,
-        @RequestParam int size, @RequestParam String keyword, @RequestParam String type) {
+        @RequestParam int size, @RequestParam String type, @RequestParam String keyword) {
 
 //        List<PostsListResponseDto> posts = postsService.findAllPostsBySearch(page, keyword, type);
 

@@ -12,7 +12,7 @@ public interface ReplyService {
 
     List<ReplyDto> getList(Long postsId); //특정 게시물의 댓글 목록
 
-    Long modify(ReplyDto replyDTO); //댓글 수정
+    Long modify(Long id, ReplyDto replyDTO); //댓글 수정
 
     Long remove(Long id); //댓글 삭제
 

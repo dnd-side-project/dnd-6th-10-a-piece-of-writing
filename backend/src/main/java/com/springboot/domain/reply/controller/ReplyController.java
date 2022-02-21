@@ -32,7 +32,7 @@ public class ReplyController {
 
     private final ResponseServiceImpl responseServiceImpl;
 
-    @Operation(summary = "select reply api", description = "댓글 조회 api")
+    @Operation(summary = "select reply api", description = "댓글 조회 api. 게시물의 id를 보내면 그에 달린 댓글들을 조회한다.")
     @GetMapping(value = "/{postsId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseDto> getListByPosts(@PathVariable("postsId") Long postsId) {
 
@@ -70,11 +70,12 @@ public class ReplyController {
 
     @Operation(summary = "modify reply api", description = "댓글 수정 api")
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseDto> modify(@RequestBody ReplyDto replyDTO) {
+    public ResponseEntity<ResponseDto> modify(@PathVariable("id") Long id,
+        @RequestBody ReplyDto replyDTO) {
 
         log.info(replyDTO);
 
-        long modifiedReplyId = replyService.modify(replyDTO);
+        long modifiedReplyId = replyService.modify(id, replyDTO);
 
 //        return new ResponseEntity<>("success", HttpStatus.OK);
         return responseServiceImpl.successResult(SuccessCode.MODIFY_REPLY_SUCCESS, modifiedReplyId);
