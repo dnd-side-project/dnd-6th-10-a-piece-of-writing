@@ -4,7 +4,7 @@ import com.springboot.domain.auth.model.UserDetailsImpl;
 import com.springboot.domain.common.model.ResponseDto;
 import com.springboot.domain.common.model.SuccessCode;
 import com.springboot.domain.common.service.ResponseServiceImpl;
-import com.springboot.domain.posts.model.dto.ExtractWordDto;
+import com.springboot.domain.posts.model.dto.MultipartDto;
 import com.springboot.domain.posts.model.dto.PostsListResponseDto;
 import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
 import com.springboot.domain.posts.service.PostsService;
@@ -31,9 +31,12 @@ public class PostsController {
     // 업로드
     @Operation(summary = "save posts api", description = "글귀 업로드 api")
     @PostMapping
-    public ResponseEntity<ResponseDto> save(@RequestBody @Valid PostsSaveRequestDto requestDto) {
+    public ResponseEntity<ResponseDto> save(
+            @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+            @RequestPart("ref") String ref, @RequestPart("content") String content,
+            @Valid MultipartDto multipartDto) {
         return responseServiceImpl.successResult(SuccessCode.SAVE_POSTS_SUCCESS,
-                postsService.save(requestDto));
+                postsService.save(ref, content, multipartDto, userDetailsImpl));
     }
 
     // 삭제
@@ -74,8 +77,8 @@ public class PostsController {
 
     @ApiOperation(value = "이미지 텍스트 추출 api", notes = "이미지를 전송해 텍스트를 추출한다.")
     @PostMapping(value = "/img-extract", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ResponseDto> imageExtract(@Valid ExtractWordDto extractWordDto) {
-        MultipartFile file = extractWordDto.getFile();
+    public ResponseEntity<ResponseDto> imageExtract(@Valid MultipartDto multipartDto) {
+        MultipartFile file = multipartDto.getFile();
 
         String imageUrl = postsService.postsImgUpload(file, postsService.getFileUuid());
         String result = postsService.postsImgExtractWords(file, imageUrl);

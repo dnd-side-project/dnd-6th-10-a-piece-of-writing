@@ -5,6 +5,7 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.springboot.domain.auth.model.UserDetailsImpl;
 import com.springboot.domain.common.model.ResponseDto;
 import com.springboot.domain.member.model.Member;
+import com.springboot.domain.posts.model.dto.MultipartDto;
 import com.springboot.domain.posts.model.dto.PageRequestDto;
 import com.springboot.domain.posts.model.dto.PageResultDto;
 import com.springboot.domain.posts.model.dto.PostsListResponseDto;
@@ -22,7 +23,8 @@ public interface PostsService {
 
     public Posts findPostsById(Long id);
     public Member findMemberById(Long id);
-    public Long save(PostsSaveRequestDto requestDto);
+
+    public Long save(String ref, String content, MultipartDto multipartDto, UserDetailsImpl userDetails);
     public Long delete(Long id);
     public List<PostsListResponseDto> findAllPostsOrderByIdDesc(int page, Long userId);
     public List<PostsListResponseDto> findAllPostsBySearch(int page, String content, String type, Long userId);

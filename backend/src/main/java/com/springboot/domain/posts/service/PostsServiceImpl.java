@@ -27,6 +27,7 @@ import com.springboot.domain.common.model.SuccessCode;
 import com.springboot.domain.common.service.ResponseService;
 import com.springboot.domain.member.model.Member;
 import com.springboot.domain.member.repository.MemberRepository;
+import com.springboot.domain.posts.model.dto.MultipartDto;
 import com.springboot.domain.posts.model.dto.PageRequestDto;
 import com.springboot.domain.posts.model.dto.PageResultDto;
 import com.springboot.domain.posts.model.entity.Posts;
@@ -69,16 +70,14 @@ public class PostsServiceImpl implements PostsService {
 
     @Override
     @Transactional
-    public Long save(PostsSaveRequestDto requestDto) {
-        String imageUrl = postsImgUpload(requestDto.getMultipartFile(), getFileUuid());
+    public Long save(String ref, String content, MultipartDto multipartDto, UserDetailsImpl userDetails) {
         Posts posts = postsRepository.save(
                 Posts.builder()
-                        .id(requestDto.getId())
-                        .ref(requestDto.getRef())
-                        .author(findMemberById(requestDto.getId()))
-                        .imageUrl(imageUrl)
+                        .content(content)
+                        .ref(ref)
+                        .imageUrl(postsImgUpload(multipartDto.getFile(), getFileUuid()))
+                        .author(userDetails.getMember())
                         .build());
-
         return posts.getId();
     }
 
@@ -216,6 +215,7 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<ResponseDto> likePost(UserDetailsImpl userDetailsImpl, Long id) {
         Member member = findMemberById(userDetailsImpl.getMember().getId());
         Posts posts = findPostsById(id);
@@ -225,6 +225,7 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<ResponseDto> disLikePost(UserDetailsImpl userDetailsImpl, Long id) {
         Member member = findMemberById(userDetailsImpl.getMember().getId());
         Posts posts = findPostsById(id);

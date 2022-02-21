@@ -10,8 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter
 @Builder
 @AllArgsConstructor
-public class ExtractWordDto {
-
+public class MultipartDto {
     @NotNull
     @ApiModelProperty(example = "image bytes[]")
     private MultipartFile file;
