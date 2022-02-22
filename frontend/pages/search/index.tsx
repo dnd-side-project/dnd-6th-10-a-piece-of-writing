@@ -9,6 +9,7 @@ import { didSearchAtom, searchBarModalOpenAtom, searchResultAtom } from '@/atom/
 import RecommendTopic from '@/components/_search/RecommendTopic'
 import SearchBar from '@/components/_search/SearchBar'
 import SearchBarModal from '@/components/_search/SearchBarModal'
+import NoResult from '@/components/NoResult'
 import { useClickOutside } from '@/hook/useClickOutside'
 import { CENTER_FLEX } from '@/styles/classNames'
 
@@ -34,16 +35,22 @@ const Search: React.FC<Props> = ({}) => {
 
   return (
     <div className={`${CENTER_FLEX} px-4`}>
-      <Container className={`relative ${didSearch ? 'pt-4' : 'pt-28'} transition-all duration-1000 ease-in-out`}>
+      <Container className={`relative ${didSearch ? 'pt-8' : 'pt-28'} transition-all duration-1000 ease-in-out`}>
         <SearchBar />
         {isModalOpen && (
           <div ref={modalRef} className={'absolute top-44'}>
             <SearchBarModal />
           </div>
         )}
-        <div className={'mt-48'}>
-          <RecommendTopic />
-        </div>
+        {didSearch ? (
+          <div className={`${CENTER_FLEX} w-full mt-40`}>
+            <NoResult isOtherUserPage={false} isMyPage={false} />
+          </div>
+        ) : (
+          <div className={'mt-48'}>
+            <RecommendTopic />
+          </div>
+        )}
       </Container>
     </div>
   )
