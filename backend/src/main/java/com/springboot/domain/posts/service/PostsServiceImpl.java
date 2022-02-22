@@ -54,89 +54,57 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 @Service
 public class PostsServiceImpl implements PostsService {
-
     private final PostsRepository postsRepository;
     private final MemberRepository memberRepository;
+    private final ReplyRepository replyRepository;
     private final ResponseService responseService;
 
+    @Override
     public Posts findPostsById(Long id) {
         return postsRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.ENTITY_NOT_FOUND));
     }
 
+    @Override
     public Member findMemberById(Long id) {
         return memberRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.ENTITY_NOT_FOUND));
     }
 
-    private final ReplyRepository replyRepository;
-
     @Override
     @Transactional
-//    public Long save(String ref, String content, MultipartDto multipartDto, UserDetailsImpl userDetails) {
-//        Posts posts = postsRepository.save(
-//                Posts.builder()
-//                        .content(content)
-//                        .ref(ref)
-//                        .imageUrl(postsImgUpload(multipartDto.getFile(), getFileUuid()))
-//                        .author(userDetails.getMember())
-//                        .build());
-//        return posts.getId();
-//    }
-    public Long save(PostsDto requestDto) {
-
+    public Long save(PostsDto requestDto, MultipartDto multipartDto) {
         log.info(requestDto);
 
-        Posts posts = dtoToEntity(requestDto);
-
+        String imageUrl = postsImgUpload(multipartDto.getFile(), getFileUuid());
+        Posts posts = dtoToEntity(requestDto, imageUrl);
         postsRepository.save(posts);
-
         return posts.getId();
     }
 
     @Override
-    @Transactional
-    public Long delete(Long id) {
-        Posts posts = postsRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 없습니다. id=" + id));
-
-        postsRepository.delete(posts);
-
-        return id;
-    }
-
-    @Override
     public Long removeWithReplies(Long postsId) {
-
         //댓글 부터 삭제
         replyRepository.deleteByPostsId(postsId);
-
         postsRepository.deleteById(postsId);
 
         return postsId;
     }
 
     @Override
-    public List<PostsDto> findAllPostsOrderByIdDesc(int page, int size) {
+    public List<PostsDto> findAllPostsOrderByIdDesc(int page, int size, UserDetailsImpl userDetails) {
 
         PageRequestDto pageRequestDTO = PageRequestDto.builder()
             .page(page)
             .size(size)
             .build();
 
-//        PageResultDto<PostsListResponseDto, Posts> resultDTO = getList(pageRequestDTO, userId);
-        PageResultDto<PostsDto, Object[]> resultDTO = getList(pageRequestDTO);
-
+        PageResultDto<PostsDto, Object[]> resultDTO = getList(pageRequestDTO, userDetails);
         return resultDTO.getDtoList();
     }
 
     @Override
-//    public List<PostsListResponseDto> findAllPostsBySearch(
-//            int page, String keyword, String type, Long userId) {
-//
-//        // size = 10 임의 설정
-//        int size = 10;
-    public List<PostsDto> findAllPostsBySearch(int page, int size, String keyword, String type) {
+    public List<PostsDto> findAllPostsBySearch(int page, int size, String keyword, String type, UserDetailsImpl userDetails) {
 
         PageRequestDto pageRequestDTO = PageRequestDto.builder()
             .page(page)
@@ -145,9 +113,7 @@ public class PostsServiceImpl implements PostsService {
             .keyword(keyword)
             .build();
 
-//        PageResultDto<PostsListResponseDto, Posts> resultDTO = getList(pageRequestDTO, userId);
-        PageResultDto<PostsDto, Object[]> resultDTO = getList(pageRequestDTO);
-
+        PageResultDto<PostsDto, Object[]> resultDTO = getList(pageRequestDTO, userDetails);
         return resultDTO.getDtoList();
     }
 
@@ -160,7 +126,6 @@ public class PostsServiceImpl implements PostsService {
     public GoogleCredentials getCredentials() {
         try {
             ClassPathResource resource = new ClassPathResource("/gcloud-auth.json");
-
             return GoogleCredentials.fromStream(resource.getInputStream());
         } catch (Exception e) {
             throw new BusinessException(ErrorCode.CREDENTIAL_ERROR);
@@ -223,19 +188,12 @@ public class PostsServiceImpl implements PostsService {
 
     // Tools for Pagination
     @Override
-//    public PageResultDto<PostsListResponseDto, Posts> getList(PageRequestDto requestDTO, Long userId) {
-    public PageResultDto<PostsDto, Object[]> getList(PageRequestDto pageRequestDTO) {
+    public PageResultDto<PostsDto, Object[]> getList(PageRequestDto pageRequestDTO, UserDetailsImpl userDetails) {
 
         log.info(pageRequestDTO);
 
-//        Function<Object[], PostsDto> fn = (en -> entityToDTO((Posts)en[0],(Member)en[1],(Reply)en[2]));
+        Function<Object[], PostsDto> fn = (en -> entityToDTO((Posts) en[0], (Member) en[1], userDetails.getMember().getId()));
 
-        Function<Object[], PostsDto> fn = (en -> entityToDTO((Posts) en[0], (Member) en[1]));
-
-//        Function<Posts, PostsListResponseDto> fn = (entity -> entityToDto(entity, userId));
-
-//        Page<Object[]> result = postsRepository.getPostsListWithAuthor(
-//                pageRequestDTO.getPageable(Sort.by("id").descending())  );
         Page<Object[]> result = postsRepository.searchPage(
             pageRequestDTO.getType(),
             pageRequestDTO.getKeyword(),
@@ -264,41 +222,10 @@ public class PostsServiceImpl implements PostsService {
         return responseService.successResult(SuccessCode.DISLIKE_SUCCESS);
     }
 
-//    private BooleanBuilder getSearch(PageRequestDto requestDTO) {
-//
-//        String type = requestDTO.getType();
-//
-//        BooleanBuilder booleanBuilder = new BooleanBuilder();
-//
-//        QPosts qPosts = QPosts.posts;
-//
-//        String keyword = requestDTO.getKeyword();
-//
-//        BooleanExpression expression = qPosts.id.gt(0L); // id > 0 조건만 생성
-//
-//        booleanBuilder.and(expression);
-//
-//        if (type == null || type.trim().length() == 0) { //검색 조건이 없는 경우
-//            return booleanBuilder;
-//        }
-//    }
     @Override
-    public PostsDto get(Long id) {
-
+    public PostsDto get(Long id, UserDetailsImpl userDetails) {
         Object result = postsRepository.getPostsWithAuthor(id);
-        
-//        if (type.contains("c")) {
-//            conditionBuilder.or(qPosts.content.contains(keyword));
-//        }
-//        if (type.contains("a")) {
-//            conditionBuilder.or(qPosts.author.nickname.contains(keyword));
-//        }
         Object[] arr = (Object[]) result;
-
-        //모든 조건 통합
-//        booleanBuilder.and(conditionBuilder);
-//
-//        return booleanBuilder;
-        return entityToDTO((Posts) arr[0], (Member) arr[1]);
+        return entityToDTO((Posts) arr[0], (Member) arr[1], userDetails.getMember().getId());
     }
 }

@@ -30,9 +30,6 @@ public class Posts extends BaseTime {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @Column(nullable = false)
-//    private String title;
-
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 

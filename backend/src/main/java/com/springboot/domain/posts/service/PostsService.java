@@ -20,20 +20,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface PostsService {
 
-//    public Posts findPostsById(Long id);
-//    public Member findMemberById(Long id);
-//
-//    public Long save(String ref, String content, MultipartDto multipartDto, UserDetailsImpl userDetails);
-//    public Long delete(Long id);
-//    public List<PostsListResponseDto> findAllPostsOrderByIdDesc(int page, Long userId);
-//    public List<PostsListResponseDto> findAllPostsBySearch(int page, String content, String type, Long userId);
-    Long save(PostsDto requestDto);
+    Long save(PostsDto requestDto, MultipartDto multipartDto);
 
-    Long removeWithReplies(Long postsId);
+    public Posts findPostsById(Long id);
 
-    public List<PostsDto> findAllPostsOrderByIdDesc(int page, int size);
+    public Member findMemberById(Long id);
 
-    public List<PostsDto> findAllPostsBySearch(int page, int size, String content, String type);
+    public Long removeWithReplies(Long postsId);
+
+    public List<PostsDto> findAllPostsOrderByIdDesc(int page, int size, UserDetailsImpl userDetails);
+
+    public List<PostsDto> findAllPostsBySearch(int page, int size, String content, String type, UserDetailsImpl userDetails);
 
     public String getFileUuid();
 
@@ -42,44 +39,31 @@ public interface PostsService {
     public String postsImgUpload(MultipartFile multipartFile, String fileName);
 
     public String postsImgExtractWords(MultipartFile multipartFile, String imageUrl);
-//    PageResultDto<PostsListResponseDto, Posts> getList(PageRequestDto requestDTO, Long userId);
-//    public ResponseEntity<ResponseDto> likePost(UserDetailsImpl userDetailsImpl, Long id);
-//    public ResponseEntity<ResponseDto> disLikePost(UserDetailsImpl userDetailsImpl, Long id);
 
+    public ResponseEntity<ResponseDto> likePost(UserDetailsImpl userDetailsImpl, Long id);
 
-    PageResultDto<PostsDto, Object[]> getList(PageRequestDto pageRequestDTO);
+    public ResponseEntity<ResponseDto> disLikePost(UserDetailsImpl userDetailsImpl, Long id);
 
-    PostsDto get(Long id);
+    PageResultDto<PostsDto, Object[]> getList(PageRequestDto pageRequestDTO, UserDetailsImpl userDetails);
 
-//    default PostsListResponseDto entityToDto(Posts entity, Long userId) {
-//        return PostsListResponseDto.builder()
-//            .id(entity.getId())
-//            .content(entity.getContent())
-//            .author(entity.getMemberBasicInfo())
-//            .imageUrl(entity.getImageUrl())
-//            .createdDate(entity.getCreatedDate())
-//            .modifiedDate(entity.getModifiedDate())
-//            .alreadyLike(findMemberById(userId).getLikePostsList().stream().anyMatch(P -> Objects.equals(
-//                    P.getId(), entity.getId())))
-//            .likes(entity.getLikeMemberListSize())
-    // PostsDto To Posts Entity
-    default Posts dtoToEntity(PostsDto dto) {
+    PostsDto get(Long id, UserDetailsImpl userDetails);
 
-        Member author = Member.builder()
-            .id(dto.getAuthorId())
-            .build();
+    default Posts dtoToEntity(PostsDto dto, String imageUrl) {
+
+        Member author = findMemberById(dto.getAuthorId());
 
         return Posts.builder()
             .ref(dto.getRef())
             .content(dto.getContent())
+            .imageUrl(imageUrl)
             .author(author)
             .build();
     }
 
     // Posts Entity TO PostsDto
-    default PostsDto entityToDTO(Posts posts, Member author) {
+    default PostsDto entityToDTO(Posts posts, Member author, Long displayMemberId) {
 
-        PostsDto dto = PostsDto.builder()
+        return PostsDto.builder()
             // posts
             .id(posts.getId())
             .content(posts.getContent())
@@ -90,9 +74,9 @@ public interface PostsService {
             .authorId(author.getId())
             .authorEmail(author.getEmail())
             .authorNickname(author.getNickname())
-
+            .authorProfileUrl(author.getProfileUrl())
+            .alreadyLike(posts.getLikeMemberList()
+                    .stream().anyMatch(M -> Objects.equals(M.getId(), displayMemberId)))
             .build();
-
-        return dto;
     }
 }
