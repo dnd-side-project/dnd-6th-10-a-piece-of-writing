@@ -4,10 +4,10 @@ import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
 import { UserInfo as UserInfoType } from '@/components/_user/type'
-import UserTagCarousel from '@/components/_user/UesrTagCarousel'
 import UserInfo from '@/components/_user/UserInfo'
 import UserPostLabel from '@/components/_user/UserPostLabel'
 import UserPosts from '@/components/_user/UserPosts'
+import UserTopicCarousel from '@/components/_user/UserTopicCarousel'
 import { useSsrMe } from '@/hook/useSsrMe'
 import { withAuthServerSideProps } from '@/server/withAuthServerSide'
 
@@ -26,7 +26,7 @@ const User: React.FC<ServerSideProps> = ({ me }) => {
         <Container>
           <UserInfo isMe={true} />
           <UserPostLabel isMe={isMe} />
-          <UserTagCarousel />
+          <UserTopicCarousel />
           <UserPosts isMe={isMe} />
         </Container>
       </div>

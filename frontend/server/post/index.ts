@@ -5,7 +5,7 @@ type PostData = {
   author: string
   content: string
   ref?: string
-  tag?: string
+  topic?: string
 }
 
 export const loadMainPosts = async (params: { page: number; size: number }): Promise<RESPONSE_TYPE> => {

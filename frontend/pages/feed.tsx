@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import MainTitle from '@/components/_main/MainTitle'
 import { UserInfo as UserInfoType } from '@/components/_user/type'
 import AddButton from '@/components/button/AddButton'
-import { TagCarousel } from '@/components/carousel'
+import { TopicCarousel } from '@/components/carousel'
 import Posts from '@/components/post/Posts'
 import { FlexDiv } from '@/components/style/div/FlexDiv'
 import { useSsrMe } from '@/hook/useSsrMe'
@@ -28,7 +28,7 @@ const Feed: React.FC<ServerSideProps> = ({ me, posts }) => {
           <MainTitle />
           <FlexDiv margin={'2.5rem 0 0 0 '}>
             <div className={'w-full'}>
-              <TagCarousel tags={DUMMY_TAGS} onClickTag={(_) => () => {}} />
+              <TopicCarousel topics={DUMMY_TOPICS} onClickTopic={(_) => () => {}} />
             </div>
           </FlexDiv>
           <div className={`w-full ${CENTER_FLEX} mt-10 ml-5 xl:ml-0`}>
@@ -51,7 +51,7 @@ const MainContainer = styled.div`
   }
 `
 
-const DUMMY_TAGS = [
+const DUMMY_TOPICS = [
   {
     name: '동기부여',
     isChecked: false,

@@ -1,12 +1,12 @@
 import { RESPONSE_TYPE } from '@/server/axios/baxios'
 
-export type TagInfo = {
+export type TopicInfo = {
   id: string
   name: string
 }
 
-export const addTag = async (tagName: string): Promise<RESPONSE_TYPE<TagInfo>> => {
-  console.log(`addTag_${tagName}`)
+export const addTopic = async (topicName: string): Promise<RESPONSE_TYPE<TopicInfo>> => {
+  console.log(`addTopic_${topicName}`)
   await setTimeout(() => {}, 500)
   const dummyId = Math.ceil(Math.random() * 9999).toString()
   return {
@@ -29,8 +29,8 @@ const DUMMY_DATA = [
   { id: '7', name: '인생5' },
 ]
 
-export const searchTag = async (tagName: string): Promise<RESPONSE_TYPE<TagInfo[]>> => {
-  console.log(`searchTag_${tagName}`)
+export const searchTopic = async (topicName: string): Promise<RESPONSE_TYPE<TopicInfo[]>> => {
+  console.log(`searchTopic_${topicName}`)
   await setTimeout(() => {}, 500)
   const randIndex = Math.ceil(Math.random() * 6)
   return {
