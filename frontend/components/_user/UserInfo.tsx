@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 
-import { useUpdateAtom } from 'jotai/utils'
+import { useAtom } from 'jotai'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Oval } from 'react-loader-spinner'
@@ -13,6 +13,7 @@ import UserSummaryCard from '@/components/card/UserSummaryCard'
 import { MenuModalContainer } from '@/components/container/MenuModalContainer'
 import { FlexDiv } from '@/components/style/div/FlexDiv'
 import { logout } from '@/server/user'
+import { setProfileImage } from '@/server/user/image'
 import { CENTER_FLEX, HOVER_BLUE } from '@/styles/classNames'
 
 type Props = {
@@ -27,7 +28,7 @@ const UserInfo: React.FC<Props> = ({ isMe = false, nickname = '유저 닉네임'
   const [image, setImage] = useState<File | string>('')
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [previewUrl, setPreviewUrl] = useState<string>('')
-  const setMe = useUpdateAtom(meAtom)
+  const [me, setMe] = useAtom(meAtom)
   console.log({ isMe })
 
   const imageInputRef = useRef<HTMLInputElement>(null)
@@ -40,6 +41,7 @@ const UserInfo: React.FC<Props> = ({ isMe = false, nickname = '유저 닉네임'
 
   const onImageChange = (e: React.FormEvent<HTMLInputElement>) => {
     e.preventDefault()
+    setLoading(true)
     const imageFile = e.currentTarget.files?.[0]
     const reader = new FileReader()
     reader.onloadend = () => {
@@ -50,7 +52,10 @@ const UserInfo: React.FC<Props> = ({ isMe = false, nickname = '유저 닉네임'
     imageFile && reader.readAsDataURL(imageFile)
     const formData = new FormData()
     formData.append('file', image)
-    setLoading(true)
+    setProfileImage(formData).then((res) => {
+      alert(res.message)
+      if (me) setMe({ ...me, profileUrl: res.data })
+    })
   }
 
   const onClickEdit = () => {
