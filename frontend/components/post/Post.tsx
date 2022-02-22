@@ -12,6 +12,27 @@ import ShareButton from '@/components/button/ShareButton'
 type Props = {}
 
 const Post: React.FC<Props> = ({}) => {
+  const imgUrl = 'https://fakeimg.pl/300/'
+
+  const download = (imgUrl: string) => () => {
+    fetch(imgUrl, {
+      method: 'GET',
+    })
+      .then((response) => {
+        response.arrayBuffer().then(function (buffer) {
+          const url = window.URL.createObjectURL(new Blob([buffer]))
+          const link = document.createElement('a')
+          link.href = url
+          link.setAttribute('download', 'image.png') //or any other extension
+          document.body.appendChild(link)
+          link.click()
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
   const element = (hovered: boolean) => (
     <PostContainer>
       {hovered ? (
@@ -23,7 +44,7 @@ const Post: React.FC<Props> = ({}) => {
           <div className={'mt-185px w-full flex flex-wrap justify-around'}>
             <LikeButton />
             <CommentButton />
-            <DownloadButton />
+            <DownloadButton onClick={download(imgUrl)} />
             <ShareButton />
           </div>
         </>
