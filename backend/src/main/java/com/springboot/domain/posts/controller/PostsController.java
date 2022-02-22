@@ -39,9 +39,10 @@ public class PostsController {
     // 삭제
     @Operation(summary = "delete posts api", description = "글귀 삭제 api")
     @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseDto> delete(@PathVariable Long id) {
+    public ResponseEntity<ResponseDto> delete(@PathVariable Long id,
+            @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
 
-        Long DeletedPostId = postsService.removeWithReplies(id);
+        Long DeletedPostId = postsService.removePosts(id, userDetailsImpl);
 
         return responseServiceImpl.successResult(SuccessCode.DELETE_POSTS_SUCCESS, DeletedPostId);
     }

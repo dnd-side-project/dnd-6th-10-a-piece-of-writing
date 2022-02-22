@@ -26,7 +26,7 @@ public interface PostsService {
 
     public Member findMemberById(Long id);
 
-    public Long removeWithReplies(Long postsId);
+    public Long removePosts(Long postsId, UserDetailsImpl userDetails);
 
     public List<PostsDto> findAllPostsOrderByIdDesc(int page, int size, UserDetailsImpl userDetails);
 

@@ -77,7 +77,6 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Override
-    @Transactional
     public Long save(PostsDto requestDto, MultipartDto multipartDto) {
         log.info(requestDto);
 
@@ -88,12 +87,12 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Override
-    public Long removeWithReplies(Long postsId) {
+    public Long removePosts(Long postsId, UserDetailsImpl userDetails) {
         //댓글 부터 삭제
-        replyRepository.deleteByPostsId(postsId);
-        postsRepository.deleteById(postsId);
-        likesRepository.deleteLikesByPostsId(postsId);
-
+        replyRepository.deleteReplyByPostsId(postsId);
+        userDetails.getMember().getPostsList().remove(findPostsById(postsId));
+        likesRepository.deleteAllByPostsId(postsId);
+        postsRepository.deletePostsById(postsId);
         return postsId;
     }
 

@@ -10,9 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface ReplyRepository extends JpaRepository<Reply, Long> {
 
     // Posts 삭제 시 댓글 삭제
-    @Modifying
-    @Query("delete from Reply r where r.posts.id =:id ")
-    void deleteByPostsId(Long id);
+    void deleteReplyByPostsId(Long id);
 
     // 게시물로 댓글 전체 조회
     List<Reply> getRepliesByPostsOrderByIdDesc(Posts posts);

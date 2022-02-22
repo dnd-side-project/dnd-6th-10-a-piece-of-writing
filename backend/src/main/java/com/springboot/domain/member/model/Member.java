@@ -57,11 +57,11 @@ public class Member{
     @Builder.Default
     private Set<Relation> followedList = new HashSet<>(); // 나를 팔로우하는 relation
 
-    @OneToMany(mappedBy = "author", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
     @Builder.Default
     private Set<Posts> postsList = new HashSet<>(); // 내 글 목록
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "posts", fetch = FetchType.EAGER)
     @Builder.Default
     private Set<Likes> likePostsList = new HashSet<>(); // 좋아요 글 목록
 

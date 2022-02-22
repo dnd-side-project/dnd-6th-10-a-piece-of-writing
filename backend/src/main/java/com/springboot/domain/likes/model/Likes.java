@@ -30,11 +30,13 @@ public class Likes {
     @ManyToOne
     private Posts posts;
 
+    @Override
     public boolean equals(Object o) {
         return Objects.equals(member.getId(), ((Likes) o).getMember().getId())
                 && Objects.equals(posts.getId(), ((Likes) o).getPosts().getId());
     }
 
+    @Override
     public int hashCode() {
         return (int) (member.getId() ^ posts.getId());
     }
