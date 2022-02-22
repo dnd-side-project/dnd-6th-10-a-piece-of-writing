@@ -33,4 +33,7 @@ public class PostsDto {
 
     private String authorNickname; // Author nickname
 
+    private String authorProfileUrl;
+
+    private boolean alreadyLike;
 }

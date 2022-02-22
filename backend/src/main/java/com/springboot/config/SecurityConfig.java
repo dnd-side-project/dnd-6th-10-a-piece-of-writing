@@ -45,10 +45,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/v1/auth/**").permitAll()
-                .antMatchers("/api/v1/test/**").permitAll()
+                .antMatchers("/api/v1/posts/{page}", "/api/v1/posts/type/**").permitAll()
+                .antMatchers("/api/v1/member/profile/{id}", "/api/v1/member/follow/list/{id}",
+                        "/api/v1/member/follower/list/{id}").permitAll()
                 .antMatchers("/v3/api-docs", "/v2/api-docs", "/swagger-resources/**",
                         "/swagger-ui/**", "/webjars/**", "/swagger-ui/index.html**").permitAll()
-                .antMatchers("/profile", "/home", "/hello", "health").permitAll()
+                .antMatchers("/profile").permitAll()
                 .anyRequest().hasRole("USER")
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtil, valueOperations),

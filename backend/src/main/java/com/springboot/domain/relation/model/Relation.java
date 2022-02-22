@@ -1,6 +1,7 @@
 package com.springboot.domain.relation.model;
 
 import com.springboot.domain.member.model.Member;
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;

@@ -8,13 +8,13 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-public class FollowListDto {
+public class FollowInfoDto {
     private Long id;
     private String nickname;
     private String profileUrl;
 
-    public static FollowListDto entityToDto(Member member) {
-        return FollowListDto.builder()
+    public static FollowInfoDto entityToDto(Member member) {
+        return FollowInfoDto.builder()
                 .id(member.getId())
                 .nickname(member.getNickname())
                 .profileUrl(member.getProfileUrl())
