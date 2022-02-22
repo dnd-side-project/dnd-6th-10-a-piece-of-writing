@@ -27,10 +27,10 @@ const RegisterMainForm: React.FC<Props> = ({}) => {
   const [email, setEmail] = useAtom(emailAtom)
   const setPage = useUpdateAtom(registerPageAtom)
   const message = useAtomValue(registerMessageAtom)
+  const [emailMessage, setEmailMessage] = useState('')
+  const [emailDebouncedValue, setEmailDebouncedValue] = useState('')
   const { password, checkPassword, passwordCheck, onChangePassword, onChangePasswordCheck, allConditionSatisfied } =
     useRegister()
-  const [emailDebouncedValue, setEmailDebouncedValue] = useState('')
-  const [emailMessage, setEmailMessage] = useState('')
 
   const [,] = useDebounce(
     () => {
@@ -120,7 +120,7 @@ export const Label = styled.label`
 
 export const MainSpan = styled.span`
   height: 144px;
-  margin-top: 198px;
+  margin-top: 128px;
   font-weight: normal;
   font-stretch: normal;
   font-style: normal;
@@ -129,7 +129,7 @@ export const MainSpan = styled.span`
   text-align: left;
   color: #000;
 
-  font-size: 28px;
+  font-size: 38px;
   margin-bottom: 2px;
   @media screen and (min-width: 500px) {
     font-size: 48px;

@@ -6,15 +6,15 @@ import baxios, { RESPONSE_TYPE } from '@/server/axios/baxios'
 
 export const cookies = new Cookies()
 
-export const nicknameCheck = async (email: string): Promise<RESPONSE_TYPE> => {
+export const nicknameCheck = async (nickname: string): Promise<RESPONSE_TYPE> => {
   try {
-    const result = await baxios.get(`/auth/email/${email}`)
+    const result = await baxios.get(`/auth/nickname/${nickname}`)
     if (result.status === 200) {
-      return { success: true, message: '사용 가능한 이메일입니다!' }
+      return { success: true, message: '사용 가능한 닉네임입니다!' }
     }
   } catch (e: any) {
-    if (e?.response?.status === 404) {
-      return { success: false, message: '중복된 이메일입니다!' }
+    if (e?.response?.status === 400) {
+      return { success: false, message: '중복된 닉네임입니다!' }
     }
   }
   return { success: false, message: '오류가 발생했습니다!' }
@@ -27,7 +27,7 @@ export const emailCheck = async (email: string): Promise<RESPONSE_TYPE> => {
       return { success: true, message: '사용 가능한 이메일입니다!' }
     }
   } catch (e: any) {
-    if (e?.response?.status === 404) {
+    if (e?.response?.status === 400) {
       return { success: false, message: '중복된 이메일입니다!' }
     }
   }
