@@ -28,13 +28,13 @@ import com.springboot.domain.common.service.ResponseService;
 import com.springboot.domain.member.model.Member;
 import com.springboot.domain.member.repository.MemberRepository;
 import com.springboot.domain.posts.model.dto.MultipartDto;
+import com.springboot.domain.member.model.Member;
 import com.springboot.domain.posts.model.dto.PageRequestDto;
 import com.springboot.domain.posts.model.dto.PageResultDto;
+import com.springboot.domain.posts.model.dto.PostsDto;
 import com.springboot.domain.posts.model.entity.Posts;
-import com.springboot.domain.posts.model.dto.PostsListResponseDto;
-import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
-import com.springboot.domain.posts.model.entity.QPosts;
 import com.springboot.domain.posts.repository.PostsRepository;
+import com.springboot.domain.reply.repository.ReplyRepository;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,14 +42,15 @@ import java.util.UUID;
 import java.util.function.Function;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+@Log4j2
 @RequiredArgsConstructor
 @Service
 public class PostsServiceImpl implements PostsService {
@@ -68,16 +69,28 @@ public class PostsServiceImpl implements PostsService {
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.ENTITY_NOT_FOUND));
     }
 
+    private final ReplyRepository replyRepository;
+
     @Override
     @Transactional
-    public Long save(String ref, String content, MultipartDto multipartDto, UserDetailsImpl userDetails) {
-        Posts posts = postsRepository.save(
-                Posts.builder()
-                        .content(content)
-                        .ref(ref)
-                        .imageUrl(postsImgUpload(multipartDto.getFile(), getFileUuid()))
-                        .author(userDetails.getMember())
-                        .build());
+//    public Long save(String ref, String content, MultipartDto multipartDto, UserDetailsImpl userDetails) {
+//        Posts posts = postsRepository.save(
+//                Posts.builder()
+//                        .content(content)
+//                        .ref(ref)
+//                        .imageUrl(postsImgUpload(multipartDto.getFile(), getFileUuid()))
+//                        .author(userDetails.getMember())
+//                        .build());
+//        return posts.getId();
+//    }
+    public Long save(PostsDto requestDto) {
+
+        log.info(requestDto);
+
+        Posts posts = dtoToEntity(requestDto);
+
+        postsRepository.save(posts);
+
         return posts.getId();
     }
 
@@ -93,36 +106,47 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Override
-    public List<PostsListResponseDto> findAllPostsOrderByIdDesc(int page, Long userId) {
+    public Long removeWithReplies(Long postsId) {
 
-        // size = 10 임의 설정
-        int size = 10;
+        //댓글 부터 삭제
+        replyRepository.deleteByPostsId(postsId);
+
+        postsRepository.deleteById(postsId);
+
+        return postsId;
+    }
+
+    @Override
+    public List<PostsDto> findAllPostsOrderByIdDesc(int page, int size) {
 
         PageRequestDto pageRequestDTO = PageRequestDto.builder()
-                .page(page)
-                .size(size)
-                .build();
+            .page(page)
+            .size(size)
+            .build();
 
-        PageResultDto<PostsListResponseDto, Posts> resultDTO = getList(pageRequestDTO, userId);
+//        PageResultDto<PostsListResponseDto, Posts> resultDTO = getList(pageRequestDTO, userId);
+        PageResultDto<PostsDto, Object[]> resultDTO = getList(pageRequestDTO);
 
         return resultDTO.getDtoList();
     }
 
     @Override
-    public List<PostsListResponseDto> findAllPostsBySearch(
-            int page, String keyword, String type, Long userId) {
-
-        // size = 10 임의 설정
-        int size = 10;
+//    public List<PostsListResponseDto> findAllPostsBySearch(
+//            int page, String keyword, String type, Long userId) {
+//
+//        // size = 10 임의 설정
+//        int size = 10;
+    public List<PostsDto> findAllPostsBySearch(int page, int size, String keyword, String type) {
 
         PageRequestDto pageRequestDTO = PageRequestDto.builder()
-                .page(page)
-                .size(size)
-                .type(type)
-                .keyword(keyword)
-                .build();
+            .page(page)
+            .size(size)
+            .type(type)
+            .keyword(keyword)
+            .build();
 
-        PageResultDto<PostsListResponseDto, Posts> resultDTO = getList(pageRequestDTO, userId);
+//        PageResultDto<PostsListResponseDto, Posts> resultDTO = getList(pageRequestDTO, userId);
+        PageResultDto<PostsDto, Object[]> resultDTO = getList(pageRequestDTO);
 
         return resultDTO.getDtoList();
     }
@@ -199,17 +223,23 @@ public class PostsServiceImpl implements PostsService {
 
     // Tools for Pagination
     @Override
-    public PageResultDto<PostsListResponseDto, Posts> getList(PageRequestDto requestDTO, Long userId) {
+//    public PageResultDto<PostsListResponseDto, Posts> getList(PageRequestDto requestDTO, Long userId) {
+    public PageResultDto<PostsDto, Object[]> getList(PageRequestDto pageRequestDTO) {
 
-        Pageable pageable = requestDTO.getPageable(Sort.by("id").descending());
+        log.info(pageRequestDTO);
 
-        BooleanBuilder booleanBuilder = getSearch(requestDTO); //검색 조건 처리
+//        Function<Object[], PostsDto> fn = (en -> entityToDTO((Posts)en[0],(Member)en[1],(Reply)en[2]));
 
-        Page<Posts> result = postsRepository.findAll(booleanBuilder, pageable); //Querydsl 사용
+        Function<Object[], PostsDto> fn = (en -> entityToDTO((Posts) en[0], (Member) en[1]));
 
-        Function<Posts, PostsListResponseDto> fn = (entity -> entityToDto(entity, userId));
+//        Function<Posts, PostsListResponseDto> fn = (entity -> entityToDto(entity, userId));
 
-//        Function<Posts, PostsListResponseDto> fn = (PostsListResponseDto::new);
+//        Page<Object[]> result = postsRepository.getPostsListWithAuthor(
+//                pageRequestDTO.getPageable(Sort.by("id").descending())  );
+        Page<Object[]> result = postsRepository.searchPage(
+            pageRequestDTO.getType(),
+            pageRequestDTO.getKeyword(),
+            pageRequestDTO.getPageable(Sort.by("id").descending()));
 
         return new PageResultDto<>(result, fn);
     }
@@ -234,41 +264,41 @@ public class PostsServiceImpl implements PostsService {
         return responseService.successResult(SuccessCode.DISLIKE_SUCCESS);
     }
 
-    private BooleanBuilder getSearch(PageRequestDto requestDTO) {
-
-        String type = requestDTO.getType();
-
-        BooleanBuilder booleanBuilder = new BooleanBuilder();
-
-        QPosts qPosts = QPosts.posts;
-
-        String keyword = requestDTO.getKeyword();
-
-        BooleanExpression expression = qPosts.id.gt(0L); // id > 0 조건만 생성
-
-        booleanBuilder.and(expression);
-
-        if (type == null || type.trim().length() == 0) { //검색 조건이 없는 경우
-            return booleanBuilder;
-        }
-
-        //검색 조건을 작성하기
-        BooleanBuilder conditionBuilder = new BooleanBuilder();
-
-        // topic 적용 예정
-//        if(type.contains("t")){
-//            conditionBuilder.or(qPosts.topic.contains(keyword));
+//    private BooleanBuilder getSearch(PageRequestDto requestDTO) {
+//
+//        String type = requestDTO.getType();
+//
+//        BooleanBuilder booleanBuilder = new BooleanBuilder();
+//
+//        QPosts qPosts = QPosts.posts;
+//
+//        String keyword = requestDTO.getKeyword();
+//
+//        BooleanExpression expression = qPosts.id.gt(0L); // id > 0 조건만 생성
+//
+//        booleanBuilder.and(expression);
+//
+//        if (type == null || type.trim().length() == 0) { //검색 조건이 없는 경우
+//            return booleanBuilder;
 //        }
-        if (type.contains("c")) {
-            conditionBuilder.or(qPosts.content.contains(keyword));
-        }
-        if (type.contains("a")) {
-            conditionBuilder.or(qPosts.author.nickname.contains(keyword));
-        }
+//    }
+    @Override
+    public PostsDto get(Long id) {
+
+        Object result = postsRepository.getPostsWithAuthor(id);
+        
+//        if (type.contains("c")) {
+//            conditionBuilder.or(qPosts.content.contains(keyword));
+//        }
+//        if (type.contains("a")) {
+//            conditionBuilder.or(qPosts.author.nickname.contains(keyword));
+//        }
+        Object[] arr = (Object[]) result;
 
         //모든 조건 통합
-        booleanBuilder.and(conditionBuilder);
-
-        return booleanBuilder;
+//        booleanBuilder.and(conditionBuilder);
+//
+//        return booleanBuilder;
+        return entityToDTO((Posts) arr[0], (Member) arr[1]);
     }
 }
