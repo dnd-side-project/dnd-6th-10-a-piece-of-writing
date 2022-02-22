@@ -1,6 +1,7 @@
 import React, { useRef } from 'react'
 
 import { useAtom } from 'jotai'
+import { useEffectOnce } from 'react-use'
 import styled from 'styled-components'
 
 import { searchBarModalOpenAtom } from '@/atom/search'
@@ -14,8 +15,13 @@ type Props = {}
 
 const Search: React.FC<Props> = ({}) => {
   const [isModalOpen, setIsModalOpen] = useAtom(searchBarModalOpenAtom)
+  const [didSearchAtom, setDidSearchAtom] = useAtom(searchBarModalOpenAtom)
 
   const modalRef = useRef<HTMLDivElement>(null)
+
+  useEffectOnce(() => {
+    setDidSearchAtom(false)
+  })
 
   useClickOutside({
     ref: modalRef,
@@ -26,7 +32,7 @@ const Search: React.FC<Props> = ({}) => {
 
   return (
     <div className={`${CENTER_FLEX} px-4`}>
-      <Container className={'pt-28 relative'}>
+      <Container className={`${didSearchAtom ? 'pt-4' : 'pt-28'} transition-all relative ease-in-out`}>
         <SearchBar />
         {isModalOpen && (
           <div ref={modalRef} className={'absolute top-44'}>

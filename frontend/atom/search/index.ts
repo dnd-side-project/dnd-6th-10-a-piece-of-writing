@@ -12,6 +12,7 @@ export enum SearchTypeText {
   NICKNAME = '글쓴이',
 }
 
+export const searchTextAtom = atom<string>('')
 export const searchTypeAtom = atom<SearchType>(SearchType.CONTENT)
 export const searchTypeTextAtom = atom<SearchTypeText>((get) => {
   const type = get(searchTypeAtom)
@@ -20,3 +21,5 @@ export const searchTypeTextAtom = atom<SearchTypeText>((get) => {
   return SearchTypeText.CONTENT
 })
 export const searchBarModalOpenAtom = atom<boolean>(false)
+
+export const didSearchAtom = atom<boolean>(false)
