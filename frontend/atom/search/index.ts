@@ -1,9 +1,9 @@
 import { atom } from 'jotai'
 
 export enum SearchType {
-  CONTENT = 'CONTENT',
-  TAG = 'TAG',
-  NICKNAME = 'NICKNAME',
+  CONTENT = 'c',
+  TAG = 't',
+  NICKNAME = 'a',
 }
 
 export enum SearchTypeText {

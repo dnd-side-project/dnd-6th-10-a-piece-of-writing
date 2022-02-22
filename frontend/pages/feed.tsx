@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { GetServerSidePropsContext } from 'next'
 import styled from 'styled-components'
 
 import MainTitle from '@/components/_main/MainTitle'
@@ -9,14 +10,16 @@ import { TagCarousel } from '@/components/carousel'
 import Posts from '@/components/post/Posts'
 import { FlexDiv } from '@/components/style/div/FlexDiv'
 import { useSsrMe } from '@/hook/useSsrMe'
+import { loadMainPosts } from '@/server/post'
 import { withAuthServerSideProps } from '@/server/withAuthServerSide'
 import { CENTER_FLEX } from '@/styles/classNames'
 
-type ServerSideProps = { me: UserInfoType }
+type ServerSideProps = { me: UserInfoType; posts: any }
 
-const Feed: React.FC<ServerSideProps> = ({ me }) => {
+const Feed: React.FC<ServerSideProps> = ({ me, posts }) => {
   useSsrMe(me)
 
+  console.log(posts)
   return (
     <>
       <div className={`flex flex-col-reverse flex-end items-center w-full`}>
@@ -75,6 +78,11 @@ const DUMMY_TAGS = [
   },
 ]
 
-export const getServerSideProps = withAuthServerSideProps()
+export const getServerSideProps = withAuthServerSideProps(async (ctx: GetServerSidePropsContext) => {
+  const res = await loadMainPosts({ page: 1, size: 20 })
+  return {
+    posts: res.data ?? [],
+  }
+})
 
 export default Feed

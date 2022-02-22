@@ -1,3 +1,4 @@
+import { SearchType } from '@/atom/search'
 import baxios, { RESPONSE_TYPE } from '@/server/axios/baxios'
 
 type PostData = {
@@ -19,7 +20,7 @@ export const loadMainPosts = async (params: { page: number; size: number }): Pro
 export const loadPosts = async (params: {
   page: number
   size: number
-  type: string
+  type: SearchType
   keyword: string
 }): Promise<RESPONSE_TYPE> => {
   try {
