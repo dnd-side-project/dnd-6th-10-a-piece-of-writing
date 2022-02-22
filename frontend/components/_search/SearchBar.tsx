@@ -5,7 +5,7 @@ import { useAtomValue, useUpdateAtom } from 'jotai/utils'
 import Image from 'next/image'
 import styled from 'styled-components'
 
-import { didSearchAtom, searchBarModalOpenAtom, searchTextAtom, searchTypeTextAtom } from '@/atom/search'
+import { searchBarModalOpenAtom, searchResultAtom, searchTextAtom, searchTypeTextAtom } from '@/atom/search'
 
 type Props = {}
 
@@ -13,14 +13,14 @@ const SearchBar: React.FC<Props> = ({}) => {
   const [searchText, setSearchText] = useAtom(searchTextAtom)
   const searchType = useAtomValue(searchTypeTextAtom)
   const setOpen = useUpdateAtom(searchBarModalOpenAtom)
-  const setDidSearch = useUpdateAtom(didSearchAtom)
+  const setSearchResult = useUpdateAtom(searchResultAtom)
 
   const doSearch = () => {
     if (!searchText) {
       alert('검색어를 입력해 주세요.')
       return
     }
-    setDidSearch(true)
+    setSearchResult([])
   }
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {

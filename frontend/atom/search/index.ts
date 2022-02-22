@@ -22,4 +22,5 @@ export const searchTypeTextAtom = atom<SearchTypeText>((get) => {
 })
 export const searchBarModalOpenAtom = atom<boolean>(false)
 
-export const didSearchAtom = atom<boolean>(false)
+export const searchResultAtom = atom<any[] | null>(null)
+export const didSearchAtom = atom<boolean>((get) => get(searchResultAtom) !== null)

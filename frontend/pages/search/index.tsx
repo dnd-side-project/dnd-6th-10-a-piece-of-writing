@@ -1,10 +1,11 @@
 import React, { useRef } from 'react'
 
 import { useAtom } from 'jotai'
+import { useAtomValue, useUpdateAtom } from 'jotai/utils'
 import { useEffectOnce } from 'react-use'
 import styled from 'styled-components'
 
-import { searchBarModalOpenAtom } from '@/atom/search'
+import { didSearchAtom, searchBarModalOpenAtom, searchResultAtom } from '@/atom/search'
 import RecommendTopic from '@/components/_search/RecommendTopic'
 import SearchBar from '@/components/_search/SearchBar'
 import SearchBarModal from '@/components/_search/SearchBarModal'
@@ -15,12 +16,13 @@ type Props = {}
 
 const Search: React.FC<Props> = ({}) => {
   const [isModalOpen, setIsModalOpen] = useAtom(searchBarModalOpenAtom)
-  const [didSearchAtom, setDidSearchAtom] = useAtom(searchBarModalOpenAtom)
+  const setSearchResult = useUpdateAtom(searchResultAtom)
+  const didSearch = useAtomValue(didSearchAtom)
 
   const modalRef = useRef<HTMLDivElement>(null)
 
   useEffectOnce(() => {
-    setDidSearchAtom(false)
+    setSearchResult(null)
   })
 
   useClickOutside({
@@ -32,7 +34,7 @@ const Search: React.FC<Props> = ({}) => {
 
   return (
     <div className={`${CENTER_FLEX} px-4`}>
-      <Container className={`${didSearchAtom ? 'pt-4' : 'pt-28'} transition-all relative ease-in-out`}>
+      <Container className={`relative ${didSearch ? 'pt-4' : 'pt-28'} transition-all duration-1000 ease-in-out`}>
         <SearchBar />
         {isModalOpen && (
           <div ref={modalRef} className={'absolute top-44'}>
