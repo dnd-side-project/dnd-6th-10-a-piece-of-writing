@@ -6,6 +6,10 @@ type PostData = {
   ref?: string
 }
 
+// export const loadPosts = async () :Promise<RESPONSE_TYPE> => {
+//
+// }
+
 export const uploadPosts = async (postData: PostData): Promise<RESPONSE_TYPE> => {
   try {
     const res = await baxios.post(`/posts`, postData)

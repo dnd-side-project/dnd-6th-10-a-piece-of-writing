@@ -24,7 +24,7 @@ const User: React.FC<ServerSideProps> = ({ me }) => {
     <>
       <div className={'flex flex-col align-middle justify-center items-center w-full'}>
         <Container>
-          <UserInfo isMe={isMe} />
+          <UserInfo isMe={true} />
           <UserPostLabel isMe={isMe} />
           <UserTagCarousel />
           <UserPosts isMe={isMe} />
