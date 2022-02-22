@@ -13,21 +13,21 @@ import com.springboot.domain.common.error.exception.ErrorCode;
 import com.springboot.domain.common.model.ResponseDto;
 import com.springboot.domain.common.model.SuccessCode;
 import com.springboot.domain.common.service.ResponseService;
-import com.springboot.domain.member.model.Dto.FollowListDto;
+import com.springboot.domain.member.model.Dto.FollowInfoDto;
 import com.springboot.domain.member.model.Dto.MemberProfileDto;
 import com.springboot.domain.member.model.Dto.ModProfileDto;
 import com.springboot.domain.member.model.Dto.MyProfileDto;
 import com.springboot.domain.member.model.Member;
 import com.springboot.domain.member.repository.MemberRepository;
+import com.springboot.domain.posts.model.dto.PostsListResponseDto;
+import com.springboot.domain.posts.model.entity.Posts;
 import com.springboot.domain.posts.service.PostsService;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -45,7 +45,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Member findMemberById(Long id) {
-        return memberRepository.findMemberById(id)
+        return memberRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.ENTITY_NOT_FOUND));
     }
 
@@ -139,50 +139,77 @@ public class MemberServiceImpl implements MemberService {
     }
 
     private boolean alreadyFollow(UserDetailsImpl userDetailsImpl, Long memberId) {
-        return userDetailsImpl.getMember().getFollower().stream()
-                .anyMatch(R -> R.getFollowed().getId() == memberId);
+        return userDetailsImpl.getMember().getFollowerList().stream()
+                .anyMatch(R -> Objects.equals(R.getFollowed().getId(), memberId));
     }
 
     @Override
-    public ResponseEntity<? extends ResponseDto> getMemberProfile(UserDetailsImpl userDetailsImpl,
-            String nickname) {
-        Member member = findMemberByNickname(nickname);
+    public ResponseEntity<? extends ResponseDto> getMemberProfile(
+            UserDetailsImpl userDetailsImpl, Long id) {
+        if (id == null) {
+            throw new BusinessException(ErrorCode.PARAMETER_MISSING_ERROR);
+        }
+        Member member = findMemberById(id);
         MemberProfileDto memberProfileDto = MemberProfileDto.builder()
-                .id(member.getId())
-                .nickname(nickname)
+                .id(id)
+                .nickname(member.getNickname())
                 .profileUrl(member.getProfileUrl())
                 .email(member.getEmail())
                 .follow(member.getFollowCount())
                 .follower(member.getFollowerCount())
-                .alreadyFollow(alreadyFollow(userDetailsImpl, member.getId()))
+                .alreadyFollow(alreadyFollow(userDetailsImpl, id))
                 .build();
 
         return responseService.successResult(SuccessCode.GET_PROFILE_SUCCESS, memberProfileDto);
     }
 
     @Override
-    public ResponseEntity<? extends ResponseDto> getFollowList(String nickname) {
-        if (nickname == null) {
+    public ResponseEntity<? extends ResponseDto> getFollowList(Long id) {
+        if (id == null) {
             throw new BusinessException(ErrorCode.PARAMETER_MISSING_ERROR);
         }
-        List<FollowListDto> data = new ArrayList<>();
-        Member member = findMemberByNickname(nickname);
-        member.getFollower().forEach(R -> {
-            data.add(FollowListDto.entityToDto(findMemberById(R.getFollowed().getId())));
-        });
+        List<FollowInfoDto> data = findMemberById(id).getFollowerList()
+                .stream().map(R -> FollowInfoDto.entityToDto(findMemberById(R.getFollowed().getId())))
+                .collect(Collectors.toList());
         return responseService.successResult(SuccessCode.GET_FOLLOW_LIST_SUCCESS, data);
     }
 
     @Override
-    public ResponseEntity<? extends ResponseDto> getFollowerList(String nickname) {
-        if (nickname == null) {
+    public ResponseEntity<? extends ResponseDto> getFollowerList(Long id) {
+        if (id == null) {
             throw new BusinessException(ErrorCode.PARAMETER_MISSING_ERROR);
         }
-        List<FollowListDto> data = new ArrayList<>();
-        Member member = findMemberByNickname(nickname);
-        member.getFollowed().forEach(R -> {
-            data.add(FollowListDto.entityToDto(findMemberById(R.getFollower().getId())));
-        });
+        List<FollowInfoDto> data = findMemberById(id).getFollowedList()
+                .stream().map(R -> FollowInfoDto.entityToDto(findMemberById(R.getFollower().getId())))
+                .collect(Collectors.toList());
         return responseService.successResult(SuccessCode.GET_FOLLOWER_LIST_SUCCESS, data);
+    }
+
+    @Override
+    public ResponseEntity<? extends ResponseDto> getMyPostsList(UserDetailsImpl userDetails) {
+        List<PostsListResponseDto> list = userDetails.getMember().getPostsList()
+                .stream().map(P -> postsToDto(P, userDetails)).collect(Collectors.toList());
+        return responseService.successResult(SuccessCode.GET_POSTS_LIST_SUCCESS, list);
+    }
+
+    @Override
+    public ResponseEntity<? extends ResponseDto> getMyLikesList(UserDetailsImpl userDetails) {
+        List<PostsListResponseDto> list = userDetails.getMember().getLikePostsList()
+                .stream().map(L -> postsToDto(L.getPosts(), userDetails)).collect(Collectors.toList());
+        return responseService.successResult(SuccessCode.GET_LIKES_LIST_SUCCESS, list);
+    }
+
+    private PostsListResponseDto postsToDto(Posts posts, UserDetailsImpl userDetails) {
+        return PostsListResponseDto.builder()
+                .id(posts.getId())
+                .content(posts.getContent())
+                .author(posts.getMemberBasicInfo())
+                .imageUrl(posts.getImageUrl())
+                .createdDate(posts.getCreatedDate())
+                .modifiedDate(posts.getModifiedDate())
+                .alreadyLike(userDetails.getMember().getLikePostsList().stream()
+                        .anyMatch(L -> Objects.equals(L.getPosts().getId(), posts.getId())))
+                .likes(posts.getLikeMemberListSize())
+                .build();
     }
 }

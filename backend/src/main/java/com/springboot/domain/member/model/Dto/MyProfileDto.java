@@ -13,6 +13,8 @@ public class MyProfileDto {
     private String nickname;
     private String profileUrl;
     private String email;
+    private int follower;
+    private int follow;
 
     public static MyProfileDto memberToDto(Member member) {
         return MyProfileDto.builder()
@@ -20,6 +22,8 @@ public class MyProfileDto {
                 .nickname(member.getNickname())
                 .profileUrl(member.getProfileUrl())
                 .email(member.getEmail())
+                .follower(member.getFollowerCount())
+                .follow(member.getFollowCount())
                 .build();
     }
 }

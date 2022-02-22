@@ -1,8 +1,11 @@
 package com.springboot.domain.member.model;
 
+import com.springboot.domain.likes.model.Likes;
+import com.springboot.domain.posts.model.entity.Posts;
 import com.springboot.domain.relation.model.Relation;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,13 +20,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import com.springboot.domain.auth.Authority;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString
 @Entity
 public class Member{
     @Id
@@ -50,16 +51,24 @@ public class Member{
 
     @OneToMany(mappedBy = "follower", fetch = FetchType.EAGER)
     @Builder.Default
-    private List<Relation> follower = new ArrayList<>(); // 내가 팔로우하는 relation
+    private Set<Relation> followerList = new HashSet<>(); // 내가 팔로우하는 relation
 
     @OneToMany(mappedBy = "followed", fetch = FetchType.EAGER)
     @Builder.Default
-    private List<Relation> followed = new ArrayList<>(); // 나를 팔로우하는 relation
+    private Set<Relation> followedList = new HashSet<>(); // 나를 팔로우하는 relation
+
+    @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
+    @Builder.Default
+    private Set<Posts> postsList = new HashSet<>(); // 내 글 목록
+
+    @OneToMany(mappedBy = "posts", fetch = FetchType.EAGER)
+    @Builder.Default
+    private Set<Likes> likePostsList = new HashSet<>(); // 좋아요 글 목록
 
     public int getFollowCount() { // 내가 팔로우하는 relation의 수
-        return follower.size();
+        return followerList.size();
     }
     public int getFollowerCount() { // 나를 팔로우하는 relation의 수
-        return followed.size();
+        return followedList.size();
     }
 }

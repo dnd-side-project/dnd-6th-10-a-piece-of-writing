@@ -24,6 +24,8 @@ public enum SuccessCode {
     GET_PROFILE_SUCCESS("멤버 프로필 조회 성공", "SM004", 200),
     GET_FOLLOW_LIST_SUCCESS("팔로우 리스트 조회 성공", "SM005", 200),
     GET_FOLLOWER_LIST_SUCCESS("팔로워 리스트 조회 성공", "SM006", 200),
+    GET_LIKES_LIST_SUCCESS("좋아요 목록 조회 성공", "SM007", 200),
+    GET_POSTS_LIST_SUCCESS("내 글 목록 조회 성공", "SM008", 200),
 
     //  Posts
     EXTRACT_SUCCESS("텍스트 추출 성공", "PM001", 200),
@@ -32,6 +34,8 @@ public enum SuccessCode {
     SELECT_ALL_POSTS_SUCCESS("모든 게시물 조회", "PM004", 200),
     SELECT_POSTS_SEARCH_SUCCESS("검색된 게시물 조회", "PM005", 200),
     SELECT_POSTS_SUCCESS("게시물 조회", "PM006", 200),
+    LIKE_SUCCESS("좋아요 성공", "SP006", 200),
+    DISLIKE_SUCCESS("좋아요 취소 성공", "SP007", 200),
 
     //  Reply
     SAVE_REPLY_SUCCESS("댓글 생성 성공","RM001",200),
@@ -40,8 +44,9 @@ public enum SuccessCode {
     SELECT_REPLY_SUCCESS("댓글 모두 조회 성공","RM004",200),
     SELECT_FIRST_REPLY_SUCCESS("댓글 초기 3개 조회 성공","PM005",200),
 
-    //    Relation
-    FOLLOW_SUCCESS("팔로우 성공", "SR005", 200),
+//    Relation
+    FOLLOW_SUCCESS("팔로우 성공", "SR001", 200),
+    UNFOLLOW_SUCCESS("언팔로우 성공", "SR002", 200),
     ;
 
     private final String message;

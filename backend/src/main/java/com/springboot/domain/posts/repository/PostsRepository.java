@@ -39,4 +39,6 @@ public interface PostsRepository extends JpaRepository<Posts, Long>,
         " LEFT JOIN p.author a " +
         " GROUP BY p")
     Page<Object[]> getPostsListWithAuthor(Pageable pageable);
+
+    void deletePostsById(Long id);
 }
