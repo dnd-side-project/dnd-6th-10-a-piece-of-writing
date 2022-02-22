@@ -5,7 +5,7 @@ import { useAtomValue } from 'jotai/utils'
 import { useEffectOnce } from 'react-use'
 import styled from 'styled-components'
 
-import { didSearchAtom, searchBarModalOpenAtom, searchResultAtom } from '@/atom/search'
+import { didSearchAtom, isNoResultAtom, searchBarModalOpenAtom, searchResultAtom } from '@/atom/search'
 import RecommendTopic from '@/components/_search/RecommendTopic'
 import SearchBar from '@/components/_search/SearchBar'
 import SearchBarModal from '@/components/_search/SearchBarModal'
@@ -22,13 +22,13 @@ const Search: React.FC<Props> = ({}) => {
   const [isModalOpen, setIsModalOpen] = useAtom(searchBarModalOpenAtom)
   const [searchResult, setSearchResult] = useAtom(searchResultAtom)
   const didSearch = useAtomValue(didSearchAtom)
+  const isNoResult = useAtomValue(isNoResultAtom)
   const searchResultExist = searchResult && searchResult?.length > 0
 
   const modalRef = useRef<HTMLDivElement>(null)
 
   useEffectOnce(() => {
-    // setSearchResult(null)
-    setSearchResult(['123'])
+    setSearchResult(null)
   })
 
   useClickOutside({
@@ -61,9 +61,11 @@ const Search: React.FC<Props> = ({}) => {
           </div>
         )}
       </Container>
-      <div className={'sticky right-4 bottom-4 self-end'}>
-        <AddButton />
-      </div>
+      {!isNoResult && (
+        <div className={'sticky right-4 bottom-4 self-end'}>
+          <AddButton />
+        </div>
+      )}
     </div>
   )
 }

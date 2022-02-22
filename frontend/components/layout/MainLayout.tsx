@@ -21,7 +21,11 @@ const MainLayout: React.FC<Props> = ({ children }) => {
           <div> </div>
           <div> </div>
           <div className={`flex gap-4`}>
-            <Image src={'/menu_search.svg'} width={24} height={24} />
+            <div className={'flex cursor-pointer'}>
+              <Link href={`/search`}>
+                <Image src={'/menu_search.svg'} width={24} height={24} />
+              </Link>
+            </div>
             {me?.memberId && (
               <div className={'flex cursor-pointer'}>
                 <Link href={`/user/${me?.memberId}`}>

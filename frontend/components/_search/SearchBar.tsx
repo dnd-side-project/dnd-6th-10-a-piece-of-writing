@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { useAtom } from 'jotai'
 import { useAtomValue, useUpdateAtom } from 'jotai/utils'
@@ -14,10 +14,16 @@ const SearchBar: React.FC<Props> = ({}) => {
   const searchType = useAtomValue(searchTypeTextAtom)
   const setOpen = useUpdateAtom(searchBarModalOpenAtom)
   const setSearchResult = useUpdateAtom(searchResultAtom)
+  const [test, setTest] = useState(true)
 
   const doSearch = () => {
     if (!searchText) {
       alert('검색어를 입력해 주세요.')
+      return
+    }
+    if (test) {
+      setSearchResult(['123'])
+      setTest(false)
       return
     }
     setSearchResult([])
