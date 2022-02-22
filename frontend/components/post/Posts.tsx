@@ -28,9 +28,4 @@ const PostsContainer = styled.div`
   max-width: 1201px;
   gap: 20px;
   flex-wrap: wrap;
-  margin-top: 2.5rem;
-  margin-left: 1.3rem;
-  @media screen and (min-width: 1201px) {
-    margin-left: 0;
-  }
 `

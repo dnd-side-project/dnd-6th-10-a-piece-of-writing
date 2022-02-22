@@ -10,6 +10,7 @@ import Posts from '@/components/post/Posts'
 import { FlexDiv } from '@/components/style/div/FlexDiv'
 import { useSsrMe } from '@/hook/useSsrMe'
 import { withAuthServerSideProps } from '@/server/withAuthServerSide'
+import { CENTER_FLEX } from '@/styles/classNames'
 
 type ServerSideProps = { me: UserInfoType }
 
@@ -27,9 +28,9 @@ const Feed: React.FC<ServerSideProps> = ({ me }) => {
               <TagCarousel tags={DUMMY_TAGS} onClickTag={(_) => () => {}} />
             </div>
           </FlexDiv>
-          <FlexDiv width={'100%'}>
+          <div className={`w-full ${CENTER_FLEX} mt-10 ml-5 xl:ml-0`}>
             <Posts />
-          </FlexDiv>
+          </div>
         </MainContainer>
       </div>
     </>

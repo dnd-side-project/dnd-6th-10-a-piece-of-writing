@@ -6,6 +6,20 @@ import baxios, { RESPONSE_TYPE } from '@/server/axios/baxios'
 
 export const cookies = new Cookies()
 
+export const nicknameCheck = async (email: string): Promise<RESPONSE_TYPE> => {
+  try {
+    const result = await baxios.get(`/auth/email/${email}`)
+    if (result.status === 200) {
+      return { success: true, message: '사용 가능한 이메일입니다!' }
+    }
+  } catch (e: any) {
+    if (e?.response?.status === 404) {
+      return { success: false, message: '중복된 이메일입니다!' }
+    }
+  }
+  return { success: false, message: '오류가 발생했습니다!' }
+}
+
 export const emailCheck = async (email: string): Promise<RESPONSE_TYPE> => {
   try {
     const result = await baxios.get(`/auth/email/${email}`)
@@ -66,14 +80,14 @@ export const loadMe = async (accessToken: string, refreshToken: string): Promise
     return { success: false, message: '토큰 값 없음' }
   }
   try {
-    const result = await baxios.get('/member/user', {
+    const result = await baxios.get('/member/profile', {
       headers: { [KEY_HEADER_ACCESS_TOKEN]: accessToken, [KEY_HEADER_REFRESH_TOKEN]: refreshToken },
     })
 
-    if (result.status === 200 && result.data?.principal?.member) {
+    if (result.status === 200 && result.data?.data?.id) {
       return {
         success: true,
-        data: result.data?.principal?.member,
+        data: result.data?.data,
         message: '내 정보 로드 성공',
       }
     }

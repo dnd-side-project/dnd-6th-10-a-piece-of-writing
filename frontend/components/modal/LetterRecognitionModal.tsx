@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 
 import { useUpdateAtom } from 'jotai/utils'
 import Image from 'next/image'
@@ -9,6 +9,7 @@ import { isRecognitionModalOpenAtom, postTextAtom } from '@/atom/post'
 import { Button } from '@/components/button'
 import { ImageUploadButton } from '@/components/button/ImageUploadButton'
 import { FlexDiv } from '@/components/style/div/FlexDiv'
+import { useClickOutside } from '@/hook/useClickOutside'
 import { extractImage } from '@/server/post/image'
 import { BreakPoints } from '@/styles/breakPoint'
 
@@ -26,17 +27,12 @@ const LetterRecognitionModal: React.FC<Props> = ({}) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const imageInputRef = useRef<HTMLInputElement>(null)
 
-  useEffect(() => {
-    const handleClickOutside = (event: any) => {
-      if (containerRef.current && !containerRef?.current?.contains(event?.target)) {
-        setIsModalOpen(false)
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [containerRef])
+  useClickOutside({
+    ref: containerRef,
+    func: () => {
+      setIsModalOpen(false)
+    },
+  })
 
   const onImageChange = (e: React.FormEvent<HTMLInputElement>) => {
     e.preventDefault()

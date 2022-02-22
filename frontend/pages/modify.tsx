@@ -34,9 +34,9 @@ const Modify: React.FC<ServerSideProps> = ({ me }) => {
       return
     }
     const result = await modifyUser(nickname)
+    alert(result.message)
     if (result.success && me) {
       setMeNickname(result.data)
-      alert(result.message)
       return
     }
   }
