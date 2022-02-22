@@ -1,17 +1,24 @@
 import React from 'react'
 
+import Image from 'next/image'
+
+import FollowButton from '@/components/button/FollowButton'
 import { Tag } from '@/components/carousel'
 import { PlainDivider } from '@/components/Divider'
 import Posts from '@/components/post/Posts'
 
 type Props = {}
 
-const SearchResult: React.FC<Props> = ({}) => {
+const NicknameSearchResult: React.FC<Props> = ({}) => {
   return (
     <div className={'flex flex-col'}>
-      <p className={'my-7 text-t24'}>N개의 토픽이 있네요.</p>
-      <div className={'flex mb-4'}>
-        <Tag tagInfo={{ name: '토픽1' }} onClick={() => {}} />
+      <p className={'my-7 text-t24'}>N명의 글쓴이를 찾았어요.</p>
+      <div className={'flex mb-4 gap-2 align-middle items-center'}>
+        <div className={'flex'}>
+          <Image src={'/profile.svg'} width={48} height={48} alt={'profile'} />
+        </div>
+        <span className={'text-t16'}>유저 닉네임</span>
+        <FollowButton />
       </div>
       <p className={'my-3 text-t14 text-gray-500'}>총 M개</p>
       <Posts />
@@ -29,4 +36,4 @@ const SearchResult: React.FC<Props> = ({}) => {
   )
 }
 
-export default SearchResult
+export default NicknameSearchResult
