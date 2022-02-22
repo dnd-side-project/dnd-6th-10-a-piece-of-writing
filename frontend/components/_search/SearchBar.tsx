@@ -57,7 +57,6 @@ const SearchBar: React.FC<Props> = ({}) => {
 }
 
 const SearchBarContainer = styled.div`
-  width: 100%;
   height: 52px;
   display: flex;
   flex-direction: row;
@@ -66,6 +65,11 @@ const SearchBarContainer = styled.div`
   padding: 16px;
   border-radius: 13px;
   border: solid 1px #a1a1a1;
+
+  width: 100%;
+  @media screen and (min-width: 800px) {
+    width: 80%;
+  }
 `
 
 export default SearchBar
