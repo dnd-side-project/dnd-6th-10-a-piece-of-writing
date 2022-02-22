@@ -33,6 +33,24 @@ const Post: React.FC<Props> = ({}) => {
       })
   }
 
+  const share = (imgUrl: string) => () => {
+    if (!document.queryCommandSupported('copy')) {
+      return alert('복사하기가 지원되지 않는 브라우저입니다.')
+    }
+
+    const textarea = document.createElement('textarea')
+    textarea.value = imgUrl
+    textarea.style.top = '0'
+    textarea.style.left = '0'
+    textarea.style.position = 'fixed'
+    document.body.appendChild(textarea)
+    textarea.focus()
+    textarea.select()
+    document.execCommand('copy')
+    document.body.removeChild(textarea)
+    alert('클립보드에 복사되었습니다.')
+  }
+
   const element = (hovered: boolean) => (
     <PostContainer>
       {hovered ? (
@@ -45,7 +63,7 @@ const Post: React.FC<Props> = ({}) => {
             <LikeButton />
             <CommentButton />
             <DownloadButton onClick={download(imgUrl)} />
-            <ShareButton />
+            <ShareButton onClick={share(imgUrl)} />
           </div>
         </>
       ) : (
