@@ -61,7 +61,7 @@ public class Member{
     @Builder.Default
     private Set<Posts> postsList = new HashSet<>(); // 내 글 목록
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
     @Builder.Default
     private Set<Likes> likePostsList = new HashSet<>(); // 좋아요 글 목록
 

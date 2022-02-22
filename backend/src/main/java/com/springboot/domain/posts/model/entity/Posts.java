@@ -43,7 +43,7 @@ public class Posts extends BaseTime {
     @ManyToOne
     private Member author;
 
-    @OneToMany(mappedBy = "posts", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "posts", fetch = FetchType.EAGER)
     @Builder.Default
     private Set<Likes> likeMemberList = new HashSet<>(); // 좋아요 누른 멤버 목록
 

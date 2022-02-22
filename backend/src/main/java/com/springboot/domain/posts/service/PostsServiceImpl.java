@@ -92,6 +92,7 @@ public class PostsServiceImpl implements PostsService {
         //댓글 부터 삭제
         replyRepository.deleteByPostsId(postsId);
         postsRepository.deleteById(postsId);
+        likesRepository.deleteLikesByPostsId(postsId);
 
         return postsId;
     }
