@@ -1,14 +1,12 @@
-package com.springboot.domain.relation.model;
+package com.springboot.domain.likes.model;
 
-import com.springboot.domain.likes.model.Likes;
 import com.springboot.domain.member.model.Member;
+import com.springboot.domain.posts.model.entity.Posts;
 import java.util.Objects;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -21,24 +19,23 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Relation {
-
+public class Likes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    private Member follower;
+    private Member member;
 
     @ManyToOne
-    private Member followed;
+    private Posts posts;
 
     public boolean equals(Object o) {
-        return Objects.equals(follower.getId(), ((Relation) o).getFollower().getId())
-                && Objects.equals(followed.getId(), ((Relation) o).getFollowed().getId());
+        return Objects.equals(member.getId(), ((Likes) o).getMember().getId())
+                && Objects.equals(posts.getId(), ((Likes) o).getPosts().getId());
     }
 
     public int hashCode() {
-        return (int) (follower.getId() ^ followed.getId());
+        return (int) (member.getId() ^ posts.getId());
     }
 }

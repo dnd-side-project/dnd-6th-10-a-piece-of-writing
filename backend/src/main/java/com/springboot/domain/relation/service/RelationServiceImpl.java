@@ -37,18 +37,7 @@ public class RelationServiceImpl implements RelationService {
             Long id) {
         Member follower = memberService.findMemberById(userDetails.getMember().getId());
         Member followed = memberService.findMemberById(id);
-        Long relationId = findRelationByFollowedAndFollower(followed, follower);
-        if (relationId > 0) {
-            relationRepository.deleteById(relationId);
-        }
+        relationRepository.deleteRelationByFollowedAndFollower(followed, follower);
         return responseService.successResult(SuccessCode.UNFOLLOW_SUCCESS);
-    }
-
-    private Long findRelationByFollowedAndFollower(Member followed, Member follower) {
-        Optional<Relation> relation = relationRepository.findRelationByFollowedAndFollower(followed, follower);
-        if (relation.isPresent()) {
-            return relation.get().getId();
-        }
-        return 0L;
     }
 }

@@ -25,6 +25,8 @@ import com.springboot.domain.common.error.exception.ErrorCode;
 import com.springboot.domain.common.model.ResponseDto;
 import com.springboot.domain.common.model.SuccessCode;
 import com.springboot.domain.common.service.ResponseService;
+import com.springboot.domain.likes.model.Likes;
+import com.springboot.domain.likes.repository.LikesRepository;
 import com.springboot.domain.member.model.Member;
 import com.springboot.domain.member.repository.MemberRepository;
 import com.springboot.domain.posts.model.dto.MultipartDto;
@@ -52,12 +54,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Log4j2
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class PostsServiceImpl implements PostsService {
+
     private final PostsRepository postsRepository;
     private final MemberRepository memberRepository;
     private final ReplyRepository replyRepository;
     private final ResponseService responseService;
+    private final LikesRepository likesRepository;
 
     @Override
     public Posts findPostsById(Long id) {
@@ -92,26 +97,28 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Override
-    public List<PostsDto> findAllPostsOrderByIdDesc(int page, int size, UserDetailsImpl userDetails) {
+    public List<PostsDto> findAllPostsOrderByIdDesc(int page, int size,
+            UserDetailsImpl userDetails) {
 
         PageRequestDto pageRequestDTO = PageRequestDto.builder()
-            .page(page)
-            .size(size)
-            .build();
+                .page(page)
+                .size(size)
+                .build();
 
         PageResultDto<PostsDto, Object[]> resultDTO = getList(pageRequestDTO, userDetails);
         return resultDTO.getDtoList();
     }
 
     @Override
-    public List<PostsDto> findAllPostsBySearch(int page, int size, String keyword, String type, UserDetailsImpl userDetails) {
+    public List<PostsDto> findAllPostsBySearch(int page, int size, String keyword, String type,
+            UserDetailsImpl userDetails) {
 
         PageRequestDto pageRequestDTO = PageRequestDto.builder()
-            .page(page)
-            .size(size)
-            .type(type)
-            .keyword(keyword)
-            .build();
+                .page(page)
+                .size(size)
+                .type(type)
+                .keyword(keyword)
+                .build();
 
         PageResultDto<PostsDto, Object[]> resultDTO = getList(pageRequestDTO, userDetails);
         return resultDTO.getDtoList();
@@ -188,37 +195,35 @@ public class PostsServiceImpl implements PostsService {
 
     // Tools for Pagination
     @Override
-    public PageResultDto<PostsDto, Object[]> getList(PageRequestDto pageRequestDTO, UserDetailsImpl userDetails) {
+    public PageResultDto<PostsDto, Object[]> getList(PageRequestDto pageRequestDTO,
+            UserDetailsImpl userDetails) {
 
         log.info(pageRequestDTO);
 
-        Function<Object[], PostsDto> fn = (en -> entityToDTO((Posts) en[0], (Member) en[1], userDetails.getMember().getId()));
+        Function<Object[], PostsDto> fn = (en -> entityToDTO((Posts) en[0], (Member) en[1],
+                userDetails.getMember().getId()));
 
         Page<Object[]> result = postsRepository.searchPage(
-            pageRequestDTO.getType(),
-            pageRequestDTO.getKeyword(),
-            pageRequestDTO.getPageable(Sort.by("id").descending()));
+                pageRequestDTO.getType(),
+                pageRequestDTO.getKeyword(),
+                pageRequestDTO.getPageable(Sort.by("id").descending()));
 
         return new PageResultDto<>(result, fn);
     }
 
     @Override
-    @Transactional
     public ResponseEntity<ResponseDto> likePost(UserDetailsImpl userDetailsImpl, Long id) {
         Member member = findMemberById(userDetailsImpl.getMember().getId());
         Posts posts = findPostsById(id);
-        member.getLikePostsList().add(posts);
-        posts.getLikeMemberList().add(member);
+        likesRepository.save(Likes.builder().member(member).posts(posts).build());
         return responseService.successResult(SuccessCode.LIKE_SUCCESS);
     }
 
     @Override
-    @Transactional
     public ResponseEntity<ResponseDto> disLikePost(UserDetailsImpl userDetailsImpl, Long id) {
         Member member = findMemberById(userDetailsImpl.getMember().getId());
         Posts posts = findPostsById(id);
-        member.getLikePostsList().remove(posts);
-        posts.getLikeMemberList().remove(member);
+        likesRepository.deleteLikesByMemberAndPosts(member, posts);
         return responseService.successResult(SuccessCode.DISLIKE_SUCCESS);
     }
 

@@ -76,7 +76,7 @@ public interface PostsService {
             .authorNickname(author.getNickname())
             .authorProfileUrl(author.getProfileUrl())
             .alreadyLike(posts.getLikeMemberList()
-                    .stream().anyMatch(M -> Objects.equals(M.getId(), displayMemberId)))
+                    .stream().anyMatch(L -> Objects.equals(L.getMember().getId(), displayMemberId)))
             .build();
     }
 }

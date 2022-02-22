@@ -9,5 +9,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RelationRepository extends JpaRepository<Relation, Long> {
-    Optional<Relation> findRelationByFollowedAndFollower(Member followed, Member follower);
+
+    void deleteRelationByFollowedAndFollower(Member followed, Member follower);
 }

@@ -1,26 +1,18 @@
 package com.springboot.domain.member.model;
 
+import com.springboot.domain.likes.model.Likes;
 import com.springboot.domain.posts.model.entity.Posts;
 import com.springboot.domain.relation.model.Relation;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -59,25 +51,24 @@ public class Member{
 
     @OneToMany(mappedBy = "follower", fetch = FetchType.EAGER)
     @Builder.Default
-    private Set<Relation> follower = new HashSet<>(); // 내가 팔로우하는 relation
+    private Set<Relation> followerList = new HashSet<>(); // 내가 팔로우하는 relation
 
     @OneToMany(mappedBy = "followed", fetch = FetchType.EAGER)
     @Builder.Default
-    private Set<Relation> followed = new HashSet<>(); // 나를 팔로우하는 relation
+    private Set<Relation> followedList = new HashSet<>(); // 나를 팔로우하는 relation
 
     @OneToMany(mappedBy = "author", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private Set<Posts> postsList = new HashSet<>(); // 내 글 목록
 
-    @OneToMany(targetEntity = Posts.class, fetch = FetchType.EAGER, orphanRemoval = true)
-    @CollectionTable(name = "like_posts")
+    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
-    private Set<Posts> likePostsList = new HashSet<>(); // 좋아요 글 목록
+    private Set<Likes> likePostsList = new HashSet<>(); // 좋아요 글 목록
 
     public int getFollowCount() { // 내가 팔로우하는 relation의 수
-        return follower.size();
+        return followerList.size();
     }
     public int getFollowerCount() { // 나를 팔로우하는 relation의 수
-        return followed.size();
+        return followedList.size();
     }
 }

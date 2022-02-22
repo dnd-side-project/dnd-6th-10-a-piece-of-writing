@@ -1,6 +1,7 @@
 package com.springboot.domain.posts.model.entity;
 
 
+import com.springboot.domain.likes.model.Likes;
 import com.springboot.domain.member.model.Dto.MemberBasicInfoDto;
 import com.springboot.domain.member.model.Member;
 import java.util.ArrayList;
@@ -42,10 +43,9 @@ public class Posts extends BaseTime {
     @ManyToOne
     private Member author;
 
-    @OneToMany(targetEntity = Member.class, fetch = FetchType.EAGER, orphanRemoval = true)
-    @CollectionTable(name = "like_member")
+    @OneToMany(mappedBy = "posts", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
-    private Set<Member> likeMemberList = new HashSet<>();
+    private Set<Likes> likeMemberList = new HashSet<>(); // 좋아요 누른 멤버 목록
 
     public int getLikeMemberListSize() {
         return likeMemberList.size();

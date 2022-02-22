@@ -139,7 +139,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     private boolean alreadyFollow(UserDetailsImpl userDetailsImpl, Long memberId) {
-        return userDetailsImpl.getMember().getFollower().stream()
+        return userDetailsImpl.getMember().getFollowerList().stream()
                 .anyMatch(R -> Objects.equals(R.getFollowed().getId(), memberId));
     }
 
@@ -168,7 +168,7 @@ public class MemberServiceImpl implements MemberService {
         if (id == null) {
             throw new BusinessException(ErrorCode.PARAMETER_MISSING_ERROR);
         }
-        List<FollowInfoDto> data = findMemberById(id).getFollower()
+        List<FollowInfoDto> data = findMemberById(id).getFollowerList()
                 .stream().map(R -> FollowInfoDto.entityToDto(findMemberById(R.getFollowed().getId())))
                 .collect(Collectors.toList());
         return responseService.successResult(SuccessCode.GET_FOLLOW_LIST_SUCCESS, data);
@@ -179,7 +179,7 @@ public class MemberServiceImpl implements MemberService {
         if (id == null) {
             throw new BusinessException(ErrorCode.PARAMETER_MISSING_ERROR);
         }
-        List<FollowInfoDto> data = findMemberById(id).getFollowed()
+        List<FollowInfoDto> data = findMemberById(id).getFollowedList()
                 .stream().map(R -> FollowInfoDto.entityToDto(findMemberById(R.getFollower().getId())))
                 .collect(Collectors.toList());
         return responseService.successResult(SuccessCode.GET_FOLLOWER_LIST_SUCCESS, data);
@@ -187,22 +187,19 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public ResponseEntity<? extends ResponseDto> getMyPostsList(UserDetailsImpl userDetails) {
-        Long userId = userDetails.getMember().getId();
         List<PostsListResponseDto> list = userDetails.getMember().getPostsList()
-                .stream().map(P -> postsIdToDto(P.getId(), userId)).collect(Collectors.toList());
+                .stream().map(P -> postsToDto(P, userDetails)).collect(Collectors.toList());
         return responseService.successResult(SuccessCode.GET_POSTS_LIST_SUCCESS, list);
     }
 
     @Override
     public ResponseEntity<? extends ResponseDto> getMyLikesList(UserDetailsImpl userDetails) {
-        Long userId = userDetails.getMember().getId();
         List<PostsListResponseDto> list = userDetails.getMember().getLikePostsList()
-                .stream().map(P -> postsIdToDto(P.getId(), userId)).collect(Collectors.toList());
+                .stream().map(L -> postsToDto(L.getPosts(), userDetails)).collect(Collectors.toList());
         return responseService.successResult(SuccessCode.GET_LIKES_LIST_SUCCESS, list);
     }
 
-    private PostsListResponseDto postsIdToDto(Long postsId, Long userId) {
-        Posts posts = postsService.findPostsById(postsId);
+    private PostsListResponseDto postsToDto(Posts posts, UserDetailsImpl userDetails) {
         return PostsListResponseDto.builder()
                 .id(posts.getId())
                 .content(posts.getContent())
@@ -210,8 +207,8 @@ public class MemberServiceImpl implements MemberService {
                 .imageUrl(posts.getImageUrl())
                 .createdDate(posts.getCreatedDate())
                 .modifiedDate(posts.getModifiedDate())
-                .alreadyLike(findMemberById(userId).getLikePostsList().stream()
-                        .anyMatch(P -> Objects.equals(P.getId(), posts.getId())))
+                .alreadyLike(userDetails.getMember().getLikePostsList().stream()
+                        .anyMatch(L -> Objects.equals(L.getPosts().getId(), posts.getId())))
                 .likes(posts.getLikeMemberListSize())
                 .build();
     }
