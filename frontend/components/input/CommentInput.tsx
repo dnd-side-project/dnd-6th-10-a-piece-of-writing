@@ -11,8 +11,13 @@ type Props = {
 const CommentInput: React.FC<Props> = ({ width = '100%', value, onChange, ...props }) => {
   return (
     <InputContainer width={width} {...props}>
-      <input className={'w-3/4'} value={value} onChange={onChange} placeholder={'나의 생각을 나눌 수 있습니다.'} />
-      <p className={'cursor-pointer ml-auto'}>올리기</p>
+      <input
+        className={'w-3/4 text-t12 sm:text-t14'}
+        value={value}
+        onChange={onChange}
+        placeholder={'나의 생각을 나눌 수 있습니다.'}
+      />
+      <p className={'cursor-pointer ml-auto text-t12 sm:text-t14'}>올리기</p>
     </InputContainer>
   )
 }

@@ -60,7 +60,12 @@ const PostCard: React.FC<Props> = ({ imageUrl }) => {
 }
 
 const PostCardContainer = styled.div`
-  width: 386px;
+  width: 100%;
+  padding: 0.8rem;
+
+  @media screen and (min-width: 386px) {
+    width: 386px;
+  }
 `
 
 const TagContainer = styled(FlexDiv)`
