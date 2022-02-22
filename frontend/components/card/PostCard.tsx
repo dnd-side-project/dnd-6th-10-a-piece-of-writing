@@ -10,6 +10,7 @@ import MenuButton from '@/components/button/MenuButton'
 import ShareButton from '@/components/button/ShareButton'
 import CommentCard from '@/components/card/CommentCard'
 import { MenuModalContainer } from '@/components/container/MenuModalContainer'
+import CommentInput from '@/components/input/CommentInput'
 
 import { FlexDiv } from '../style/div/FlexDiv'
 
@@ -51,7 +52,8 @@ const PostCard: React.FC<Props> = ({ imageUrl }) => {
           <DownloadButton />
           <ShareButton />
         </FlexDiv>
-        <CommentCard nickName={'유저 닉네임'} text={'댓글 내용'} />
+        <CommentCard nickName={'유저 닉네임'} text={'댓글 내용'} isMe={true} />
+        <CommentInput />
       </PostCardContainer>
     </>
   )
