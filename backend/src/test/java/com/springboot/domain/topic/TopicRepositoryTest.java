@@ -2,6 +2,7 @@ package com.springboot.domain.topic;
 
 import com.springboot.domain.topic.model.entity.Topic;
 import com.springboot.domain.topic.repository.TopicRepository;
+import java.util.List;
 import java.util.stream.IntStream;
 import javax.transaction.Transactional;
 import org.junit.jupiter.api.DisplayName;
@@ -24,23 +25,34 @@ public class TopicRepositoryTest {
 //        replyRepository.deleteAll();
 //    }
 
-    @DisplayName("Topic 테스트 데이터 삽입")
+//    @DisplayName("Topic 테스트 데이터 삽입")
+//    @Test
+//    @Transactional
+//    public void insertTopic() {
+//
+//        IntStream.rangeClosed(11, 300).forEach(i -> {
+//
+//            Topic topic = Topic.builder()
+//                .name("TEST" + i)
+//                .build();
+//
+//            topicRepository.save(topic);
+//
+//        });
+//
+//    }
+
+    @DisplayName("[Repository] keyword 포함한 name 가진 토픽 목록 조회")
     @Test
     @Transactional
-    public void insertTopic() {
+    public void testSearchKeyword() {
 
-        IntStream.rangeClosed(1, 10).forEach(i -> {
+        List<Topic> topics = topicRepository.findByNameContaining("3");
 
-            Topic topic = Topic.builder()
-                .name("TEST" + i)
-                .build();
-
-            topicRepository.save(topic);
-
-        });
+        logger.info(topics.toString());
 
     }
-//
+
 //    @DisplayName("[Repository] 특정 ID Reply 와 연관된 Posts 조회")
 //    @Test
 //    @Transactional
@@ -52,7 +64,7 @@ public class TopicRepositoryTest {
 //        System.out.println(reply.getPosts());
 //
 //    }
-//
+
 //    @DisplayName("[Repository] 특정 id의 Posts 에 달린 댓글 entity 모두 조회")
 //    @Test
 //    @Transactional

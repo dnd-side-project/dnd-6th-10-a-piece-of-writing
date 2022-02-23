@@ -140,6 +140,36 @@ public class TopicControllerTest {
         assertThat(all.get(0).getName()).isEqualTo(name);
     }
 
+    @DisplayName("[Controller] keyword 포함한 name 가진 토픽 목록 조회")
+    @Test
+    @Transactional
+    public void testSearchKeyword() throws Exception {
+
+        //given
+        String keyword = topicRepository.findAll().get(0).getName();
+
+        logger.info("keyword : " + keyword.toString());
+
+        params = "/search/" + keyword;
+
+        local_url = local_address + path + params;
+        deployed_url = deployed_address + path + params;
+
+        if (current_address.equals("local")) {
+            url = local_url;
+        } else {
+            url = deployed_url;
+        }
+
+        //when
+        mvc.perform(get(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("X-AUTH_TOKEN", accessToken))
+            .andExpect(status().isOk())
+            .andDo(print());
+
+    }
+
 //    @DisplayName("[Controller] Reply delete")
 //    @Test
 //    @Transactional

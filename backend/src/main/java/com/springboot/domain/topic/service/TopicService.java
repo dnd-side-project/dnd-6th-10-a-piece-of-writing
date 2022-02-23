@@ -10,7 +10,9 @@ import java.util.List;
 
 public interface TopicService {
 
-    TopicDto register(TopicDto topicDTO); //댓글의 등록
+    TopicDto register(TopicDto topicDTO); //토픽 등록
+
+    List<TopicDto> searchKeyword(String keyword); // 토픽 키워드 검색
 
 //    List<ReplyDto> getFirstList(Long postsId); //특정 게시물의 초기 댓글 목록
 //

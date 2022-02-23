@@ -3,6 +3,8 @@ package com.springboot.domain.topic.service;
 import com.springboot.domain.topic.model.dto.TopicDto;
 import com.springboot.domain.topic.model.entity.Topic;
 import com.springboot.domain.topic.repository.TopicRepository;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,22 @@ public class TopicServiceImpl implements TopicService {
         TopicDto dto = entityToDTO(topic);
 
         return dto;
+    }
+
+    @Override
+    public List<TopicDto> searchKeyword(String keyword) {
+
+        List<Topic> topics = topicRepository.findByNameContaining(keyword);
+
+        List<TopicDto> topicDtos = new ArrayList<>();
+
+        for (Topic topic:topics)
+         {
+             TopicDto dto = entityToDTO(topic);
+             topicDtos.add(dto);
+        }
+
+        return topicDtos;
     }
 //
 //    @Override

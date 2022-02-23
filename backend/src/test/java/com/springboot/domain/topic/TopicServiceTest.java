@@ -11,6 +11,7 @@ import com.springboot.domain.topic.model.dto.TopicDto;
 import com.springboot.domain.topic.model.entity.Topic;
 import com.springboot.domain.topic.repository.TopicRepository;
 import com.springboot.domain.topic.service.TopicService;
+import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
 import org.junit.jupiter.api.DisplayName;
@@ -52,5 +53,18 @@ public class TopicServiceTest {
 
         //then
         assertThat(savedTopicDto.getId()).isEqualTo(savedTopic.getId());
+    }
+
+    @DisplayName("[Service] keyword 포함한 name 가진 토픽 목록 조회")
+    @Transactional
+    @Test
+    public void testSearchKeyword() {
+
+        String keyword = topicRepository.findAll().get(0).getName();
+
+        List<Topic> topics = topicRepository.findByNameContaining(keyword);
+
+        //then
+        logger.info("topics : " + topics.toString());
     }
 }

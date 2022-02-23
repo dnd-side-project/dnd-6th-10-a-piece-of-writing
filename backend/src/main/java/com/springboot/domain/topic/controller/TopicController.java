@@ -40,7 +40,7 @@ public class TopicController {
 
     private final ResponseServiceImpl responseServiceImpl;
 
-//    @Operation(summary = "select reply api", description = "모든 댓글 조회 api. 게시물의 id를 보내면 그에 달린 모든 댓글들을 조회한다.")
+    //    @Operation(summary = "select reply api", description = "모든 댓글 조회 api. 게시물의 id를 보내면 그에 달린 모든 댓글들을 조회한다.")
 //    @GetMapping(value = "/{postsId}", produces = MediaType.APPLICATION_JSON_VALUE)
 //    public ResponseEntity<ResponseDto> getListByPosts(@PathVariable("postsId") Long postsId) {
 //
@@ -106,13 +106,11 @@ public class TopicController {
         , paramType = "path"
         , defaultValue = "None")
     @GetMapping("/search/{keyword}")
-    public void searchTopicKeyword(@PathVariable String keyword,
-//    public ResponseEntity<ResponseDto> search(@PathVariable String keyword,
-        @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
+    public ResponseEntity<ResponseDto> search(@PathVariable String keyword) {
 
-//        PostsDto postsDto = postsService.get(id, userDetailsImpl);
+        List<TopicDto> topicDtos = topicService.searchKeyword(keyword);
 
-//        return responseServiceImpl.successResult(SuccessCode.SEARCH_TOPIC_SUCCESS, topicDtos);
+        return responseServiceImpl.successResult(SuccessCode.SEARCH_TOPIC_SUCCESS, topicDtos);
     }
 
     @ApiOperation(
@@ -154,7 +152,6 @@ public class TopicController {
 
 //        return responseServiceImpl.successResult(SuccessCode.SELECT_ALL_TOPIC_ON_POSTS_SUCCESS, postsDtos);
     }
-
 
 //
 //    @Operation(summary = "delete reply api", description = "댓글 삭제 api")
