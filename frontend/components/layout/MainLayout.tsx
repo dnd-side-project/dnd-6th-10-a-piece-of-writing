@@ -26,9 +26,9 @@ const MainLayout: React.FC<Props> = ({ children }) => {
                 <Image src={'/menu_search.svg'} width={24} height={24} />
               </Link>
             </div>
-            {me?.memberId && (
+            {me?.id && (
               <div className={'flex cursor-pointer'}>
-                <Link href={`/user/${me?.memberId}`}>
+                <Link href={`/user/${me?.id}`}>
                   <Image src={'/profile.svg'} width={24} height={24} />
                 </Link>
               </div>
