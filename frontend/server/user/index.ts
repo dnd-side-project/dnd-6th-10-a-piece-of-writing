@@ -144,3 +144,21 @@ export const modifyUser = async (nickname: string): Promise<RESPONSE_TYPE> => {
     return { success: false, message: '에러 발생, 내 정보 수정에 실패했습니다.' }
   }
 }
+
+export const withdraw = async (): Promise<RESPONSE_TYPE> => {
+  try {
+    const result = await baxios.post(`/auth/withdrawal`)
+    if (result.status === 200) {
+      return {
+        success: true,
+        message: '탈퇴에 성공했습니다. 이용해주셔서 감사합니다.',
+      }
+    }
+    return {
+      success: false,
+      message: '탈퇴에 실패했습니다.',
+    }
+  } catch (e) {
+    return { success: false, message: '에러 발생, 탈퇴에 실패했습니다.' }
+  }
+}

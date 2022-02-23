@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { GetServerSidePropsContext } from 'next'
 import styled from 'styled-components'
 
 import MainTitle from '@/components/_main/MainTitle'
@@ -78,7 +77,7 @@ const DUMMY_TOPICS = [
   },
 ]
 
-export const getServerSideProps = withAuthServerSideProps(async (ctx: GetServerSidePropsContext) => {
+export const getServerSideProps = withAuthServerSideProps(async () => {
   const res = await loadMainPosts({ page: 1, size: 20 })
   return {
     posts: res.data ?? [],
