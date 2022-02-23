@@ -7,6 +7,7 @@ import com.springboot.domain.member.model.Member;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import com.springboot.domain.member.model.Member;
 import com.springboot.domain.reply.model.entity.Reply;
@@ -17,6 +18,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import lombok.Setter;
 import lombok.ToString;
 
 @Getter

@@ -5,7 +5,6 @@ import com.springboot.domain.posts.model.entity.Posts;
 import com.springboot.domain.relation.model.Relation;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -51,11 +50,11 @@ public class Member{
 
     @OneToMany(mappedBy = "follower", fetch = FetchType.EAGER)
     @Builder.Default
-    private Set<Relation> followerList = new HashSet<>(); // 내가 팔로우하는 relation
+    private Set<Relation> followingList = new HashSet<>(); // 내가 팔로우하는 relation
 
     @OneToMany(mappedBy = "followed", fetch = FetchType.EAGER)
     @Builder.Default
-    private Set<Relation> followedList = new HashSet<>(); // 나를 팔로우하는 relation
+    private Set<Relation> followerList = new HashSet<>(); // 나를 팔로우하는 relation
 
     @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
     @Builder.Default
@@ -65,10 +64,12 @@ public class Member{
     @Builder.Default
     private Set<Likes> likePostsList = new HashSet<>(); // 좋아요 글 목록
 
-    public int getFollowCount() { // 내가 팔로우하는 relation의 수
-        return followerList.size();
+    public int getFollowingCount() { // 내가 팔로우하는 relation의 수
+        return followingList.size();
     }
     public int getFollowerCount() { // 나를 팔로우하는 relation의 수
-        return followedList.size();
+        return followerList.size();
     }
+
+    public int getPostsCount() { return postsList.size(); }
 }
