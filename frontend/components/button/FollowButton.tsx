@@ -4,12 +4,13 @@ import CheckButton, { CheckButtonColor } from '@/components/button/CheckButton'
 import { follow, unfollow } from '@/server/user/follow'
 
 type Props = {
-  userId: number
+  userId?: number
   followed?: boolean
 }
 
 const FollowButton: React.FC<Props> = ({ userId, followed = false }) => {
   const onClickFollow = () => {
+    if (!userId) return
     if (followed) {
       // TODO : followings에서 제거
       unfollow(userId).then((res) => {
