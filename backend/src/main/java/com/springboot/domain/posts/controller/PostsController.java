@@ -1,7 +1,7 @@
 package com.springboot.domain.posts.controller;
 
 import com.springboot.domain.auth.model.UserDetailsImpl;
-import com.springboot.domain.common.model.ResponseDto;
+import com.springboot.domain.common.model.dto.ResponseDto;
 import com.springboot.domain.common.model.SuccessCode;
 import com.springboot.domain.common.service.ResponseServiceImpl;
 import com.springboot.domain.posts.model.dto.PostsDto;

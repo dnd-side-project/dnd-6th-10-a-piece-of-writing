@@ -1,8 +1,7 @@
 package com.springboot.domain.common.service;
 
-import com.springboot.domain.common.model.ResponseDto;
+import com.springboot.domain.common.model.dto.ResponseDto;
 import com.springboot.domain.common.model.SuccessCode;
-import com.springboot.domain.common.service.ResponseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;

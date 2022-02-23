@@ -2,7 +2,7 @@ package com.springboot.domain.auth.service;
 
 import com.springboot.domain.auth.model.LoginDto;
 import com.springboot.domain.auth.model.SignDto;
-import com.springboot.domain.common.model.ResponseDto;
+import com.springboot.domain.common.model.dto.ResponseDto;
 import org.springframework.http.ResponseEntity;
 
 public interface AuthService {

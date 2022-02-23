@@ -1,16 +1,14 @@
 package com.springboot.domain.reply.controller;
 
-import com.springboot.domain.common.model.ResponseDto;
+import com.springboot.domain.common.model.dto.ResponseDto;
 import com.springboot.domain.common.model.SuccessCode;
 import com.springboot.domain.common.service.ResponseServiceImpl;
-import com.springboot.domain.posts.model.dto.PostsDto;
 import com.springboot.domain.reply.model.dto.ReplyDto;
 import com.springboot.domain.reply.service.ReplyService;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;

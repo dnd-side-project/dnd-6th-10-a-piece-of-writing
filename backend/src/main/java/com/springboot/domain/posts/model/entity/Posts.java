@@ -1,15 +1,12 @@
 package com.springboot.domain.posts.model.entity;
 
 
+import com.springboot.domain.common.model.entity.BaseTime;
 import com.springboot.domain.likes.model.Likes;
 import com.springboot.domain.member.model.Dto.MemberBasicInfoDto;
 import com.springboot.domain.member.model.Member;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import com.springboot.domain.member.model.Member;
-import com.springboot.domain.reply.model.entity.Reply;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

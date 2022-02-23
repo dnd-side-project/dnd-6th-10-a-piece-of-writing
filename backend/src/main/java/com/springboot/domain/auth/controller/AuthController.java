@@ -3,7 +3,7 @@ package com.springboot.domain.auth.controller;
 import com.springboot.domain.auth.model.LoginDto;
 import com.springboot.domain.auth.model.SignDto;
 import com.springboot.domain.auth.service.AuthService;
-import com.springboot.domain.common.model.ResponseDto;
+import com.springboot.domain.common.model.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import javax.validation.Valid;

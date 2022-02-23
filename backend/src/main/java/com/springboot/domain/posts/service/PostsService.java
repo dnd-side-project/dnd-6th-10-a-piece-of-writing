@@ -3,16 +3,14 @@ package com.springboot.domain.posts.service;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.springboot.domain.auth.model.UserDetailsImpl;
-import com.springboot.domain.common.model.ResponseDto;
+import com.springboot.domain.common.model.dto.ResponseDto;
 import com.springboot.domain.member.model.Member;
 import com.springboot.domain.posts.model.dto.MultipartDto;
-import com.springboot.domain.member.model.Member;
 import com.springboot.domain.posts.model.dto.PageRequestDto;
 import com.springboot.domain.posts.model.dto.PageResultDto;
 import com.springboot.domain.posts.model.dto.PostsDto;
 
 import com.springboot.domain.posts.model.entity.Posts;
-import com.springboot.domain.reply.model.entity.Reply;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.http.ResponseEntity;

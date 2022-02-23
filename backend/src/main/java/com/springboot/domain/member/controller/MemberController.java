@@ -1,7 +1,7 @@
 package com.springboot.domain.member.controller;
 
 import com.springboot.domain.auth.model.UserDetailsImpl;
-import com.springboot.domain.common.model.ResponseDto;
+import com.springboot.domain.common.model.dto.ResponseDto;
 import com.springboot.domain.member.model.Dto.ModProfileDto;
 import com.springboot.domain.member.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
