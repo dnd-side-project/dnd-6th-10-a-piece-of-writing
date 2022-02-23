@@ -23,7 +23,7 @@ const ProfileImageCard: React.FC<Props> = ({
   onClickEdit = () => {},
 }) => {
   return (
-    <Container>
+    <Container width={width}>
       {imgSrc ? (
         <Image src={imgSrc} width={width} height={width} className="rounded-full" />
       ) : (

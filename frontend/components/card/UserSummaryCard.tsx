@@ -1,9 +1,9 @@
 import React from 'react'
 
-import { useAtomValue } from 'jotai/utils'
-import Link from 'next/link'
+import { useAtomValue, useUpdateAtom } from 'jotai/utils'
 import styled from 'styled-components'
 
+import { isFollowerModalOpenAtom, isFollowingModalOpenAtom } from '@/atom/user/follow'
 import { userInfoAtom } from '@/atom/user/me'
 import { CENTER_FLEX, HOVER_BLUE } from '@/styles/classNames'
 
@@ -11,24 +11,31 @@ type Props = {}
 
 const UserSummaryCard: React.FC<Props> = () => {
   const userInfo = useAtomValue(userInfoAtom)
+  const setIsFollowerModalOpen = useUpdateAtom(isFollowerModalOpenAtom)
+  const setIsFollowingModalOpen = useUpdateAtom(isFollowingModalOpenAtom)
+
   return (
-    <Conatiner>
+    <Container>
       <div className={`${CENTER_FLEX} p-1 px-3 text-t16 font-medium ${HOVER_BLUE} cursor-pointer`}>{0} 글조각</div>
-      <Link href={`/follower/${userInfo?.id ?? 1}`}>
-        <div className={`${CENTER_FLEX} p-1 px-3 text-t16 font-medium cursor-pointer ${HOVER_BLUE} `}>
-          {userInfo?.follower ?? 0} 팔로워
-        </div>
-      </Link>
-      <Link href={`/following/${userInfo?.id ?? 1}`}>
-        <div className={`${CENTER_FLEX} p-1 px-3 text-t16 font-medium ${HOVER_BLUE} cursor-pointer`}>
-          {userInfo?.follow ?? 0} 팔로잉
-        </div>
-      </Link>
-    </Conatiner>
+      {/*<Link href={`/follower/${userInfo?.id ?? 1}`}>*/}
+      <div
+        className={`${CENTER_FLEX} p-1 px-3 text-t16 font-medium cursor-pointer ${HOVER_BLUE} `}
+        onClick={() => setIsFollowerModalOpen(true)}>
+        {userInfo?.follower ?? 0} 팔로워
+      </div>
+      {/*</Link>*/}
+      {/*<Link href={`/following/${userInfo?.id ?? 1}`}>*/}
+      <div
+        className={`${CENTER_FLEX} p-1 px-3 text-t16 font-medium ${HOVER_BLUE} cursor-pointer`}
+        onClick={() => setIsFollowingModalOpen(true)}>
+        {userInfo?.follow ?? 0} 팔로잉
+      </div>
+      {/*</Link>*/}
+    </Container>
   )
 }
 
-const Conatiner = styled.div`
+const Container = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;

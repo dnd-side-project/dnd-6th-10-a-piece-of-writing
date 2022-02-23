@@ -1,22 +1,25 @@
 import React from 'react'
 
-import baxios from '@/server/axios/baxios'
+import { useUpdateAtom } from 'jotai/utils'
+
+import { isFollowerModalOpenAtom, isFollowingModalOpenAtom } from '@/atom/user/follow'
+import FollowerModal from '@/components/modal/FollowerModal'
+import FollowingModal from '@/components/modal/FollowingModal'
 
 type Props = {}
 
-const test: React.FC<Props> = ({}) => {
+const Test: React.FC<Props> = ({}) => {
+  const setIsFollowerModalOpen = useUpdateAtom(isFollowerModalOpenAtom)
+  const setIsFollowingModalOpen = useUpdateAtom(isFollowingModalOpenAtom)
+
   return (
     <>
-      <button
-        onClick={() => {
-          baxios.get('/member/like/list').then((res) => {
-            console.log(res.data)
-          })
-        }}>
-        test
-      </button>
+      <button onClick={() => setIsFollowerModalOpen(true)}>팔로우</button>
+      <button onClick={() => setIsFollowingModalOpen(true)}>팔로잉</button>
+      <FollowerModal />
+      <FollowingModal />
     </>
   )
 }
 
-export default test
+export default Test

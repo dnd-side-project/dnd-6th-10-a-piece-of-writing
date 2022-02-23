@@ -11,6 +11,8 @@ import UserInfo from '@/components/_user/UserInfo'
 import UserPostLabel from '@/components/_user/UserPostLabel'
 import UserPosts from '@/components/_user/UserPosts'
 import UserTopicCarousel from '@/components/_user/UserTopicCarousel'
+import FollowerModal from '@/components/modal/FollowerModal'
+import FollowingModal from '@/components/modal/FollowingModal'
 import { useSsrMe } from '@/hook/useSsrMe'
 import { loadProfile } from '@/server/user/profile'
 import { withAuthServerSideProps } from '@/server/withAuthServerSide'
@@ -40,6 +42,8 @@ const User: React.FC<ServerSideProps> = ({ me, ssrUserInfo }) => {
   return (
     <>
       <div className={'flex flex-col align-middle justify-center items-center w-full'}>
+        <FollowerModal />
+        <FollowingModal />
         <Container>
           <UserInfo isMe={true} nickname={me?.nickname} userInfo={userInfo ?? null} />
           <UserPostLabel isMe={isMe} />

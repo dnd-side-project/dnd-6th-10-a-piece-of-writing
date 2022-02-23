@@ -13,12 +13,12 @@ const FollowButton: React.FC<Props> = ({ userId, followed = false }) => {
     if (!userId) return
     if (followed) {
       // TODO : followings에서 제거
-      unfollow(userId).then((res) => {
+      void unfollow(userId).then((res) => {
         alert(res.message)
       })
       return
     }
-    follow(userId).then((res) => {
+    void follow(userId).then((res) => {
       alert(res.message)
       // TODO : followings에 추가
     })
