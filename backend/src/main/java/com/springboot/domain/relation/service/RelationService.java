@@ -6,6 +6,6 @@ import org.springframework.http.ResponseEntity;
 
 
 public interface RelationService {
-    public ResponseEntity<? extends ResponseDto> createRelation(UserDetailsImpl userDetails, Long id);
-    public ResponseEntity<? extends ResponseDto> deleteRelation(UserDetailsImpl userDetails, Long id);
+    public ResponseEntity<? extends ResponseDto> createRelation(UserDetailsImpl userDetailsImpl, Long id);
+    public ResponseEntity<? extends ResponseDto> deleteRelation(UserDetailsImpl userDetailsImpl, Long id);
 }

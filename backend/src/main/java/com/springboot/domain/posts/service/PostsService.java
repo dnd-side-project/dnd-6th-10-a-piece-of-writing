@@ -49,20 +49,16 @@ public interface PostsService {
     PostsDto get(Long id, UserDetailsImpl userDetails);
 
     default Posts dtoToEntity(PostsDto dto, String imageUrl) {
-
-        Member author = findMemberById(dto.getAuthorId());
-
         return Posts.builder()
             .ref(dto.getRef())
             .content(dto.getContent())
             .imageUrl(imageUrl)
-            .author(author)
+            .author(findMemberById(dto.getAuthorId()))
             .build();
     }
 
     // Posts Entity TO PostsDto
     default PostsDto entityToDTO(Posts posts, Member author, Long displayMemberId) {
-
         return PostsDto.builder()
             // posts
             .id(posts.getId())
@@ -70,6 +66,7 @@ public interface PostsService {
             .ref(posts.getRef())
             .createdDate(posts.getCreatedDate())
             .modifiedDate(posts.getModifiedDate())
+            .imageUrl(posts.getImageUrl())
             // author
             .authorId(author.getId())
             .authorEmail(author.getEmail())

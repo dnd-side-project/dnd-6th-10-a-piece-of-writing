@@ -2,6 +2,7 @@ package com.springboot.domain.auth.controller;
 
 import com.springboot.domain.auth.model.LoginDto;
 import com.springboot.domain.auth.model.SignDto;
+import com.springboot.domain.auth.model.UserDetailsImpl;
 import com.springboot.domain.auth.service.AuthService;
 import com.springboot.domain.common.model.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,6 +11,7 @@ import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import com.springboot.domain.member.service.MemberService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequiredArgsConstructor
@@ -75,12 +78,11 @@ public class AuthController {
     @Operation(summary = "회원 탈퇴 api", description = "회원 탈퇴 api")
     @PostMapping(value = "/withdrawal")
     public ResponseEntity<? extends ResponseDto> withdrawal(
-            @Parameter(description = "이메일", required = true)
-            @RequestBody String email,
+            @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
             @Parameter(description = "access 토큰", required = true)
             @RequestHeader(value = "X-AUTH_TOKEN", required = true) String accessToken,
             @Parameter(description = "refresh 토큰", required = true)
             @RequestHeader(value = "X-AUTH-REFRESH_TOKEN", required = true) String refreshTokenUuid) {
-        return authService.withdrawal(email, accessToken, refreshTokenUuid);
+        return authService.withdrawal(userDetailsImpl, accessToken, refreshTokenUuid);
     }
 }

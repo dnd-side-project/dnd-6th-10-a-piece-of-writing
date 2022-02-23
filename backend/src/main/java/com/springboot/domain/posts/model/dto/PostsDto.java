@@ -22,6 +22,8 @@ public class PostsDto {
 
     private String content;
 
+    private String imageUrl;
+
     private LocalDateTime createdDate;
 
     private LocalDateTime modifiedDate;

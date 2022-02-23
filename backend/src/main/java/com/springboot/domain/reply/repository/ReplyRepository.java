@@ -12,6 +12,8 @@ public interface ReplyRepository extends JpaRepository<Reply, Long> {
     // Posts 삭제 시 댓글 삭제
     void deleteReplyByPostsId(Long id);
 
+    void deleteAllByReplyerId(Long id);
+
     // 게시물로 댓글 전체 조회
     List<Reply> getRepliesByPostsOrderByIdDesc(Posts posts);
 
