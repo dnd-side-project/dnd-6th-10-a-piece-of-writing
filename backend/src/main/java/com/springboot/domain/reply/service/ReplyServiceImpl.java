@@ -1,6 +1,9 @@
 package com.springboot.domain.reply.service;
 
+import com.springboot.domain.member.model.Member;
+import com.springboot.domain.member.service.MemberService;
 import com.springboot.domain.posts.model.entity.Posts;
+import com.springboot.domain.posts.service.PostsService;
 import com.springboot.domain.reply.model.dto.ReplyDto;
 import com.springboot.domain.reply.model.entity.Reply;
 import com.springboot.domain.reply.repository.ReplyRepository;
@@ -14,6 +17,8 @@ import org.springframework.stereotype.Service;
 public class ReplyServiceImpl implements ReplyService {
 
     private final ReplyRepository replyRepository;
+    private final PostsService postsService;
+    private final MemberService memberService;
 
     @Override
     public Long register(ReplyDto replyDTO) {
@@ -65,5 +70,21 @@ public class ReplyServiceImpl implements ReplyService {
         replyRepository.deleteById(id);
 
         return id;
+    }
+
+    private Reply dtoToEntity(ReplyDto dto) {
+
+        Posts posts = postsService.findPostsById(dto.getPostsId());
+
+        Member replyer = memberService.findMemberById(dto.getReplyerId());
+
+        Reply reply = Reply.builder()
+                .id(dto.getId())
+                .text(dto.getText())
+                .replyer(replyer)
+                .posts(posts)
+                .build();
+
+        return reply;
     }
 }

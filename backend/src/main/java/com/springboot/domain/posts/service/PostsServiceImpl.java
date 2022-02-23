@@ -90,7 +90,6 @@ public class PostsServiceImpl implements PostsService {
     public Long removePosts(Long postsId, UserDetailsImpl userDetails) {
         //댓글 부터 삭제
         replyRepository.deleteReplyByPostsId(postsId);
-        userDetails.getMember().getPostsList().remove(findPostsById(postsId));
         likesRepository.deleteAllByPostsId(postsId);
         postsRepository.deletePostsById(postsId);
         return postsId;
@@ -213,7 +212,7 @@ public class PostsServiceImpl implements PostsService {
 
     @Override
     public ResponseEntity<ResponseDto> likePost(UserDetailsImpl userDetailsImpl, Long id) {
-        Member member = findMemberById(userDetailsImpl.getMember().getId());
+        Member member = userDetailsImpl.getMember();
         Posts posts = findPostsById(id);
         likesRepository.save(Likes.builder().member(member).posts(posts).build());
         return responseService.successResult(SuccessCode.LIKE_SUCCESS);
@@ -221,7 +220,7 @@ public class PostsServiceImpl implements PostsService {
 
     @Override
     public ResponseEntity<ResponseDto> disLikePost(UserDetailsImpl userDetailsImpl, Long id) {
-        Member member = findMemberById(userDetailsImpl.getMember().getId());
+        Member member = userDetailsImpl.getMember();
         Posts posts = findPostsById(id);
         likesRepository.deleteLikesByMemberAndPosts(member, posts);
         return responseService.successResult(SuccessCode.DISLIKE_SUCCESS);

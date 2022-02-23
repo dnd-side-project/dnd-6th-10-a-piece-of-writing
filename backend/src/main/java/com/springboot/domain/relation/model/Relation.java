@@ -32,13 +32,4 @@ public class Relation {
 
     @ManyToOne
     private Member followed;
-
-    public boolean equals(Object o) {
-        return Objects.equals(follower.getId(), ((Relation) o).getFollower().getId())
-                && Objects.equals(followed.getId(), ((Relation) o).getFollowed().getId());
-    }
-
-    public int hashCode() {
-        return (int) (follower.getId() ^ followed.getId());
-    }
 }
