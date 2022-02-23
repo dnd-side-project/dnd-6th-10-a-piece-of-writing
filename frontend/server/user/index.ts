@@ -75,14 +75,14 @@ export const login = async (data: { email: string; password: string }): Promise<
   return { success: false, message: '오류가 발생했습니다!' }
 }
 
-export const loadMe = async (accessToken: string, refreshToken: string): Promise<RESPONSE_TYPE> => {
-  if (!accessToken && !refreshToken) {
-    return { success: false, message: '토큰 값 없음' }
-  }
+export const loadMe = async (accessToken?: string, refreshToken?: string): Promise<RESPONSE_TYPE> => {
   try {
-    const result = await baxios.get('/member/profile', {
-      headers: { [KEY_HEADER_ACCESS_TOKEN]: accessToken, [KEY_HEADER_REFRESH_TOKEN]: refreshToken },
-    })
+    const result =
+      accessToken && refreshToken
+        ? await baxios.get('/member/profile', {
+            headers: { [KEY_HEADER_ACCESS_TOKEN]: accessToken, [KEY_HEADER_REFRESH_TOKEN]: refreshToken },
+          })
+        : await baxios.get('/member/profile')
 
     if (result.status === 200 && result.data?.data?.id) {
       return {
