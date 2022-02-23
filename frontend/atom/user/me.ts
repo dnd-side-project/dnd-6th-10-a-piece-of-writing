@@ -9,3 +9,5 @@ export const setNicknameAtom = atom(null, (get, set, nickname: string) => {
 })
 export const modifyingMeNicknameAtom = atom<string>((get) => get(meAtom)?.nickname ?? '')
 export const isLoginedAtom = atom((get) => get(meAtom) !== null)
+
+export const userInfoAtom = atom<UserInfo>(null)

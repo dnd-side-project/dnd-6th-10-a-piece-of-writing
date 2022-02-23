@@ -1,14 +1,16 @@
 export type UserInfo = {
-  memberId: number
+  id: number
   nickname: string
   profileUrl?: string
   email?: string
-  followed?: boolean
+  alreadyFollow?: boolean
+  follow?: number
+  follower?: number
   authority?: string
 } | null
 
 export type UserInfoSure = {
-  memberId: number
+  id: number
   nickname: string
   profileUrl?: string
   email?: string
@@ -17,26 +19,26 @@ export type UserInfoSure = {
 }
 
 export const DUMMY_USER1: UserInfo = {
-  memberId: 112,
+  id: 112,
   nickname: '닉네임',
   profileUrl: 'https://fakeimg.pl/100x100/',
   email: 'ddrrpg@naver.com',
-  followed: true,
+  alreadyFollow: true,
 }
 export const DUMMY_USER2: UserInfo = {
-  memberId: 12,
+  id: 12,
   nickname: '닉네임2',
   profileUrl: 'https://fakeimg.pl/100x100/',
   email: 'ddrrpg@naver.com',
-  followed: true,
+  alreadyFollow: true,
 }
 
 export const DUMMY_USER3: UserInfo = {
-  memberId: 13,
+  id: 13,
   nickname: '닉네임3',
   profileUrl: 'https://fakeimg.pl/100x100/',
   email: 'ddrrpg@naver.com',
-  followed: false,
+  alreadyFollow: false,
 }
 
 export const DUMMY_USERS = [DUMMY_USER1, DUMMY_USER2, DUMMY_USER3]

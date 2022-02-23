@@ -6,16 +6,16 @@ import Image from 'next/image'
 import { useDebounce } from 'react-use'
 import styled from 'styled-components'
 
-import { tagSearchResultsAtom, tagSearchTextAtom } from '@/atom/tag'
-import { searchTag } from '@/server/tag'
+import { topicSearchResultsAtom, topicSearchTextAtom } from '@/atom/topic'
+import { searchTopic } from '@/server/topic'
 
 type Props = {}
 
-const TagSearchBar: React.FC<Props> = ({}) => {
-  const [text, setText] = useAtom(tagSearchTextAtom)
+const TopicSearchBar: React.FC<Props> = ({}) => {
+  const [text, setText] = useAtom(topicSearchTextAtom)
   const [textForApi, setTextForApi] = useState('')
 
-  const setTagSearchResults = useUpdateAtom(tagSearchResultsAtom)
+  const setTopicSearchResults = useUpdateAtom(topicSearchResultsAtom)
 
   console.log({ textForApi })
 
@@ -29,11 +29,11 @@ const TagSearchBar: React.FC<Props> = ({}) => {
 
   useEffect(() => {
     if (textForApi === '') return
-    const setTags = async () => {
-      const res = await searchTag(textForApi)
-      if (res.data) setTagSearchResults(res.data)
+    const setTopics = async () => {
+      const res = await searchTopic(textForApi)
+      if (res.data) setTopicSearchResults(res.data)
     }
-    setTags()
+    setTopics()
   }, [textForApi])
 
   return (
@@ -67,4 +67,4 @@ const Container = styled.div`
   font-size: 14px;
 `
 
-export default TagSearchBar
+export default TopicSearchBar

@@ -14,43 +14,43 @@ const sliderSettings: Settings = {
   variableWidth: true,
 }
 
-type TagInfoType = { name: string; isChecked?: boolean }
-type TagCarouselProps = TagInfoType[]
+type TopicInfoType = { name: string; isChecked?: boolean }
+type TopicCarouselProps = TopicInfoType[]
 type Props = {
-  tags: TagCarouselProps
-  onClickTag?: (index: number) => () => void
+  topics: TopicCarouselProps
+  onClickTopic?: (index: number) => () => void
   showAll?: boolean
   onClickAll?: () => void
 }
 
-export const TagCarousel = ({ tags, onClickTag, showAll, onClickAll = () => {} }: Props) => {
+export const TopicCarousel = ({ topics, onClickTopic, showAll, onClickAll = () => {} }: Props) => {
   return (
     <Slider {...sliderSettings}>
-      {showAll && <Tag tagInfo={{ name: '모두', isChecked: true }} onClick={onClickAll} />}
-      {tags.map((tagInfo, i) => (
-        <Tag key={`TagContainer_${i}`} tagInfo={tagInfo} onClick={onClickTag ? onClickTag(i) : () => {}} />
+      {showAll && <Topic topicInfo={{ name: '모두', isChecked: true }} onClick={onClickAll} />}
+      {topics.map((topicInfo, i) => (
+        <Topic key={`TopicContainer_${i}`} topicInfo={topicInfo} onClick={onClickTopic ? onClickTopic(i) : () => {}} />
       ))}
-      <AddTagButton>
+      <AddTopicButton>
         <FlexDiv height={'100%'}>+</FlexDiv>
-      </AddTagButton>
+      </AddTopicButton>
     </Slider>
   )
 }
 
-export const Tag = ({ tagInfo, onClick }: { tagInfo: TagInfoType; onClick: () => void }) => {
+export const Topic = ({ topicInfo, onClick }: { topicInfo: TopicInfoType; onClick: () => void }) => {
   return (
-    <TagContainer onClick={onClick} isChecked={tagInfo.isChecked}>
-      <TagSpan>{tagInfo.name}</TagSpan>
-      {tagInfo.isChecked && <CheckButton noContainer width={20} height={20} color={CheckButtonColor.WHITE} />}
-    </TagContainer>
+    <TopicContainer onClick={onClick} isChecked={topicInfo.isChecked}>
+      <TopicSpan>{topicInfo.name}</TopicSpan>
+      {topicInfo.isChecked && <CheckButton noContainer width={20} height={20} color={CheckButtonColor.WHITE} />}
+    </TopicContainer>
   )
 }
 
-type TagContainerProps = {
+type TopicContainerProps = {
   isChecked?: boolean
 }
 
-const TagContainer = styled.div`
+const TopicContainer = styled.div`
   height: 44px;
   margin-right: 8px;
   flex-grow: 0;
@@ -63,17 +63,17 @@ const TagContainer = styled.div`
   border-radius: 30px;
   border: solid 1px #a1a1a1;
   cursor: pointer;
-  color: ${(props: TagContainerProps) => (props.isChecked ? 'white' : '#2c2c2c')};
-  background-color: ${(props: TagContainerProps) => props.isChecked && '#444444'};
+  color: ${(props: TopicContainerProps) => (props.isChecked ? 'white' : '#2c2c2c')};
+  background-color: ${(props: TopicContainerProps) => props.isChecked && '#444444'};
 `
 
-const TagSpan = styled.div`
+const TopicSpan = styled.div`
   flex-grow: 0;
   font-size: 14px;
   text-align: center;
 `
 
-const AddTagButton = styled.div`
+const AddTopicButton = styled.div`
   width: 44px !important;
   height: 44px;
   flex-grow: 0;

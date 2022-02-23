@@ -12,7 +12,7 @@ type Props = {
   width?: string
   nickname?: string
   editable?: boolean
-  onClickEdit?: () => {}
+  onClickEdit?: () => void
 }
 
 const ProfileImageCard: React.FC<Props> = ({
@@ -20,7 +20,7 @@ const ProfileImageCard: React.FC<Props> = ({
   imgSrc,
   nickname = '유저',
   editable = false,
-  onClickEdit,
+  onClickEdit = () => {},
 }) => {
   return (
     <Container>

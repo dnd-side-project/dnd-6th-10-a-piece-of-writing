@@ -19,7 +19,7 @@ const SearchBarModal: React.FC<Props> = ({}) => {
       <div className={`px-4 py-2 ${HOVER_BLUE} cursor-pointer`} onClick={onClickTab(SearchType.CONTENT)}>
         글 내용
       </div>
-      <div className={`px-4 py-2 ${HOVER_BLUE} cursor-pointer`} onClick={onClickTab(SearchType.TAG)}>
+      <div className={`px-4 py-2 ${HOVER_BLUE} cursor-pointer`} onClick={onClickTab(SearchType.TOPIC)}>
         토픽
       </div>
       <div className={`px-4 py-2 ${HOVER_BLUE} cursor-pointer`} onClick={onClickTab(SearchType.NICKNAME)}>

@@ -1,22 +1,25 @@
 import React from 'react'
 
+import { GetServerSidePropsContext } from 'next'
 import styled from 'styled-components'
 
 import MainTitle from '@/components/_main/MainTitle'
 import { UserInfo as UserInfoType } from '@/components/_user/type'
 import AddButton from '@/components/button/AddButton'
-import { TagCarousel } from '@/components/carousel'
+import { TopicCarousel } from '@/components/carousel'
 import Posts from '@/components/post/Posts'
 import { FlexDiv } from '@/components/style/div/FlexDiv'
 import { useSsrMe } from '@/hook/useSsrMe'
+import { loadMainPosts } from '@/server/post'
 import { withAuthServerSideProps } from '@/server/withAuthServerSide'
 import { CENTER_FLEX } from '@/styles/classNames'
 
-type ServerSideProps = { me: UserInfoType }
+type ServerSideProps = { me: UserInfoType; posts: any }
 
-const Feed: React.FC<ServerSideProps> = ({ me }) => {
+const Feed: React.FC<ServerSideProps> = ({ me, posts }) => {
   useSsrMe(me)
 
+  console.log(posts)
   return (
     <>
       <div className={`flex flex-col-reverse flex-end items-center w-full`}>
@@ -25,7 +28,7 @@ const Feed: React.FC<ServerSideProps> = ({ me }) => {
           <MainTitle />
           <FlexDiv margin={'2.5rem 0 0 0 '}>
             <div className={'w-full'}>
-              <TagCarousel tags={DUMMY_TAGS} onClickTag={(_) => () => {}} />
+              <TopicCarousel topics={DUMMY_TOPICS} onClickTopic={(_) => () => {}} />
             </div>
           </FlexDiv>
           <div className={`w-full ${CENTER_FLEX} mt-10 ml-5 xl:ml-0`}>
@@ -48,7 +51,7 @@ const MainContainer = styled.div`
   }
 `
 
-const DUMMY_TAGS = [
+const DUMMY_TOPICS = [
   {
     name: '동기부여',
     isChecked: false,
@@ -75,6 +78,11 @@ const DUMMY_TAGS = [
   },
 ]
 
-export const getServerSideProps = withAuthServerSideProps()
+export const getServerSideProps = withAuthServerSideProps(async (ctx: GetServerSidePropsContext) => {
+  const res = await loadMainPosts({ page: 1, size: 20 })
+  return {
+    posts: res.data ?? [],
+  }
+})
 
 export default Feed

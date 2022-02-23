@@ -4,9 +4,13 @@ import Image from 'next/image'
 
 import { IconContainer } from '@/components/container/IconContainer'
 
-const ShareButton: React.FC = () => {
+type Props = {
+  onClick?: React.MouseEventHandler<HTMLDivElement>
+}
+
+const ShareButton: React.FC<Props> = ({ onClick = () => {} }) => {
   return (
-    <IconContainer>
+    <IconContainer onClick={onClick}>
       <Image src={'/share.svg'} width={24} height={24} />
     </IconContainer>
   )

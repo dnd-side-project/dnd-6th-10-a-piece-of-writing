@@ -17,7 +17,7 @@ const FollowerCard: React.FC<Props> = ({ userInfo }) => {
         <ProfileImageCard imgSrc={userInfo?.profileUrl} nickname={userInfo.nickname} editable={false} />
         <p className={'text-h4 ml-5 mr-1'}>{userInfo.nickname}</p>
       </div>
-      <FollowButton followed={userInfo.followed} />
+      <FollowButton followed={userInfo.alreadyFollow} />
     </div>
   )
 }

@@ -11,7 +11,7 @@ const Followers: React.FC<Props> = ({ followers }) => {
   return (
     <div className={'flex flex-col gap-4'}>
       {followers.map((follower) =>
-        follower ? <FollowerCard key={`FollowerCard_${follower.memberId}`} userInfo={follower} /> : '',
+        follower ? <FollowerCard key={`FollowerCard_${follower.id}`} userInfo={follower} /> : '',
       )}
     </div>
   )

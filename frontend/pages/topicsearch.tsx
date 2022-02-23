@@ -1,11 +1,11 @@
 import React from 'react'
 
-import TagSearch from '@/components/input/TagSearch'
+import TopicSearch from '@/components/input/TopicSearch'
 
 type Props = {}
 
 const Test: React.FC<Props> = ({}) => {
-  return <TagSearch />
+  return <TopicSearch />
 }
 
 export default Test
