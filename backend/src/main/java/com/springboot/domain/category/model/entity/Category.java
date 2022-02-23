@@ -23,7 +23,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter
 @ToString(exclude = "posts")
-public class Category extends BaseTime {
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

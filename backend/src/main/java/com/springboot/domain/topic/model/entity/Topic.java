@@ -18,7 +18,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter
 @ToString
-public class Topic extends BaseTime {
+public class Topic {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,8 +26,5 @@ public class Topic extends BaseTime {
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String name;
-
-    @Column(nullable = false)
-    private int count;
 
 }

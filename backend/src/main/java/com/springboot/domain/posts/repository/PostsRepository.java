@@ -22,16 +22,17 @@ public interface PostsRepository extends JpaRepository<Posts, Long>,
     Object getPostsWithAuthor(@Param("id") Long id);
 
     //특정 ID Posts 와 연관된 Reply 조회
-    @Query("SELECT p, r FROM Posts p LEFT JOIN Reply r ON r.posts = p WHERE p.id = :id")
-    List<Object[]> getPostsWithReply(@Param("id") Long bno);
+//    @Query("SELECT p, r FROM Posts p LEFT JOIN Reply r ON r.posts = p WHERE p.id = :id")
+//    List<Object[]> getPostsWithReply(@Param("id") Long bno);
 
+    // 삭제 대상
     //게시물 목록 조회 ( 게시물 + 작성자 + 댓글 작성자 ) 및 페이징 처리
-    @Query(value = "SELECT p, a, r " +
-        " FROM Posts p " +
-        " LEFT JOIN p.author a " +
-        " LEFT JOIN Reply r ON r.posts = p " +
-        " GROUP BY p")
-    Page<Object[]> getPostsListsWithAuthorReply(Pageable pageable);
+//    @Query(value = "SELECT p, a, r " +
+//        " FROM Posts p " +
+//        " LEFT JOIN p.author a " +
+//        " LEFT JOIN Reply r ON r.posts = p " +
+//        " GROUP BY p")
+//    Page<Object[]> getPostsListsWithAuthorReply(Pageable pageable);
 
     //게시물 목록 조회 ( 게시물 + 작성자  ) 및 페이징 처리
     @Query(value = "SELECT p, a" +

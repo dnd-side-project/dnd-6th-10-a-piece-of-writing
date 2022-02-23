@@ -50,7 +50,7 @@ public class PostsController {
     // 게시물 1개 조회
     @Operation(summary = "select posts api", description = "글귀 검색 api")
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseDto> findAllPostsOrderByIdDesc(@PathVariable long id,
+    public ResponseEntity<ResponseDto> findPosts(@PathVariable long id,
             @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
 
         PostsDto postsDto = postsService.get(id, userDetailsImpl);
