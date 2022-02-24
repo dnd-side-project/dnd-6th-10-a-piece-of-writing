@@ -4,6 +4,8 @@ import com.springboot.domain.posts.model.dto.PostsDto;
 import com.springboot.domain.posts.model.entity.Posts;
 import com.springboot.domain.topic.model.entity.Topic;
 import com.springboot.domain.topic.repository.TopicRepository;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.IntStream;
 import javax.transaction.Transactional;
@@ -55,21 +57,52 @@ public class TopicRepositoryTest {
 
     }
 
-//    @DisplayName("[Repository] 특정 Topic ID 와 연관된 Posts 최신순으로 4개 이하만 조회")
-//    @Test
-//    @Transactional
-//    public void testFindPostsByTopicId() {
-//
+    @DisplayName("[Repository] 특정 Topic ID 와 연관된 Posts 최신순으로 4개 이하만 조회")
+    @Test
+    @Transactional
+    public void testFindPostsByTopicId() {
+
 //        Topic topic = topicRepository.findAll().get(0);
-//
+
 //        List<Posts> posts = topicRepository.getPostsByTopicOrderByPostsIdLimit4(topic.getId());
+        List<Posts> posts = topicRepository.getPostsByTopicOrderByPostsIdLimit4(2L);
+//        List<Object> posts = topicRepository.getPostsByTopicOrderByPostsIdLimit4(2L);
+//        List<HashMap<String,Object>> posts = topicRepository.getPostsByTopicOrderByPostsIdLimit4(2L);
+//        List<Long> posts = topicRepository.getPostsByTopicOrderByPostsIdLimit4(2L);
+
+        logger.info(posts.toString());
+
+
+        for (Posts post : posts
+//        for (Long post : posts
+//        for (HashMap<String,Object> post : posts
+        ) {
+//            System.out.println((Posts) post);
+//            for (String key : post.keySet()
+//            ) {
+//                logger.info("posts : " + key.toString()   );
+//                logger.info("posts : " + post.get(key).toString()   );
+//            }
+
+            logger.info("post : " + post.toString()   );
+            logger.info("post : " + post   );
+//            logger.info(String.valueOf(post.getClass()));
+        }
+
+
+//        List<Object> arr = posts;
 //
-//        for (Posts post: posts
+//        System.out.println("-------------------------------");
+//        System.out.println(Arrays.toString(arr));
+
+//        for (Object post : posts
 //        ) {
-//            System.out.println(posts);
+////            System.out.println((Posts) posts);
+//            Posts posts_temp = (Posts) post;
+//            logger.info("posts : " + posts_temp.toString()   );
 //        }
-//
-//    }
+
+    }
 
 //    @DisplayName("[Repository] 특정 ID Reply 와 연관된 Posts 조회")
 //    @Test
