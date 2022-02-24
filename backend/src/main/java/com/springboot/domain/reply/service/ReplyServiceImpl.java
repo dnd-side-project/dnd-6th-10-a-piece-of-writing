@@ -5,6 +5,9 @@ import com.springboot.domain.member.service.MemberService;
 import com.springboot.domain.posts.model.entity.Posts;
 import com.springboot.domain.posts.service.PostsService;
 import com.springboot.domain.reply.model.dto.ReplyDto;
+import com.springboot.domain.reply.model.dto.ReplyResponseDto;
+import com.springboot.domain.reply.model.dto.ReplySaveResponseDto;
+import com.springboot.domain.reply.model.dto.ReplyUpdateResponseDto;
 import com.springboot.domain.reply.model.entity.Reply;
 import com.springboot.domain.reply.repository.ReplyRepository;
 import java.util.List;
@@ -21,13 +24,13 @@ public class ReplyServiceImpl implements ReplyService {
     private final MemberService memberService;
 
     @Override
-    public Long register(ReplyDto replyDTO) {
+    public ReplySaveResponseDto register(ReplyDto replyDTO, Member loginUser) {
 
-        Reply reply = dtoToEntity(replyDTO);
+        Reply reply = dtoToEntity(replyDTO, loginUser);
 
-        replyRepository.save(reply);
+        Reply savedReply = replyRepository.save(reply);
 
-        return reply.getId();
+        return entityToReplySaveResponseDTO(savedReply, loginUser);
     }
 
     @Override
@@ -50,18 +53,15 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
     @Override
-    public Long modify(Long id, ReplyDto replyDTO) {
+    public ReplyUpdateResponseDto modify(Long id, ReplyDto replyDTO, Member loginUser) {
 
         Reply reply = replyRepository.getById(id);
 
-        if (reply != null) {
+        reply.changeText(replyDTO.getText());
 
-            reply.changeText(replyDTO.getText());
+        reply = replyRepository.save(reply);
 
-            replyRepository.save(reply);
-        }
-
-        return reply.getId();
+        return entityToReplyUpdateResponseDTO(reply, loginUser);
     }
 
     @Override
@@ -72,18 +72,20 @@ public class ReplyServiceImpl implements ReplyService {
         return id;
     }
 
-    private Reply dtoToEntity(ReplyDto dto) {
+    private Reply dtoToEntity(ReplyDto dto, Member loginUser) {
 
         Posts posts = postsService.findPostsById(dto.getPostsId());
 
-        Member replyer = memberService.findMemberById(dto.getReplyerId());
+//        Member replyer = memberService.findMemberById(dto.getReplyerId());
+        Member replyer = memberService.findMemberById(loginUser.getId());
 
         Reply reply = Reply.builder()
-                .id(dto.getId())
-                .text(dto.getText())
-                .replyer(replyer)
-                .posts(posts)
-                .build();
+//            .id(dto.getReplyId())
+            .id(dto.getId())
+            .text(dto.getText())
+            .replyer(replyer)
+            .posts(posts)
+            .build();
 
         return reply;
     }
