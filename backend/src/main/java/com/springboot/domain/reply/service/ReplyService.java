@@ -4,6 +4,7 @@ import com.springboot.domain.member.model.Dto.MemberBasicInfoDto;
 import com.springboot.domain.member.model.Member;
 import com.springboot.domain.reply.model.dto.ReplyDto;
 import com.springboot.domain.reply.model.dto.ReplySaveResponseDto;
+import com.springboot.domain.reply.model.dto.ReplyUpdateResponseDto;
 import com.springboot.domain.reply.model.entity.Reply;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public interface ReplyService {
 
     List<ReplyDto> getList(Long postsId); //특정 게시물의 모든 댓글 목록
 
-    Long modify(Long id, ReplyDto replyDTO); //댓글 수정
+    ReplyUpdateResponseDto modify(Long id, ReplyDto replyDTO, Member loginUser); //댓글 수정
 
     Long remove(Long id); //댓글 삭제
 
@@ -65,6 +66,22 @@ public interface ReplyService {
             .text(reply.getText())
             .replyer(replyerInfo)
             .createdDate(reply.getCreatedDate())
+            .build();
+
+        return dto;
+
+    }
+
+    // entity to ReplyUpdateResponseDTO
+    default ReplyUpdateResponseDto entityToReplyUpdateResponseDTO(Reply reply, Member loginUser) {
+
+        MemberBasicInfoDto replyerInfo = MemberBasicInfoDto.entityTOdto(loginUser);
+
+        ReplyUpdateResponseDto dto = ReplyUpdateResponseDto.builder()
+            .replyId(reply.getId())
+            .text(reply.getText())
+            .replyer(replyerInfo)
+            .modifiedDate(reply.getModifiedDate())
             .build();
 
         return dto;

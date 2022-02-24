@@ -9,6 +9,7 @@ import com.springboot.domain.posts.model.dto.PostsDto;
 import com.springboot.domain.reply.model.dto.ReplyDto;
 import com.springboot.domain.reply.model.dto.ReplyResponseDto;
 import com.springboot.domain.reply.model.dto.ReplySaveResponseDto;
+import com.springboot.domain.reply.model.dto.ReplyUpdateResponseDto;
 import com.springboot.domain.reply.service.ReplyService;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
@@ -71,7 +72,8 @@ public class ReplyController {
 
         ReplySaveResponseDto savedReplyResponseDto = replyService.register(replyDTO, loginUser);
 
-        return responseServiceImpl.successResult(SuccessCode.SAVE_REPLY_SUCCESS, savedReplyResponseDto);
+        return responseServiceImpl.successResult(SuccessCode.SAVE_REPLY_SUCCESS,
+            savedReplyResponseDto);
     }
 
     @Operation(summary = "delete reply api", description = "댓글 삭제 api")
@@ -88,13 +90,16 @@ public class ReplyController {
     @Operation(summary = "modify reply api", description = "댓글 수정 api")
     @PutMapping("/{id}")
     public ResponseEntity<ResponseDto> modify(@PathVariable("id") Long id,
-        @RequestBody ReplyDto replyDTO) {
+        @RequestBody ReplyDto replyDTO,
+        @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
 
         log.info(replyDTO);
 
-        long modifiedReplyId = replyService.modify(id, replyDTO);
+        Member loginUser = userDetailsImpl.getMember();
 
-        return responseServiceImpl.successResult(SuccessCode.MODIFY_REPLY_SUCCESS, modifiedReplyId);
+        ReplyUpdateResponseDto modifiedReplyResponseDto = replyService.modify(id, replyDTO, loginUser);
+
+        return responseServiceImpl.successResult(SuccessCode.MODIFY_REPLY_SUCCESS, modifiedReplyResponseDto);
     }
 
 

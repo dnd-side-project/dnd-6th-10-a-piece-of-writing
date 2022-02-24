@@ -7,6 +7,7 @@ import com.springboot.domain.posts.service.PostsService;
 import com.springboot.domain.reply.model.dto.ReplyDto;
 import com.springboot.domain.reply.model.dto.ReplyResponseDto;
 import com.springboot.domain.reply.model.dto.ReplySaveResponseDto;
+import com.springboot.domain.reply.model.dto.ReplyUpdateResponseDto;
 import com.springboot.domain.reply.model.entity.Reply;
 import com.springboot.domain.reply.repository.ReplyRepository;
 import java.util.List;
@@ -52,18 +53,15 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
     @Override
-    public Long modify(Long id, ReplyDto replyDTO) {
+    public ReplyUpdateResponseDto modify(Long id, ReplyDto replyDTO, Member loginUser) {
 
         Reply reply = replyRepository.getById(id);
 
-        if (reply != null) {
+        reply.changeText(replyDTO.getText());
 
-            reply.changeText(replyDTO.getText());
+        reply = replyRepository.save(reply);
 
-            replyRepository.save(reply);
-        }
-
-        return reply.getId();
+        return entityToReplyUpdateResponseDTO(reply, loginUser);
     }
 
     @Override
