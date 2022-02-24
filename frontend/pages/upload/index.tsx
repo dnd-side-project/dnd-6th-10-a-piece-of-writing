@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Button } from '@/components/button'
-import { TagCarousel } from '@/components/carousel'
+import { TopicCarousel } from '@/components/carousel'
 import BackgroundImageCarousel from '@/components/carousel/BackgroundImageCarousel'
 import ImageUploadModal from '@/components/modal/ImageUploadModal'
 import { FlexDiv } from '@/components/style/div/FlexDiv'
@@ -35,9 +35,9 @@ const Upload: React.FC<ServerSideProps> = ({ me }) => {
 
   const {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    selectedIndexes: tagIndexes,
-    isSelectedIndex: isSelectedTag,
-    onToggle: onClickTag,
+    selectedIndexes: topicIndexes,
+    isSelectedIndex: isSelectedTopic,
+    onToggle: onClickTopic,
   } = useToggles({ defaultIndexes: [0], singleMode: false })
 
   const onClickImageUploadButton = () => {
@@ -60,30 +60,30 @@ const Upload: React.FC<ServerSideProps> = ({ me }) => {
           </div>
         </div>
         <div className={`w-full ${CENTER_FLEX} flex-nowrap`}>
-          <TagContainer>
+          <TopicContainer>
             <div className={'w-full'}>
               <div className={'my-5'}>관련된 주제를 골라주세요</div>
-              <TagCarousel
-                tags={DUMMY_TAGS.map((tagInfo, i) => ({ ...tagInfo, isChecked: isSelectedTag(i) }))}
-                onClickTag={onClickTag}
+              <TopicCarousel
+                topics={DUMMY_TOPICS.map((topicInfo, i) => ({ ...topicInfo, isChecked: isSelectedTopic(i) }))}
+                onClickTopic={onClickTopic}
               />
             </div>
-          </TagContainer>
+          </TopicContainer>
         </div>
         <div className={`w-full ${CENTER_FLEX} flex-nowrap`}>
-          <TagContainer>
+          <TopicContainer>
             <FlexDiv margin={'100px 0'} gap={'20px'}>
               <Button>업로드 없이 이미지만 저장하기</Button>
               <Button>업로드</Button>
             </FlexDiv>
-          </TagContainer>
+          </TopicContainer>
         </div>
       </div>
     </>
   )
 }
 
-const DUMMY_TAGS = [
+const DUMMY_TOPICS = [
   {
     name: '동기부여',
     isChecked: false,
@@ -125,7 +125,7 @@ const MainContainer = styled.div`
   }
 `
 
-const TagContainer = styled.div`
+const TopicContainer = styled.div`
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;

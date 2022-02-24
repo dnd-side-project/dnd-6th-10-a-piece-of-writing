@@ -1,8 +1,11 @@
 package com.springboot.domain.reply.model.entity;
 
 import com.springboot.domain.member.model.Member;
-import com.springboot.domain.common.model.entity.BaseTime;
+import com.springboot.domain.posts.model.entity.BaseTime;
 import com.springboot.domain.posts.model.entity.Posts;
+import com.springboot.domain.relation.model.Relation;
+import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -48,5 +51,4 @@ public class Reply extends BaseTime {
     public void changeText(String text) {
         this.text = text;
     }
-
 }

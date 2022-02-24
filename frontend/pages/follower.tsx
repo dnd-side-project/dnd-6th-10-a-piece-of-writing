@@ -2,8 +2,8 @@ import React from 'react'
 
 import styled from 'styled-components'
 
-import FollowerLabel from '@/_follower/FollowerLabel'
 import Followers from '@/_follower/Followers'
+import FollowLabel from '@/_follower/FollowLabel'
 import { DUMMY_USERS, UserInfo as UserInfoType } from '@/components/_user/type'
 import { useSsrMe } from '@/hook/useSsrMe'
 import { withAuthServerSideProps } from '@/server/withAuthServerSide'
@@ -17,8 +17,8 @@ const Follower: React.FC<ServerSideProps> = ({ me }) => {
   return (
     <div className={`w-full ${CENTER_FLEX}`}>
       <Container>
-        <div className={'mb-10'}>
-          <FollowerLabel followerCount={20} />
+        <div className={'my-10'}>
+          <FollowLabel count={20} />
         </div>
         <Followers followers={DUMMY_USERS} />
       </Container>

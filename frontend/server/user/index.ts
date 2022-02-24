@@ -6,15 +6,15 @@ import baxios, { RESPONSE_TYPE } from '@/server/axios/baxios'
 
 export const cookies = new Cookies()
 
-export const nicknameCheck = async (email: string): Promise<RESPONSE_TYPE> => {
+export const nicknameCheck = async (nickname: string): Promise<RESPONSE_TYPE> => {
   try {
-    const result = await baxios.get(`/auth/email/${email}`)
+    const result = await baxios.get(`/auth/nickname/${nickname}`)
     if (result.status === 200) {
-      return { success: true, message: '사용 가능한 이메일입니다!' }
+      return { success: true, message: '사용 가능한 닉네임입니다!' }
     }
   } catch (e: any) {
-    if (e?.response?.status === 404) {
-      return { success: false, message: '중복된 이메일입니다!' }
+    if (e?.response?.status === 400) {
+      return { success: false, message: '중복된 닉네임입니다!' }
     }
   }
   return { success: false, message: '오류가 발생했습니다!' }
@@ -27,7 +27,7 @@ export const emailCheck = async (email: string): Promise<RESPONSE_TYPE> => {
       return { success: true, message: '사용 가능한 이메일입니다!' }
     }
   } catch (e: any) {
-    if (e?.response?.status === 404) {
+    if (e?.response?.status === 400) {
       return { success: false, message: '중복된 이메일입니다!' }
     }
   }
@@ -75,14 +75,14 @@ export const login = async (data: { email: string; password: string }): Promise<
   return { success: false, message: '오류가 발생했습니다!' }
 }
 
-export const loadMe = async (accessToken: string, refreshToken: string): Promise<RESPONSE_TYPE> => {
-  if (!accessToken && !refreshToken) {
-    return { success: false, message: '토큰 값 없음' }
-  }
+export const loadMe = async (accessToken?: string, refreshToken?: string): Promise<RESPONSE_TYPE> => {
   try {
-    const result = await baxios.get('/member/profile', {
-      headers: { [KEY_HEADER_ACCESS_TOKEN]: accessToken, [KEY_HEADER_REFRESH_TOKEN]: refreshToken },
-    })
+    const result =
+      accessToken && refreshToken
+        ? await baxios.get('/member/profile', {
+            headers: { [KEY_HEADER_ACCESS_TOKEN]: accessToken, [KEY_HEADER_REFRESH_TOKEN]: refreshToken },
+          })
+        : await baxios.get('/member/profile')
 
     if (result.status === 200 && result.data?.data?.id) {
       return {
@@ -142,5 +142,23 @@ export const modifyUser = async (nickname: string): Promise<RESPONSE_TYPE> => {
     }
   } catch (e) {
     return { success: false, message: '에러 발생, 내 정보 수정에 실패했습니다.' }
+  }
+}
+
+export const withdraw = async (): Promise<RESPONSE_TYPE> => {
+  try {
+    const result = await baxios.post(`/auth/withdrawal`)
+    if (result.status === 200) {
+      return {
+        success: true,
+        message: '탈퇴에 성공했습니다. 이용해주셔서 감사합니다.',
+      }
+    }
+    return {
+      success: false,
+      message: '탈퇴에 실패했습니다.',
+    }
+  } catch (e) {
+    return { success: false, message: '에러 발생, 탈퇴에 실패했습니다.' }
   }
 }

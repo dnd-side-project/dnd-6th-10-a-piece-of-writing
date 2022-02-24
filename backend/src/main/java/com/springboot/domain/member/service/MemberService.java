@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface MemberService {
+
+    public void deleteMemberById(Long id);
     public Member findMemberById(Long id);
 
     public Member findMemberByEmail(String email);

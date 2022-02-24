@@ -40,11 +40,11 @@ const PostCard: React.FC<Props> = ({ imageUrl }) => {
         </div>
         <Image className={'rounded-xl'} src={imageUrl} alt={'post'} width={386} height={386} />
         <div className={'flex flex-nowrap gap-1 my-6 whitespace-nowrap overflow-hidden hover:overflow-visible'}>
-          <TagContainer>감성</TagContainer>
-          <TagContainer>나만의글</TagContainer>
-          <TagContainer>명언</TagContainer>
-          <TagContainer>로맨틱</TagContainer>
-          <TagContainer>기분전환</TagContainer>
+          <TopicContainer>감성</TopicContainer>
+          <TopicContainer>나만의글</TopicContainer>
+          <TopicContainer>명언</TopicContainer>
+          <TopicContainer>로맨틱</TopicContainer>
+          <TopicContainer>기분전환</TopicContainer>
         </div>
         <FlexDiv justify={'space-between'}>
           <LikeButton />
@@ -68,7 +68,7 @@ const PostCardContainer = styled.div`
   }
 `
 
-const TagContainer = styled(FlexDiv)`
+const TopicContainer = styled(FlexDiv)`
   height: 44px;
   border-radius: 30px;
   font-size: 14px;

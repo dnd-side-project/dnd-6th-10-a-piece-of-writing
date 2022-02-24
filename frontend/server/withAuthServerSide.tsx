@@ -11,7 +11,7 @@ export function withAuthServerSideProps(getServerSidePropsFunc?: Function) {
     console.log({ serversideRes: res })
     const me = res.success ? res.data : null
     if (getServerSidePropsFunc) {
-      return { props: { me, data: await getServerSidePropsFunc(context, me) } }
+      return { props: { me, ...(await getServerSidePropsFunc(context, me)) } }
     }
     return { props: { me, data: { props: { me } } } }
   }

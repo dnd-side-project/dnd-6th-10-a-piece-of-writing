@@ -8,6 +8,7 @@ import { Button } from '@/components/button'
 import { FlexDiv } from '@/components/style/div/FlexDiv'
 import useNeedLogin from '@/hook/useNeedLogin'
 import { useSsrMe } from '@/hook/useSsrMe'
+import { withdraw } from '@/server/user'
 import { withAuthServerSideProps } from '@/server/withAuthServerSide'
 import { BreakPoints } from '@/styles/breakPoint'
 
@@ -17,6 +18,11 @@ const Withdraw: React.FC<ServerSideProps> = ({ me }) => {
   useSsrMe(me)
   useNeedLogin()
 
+  const onClickWithdraw = () => {
+    if (!confirm('정말로 탈퇴하시겠습니까?')) return
+    withdraw().then((res) => alert(res.message))
+  }
+
   return (
     <FlexDiv>
       <MainContainer>
@@ -25,7 +31,9 @@ const Withdraw: React.FC<ServerSideProps> = ({ me }) => {
           {'함께여서 즐거웠습니다. \n 탈퇴 시 모든 게시물은 삭제됩니다.'}
         </div>
         <FlexDiv margin={'7rem 0 0 0'} direction={'column'}>
-          <Button width={'285px'}>탈퇴하기</Button>
+          <Button width={'285px'} onClick={onClickWithdraw}>
+            탈퇴하기
+          </Button>
           <Link href={'/'} passHref>
             <Button className={'mt-4'} bgColor={'#8e8e8e'} width={'285px'}>
               취소하기

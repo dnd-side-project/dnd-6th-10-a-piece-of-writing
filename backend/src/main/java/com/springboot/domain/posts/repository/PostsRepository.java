@@ -42,4 +42,6 @@ public interface PostsRepository extends JpaRepository<Posts, Long>,
     Page<Object[]> getPostsListWithAuthor(Pageable pageable);
 
     void deletePostsById(Long id);
+
+    List<Posts> findAllByAuthorId(Long id);
 }
