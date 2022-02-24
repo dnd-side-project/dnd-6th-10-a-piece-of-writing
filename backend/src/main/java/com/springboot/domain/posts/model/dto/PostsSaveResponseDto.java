@@ -14,10 +14,10 @@ import lombok.ToString;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostsDto {
+public class PostsSaveResponseDto {
 
     // Posts Info
-    private Long id;
+    private Long postsId;
 
     private String ref;
 
@@ -25,11 +25,9 @@ public class PostsDto {
 
     private String imageUrl;
 
-    private MemberBasicInfoDto authorInfo;
-
     private LocalDateTime createdDate;
 
-    private LocalDateTime modifiedDate;
+    private MemberBasicInfoDto authorInfo;
 
     // Author Info
 //    private Long authorId; //Author id
@@ -39,8 +37,6 @@ public class PostsDto {
 //    private String authorNickname; // Author nickname
 //
 //    private String authorProfileUrl;
-
-
-
-    private boolean alreadyLike;
+//
+//    private boolean alreadyLike;
 }

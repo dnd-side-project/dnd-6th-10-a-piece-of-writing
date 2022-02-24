@@ -6,6 +6,8 @@ import com.springboot.domain.common.model.SuccessCode;
 import com.springboot.domain.common.service.ResponseServiceImpl;
 import com.springboot.domain.posts.model.dto.PostsDto;
 import com.springboot.domain.posts.model.dto.MultipartDto;
+import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
+import com.springboot.domain.posts.model.dto.PostsSaveResponseDto;
 import com.springboot.domain.posts.service.PostsService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,9 +33,12 @@ public class PostsController {
     @Operation(summary = "save posts api", description = "글귀 업로드 api")
     @PostMapping
     public ResponseEntity<ResponseDto> save(
-            @RequestPart("request") PostsDto requestDto, MultipartDto multipartDto) {
-        Long savedPostId = postsService.save(requestDto, multipartDto);
-        return responseServiceImpl.successResult(SuccessCode.SAVE_POSTS_SUCCESS, savedPostId);
+        @RequestPart("request") PostsSaveRequestDto requestDto, MultipartDto multipartDto) {
+//            @RequestPart("request") PostsDto requestDto, MultipartDto multipartDto) {
+//        Long savedPostId = postsService.register(requestDto, multipartDto);
+        PostsSaveResponseDto savedPostResponseDto = postsService.register(requestDto, multipartDto);
+//        return responseServiceImpl.successResult(SuccessCode.SAVE_POSTS_SUCCESS, savedPostId);
+        return responseServiceImpl.successResult(SuccessCode.SAVE_POSTS_SUCCESS, savedPostResponseDto);
     }
 
     // 삭제

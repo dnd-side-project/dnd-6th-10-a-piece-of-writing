@@ -36,7 +36,7 @@ public interface TopicService {
     default TopicDto entityToDTO(Topic topic) {
 
         TopicDto dto = TopicDto.builder()
-            .id(topic.getId())
+            .topicId(topic.getId())
             .name(topic.getName())
             .build();
 

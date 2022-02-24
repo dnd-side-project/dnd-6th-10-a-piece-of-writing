@@ -16,7 +16,7 @@ public class TopicDto {
 
     @ApiModelProperty(example="1")
     @ApiParam(value = "토픽 아이디")
-    private Long id;
+    private Long topicId;
 
     @ApiModelProperty(example="TEST1")
     @ApiParam(value = "토픽 이름", required = true)

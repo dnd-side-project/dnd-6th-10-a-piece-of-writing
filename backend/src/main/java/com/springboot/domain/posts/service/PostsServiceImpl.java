@@ -31,6 +31,8 @@ import com.springboot.domain.posts.model.dto.MultipartDto;
 import com.springboot.domain.posts.model.dto.PageRequestDto;
 import com.springboot.domain.posts.model.dto.PageResultDto;
 import com.springboot.domain.posts.model.dto.PostsDto;
+import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
+import com.springboot.domain.posts.model.dto.PostsSaveResponseDto;
 import com.springboot.domain.posts.model.entity.Posts;
 import com.springboot.domain.posts.repository.PostsRepository;
 import com.springboot.domain.reply.repository.ReplyRepository;
@@ -64,23 +66,29 @@ public class PostsServiceImpl implements PostsService {
     @Override
     public Posts findPostsById(Long id) {
         return postsRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.ENTITY_NOT_FOUND));
+            .orElseThrow(() -> new EntityNotFoundException(ErrorCode.ENTITY_NOT_FOUND));
     }
 
     @Override
     public Member findMemberById(Long id) {
         return memberRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.ENTITY_NOT_FOUND));
+            .orElseThrow(() -> new EntityNotFoundException(ErrorCode.ENTITY_NOT_FOUND));
     }
 
     @Override
-    public Long save(PostsDto requestDto, MultipartDto multipartDto) {
+//    public Long save(PostsDto requestDto, MultipartDto multipartDto) {
+    public PostsSaveResponseDto register(PostsSaveRequestDto requestDto,
+        MultipartDto multipartDto) {
         log.info(requestDto);
 
         String imageUrl = postsImgUpload(multipartDto.getFile(), getFileUuid());
+
         Posts posts = dtoToEntity(requestDto, imageUrl);
-        postsRepository.save(posts);
-        return posts.getId();
+
+        Posts savedPosts = postsRepository.save(posts);
+
+        return entityToPostsSaveResponseDto(savedPosts,
+            findMemberById(requestDto.getAuthorId()));
     }
 
     @Override
@@ -94,12 +102,12 @@ public class PostsServiceImpl implements PostsService {
 
     @Override
     public List<PostsDto> findAllPostsOrderByIdDesc(int page, int size,
-            UserDetailsImpl userDetails) {
+        UserDetailsImpl userDetails) {
 
         PageRequestDto pageRequestDTO = PageRequestDto.builder()
-                .page(page)
-                .size(size)
-                .build();
+            .page(page)
+            .size(size)
+            .build();
 
         PageResultDto<PostsDto, Object[]> resultDTO = getList(pageRequestDTO, userDetails);
         return resultDTO.getDtoList();
@@ -107,14 +115,14 @@ public class PostsServiceImpl implements PostsService {
 
     @Override
     public List<PostsDto> findAllPostsBySearch(int page, int size, String keyword, String type,
-            UserDetailsImpl userDetails) {
+        UserDetailsImpl userDetails) {
 
         PageRequestDto pageRequestDTO = PageRequestDto.builder()
-                .page(page)
-                .size(size)
-                .type(type)
-                .keyword(keyword)
-                .build();
+            .page(page)
+            .size(size)
+            .type(type)
+            .keyword(keyword)
+            .build();
 
         PageResultDto<PostsDto, Object[]> resultDTO = getList(pageRequestDTO, userDetails);
         return resultDTO.getDtoList();
@@ -137,7 +145,7 @@ public class PostsServiceImpl implements PostsService {
 
     @Override
     public String postsImgUpload(MultipartFile multipartFile,
-            String fileName) {
+        String fileName) {
         try {
             byte[] bytes = multipartFile.getBytes();
 
@@ -145,7 +153,7 @@ public class PostsServiceImpl implements PostsService {
             String bucketName = "example-ocr-test";
 
             Storage storage = StorageOptions.newBuilder().setProjectId(projectId)
-                    .setCredentials(getCredentials()).build().getService();
+                .setCredentials(getCredentials()).build().getService();
 
             BlobId blobId = BlobId.of(bucketName, fileName);
             BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("image/jpeg").build();
@@ -167,13 +175,13 @@ public class PostsServiceImpl implements PostsService {
         Image img = Image.newBuilder().setSource(imgSource).build();
         Feature feat = Feature.newBuilder().setType(Feature.Type.TEXT_DETECTION).build();
         AnnotateImageRequest request =
-                AnnotateImageRequest.newBuilder().addFeatures(feat).setImage(img).build();
+            AnnotateImageRequest.newBuilder().addFeatures(feat).setImage(img).build();
         requests.add(request);
 
         try {
             ImageAnnotatorSettings imageAnnotatorSettings = ImageAnnotatorSettings.newBuilder()
-                    .setCredentialsProvider(FixedCredentialsProvider.create(getCredentials()))
-                    .build();
+                .setCredentialsProvider(FixedCredentialsProvider.create(getCredentials()))
+                .build();
 
             ImageAnnotatorClient client = ImageAnnotatorClient.create(imageAnnotatorSettings);
             BatchAnnotateImagesResponse response = client.batchAnnotateImages(requests);
@@ -192,17 +200,17 @@ public class PostsServiceImpl implements PostsService {
     // Tools for Pagination
     @Override
     public PageResultDto<PostsDto, Object[]> getList(PageRequestDto pageRequestDTO,
-            UserDetailsImpl userDetails) {
+        UserDetailsImpl userDetails) {
 
         log.info(pageRequestDTO);
 
         Function<Object[], PostsDto> fn = (en -> entityToDTO((Posts) en[0], (Member) en[1],
-                userDetails.getMember().getId()));
+            userDetails.getMember().getId()));
 
         Page<Object[]> result = postsRepository.searchPage(
-                pageRequestDTO.getType(),
-                pageRequestDTO.getKeyword(),
-                pageRequestDTO.getPageable(Sort.by("id").descending()));
+            pageRequestDTO.getType(),
+            pageRequestDTO.getKeyword(),
+            pageRequestDTO.getPageable(Sort.by("id").descending()));
 
         return new PageResultDto<>(result, fn);
     }

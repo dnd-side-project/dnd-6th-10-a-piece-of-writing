@@ -1,7 +1,9 @@
-package com.springboot.domain.topic;
+package com.springboot.domain.category;
 
-import com.springboot.domain.posts.model.dto.PostsDto;
+import com.springboot.domain.category.model.entity.Category;
+import com.springboot.domain.category.repository.CategoryRepository;
 import com.springboot.domain.posts.model.entity.Posts;
+import com.springboot.domain.posts.repository.PostsRepository;
 import com.springboot.domain.topic.model.entity.Topic;
 import com.springboot.domain.topic.repository.TopicRepository;
 import java.util.List;
@@ -15,59 +17,58 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class TopicRepositoryTest {
+public class CategoryRepositoryTest {
 
     @Autowired
     private TopicRepository topicRepository;
 
-    private final Logger logger = (Logger) LoggerFactory.getLogger(TopicRepositoryTest.class);
+    @Autowired
+    private PostsRepository postsRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    private final Logger logger = (Logger) LoggerFactory.getLogger(CategoryRepositoryTest.class);
 
 //    @BeforeEach
 //    public void tearDown(){
 //        replyRepository.deleteAll();
 //    }
 
-//    @DisplayName("Topic 테스트 데이터 삽입")
-//    @Test
-//    @Transactional
-//    public void insertTopic() {
-//
-//        IntStream.rangeClosed(11, 300).forEach(i -> {
-//
-//            Topic topic = Topic.builder()
-//                .name("TEST" + i)
-//                .build();
-//
-//            topicRepository.save(topic);
-//
-//        });
-//
-//    }
-
-    @DisplayName("[Repository] keyword 포함한 name 가진 토픽 목록 조회")
+    @DisplayName("Category 테스트 데이터 삽입")
     @Test
-    @Transactional
-    public void testSearchKeyword() {
+//    @Transactional
+    public void insertTopic() {
 
-        List<Topic> topics = topicRepository.findByNameContaining("3");
+        IntStream.rangeClosed(1, 5).forEach(i -> {
 
-        logger.info(topics.toString());
+            long topicId = (long) (Math.random() * 300);
+
+            Topic topic = topicRepository.getById(topicId);
+
+            long postsId = 1L;
+
+            Posts posts = postsRepository.getById(postsId);
+
+            Category category = Category.builder()
+                .topic(topic)
+                .posts(posts)
+                .build();
+
+            categoryRepository.save(category);
+
+        });
 
     }
 
-//    @DisplayName("[Repository] 특정 Topic ID 와 연관된 Posts 최신순으로 4개 이하만 조회")
+//    @DisplayName("[Repository] keyword 포함한 name 가진 토픽 목록 조회")
 //    @Test
 //    @Transactional
-//    public void testFindPostsByTopicId() {
+//    public void testSearchKeyword() {
 //
-//        Topic topic = topicRepository.findAll().get(0);
+//        List<Topic> topics = topicRepository.findByNameContaining("3");
 //
-//        List<Posts> posts = topicRepository.getPostsByTopicOrderByPostsIdLimit4(topic.getId());
-//
-//        for (Posts post: posts
-//        ) {
-//            System.out.println(posts);
-//        }
+//        logger.info(topics.toString());
 //
 //    }
 

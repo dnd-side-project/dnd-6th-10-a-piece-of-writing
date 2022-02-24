@@ -114,7 +114,27 @@ public class TopicController {
     }
 
     @ApiOperation(
-        value = "토픽별 게시물 조회 api"
+        value = "토픽별 게시물 초기 4개 이하 조회 api"
+        , notes = "topicId의 토픽을 가진 게시물 목록 중 4개 이하만 반환한다.")
+    @ApiImplicitParam(
+        name = "topicId"
+        , value = "토픽 아이디"
+        , required = true
+        , dataType = "long"
+        , paramType = "path"
+        , defaultValue = "None")
+    @GetMapping("/first/{topicId}")
+    public void searchFirstByTopicId(@PathVariable Long topicId,
+//    public ResponseEntity<ResponseDto> searchFirstByTopicId(@PathVariable Long topicId,
+        @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
+
+//        List<PostsDto> postsDtos = postsService.get(topicId, userDetailsImpl);
+
+//        return responseServiceImpl.successResult(SuccessCode.SELECT_POSTS_BY_TOPIC_SUCCESS, postsDtos);
+    }
+
+    @ApiOperation(
+        value = "토픽별 게시물 모두 조회 api"
         , notes = "topicId의 토픽을 가진 게시물 목록을 반환한다.")
     @ApiImplicitParam(
         name = "topicId"

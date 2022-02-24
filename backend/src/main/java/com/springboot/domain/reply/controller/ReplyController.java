@@ -94,9 +94,11 @@ public class ReplyController {
 
         Member loginUser = userDetailsImpl.getMember();
 
-        ReplyUpdateResponseDto modifiedReplyResponseDto = replyService.modify(id, replyDTO, loginUser);
+        ReplyUpdateResponseDto modifiedReplyResponseDto = replyService.modify(id, replyDTO,
+            loginUser);
 
-        return responseServiceImpl.successResult(SuccessCode.MODIFY_REPLY_SUCCESS, modifiedReplyResponseDto);
+        return responseServiceImpl.successResult(SuccessCode.MODIFY_REPLY_SUCCESS,
+            modifiedReplyResponseDto);
     }
 
 

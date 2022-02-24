@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.springboot.domain.member.model.Member;
 import com.springboot.domain.posts.model.entity.Posts;
-import com.springboot.domain.reply.ReplyServiceTests;
 import com.springboot.domain.reply.model.dto.ReplyDto;
 import com.springboot.domain.reply.model.entity.Reply;
 import com.springboot.domain.topic.model.dto.TopicDto;
@@ -47,12 +46,12 @@ public class TopicServiceTest {
         //when
         TopicDto savedTopicDto = topicService.register(requestDto);
 
-        Topic savedTopic = topicRepository.getById(savedTopicDto.getId());
+        Topic savedTopic = topicRepository.getById(savedTopicDto.getTopicId());
 
         logger.info("savedTopicDto : " + savedTopicDto.toString());
 
         //then
-        assertThat(savedTopicDto.getId()).isEqualTo(savedTopic.getId());
+        assertThat(savedTopicDto.getTopicId()).isEqualTo(savedTopic.getId());
     }
 
     @DisplayName("[Service] keyword 포함한 name 가진 토픽 목록 조회")
