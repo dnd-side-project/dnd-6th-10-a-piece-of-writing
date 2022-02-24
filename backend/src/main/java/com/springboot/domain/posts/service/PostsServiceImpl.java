@@ -42,7 +42,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
-import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -50,6 +49,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Log4j2
@@ -220,9 +220,7 @@ public class PostsServiceImpl implements PostsService {
 
     @Override
     public ResponseEntity<ResponseDto> disLikePost(UserDetailsImpl userDetailsImpl, Long id) {
-        Member member = userDetailsImpl.getMember();
-        Posts posts = findPostsById(id);
-        likesRepository.deleteLikesByMemberAndPosts(member, posts);
+        likesRepository.deleteLikesByMemberIdAndPostsId(userDetailsImpl.getMemberId(), id);
         return responseService.successResult(SuccessCode.DISLIKE_SUCCESS);
     }
 

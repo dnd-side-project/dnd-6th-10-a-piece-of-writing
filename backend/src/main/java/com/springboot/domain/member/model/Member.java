@@ -5,6 +5,7 @@ import com.springboot.domain.posts.model.entity.Posts;
 import com.springboot.domain.relation.model.Relation;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;

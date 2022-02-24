@@ -51,9 +51,8 @@ public class MemberController {
     @Operation(summary = "프로필 조회 api", description = "프로필 조회 api")
     @GetMapping(value = "/profile/{id}")
     public ResponseEntity<? extends ResponseDto> getMemberProfile(
-            @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
             @Parameter(description = "유저 id", required = true) @PathVariable Long id) {
-        return memberService.getMemberProfile(userDetailsImpl, id);
+        return memberService.getMemberProfile(id);
     }
 
     @Operation(summary = "팔로우 목록 조회 api", description = "팔로우 목록 조회 api")

@@ -13,6 +13,7 @@ import com.springboot.domain.common.error.exception.ErrorCode;
 import com.springboot.domain.common.model.ResponseDto;
 import com.springboot.domain.common.model.SuccessCode;
 import com.springboot.domain.common.service.ResponseService;
+import com.springboot.domain.likes.model.Likes;
 import com.springboot.domain.likes.repository.LikesRepository;
 import com.springboot.domain.member.model.Dto.FollowInfoDto;
 import com.springboot.domain.member.model.Dto.MemberProfileDto;
@@ -27,16 +28,16 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
-@Service
 @Transactional
+@Service
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
@@ -44,6 +45,11 @@ public class MemberServiceImpl implements MemberService {
     private final ResponseService responseService;
     private final PostsService postsService;
     private final ValueOperations<String, String> valueOperations;
+
+    @Override
+    public Member save(Member member) {
+        return memberRepository.save(member);
+    }
 
     @Override
     public void deleteMemberById(Long id) {
@@ -66,16 +72,6 @@ public class MemberServiceImpl implements MemberService {
     public Member findMemberByNickname(String nickname) {
         return memberRepository.findMemberByNickname(nickname)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.ENTITY_NOT_FOUND));
-    }
-
-    @Override
-    public Member save(Member member) {
-        return memberRepository.save(member);
-    }
-
-    @Override
-    public void deleteMemberByEmail(Member member) {
-        memberRepository.delete(member);
     }
 
     @Override
@@ -135,23 +131,18 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public ResponseEntity<? extends ResponseDto> modProfile(ModProfileDto modProfileDto,
             UserDetailsImpl userDetailsImpl) {
+        Long memberId = userDetailsImpl.getMemberId();
         String profileUrl = profileImgUpload(
                 modProfileDto.getFile(),
-                "MP" + userDetailsImpl.getMember().getId());
-        Member member = findMemberById(userDetailsImpl.getMember().getId());
+                "MP" + memberId);
+        Member member = findMemberById(memberId);
         member.setProfileUrl(profileUrl);
 
         return responseService.successResult(SuccessCode.MOD_PROFILE_SUCCESS, profileUrl);
     }
 
-    private boolean alreadyFollow(UserDetailsImpl userDetailsImpl, Long memberId) {
-        return userDetailsImpl.getMember().getFollowingList().stream()
-                .anyMatch(R -> Objects.equals(R.getFollowed().getId(), memberId));
-    }
-
     @Override
-    public ResponseEntity<? extends ResponseDto> getMemberProfile(
-            UserDetailsImpl userDetailsImpl, Long id) {
+    public ResponseEntity<? extends ResponseDto> getMemberProfile(Long id) {
         if (id == null) {
             throw new BusinessException(ErrorCode.PARAMETER_MISSING_ERROR);
         }
@@ -195,20 +186,24 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public ResponseEntity<? extends ResponseDto> getMyPostsList(UserDetailsImpl userDetails) {
+        List<Long> LikePostsIdList = likesRepository.getAllByMemberId(userDetails.getMemberId())
+                .stream().map(L -> L.getPosts().getId()).collect(Collectors.toList());
+
         List<PostsListResponseDto> list = userDetails.getMember().getPostsList()
-                .stream().map(P -> postsToDto(P, userDetails)).collect(Collectors.toList());
+                .stream().map(P -> postsToDto(P, LikePostsIdList.stream()
+                .anyMatch(id -> Objects.equals(id, P.getId())))).collect(Collectors.toList());
         return responseService.successResult(SuccessCode.GET_POSTS_LIST_SUCCESS, list);
     }
 
     @Override
     public ResponseEntity<? extends ResponseDto> getMyLikesList(UserDetailsImpl userDetails) {
-        List<PostsListResponseDto> list = likesRepository.getAllByMemberId(userDetails.getMember()
-                        .getId()).stream().map(L -> postsToDto(L.getPosts(), userDetails))
-                        .collect(Collectors.toList());
+        List<PostsListResponseDto> list = likesRepository.getAllByMemberId(userDetails.getMember().getId())
+                .stream().map(L -> postsToDto(L.getPosts(), true))
+                .collect(Collectors.toList());
         return responseService.successResult(SuccessCode.GET_LIKES_LIST_SUCCESS, list);
     }
 
-    private PostsListResponseDto postsToDto(Posts posts, UserDetailsImpl userDetails) {
+    private PostsListResponseDto postsToDto(Posts posts, boolean alreadyLike) {
         return PostsListResponseDto.builder()
                 .id(posts.getId())
                 .content(posts.getContent())
@@ -216,8 +211,7 @@ public class MemberServiceImpl implements MemberService {
                 .imageUrl(posts.getImageUrl())
                 .createdDate(posts.getCreatedDate())
                 .modifiedDate(posts.getModifiedDate())
-                .alreadyLike(userDetails.getMember().getLikePostsList().stream()
-                        .anyMatch(L -> Objects.equals(L.getPosts().getId(), posts.getId())))
+                .alreadyLike(alreadyLike)
                 .likes(posts.getLikeMemberListSize())
                 .build();
     }

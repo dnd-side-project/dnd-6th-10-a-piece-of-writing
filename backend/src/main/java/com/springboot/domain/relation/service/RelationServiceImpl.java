@@ -8,10 +8,10 @@ import com.springboot.domain.member.model.Member;
 import com.springboot.domain.member.service.MemberService;
 import com.springboot.domain.relation.model.Relation;
 import com.springboot.domain.relation.repository.RelationRepository;
-import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Transactional
