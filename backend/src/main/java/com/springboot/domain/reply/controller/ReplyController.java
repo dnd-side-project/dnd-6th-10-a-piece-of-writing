@@ -1,9 +1,13 @@
 package com.springboot.domain.reply.controller;
 
-import com.springboot.domain.common.model.dto.ResponseDto;
+import com.springboot.domain.auth.model.UserDetailsImpl;
 import com.springboot.domain.common.model.SuccessCode;
+import com.springboot.domain.common.model.dto.ResponseDto;
 import com.springboot.domain.common.service.ResponseServiceImpl;
+import com.springboot.domain.member.model.Member;
 import com.springboot.domain.reply.model.dto.ReplyDto;
+import com.springboot.domain.reply.model.dto.ReplySaveResponseDto;
+import com.springboot.domain.reply.model.dto.ReplyUpdateResponseDto;
 import com.springboot.domain.reply.service.ReplyService;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
@@ -11,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +24,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequestMapping("/api/v1/reply")
@@ -54,13 +60,17 @@ public class ReplyController {
 
     @Operation(summary = "save reply api", description = "댓글 생성 api")
     @PostMapping
-    public ResponseEntity<ResponseDto> register(@RequestBody ReplyDto replyDTO) {
+    public ResponseEntity<ResponseDto> register(@RequestBody ReplyDto replyDTO,
+        @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
 
         log.info(replyDTO);
 
-        Long saveReplyId = replyService.register(replyDTO);
+        Member loginUser = userDetailsImpl.getMember();
 
-        return responseServiceImpl.successResult(SuccessCode.SAVE_REPLY_SUCCESS, saveReplyId);
+        ReplySaveResponseDto savedReplyResponseDto = replyService.register(replyDTO, loginUser);
+
+        return responseServiceImpl.successResult(SuccessCode.SAVE_REPLY_SUCCESS,
+            savedReplyResponseDto);
     }
 
     @Operation(summary = "delete reply api", description = "댓글 삭제 api")
@@ -77,13 +87,16 @@ public class ReplyController {
     @Operation(summary = "modify reply api", description = "댓글 수정 api")
     @PutMapping("/{id}")
     public ResponseEntity<ResponseDto> modify(@PathVariable("id") Long id,
-        @RequestBody ReplyDto replyDTO) {
+        @RequestBody ReplyDto replyDTO,
+        @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
 
         log.info(replyDTO);
 
-        long modifiedReplyId = replyService.modify(id, replyDTO);
+        Member loginUser = userDetailsImpl.getMember();
 
-        return responseServiceImpl.successResult(SuccessCode.MODIFY_REPLY_SUCCESS, modifiedReplyId);
+        ReplyUpdateResponseDto modifiedReplyResponseDto = replyService.modify(id, replyDTO, loginUser);
+
+        return responseServiceImpl.successResult(SuccessCode.MODIFY_REPLY_SUCCESS, modifiedReplyResponseDto);
     }
 
 
