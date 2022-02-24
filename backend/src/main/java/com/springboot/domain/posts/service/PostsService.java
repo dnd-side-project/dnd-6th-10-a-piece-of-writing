@@ -3,16 +3,18 @@ package com.springboot.domain.posts.service;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.springboot.domain.auth.model.UserDetailsImpl;
-import com.springboot.domain.common.model.ResponseDto;
+import com.springboot.domain.common.model.dto.ResponseDto;
+import com.springboot.domain.member.model.Dto.MemberBasicInfoDto;
 import com.springboot.domain.member.model.Member;
 import com.springboot.domain.posts.model.dto.MultipartDto;
-import com.springboot.domain.member.model.Member;
 import com.springboot.domain.posts.model.dto.PageRequestDto;
 import com.springboot.domain.posts.model.dto.PageResultDto;
 import com.springboot.domain.posts.model.dto.PostsDto;
 
+//import com.springboot.domain.posts.model.dto.PostsResponseDto;
+import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
+import com.springboot.domain.posts.model.dto.PostsSaveResponseDto;
 import com.springboot.domain.posts.model.entity.Posts;
-import com.springboot.domain.reply.model.entity.Reply;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface PostsService {
 
-    Long save(PostsDto requestDto, MultipartDto multipartDto);
+//    Long save(PostsDto requestDto, MultipartDto multipartDto);
+    PostsSaveResponseDto register(PostsSaveRequestDto requestDto, MultipartDto multipartDto);
 
     public Posts findPostsById(Long id);
 
@@ -48,7 +51,8 @@ public interface PostsService {
 
     PostsDto get(Long id, UserDetailsImpl userDetails);
 
-    default Posts dtoToEntity(PostsDto dto, String imageUrl) {
+    // PostsSaveRequestDto TO Entity
+    default Posts dtoToEntity(PostsSaveRequestDto dto, String imageUrl) {
         return Posts.builder()
             .ref(dto.getRef())
             .content(dto.getContent())
@@ -57,8 +61,12 @@ public interface PostsService {
             .build();
     }
 
-    // Posts Entity TO PostsDto
+    // Posts Entity TO PostsResponseDto
+//    default PostsDto entityToDTO(Posts posts, Member author, Long displayMemberId) {
     default PostsDto entityToDTO(Posts posts, Member author, Long displayMemberId) {
+
+        MemberBasicInfoDto authorInfo = MemberBasicInfoDto.entityTOdto(author);
+
         return PostsDto.builder()
             // posts
             .id(posts.getId())
@@ -68,12 +76,30 @@ public interface PostsService {
             .modifiedDate(posts.getModifiedDate())
             .imageUrl(posts.getImageUrl())
             // author
-            .authorId(author.getId())
-            .authorEmail(author.getEmail())
-            .authorNickname(author.getNickname())
-            .authorProfileUrl(author.getProfileUrl())
+            .authorInfo(authorInfo)
+//            .authorId(author.getId())
+//            .authorEmail(author.getEmail())
+//            .authorNickname(author.getNickname())
+//            .authorProfileUrl(author.getProfileUrl())
             .alreadyLike(posts.getLikeMemberList()
                     .stream().anyMatch(L -> Objects.equals(L.getMember().getId(), displayMemberId)))
             .build();
+    }
+
+    // Entity TO PostsSaveResponseDto
+    default PostsSaveResponseDto entityToPostsSaveResponseDto(Posts posts, Member author){
+
+        MemberBasicInfoDto authorInfo = MemberBasicInfoDto.entityTOdto(author);
+
+        PostsSaveResponseDto dto = PostsSaveResponseDto.builder()
+            .postsId(posts.getId())
+            .ref(posts.getRef())
+            .content(posts.getContent())
+            .createdDate(posts.getCreatedDate())
+            .imageUrl(posts.getImageUrl())
+            .authorInfo(authorInfo)
+            .build();
+
+        return dto;
     }
 }

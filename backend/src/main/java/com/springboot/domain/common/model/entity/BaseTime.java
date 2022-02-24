@@ -1,4 +1,4 @@
-package com.springboot.domain.posts.model.entity;
+package com.springboot.domain.common.model.entity;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;

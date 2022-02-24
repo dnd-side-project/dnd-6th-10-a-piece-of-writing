@@ -1,11 +1,13 @@
 package com.springboot.domain.posts.controller;
 
 import com.springboot.domain.auth.model.UserDetailsImpl;
-import com.springboot.domain.common.model.ResponseDto;
+import com.springboot.domain.common.model.dto.ResponseDto;
 import com.springboot.domain.common.model.SuccessCode;
 import com.springboot.domain.common.service.ResponseServiceImpl;
 import com.springboot.domain.posts.model.dto.PostsDto;
 import com.springboot.domain.posts.model.dto.MultipartDto;
+import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
+import com.springboot.domain.posts.model.dto.PostsSaveResponseDto;
 import com.springboot.domain.posts.service.PostsService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,9 +33,12 @@ public class PostsController {
     @Operation(summary = "save posts api", description = "글귀 업로드 api")
     @PostMapping
     public ResponseEntity<ResponseDto> save(
-            @RequestPart("request") PostsDto requestDto, MultipartDto multipartDto) {
-        Long savedPostId = postsService.save(requestDto, multipartDto);
-        return responseServiceImpl.successResult(SuccessCode.SAVE_POSTS_SUCCESS, savedPostId);
+        @RequestPart("request") PostsSaveRequestDto requestDto, MultipartDto multipartDto) {
+//            @RequestPart("request") PostsDto requestDto, MultipartDto multipartDto) {
+//        Long savedPostId = postsService.register(requestDto, multipartDto);
+        PostsSaveResponseDto savedPostResponseDto = postsService.register(requestDto, multipartDto);
+//        return responseServiceImpl.successResult(SuccessCode.SAVE_POSTS_SUCCESS, savedPostId);
+        return responseServiceImpl.successResult(SuccessCode.SAVE_POSTS_SUCCESS, savedPostResponseDto);
     }
 
     // 삭제
@@ -50,7 +55,7 @@ public class PostsController {
     // 게시물 1개 조회
     @Operation(summary = "select posts api", description = "글귀 검색 api")
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseDto> findAllPostsOrderByIdDesc(@PathVariable long id,
+    public ResponseEntity<ResponseDto> findPosts(@PathVariable long id,
             @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
 
         PostsDto postsDto = postsService.get(id, userDetailsImpl);

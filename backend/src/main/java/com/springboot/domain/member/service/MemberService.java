@@ -1,7 +1,7 @@
 package com.springboot.domain.member.service;
 
 import com.springboot.domain.auth.model.UserDetailsImpl;
-import com.springboot.domain.common.model.ResponseDto;
+import com.springboot.domain.common.model.dto.ResponseDto;
 import com.springboot.domain.member.model.Dto.ModProfileDto;
 import com.springboot.domain.member.model.Member;
 import org.springframework.http.ResponseEntity;

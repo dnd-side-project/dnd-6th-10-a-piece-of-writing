@@ -28,25 +28,33 @@ public enum SuccessCode {
     GET_POSTS_LIST_SUCCESS("내 글 목록 조회 성공", "SM008", 200),
 
     //  Posts
-    EXTRACT_SUCCESS("텍스트 추출 성공", "PM001", 200),
-    SAVE_POSTS_SUCCESS("게시물 저장 성공", "PM002", 200),
-    DELETE_POSTS_SUCCESS("게시물 삭제 성공", "PM003", 200),
-    SELECT_ALL_POSTS_SUCCESS("모든 게시물 조회", "PM004", 200),
-    SELECT_POSTS_SEARCH_SUCCESS("검색된 게시물 조회", "PM005", 200),
-    SELECT_POSTS_SUCCESS("게시물 조회", "PM006", 200),
+    EXTRACT_SUCCESS("텍스트 추출 성공", "SP001", 200),
+    SAVE_POSTS_SUCCESS("게시물 저장 성공", "SP002", 200),
+    DELETE_POSTS_SUCCESS("게시물 삭제 성공", "SP003", 200),
+    SELECT_ALL_POSTS_SUCCESS("모든 게시물 조회", "SP004", 200),
+    SELECT_POSTS_SEARCH_SUCCESS("검색된 게시물 조회", "SP005", 200),
+    SELECT_POSTS_SUCCESS("게시물 조회", "SP006", 200),
     LIKE_SUCCESS("좋아요 성공", "SP006", 200),
     DISLIKE_SUCCESS("좋아요 취소 성공", "SP007", 200),
 
     //  Reply
-    SAVE_REPLY_SUCCESS("댓글 생성 성공","RM001",200),
-    DELETE_REPLY_SUCCESS("댓글 삭제 성공","RM002",200),
-    MODIFY_REPLY_SUCCESS("댓글 수정 성공","RM003",200),
-    SELECT_REPLY_SUCCESS("댓글 모두 조회 성공","RM004",200),
-    SELECT_FIRST_REPLY_SUCCESS("댓글 초기 3개 조회 성공","PM005",200),
+    SAVE_REPLY_SUCCESS("댓글 생성 성공","SRP001",200),
+    DELETE_REPLY_SUCCESS("댓글 삭제 성공","SRP002",200),
+    MODIFY_REPLY_SUCCESS("댓글 수정 성공","SRP003",200),
+    SELECT_REPLY_SUCCESS("댓글 모두 조회 성공","SRP004",200),
+    SELECT_FIRST_REPLY_SUCCESS("댓글 초기 3개 조회 성공","SRP005",200),
 
 //    Relation
     FOLLOW_SUCCESS("팔로우 성공", "SR001", 200),
     UNFOLLOW_SUCCESS("언팔로우 성공", "SR002", 200),
+
+    // Topic
+    SAVE_TOPIC_SUCCESS("토픽 생성 성공","ST001",200),
+    SELECT_TOPIC_SUCCESS("토픽 조회 성공","ST002",200),
+    SEARCH_TOPIC_SUCCESS("토픽 검색 성공","ST003",200),
+    SELECT_POSTS_BY_TOPIC_SUCCESS("토픽별 게시물 조회 성공","ST004",200),
+    SELECT_ALL_TOPIC_ON_POSTS_SUCCESS("게시물 토픽 조회 성공","ST005",200)
+
     ;
 
     private final String message;

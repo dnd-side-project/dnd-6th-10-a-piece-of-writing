@@ -8,17 +8,14 @@
 //import com.springboot.domain.reply.model.entity.Reply;
 //import com.springboot.domain.reply.repository.ReplyRepository;
 //import java.util.List;
-//import java.util.Optional;
 //import java.util.stream.IntStream;
 //import javax.transaction.Transactional;
-//import org.junit.jupiter.api.AfterEach;
-//import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.DisplayName;
 //import org.junit.jupiter.api.Test;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.context.SpringBootTest;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.boot.test.context.SpringBootTest;
 //
 //@SpringBootTest
 //public class ReplyRepositoryTests {
@@ -38,7 +35,7 @@
 //
 //    @DisplayName("Reply 테스트 데이터 삽입")
 //    @Test
-////    @Transactional
+//    @Transactional
 //    public void insertReply() {
 //
 //        IntStream.rangeClosed(1, 10).forEach(i -> {
@@ -124,6 +121,16 @@
 //
 //        assertThat(replyList.size()).isLessThan(4);
 //    }
+//
+//    @DisplayName("[Repository] 댓글 삭제")
+//    @Test
+////    @Transactional
+//    public void testdelete() {
+//
+//        replyRepository.deleteById(63L);
+//    }
+//
+//
 //
 ////    @AfterEach
 ////    public void tearDown2(){

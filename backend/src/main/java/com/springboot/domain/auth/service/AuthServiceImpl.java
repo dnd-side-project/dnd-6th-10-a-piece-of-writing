@@ -9,7 +9,7 @@ import com.springboot.domain.auth.model.UserDetailsImpl;
 import com.springboot.domain.common.error.exception.BusinessException;
 import com.springboot.domain.common.error.exception.ErrorCode;
 import com.springboot.domain.common.error.exception.InvalidValueException;
-import com.springboot.domain.common.model.ResponseDto;
+import com.springboot.domain.common.model.dto.ResponseDto;
 import com.springboot.domain.common.model.SuccessCode;
 import com.springboot.domain.common.service.ResponseService;
 import com.springboot.domain.likes.repository.LikesRepository;
