@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
 import classNames from 'classnames/bind'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 import { UserInfo as UserInfoType } from '@/components/_user/type'
@@ -41,10 +42,13 @@ const Login: React.FC<ServerSideProps> = ({ me }) => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <div className={`w-full ${CENTER_FLEX}`}>
+        <div className={`w-full ${CENTER_FLEX} flex-col`}>
           <Button className={cx('text-white')} onClick={onClickLoginButton}>
             로그인
           </Button>
+          <Link href={'/register'}>
+            <p className={cx('text-t14 underline underline-offset-4 mt-4 text-gray-500 cursor-pointer')}>가입하기</p>
+          </Link>
         </div>
       </div>
     </div>
