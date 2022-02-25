@@ -17,6 +17,8 @@ import com.google.cloud.vision.v1.ImageAnnotatorClient;
 import com.google.cloud.vision.v1.ImageAnnotatorSettings;
 import com.google.cloud.vision.v1.ImageSource;
 import com.springboot.domain.auth.model.UserDetailsImpl;
+import com.springboot.domain.category.model.entity.Category;
+import com.springboot.domain.category.repository.CategoryRepository;
 import com.springboot.domain.common.error.exception.BusinessException;
 import com.springboot.domain.common.error.exception.EntityNotFoundException;
 import com.springboot.domain.common.error.exception.ErrorCode;
@@ -36,6 +38,8 @@ import com.springboot.domain.posts.model.dto.PostsSaveResponseDto;
 import com.springboot.domain.posts.model.entity.Posts;
 import com.springboot.domain.posts.repository.PostsRepository;
 import com.springboot.domain.reply.repository.ReplyRepository;
+import com.springboot.domain.topic.model.entity.Topic;
+import com.springboot.domain.topic.repository.TopicRepository;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +48,7 @@ import java.util.function.Function;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.core.io.ClassPathResource;
@@ -62,6 +67,8 @@ public class PostsServiceImpl implements PostsService {
     private final ReplyRepository replyRepository;
     private final ResponseService responseService;
     private final LikesRepository likesRepository;
+    private final CategoryRepository categoryRepository;
+    private final TopicRepository topicRepository;
 
     @Override
     public Posts findPostsById(Long id) {
@@ -86,6 +93,23 @@ public class PostsServiceImpl implements PostsService {
         Posts posts = dtoToEntity(requestDto, imageUrl);
 
         Posts savedPosts = postsRepository.save(posts);
+
+        Long savedPostsId = savedPosts.getId();
+
+        List<Long> topicIdList = requestDto.getTopicIdList();
+
+        for (Long topicId : topicIdList)
+        {
+            Topic topic = topicRepository.getById(topicId);
+            Posts post = postsRepository.getById(savedPostsId);
+
+            Category category = Category.builder()
+                .topic(topic)
+                .posts(post)
+                .build();
+
+            categoryRepository.save(category);
+        }
 
         return entityToPostsSaveResponseDto(savedPosts,
             findMemberById(requestDto.getAuthorId()));

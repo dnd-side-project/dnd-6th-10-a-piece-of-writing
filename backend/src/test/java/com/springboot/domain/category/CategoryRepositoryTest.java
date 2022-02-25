@@ -37,7 +37,7 @@ public class CategoryRepositoryTest {
 
     @DisplayName("Category 테스트 데이터 삽입")
     @Test
-//    @Transactional
+    @Transactional
     public void insertTopic() {
 
         IntStream.rangeClosed(1, 5).forEach(i -> {
