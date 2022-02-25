@@ -64,13 +64,11 @@ public class TopicController {
         value = "토픽 목록 조회 api"
         , notes = "인기순으로 10개의 토픽 목록을 반환한다.")
     @GetMapping("/list")
-    public void selectList(
-//    public ResponseEntity<ResponseDto> search(
-        @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
+    public ResponseEntity<ResponseDto> getTop10Topics() {
 
-//        PostsDto postsDto = postsService.get(id, userDetailsImpl);
+        List<TopicDto> topicDtos = topicService.getTop10TopicList();
 
-//        return responseServiceImpl.successResult(SuccessCode.SELECT_TOPIC_SUCCESS, topicDtos);
+        return responseServiceImpl.successResult(SuccessCode.SELECT_TOP_TEN_TOPICS_SUCCESS, topicDtos);
     }
 
     @ApiOperation(
@@ -108,7 +106,4 @@ public class TopicController {
 
         return responseServiceImpl.successResult(SuccessCode.SELECT_ALL_TOPIC_ON_POSTS_SUCCESS, topicDtos);
     }
-
-
-
 }

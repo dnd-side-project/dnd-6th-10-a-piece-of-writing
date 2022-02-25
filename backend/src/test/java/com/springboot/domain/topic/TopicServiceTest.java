@@ -75,6 +75,18 @@ public class TopicServiceTest {
         List<TopicDto> topicDtos = topicService.getTopicList(1621L);
 
         topicDtos.forEach(t -> logger.info(t.toString()));
-        
+
+    }
+
+    @DisplayName("인기순으로 10개의 토픽 목록을 반환한다.")
+    @Test
+    @Transactional
+    public void testgetTop10Topics() {
+
+        List<TopicDto> topics = topicService.getTop10TopicList();
+
+        logger.info("topics : " + topics);
+
+        topics.forEach(t -> logger.info(t.toString()));
     }
 }

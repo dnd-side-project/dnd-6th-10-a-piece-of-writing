@@ -16,6 +16,8 @@ public interface TopicService {
 
     List<TopicDto> getTopicList(Long postsId); //특정 게시물의 모든 토픽 목록
 
+    List<TopicDto> getTop10TopicList(); // 인기순으로 10개의 토픽 목록을 반환
+
     //TopicDTO를 Topic 객체로 변환
     default Topic dtoToEntity(TopicDto dto) {
 

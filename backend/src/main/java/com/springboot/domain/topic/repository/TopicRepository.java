@@ -17,16 +17,23 @@ public interface TopicRepository extends JpaRepository<Topic, Long> {
     List<Topic> findByNameContaining(String keyword);
 
     @Query(value = "SELECT p.id FROM Posts p INNER JOIN category c ON p.id = c.posts_id and c.topic_id = :topicId order by p.id desc limit 4", nativeQuery = true)
-//    @Query(value="SELECT p FROM Posts p INNER JOIN category c ON p.id = c.posts_id and c.topic_id = :topicId order by p.id desc limit 2",nativeQuery = true)
-//    @Query(value="SELECT * FROM Posts p INNER JOIN category c ON p.id = c.posts_id and c.topic_id = :topicId order by p.id desc limit 2")
-//    @Query(value="SELECT p FROM Posts p INNER JOIN category c ON p.id = c.posts_id and c.topic_id = :topicId order by p.id desc limit 2")
+//    @Query(value="SELECT * FROM Posts p INNER JOIN category c ON p.id = c.posts_id and c.topic_id = :topicId order by p.id desc limit 2",nativeQuery = true)
 //    List<Posts> getPostsByTopicOrderByPostsIdLimit4(@Param("topicId") Long topicId);
-//    List<Posts> findTop4ByTopicIdPostsByTopicOrderByPostsId(@Param("topicId") Long topicId);
-//    List<Object> getPostsByTopicOrderByPostsIdLimit4(@Param("topicId") Long topicId);
-//    List<HashMap<String,Object>> getPostsByTopicOrderByPostsIdLimit4(@Param("topicId") Long topicId);
     List<Long> getPostsIdByTopicOrderByPostsIdLimit4(@Param("topicId") Long topicId);
-//    Object getPostsByTopicOrderByPostsIdLimit4(@Param("id") Long id);
 
-    @Query(value = "SELECT * FROM Topic t INNER JOIN category c ON t.id = c.topic_id and c.posts_id = :postsId", nativeQuery = true)
+    @Query(value = "SELECT * FROM Topic t "
+        + "INNER JOIN category c "
+        + "ON t.id = c.topic_id "
+        + "and c.posts_id = :postsId", nativeQuery = true)
     List<Topic> getTopicByPostsId(@Param("postsId") Long postsId);
+
+    @Query(value = "select * from topic t "
+        + "join (select *,count(topic_id) "
+        + "from category "
+        + "group by topic_id "
+        + "order by count(topic_id) desc) a "
+        + "on a.topic_id = t.id "
+        + "limit 10", nativeQuery = true)
+    List<Topic> getTop10Topics();
+
 }

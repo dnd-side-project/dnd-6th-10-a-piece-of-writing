@@ -42,12 +42,20 @@ public class TopicServiceImpl implements TopicService {
     @Override
     public List<TopicDto> getTopicList(Long postsId) {
 
-        List<TopicDto> topicDtos = new ArrayList<>();
-
         List<Topic> topicList = topicRepository.getTopicByPostsId(postsId);
 
-        topicDtos = topicList.stream().map(T -> entityToDTO(T)).collect(Collectors.toList());
-
-        return topicDtos;
+        return topicList.stream().map(T -> entityToDTO(T))
+            .collect(Collectors.toList());
     }
+
+    @Override
+    public List<TopicDto> getTop10TopicList() {
+
+        List<Topic> topicList = topicRepository.getTop10Topics();
+
+        return topicList.stream().map(T -> entityToDTO(T))
+            .collect(Collectors.toList());
+    }
+
+
 }

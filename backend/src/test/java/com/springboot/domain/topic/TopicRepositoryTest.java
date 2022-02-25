@@ -8,6 +8,7 @@ import com.springboot.domain.topic.repository.TopicRepository;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.transaction.Transactional;
 import org.junit.jupiter.api.DisplayName;
@@ -65,29 +66,17 @@ public class TopicRepositoryTest {
 
 //        Topic topic = topicRepository.findAll().get(0);
 
-//        List<Posts> posts = topicRepository.getPostsByTopicOrderByPostsIdLimit4(topic.getId());
 //        List<Posts> posts = topicRepository.getPostsByTopicOrderByPostsIdLimit4(2L);
-//        List<Object> posts = topicRepository.getPostsByTopicOrderByPostsIdLimit4(2L);
-//        List<HashMap<String,Object>> posts = topicRepository.getPostsByTopicOrderByPostsIdLimit4(2L);
         List<Long> posts = topicRepository.getPostsIdByTopicOrderByPostsIdLimit4(2L);
 
         logger.info(posts.toString());
 
-
 //        for (Posts post : posts
         for (Long post : posts
-//        for (HashMap<String,Object> post : posts
         ) {
-//            System.out.println((Posts) post);
-//            for (String key : post.keySet()
-//            ) {
-//                logger.info("posts : " + key.toString()   );
-//                logger.info("posts : " + post.get(key).toString()   );
-//            }
 
-            logger.info("post : " + post.toString()   );
-            logger.info("post : " + post   );
-//            logger.info(String.valueOf(post.getClass()));
+            logger.info("post : " + post.toString());
+            logger.info("post : " + post);
         }
 
     }
@@ -98,9 +87,9 @@ public class TopicRepositoryTest {
     public void testFindTopicsByPostsId() {
         List<Topic> topics = topicRepository.getTopicByPostsId(1621L);
 
-        logger.info("topics : "+topics);
+        logger.info("topics : " + topics);
 
-        for (Topic topic:topics
+        for (Topic topic : topics
         ) {
             TopicDto topicDto = TopicDto.builder()
                 .topicId(topic.getId())
@@ -110,62 +99,16 @@ public class TopicRepositoryTest {
         }
     }
 
-//    @DisplayName("[Repository] 특정 ID Reply 와 연관된 Posts 조회")
-//    @Test
-//    @Transactional
-//    public void readReply1() {
-//
-//        Reply reply = replyRepository.findAll().get(0);
-//
-//        System.out.println(reply);
-//        System.out.println(reply.getPosts());
-//
-//    }
+    @DisplayName("인기순으로 10개의 토픽 목록을 반환한다.")
+    @Test
+    @Transactional
+    public void testgetTop10Topics() {
 
-//    @DisplayName("[Repository] 특정 id의 Posts 에 달린 댓글 entity 모두 조회")
-//    @Test
-//    @Transactional
-//    public void testListByPosts() {
-//
-//        Posts posts = postsRepository.findAll().get(0);
-//
-//        logger.info(String.valueOf(posts.getId()));
-//
-////        long postsId = 1588L;
-//
-////        List<Reply> replyList = replyRepository.getRepliesByPostsOrderById(
-//        List<Reply> replyList = replyRepository.getRepliesByPostsOrderByIdDesc(
-//            Posts.builder().id(posts.getId()).build());
-////            Posts.builder().id(postsId).build());
-//
-//        replyList.forEach(reply -> System.out.println(reply));
-//    }
-//
-//    @DisplayName("[Repository] 특정 id의 Posts 에 달린 댓글 entity 초기 3개 조회")
-//    @Test
-//    @Transactional
-//    public void testFirstListByPosts() {
-//
-//        Posts posts = postsRepository.findAll().get(0);
-//
-//        logger.info(String.valueOf(posts.getId()));
-//
-////        long postsId = 1588L;
-//
-////        List<Reply> replyList = replyRepository.getRepliesByPostsOrderById(
-//        List<Reply> replyList = replyRepository.getRepliesByPostsOrderByIdLimit3(
-////            Posts.builder().id(postsId).build());
-//            Posts.builder().id(posts.getId()).build());
-//
-//        replyList.forEach(reply -> System.out.println(reply));
-//
-//        assertThat(replyList.size()).isLessThan(4);
-//    }
-//
-////    @AfterEach
-////    public void tearDown2(){
-////        replyRepository.deleteAll();
-////    }
+        List<Topic> topics = topicRepository.getTop10Topics();
 
+        logger.info("topics : " + topics);
+
+        topics.forEach(t -> logger.info(t.toString()));
+    }
 
 }

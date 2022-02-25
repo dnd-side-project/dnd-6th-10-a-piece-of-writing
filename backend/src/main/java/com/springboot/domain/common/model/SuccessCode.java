@@ -54,7 +54,8 @@ public enum SuccessCode {
     SAVE_TOPIC_SUCCESS("토픽 생성 성공","ST001",200),
     SELECT_TOPIC_SUCCESS("토픽 조회 성공","ST002",200),
     SEARCH_TOPIC_SUCCESS("토픽 검색 성공","ST003",200),
-    SELECT_ALL_TOPIC_ON_POSTS_SUCCESS("게시물 토픽 조회 성공","ST004",200)
+    SELECT_ALL_TOPIC_ON_POSTS_SUCCESS("게시물 토픽 조회 성공","ST004",200),
+    SELECT_TOP_TEN_TOPICS_SUCCESS("인기순 Top10 Topic 조회 성공","ST005",200)
 
     ;
 
