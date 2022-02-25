@@ -48,6 +48,7 @@ const MainBar = styled.div`
   align-items: center;
   height: 74px;
   border-bottom: 1px solid #e8e8e8;
+  z-index: 20;
 `
 
 export default MainLayout
