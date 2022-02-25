@@ -102,7 +102,7 @@ public class TopicControllerTest {
             .apply(springSecurity())
             .build();
 
-        accessToken = jwtUtil.createAuthToken("tester@gmail.com");
+        accessToken = jwtUtil.createAuthToken("tester2@gmail.com");
     }
 
     @DisplayName("[Controller] Topic save")
