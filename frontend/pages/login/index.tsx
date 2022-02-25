@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { useWindowSize } from 'react-use'
 
@@ -15,8 +15,14 @@ type ServerSideProps = { me: UserInfoType }
 const Login: React.FC<ServerSideProps> = ({ me }) => {
   useSsrMe(me)
   useAlreadyLogin()
+  const [_width, setWidth] = useState(0)
   const { width } = useWindowSize()
-  const big = width > 984
+  const big = _width > 984
+
+  useEffect(() => {
+    setWidth(width)
+  }, [width])
+
   return big ? (
     <div className={`w-full h-screen ${CENTER_FLEX}`}>
       <div className={'flex w-3/5 h-[150%] overflow-hidden'}>
