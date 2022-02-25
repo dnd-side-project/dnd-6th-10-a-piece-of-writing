@@ -122,13 +122,16 @@ const MainForm: React.FC<Props> = ({}) => {
               글씨 색{textColor === 'black' && <Image src={'/post_check.svg'} width={20} height={20} />}
             </FontColorButton>
             <FontColorButton onClick={() => setTextColor('#fff')} color={'#fff'} bgColor={'#444444'}>
-              글씨 색{textColor !== 'black' && <Image src={'/post_check_white.svg'} width={20} height={20} />}
+              글씨 색{textColor === '#fff' && <Image src={'/post_check_white.svg'} width={20} height={20} />}
             </FontColorButton>
             <FontColorButton
               onClick={() => setPickerOpen((pickerOpen) => !pickerOpen)}
               color={'#444444'}
               bgImage={'linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%)'}>
-              직접 고르기{textColor !== 'black' && <Image src={'/post_check_white.svg'} width={20} height={20} />}
+              직접 고르기
+              {textColor !== 'black' && textColor !== '#fff' && (
+                <Image src={'/post_check_white.svg'} width={20} height={20} />
+              )}
             </FontColorButton>
           </FlexDiv>
           <div className={`flex mt-3 ${pickerOpen ? '' : 'invisible'}`}>
