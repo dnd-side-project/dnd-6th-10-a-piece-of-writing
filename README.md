@@ -1,4 +1,37 @@
-# 글 한 조각
+<div id="top"></div>
+
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
+
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="https://github.com/dnd-side-project/dnd-6th-10-a-piece-of-writing">
+    <img src="logo-vertical.png" alt="Logo" width="80" height="80">
+  </a>
+
+<h3 align="center">글 한조각</h3>
+
+  <p align="center">
+    오늘의 글 한 조각
+함께 음미하고 나눠보세요
+    <br />
+    <a href="https://github.com/dnd-side-project/dnd-6th-10-a-piece-of-writing"><strong>소개글 »</strong></a>
+    <br />
+    <br />
+    <a href="http://pieceofwriting.kro.kr/">체험하기</a>
+    ·
+    <a href="https://github.com/dnd-side-project/dnd-6th-10-a-piece-of-writing/discussions">버그 신고</a>
+    ·
+    <a href="https://github.com/dnd-side-project/dnd-6th-10-a-piece-of-writing/issues">기능 개선에 참여</a>
+  </p>
+</div>
+
+
+## 글 한조각
 
 ### 글귀 공유 플랫폼
 
@@ -11,6 +44,27 @@
 - 수집한 글귀를 손쉽게 분류하여 편리하게 찾기 위한, **글귀 카테고라이징 기능**
 - 맘에 드는 글귀의 원문 및 출처를 편리하게 검색하기 위한, **글귀 원문 링크 연결**
 
+
+## 🗺️아키텍처
+
+![architecture](architecture.png)
+
+
+## ⚒️ 기술 스택
+
+### Backend
+- Development : Java, SpringBoot, IntelliJ, JPA
+- Authentication : Spring Security, JWT
+- DevOps: Github Action, S3, CodeDeploy, Nginx
+- Cloud : AWS EC2
+- Test : Junit
+
+### Frontend
+- Main Framework : Next JS + TypeScript 
+- Data Fetching : React-Query
+- State management : Jotai 
+- UI Tools : Tailwind CSS, Styled-Component
+- Image processing : html2canvas, react-avatar-editor, cropperjs ...
 
 # 📋 컨벤션
 ## 브랜치 관리 전략
@@ -32,7 +86,7 @@
 ## 브랜치 네이밍
 ⚙️ 네이밍 패턴
 
-브랜치 종류/(backend,frontend) 간단한 설명	
+브랜치 종류/(backend,frontend) 간단한 설명
 
 Ex) backend에서 '로그인 기능' 이슈를 구현하는 브랜치를 생성하는 경우, 브랜치 이름을
 
@@ -68,25 +122,6 @@ Ex) 이슈번호가 67인 이슈의 기능을 구현한 뒤 커밋을 하는 상
 
 *[feat] A기능 구현 #67* 으로 작성한다.
 
-## 🗺️아키텍처
-
-### Frontend
-
-![image](https://user-images.githubusercontent.com/52997401/149660841-e8865390-c461-41fa-a049-76e0752c7e33.png)
-
-### Backend
-
-![image](https://user-images.githubusercontent.com/52997401/149660822-34ee591c-c687-4722-9517-a529fc1ac37f.png)
-
-## ⚒️ 기술 스택
-
-### Backend
--   Development : Java, SpringBoot, IntelliJ, JPA
--   Authentication : Spring Security, JWT
--   DevOps: Github Action, S3, CodeDeploy, Nginx
--   Cloud : AWS EC2
--   Test : Junit
-
 ## 👥 파트 및 개발 계획
 ### [ 팀원 & 파트 ]
 #### 🖥️ 프론트엔드
@@ -104,3 +139,25 @@ Ex) 이슈번호가 67인 이슈의 기능을 구현한 뒤 커밋을 하는 상
 [ 개발 기간 ] 2022/01 ~ 2022/02
 
 📑Notion: https://friendly-chips-ca7.notion.site/10-c7cc990a5a6c4564966e2e72c2a7fe78
+
+## 라이센스
+
+[MIT 라이센스](https://opensource.org/licenses/MIT)
+
+<p align="right">(<a href="#top">맨 위로</a>)</p>
+
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[contributors-shield]: https://img.shields.io/github/contributors/dnd-side-project/dnd-6th-10-a-piece-of-writing.svg?style=for-the-badge
+[contributors-url]: https://github.com/dnd-side-project/dnd-6th-10-a-piece-of-writing/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/dnd-side-project/dnd-6th-10-a-piece-of-writing.svg?style=for-the-badge
+[forks-url]: https://github.com/dnd-side-project/dnd-6th-10-a-piece-of-writing/network/members
+[stars-shield]: https://img.shields.io/github/stars/dnd-side-project/dnd-6th-10-a-piece-of-writing.svg?style=for-the-badge
+[stars-url]: https://github.com/dnd-side-project/dnd-6th-10-a-piece-of-writing/stargazers
+[issues-shield]: https://img.shields.io/github/issues/dnd-side-project/dnd-6th-10-a-piece-of-writing.svg?style=for-the-badge
+[issues-url]: https://github.com/dnd-side-project/dnd-6th-10-a-piece-of-writing/issues
+[license-shield]: https://img.shields.io/github/license/dnd-side-project/dnd-6th-10-a-piece-of-writing.svg?style=for-the-badge
+[license-url]: https://github.com/dnd-side-project/dnd-6th-10-a-piece-of-writing/blob/master/LICENSE.txt
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+[linkedin-url]: https://linkedin.com/in/linkedin_username
