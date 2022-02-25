@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
@@ -36,6 +37,11 @@ const LoginForm: React.FC<Props> = ({ big }) => {
         <Button className={'text-white'} onClick={onClickLoginButton}>
           로그인
         </Button>
+        <div className={'mt-3'}>
+          <Link href={'/register'}>
+            <span className={'text-t14 text-gray-500 underline-offset-2 underline cursor-pointer'}>가입하기</span>
+          </Link>
+        </div>
       </div>
     </Frame>
   )
