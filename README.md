@@ -112,16 +112,6 @@ Ex) backend에서 '로그인 기능' 이슈를 구현하는 브랜치를 생성�
 | test      | 테스트 코드 수정에 대한 커밋         |
 
 
-⚙️ 구조
-
-[Type] 제목 #이슈번호
-
-본문
-
-Ex) 이슈번호가 67인 이슈의 기능을 구현한 뒤 커밋을 하는 상황이라면 커밋 메시지의 제목을
-
-*[feat] A기능 구현 #67* 으로 작성한다.
-
 ## 👥 파트 및 개발 계획
 ### [ 팀원 & 파트 ]
 #### 🖥️ 프론트엔드
@@ -159,5 +149,3 @@ Ex) 이슈번호가 67인 이슈의 기능을 구현한 뒤 커밋을 하는 상
 [issues-url]: https://github.com/dnd-side-project/dnd-6th-10-a-piece-of-writing/issues
 [license-shield]: https://img.shields.io/github/license/dnd-side-project/dnd-6th-10-a-piece-of-writing.svg?style=for-the-badge
 [license-url]: https://github.com/dnd-side-project/dnd-6th-10-a-piece-of-writing/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/linkedin_username
