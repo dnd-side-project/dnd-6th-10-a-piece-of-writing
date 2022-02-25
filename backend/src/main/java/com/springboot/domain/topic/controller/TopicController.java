@@ -40,28 +40,6 @@ public class TopicController {
 
     private final ResponseServiceImpl responseServiceImpl;
 
-    //    @Operation(summary = "select reply api", description = "모든 댓글 조회 api. 게시물의 id를 보내면 그에 달린 모든 댓글들을 조회한다.")
-//    @GetMapping(value = "/{postsId}", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<ResponseDto> getListByPosts(@PathVariable("postsId") Long postsId) {
-//
-//        log.info("postsId: " + postsId);
-//
-//        List<ReplyDto> replies = replyService.getList(postsId);
-//
-//        return responseServiceImpl.successResult(SuccessCode.SELECT_REPLY_SUCCESS, replies);
-//    }
-//
-//    @Operation(summary = "select first three reply api", description = "초기 3개 댓글 조회 api. 게시물의 id를 보내면 그에 달린 댓글 3개를 조회한다.")
-//    @GetMapping(value = "/first/{postsId}", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<ResponseDto> getFirstListByPosts(@PathVariable("postsId") Long postsId) {
-//
-//        log.info("postsId: " + postsId);
-//
-//        List<ReplyDto> replies = replyService.getFirstList(postsId);
-//
-//        return responseServiceImpl.successResult(SuccessCode.SELECT_FIRST_REPLY_SUCCESS, replies);
-//    }
-//
     @ApiOperation(
         value = "토픽 생성 api"
         , notes = "name으로 토픽 엔티티를 생성하고 생성된 토픽 객체를 반환한다.")
@@ -95,45 +73,23 @@ public class TopicController {
 //        return responseServiceImpl.successResult(SuccessCode.SELECT_TOPIC_SUCCESS, topicDtos);
     }
 
-//    @ApiOperation(
-//        value = "토픽별 게시물 초기 4개 이하 조회 api"
-//        , notes = "topicId의 토픽을 가진 게시물 목록 중 4개 이하만 반환한다.")
-//    @ApiImplicitParam(
-//        name = "topicId"
-//        , value = "토픽 아이디"
-//        , required = true
-//        , dataType = "long"
-//        , paramType = "path"
-//        , defaultValue = "None")
-//    @GetMapping("/first/{topicId}")
-//    public void searchFirstByTopicId(@PathVariable Long topicId,
-////    public ResponseEntity<ResponseDto> searchFirstByTopicId(@PathVariable Long topicId,
-//        @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
-//
-////        List<PostsDto> postsDtos = postsService.get(topicId, userDetailsImpl);
-//
-////        return responseServiceImpl.successResult(SuccessCode.SELECT_POSTS_BY_TOPIC_SUCCESS, postsDtos);
-//    }
-//
-//    @ApiOperation(
-//        value = "토픽별 게시물 모두 조회 api"
-//        , notes = "topicId의 토픽을 가진 게시물 목록을 반환한다.")
-//    @ApiImplicitParam(
-//        name = "topicId"
-//        , value = "토픽 아이디"
-//        , required = true
-//        , dataType = "long"
-//        , paramType = "path"
-//        , defaultValue = "None")
-//    @GetMapping("/{topicId}")
-//    public void searchByTopicId(@PathVariable Long topicId,
-////    public ResponseEntity<ResponseDto> search(@PathVariable String keyword,
-//        @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
-//
-////        PostsDto postsDto = postsService.get(id, userDetailsImpl);
-//
-////        return responseServiceImpl.successResult(SuccessCode.SELECT_POSTS_BY_TOPIC_SUCCESS, postsDtos);
-//    }
+    @ApiOperation(
+        value = "토픽 검색 api"
+        , notes = "keyword를 포함한 토픽 객체 목록을 반환한다.")
+    @ApiImplicitParam(
+        name = "keyword"
+        , value = "토픽 검색 키워드"
+        , required = true
+        , dataType = "string"
+        , paramType = "path"
+        , defaultValue = "None")
+    @GetMapping("/search/{keyword}")
+    public ResponseEntity<ResponseDto> search(@PathVariable String keyword) {
+
+        List<TopicDto> topicDtos = topicService.searchKeyword(keyword);
+
+        return responseServiceImpl.successResult(SuccessCode.SEARCH_TOPIC_SUCCESS, topicDtos);
+    }
 
     @ApiOperation(
         value = "게시물 토픽 조회 api"
@@ -146,39 +102,13 @@ public class TopicController {
         , paramType = "path"
         , defaultValue = "None")
     @GetMapping("/posts/{postsId}")
-    public void selectTopicsOnPosts(@PathVariable Long postsId,
-//    public ResponseEntity<ResponseDto> search(@PathVariable String keyword,
-        @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
+    public ResponseEntity<ResponseDto> selectTopicsByPosts(@PathVariable Long postsId) {
 
-//        PostsDto postsDto = postsService.get(id, userDetailsImpl);
+        List<TopicDto> topicDtos = topicService.getTopicList(postsId);
 
-//        return responseServiceImpl.successResult(SuccessCode.SELECT_ALL_TOPIC_ON_POSTS_SUCCESS, postsDtos);
+        return responseServiceImpl.successResult(SuccessCode.SELECT_ALL_TOPIC_ON_POSTS_SUCCESS, topicDtos);
     }
 
-//
-//    @Operation(summary = "delete reply api", description = "댓글 삭제 api")
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<ResponseDto> remove(@PathVariable("id") Long id) {
-//
-//        log.info("id:" + id);
-//
-//        Long deletedReplyId = replyService.remove(id);
-//
-//        return responseServiceImpl.successResult(SuccessCode.DELETE_REPLY_SUCCESS, deletedReplyId);
-//    }
-//
-//    @Operation(summary = "modify reply api", description = "댓글 수정 api")
-//    @PutMapping("/{id}")
-//    public ResponseEntity<ResponseDto> modify(@PathVariable("id") Long id,
-//        @RequestBody ReplyDto replyDTO) {
-//
-//        log.info(replyDTO);
-//
-//        long modifiedReplyId = replyService.modify(id, replyDTO);
-//
-//        return responseServiceImpl.successResult(SuccessCode.MODIFY_REPLY_SUCCESS, modifiedReplyId);
-//    }
-//
 
 
 }

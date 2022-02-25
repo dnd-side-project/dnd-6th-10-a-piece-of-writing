@@ -84,7 +84,7 @@ public class PostsController {
         List<PostsDto> postsDtos = postsService.getFirstPostsByTopicOrderByIdDesc(topicId,
             userDetailsImpl);
 
-        return responseServiceImpl.successResult(SuccessCode.SELECT_POSTS_BY_TOPIC_SUCCESS,
+        return responseServiceImpl.successResult(SuccessCode.SELECT_FIRST_POSTS_BY_TOPIC_SUCCESS,
             postsDtos);
     }
 

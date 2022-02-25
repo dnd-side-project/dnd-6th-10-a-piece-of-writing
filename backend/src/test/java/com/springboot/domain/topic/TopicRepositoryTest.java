@@ -2,6 +2,7 @@ package com.springboot.domain.topic;
 
 import com.springboot.domain.posts.model.dto.PostsDto;
 import com.springboot.domain.posts.model.entity.Posts;
+import com.springboot.domain.topic.model.dto.TopicDto;
 import com.springboot.domain.topic.model.entity.Topic;
 import com.springboot.domain.topic.repository.TopicRepository;
 import java.util.Arrays;
@@ -89,19 +90,24 @@ public class TopicRepositoryTest {
 //            logger.info(String.valueOf(post.getClass()));
         }
 
+    }
 
-//        List<Object> arr = posts;
-//
-//        System.out.println("-------------------------------");
-//        System.out.println(Arrays.toString(arr));
+    @DisplayName("특정 게시물의 id로 해당 게시물의 모든 토픽 조회")
+    @Test
+    @Transactional
+    public void testFindTopicsByPostsId() {
+        List<Topic> topics = topicRepository.getTopicByPostsId(1621L);
 
-//        for (Object post : posts
-//        ) {
-////            System.out.println((Posts) posts);
-//            Posts posts_temp = (Posts) post;
-//            logger.info("posts : " + posts_temp.toString()   );
-//        }
+        logger.info("topics : "+topics);
 
+        for (Topic topic:topics
+        ) {
+            TopicDto topicDto = TopicDto.builder()
+                .topicId(topic.getId())
+                .name(topic.getName())
+                .build();
+            logger.info(topicDto.toString());
+        }
     }
 
 //    @DisplayName("[Repository] 특정 ID Reply 와 연관된 Posts 조회")

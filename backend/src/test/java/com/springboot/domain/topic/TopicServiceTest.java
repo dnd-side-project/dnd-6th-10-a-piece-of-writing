@@ -66,4 +66,15 @@ public class TopicServiceTest {
         //then
         logger.info("topics : " + topics.toString());
     }
+
+    @DisplayName("[Service] postsId의 게시물이 가진 토픽 목록을 반환한다.")
+    @Transactional
+    @Test
+    public void testgetTopicList() {
+
+        List<TopicDto> topicDtos = topicService.getTopicList(1621L);
+
+        topicDtos.forEach(t -> logger.info(t.toString()));
+        
+    }
 }

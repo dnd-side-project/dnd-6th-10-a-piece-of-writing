@@ -34,8 +34,10 @@ public enum SuccessCode {
     SELECT_ALL_POSTS_SUCCESS("모든 게시물 조회", "SP004", 200),
     SELECT_POSTS_SEARCH_SUCCESS("검색된 게시물 조회", "SP005", 200),
     SELECT_POSTS_SUCCESS("게시물 조회", "SP006", 200),
-    LIKE_SUCCESS("좋아요 성공", "SP006", 200),
-    DISLIKE_SUCCESS("좋아요 취소 성공", "SP007", 200),
+    LIKE_SUCCESS("좋아요 성공", "SP007", 200),
+    DISLIKE_SUCCESS("좋아요 취소 성공", "SP008", 200),
+//    SELECT_POSTS_BY_TOPIC_SUCCESS("토픽별 게시물 조회 성공","SP009",200),
+    SELECT_FIRST_POSTS_BY_TOPIC_SUCCESS("토픽별 초기 게시물 조회 성공","SP009",200),
 
     //  Reply
     SAVE_REPLY_SUCCESS("댓글 생성 성공","SRP001",200),
@@ -52,8 +54,7 @@ public enum SuccessCode {
     SAVE_TOPIC_SUCCESS("토픽 생성 성공","ST001",200),
     SELECT_TOPIC_SUCCESS("토픽 조회 성공","ST002",200),
     SEARCH_TOPIC_SUCCESS("토픽 검색 성공","ST003",200),
-    SELECT_POSTS_BY_TOPIC_SUCCESS("토픽별 게시물 조회 성공","ST004",200),
-    SELECT_ALL_TOPIC_ON_POSTS_SUCCESS("게시물 토픽 조회 성공","ST005",200)
+    SELECT_ALL_TOPIC_ON_POSTS_SUCCESS("게시물 토픽 조회 성공","ST004",200)
 
     ;
 

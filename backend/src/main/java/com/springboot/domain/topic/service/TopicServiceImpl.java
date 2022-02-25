@@ -1,10 +1,12 @@
 package com.springboot.domain.topic.service;
 
+import com.springboot.domain.reply.model.dto.ReplyDto;
 import com.springboot.domain.topic.model.dto.TopicDto;
 import com.springboot.domain.topic.model.entity.Topic;
 import com.springboot.domain.topic.repository.TopicRepository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +21,7 @@ public class TopicServiceImpl implements TopicService {
 
         Topic topic = topicRepository.save(dtoToEntity(topicDTO));
 
-        TopicDto dto = entityToDTO(topic);
-
-        return dto;
+        return entityToDTO(topic);
     }
 
     @Override
@@ -31,54 +31,23 @@ public class TopicServiceImpl implements TopicService {
 
         List<TopicDto> topicDtos = new ArrayList<>();
 
-        for (Topic topic:topics)
-         {
-             TopicDto dto = entityToDTO(topic);
-             topicDtos.add(dto);
+        for (Topic topic : topics) {
+            TopicDto dto = entityToDTO(topic);
+            topicDtos.add(dto);
         }
 
         return topicDtos;
     }
-//
-//    @Override
-//    public List<ReplyDto> getFirstList(Long postsId) {
-//
-//        List<Reply> result = replyRepository
-//            .getRepliesByPostsOrderByIdLimit3(Posts.builder().id(postsId).build());
-//
-//        return result.stream().map(reply -> entityToDTO(reply)).collect(Collectors.toList());
-//    }
-//
-//    @Override
-//    public List<ReplyDto> getList(Long postsId) {
-//
-//        List<Reply> result = replyRepository
-////            .getRepliesByPostsOrderById(Posts.builder().id(postsId).build());
-//            .getRepliesByPostsOrderByIdDesc(Posts.builder().id(postsId).build());
-//
-//        return result.stream().map(reply -> entityToDTO(reply)).collect(Collectors.toList());
-//    }
-//
-//    @Override
-//    public Long modify(Long id, ReplyDto replyDTO) {
-//
-//        Reply reply = replyRepository.getById(id);
-//
-//        if (reply != null) {
-//
-//            reply.changeText(replyDTO.getText());
-//
-//            replyRepository.save(reply);
-//        }
-//
-//        return reply.getId();
-//    }
-//
-//    @Override
-//    public Long remove(Long id) {
-//
-//        replyRepository.deleteById(id);
-//
-//        return id;
-//    }
+
+    @Override
+    public List<TopicDto> getTopicList(Long postsId) {
+
+        List<TopicDto> topicDtos = new ArrayList<>();
+
+        List<Topic> topicList = topicRepository.getTopicByPostsId(postsId);
+
+        topicDtos = topicList.stream().map(T -> entityToDTO(T)).collect(Collectors.toList());
+
+        return topicDtos;
+    }
 }
