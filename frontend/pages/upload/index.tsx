@@ -11,7 +11,6 @@ import 'cropperjs/dist/cropper.css'
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
 
 import MainForm from '@/components/_upload/MainForm'
-import useNeedLogin from '@/hook/useNeedLogin'
 import { useSsrMe } from '@/hook/useSsrMe'
 import { useToggles } from '@/hook/useToggles'
 import { withAuthServerSideProps } from '@/server/withAuthServerSide'
@@ -30,7 +29,7 @@ type ServerSideProps = { me: UserInfoType }
 
 const Upload: React.FC<ServerSideProps> = ({ me }) => {
   useSsrMe(me)
-  useNeedLogin()
+  // useNeedLogin()
   const [isUploadModalOpen, setIsUploadModalOpen] = useAtom(isUploadModalOpenAtom)
 
   const {
