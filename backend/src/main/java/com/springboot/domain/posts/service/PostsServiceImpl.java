@@ -83,7 +83,6 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Override
-//    public Long save(PostsDto requestDto, MultipartDto multipartDto) {
     public PostsSaveResponseDto register(PostsSaveRequestDto requestDto,
         MultipartDto multipartDto) {
         log.info(requestDto);
@@ -98,8 +97,7 @@ public class PostsServiceImpl implements PostsService {
 
         List<Long> topicIdList = requestDto.getTopicIdList();
 
-        for (Long topicId : topicIdList)
-        {
+        for (Long topicId : topicIdList) {
             Topic topic = topicRepository.getById(topicId);
             Posts post = postsRepository.getById(savedPostsId);
 
@@ -125,8 +123,13 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Override
-    public List<PostsDto> findAllPostsOrderByIdDesc(int page, int size,
+    public List<PostsDto> findAllPostsOrderByIdDesc(int page, int size, String type, Long topicId,
         UserDetailsImpl userDetails) {
+
+        // 0225 토픽 id 별 모든 포스트 조회 기능 구현해야 함. 페이지네이션 처리하려면 searchPage 를 수정하던가, 새로운 search 기능을 추가해야 함
+//        if(type.equals("p")){
+//
+//        }
 
         PageRequestDto pageRequestDTO = PageRequestDto.builder()
             .page(page)
@@ -150,6 +153,49 @@ public class PostsServiceImpl implements PostsService {
 
         PageResultDto<PostsDto, Object[]> resultDTO = getList(pageRequestDTO, userDetails);
         return resultDTO.getDtoList();
+    }
+
+    // Tools for Pagination
+    @Override
+    public PageResultDto<PostsDto, Object[]> getList(PageRequestDto pageRequestDTO,
+        UserDetailsImpl userDetails) {
+
+        log.info(pageRequestDTO);
+
+        Function<Object[], PostsDto> fn = (en -> entityToDTO((Posts) en[0], (Member) en[1],
+            userDetails.getMember().getId()));
+
+        Page<Object[]> result = postsRepository.searchPage(
+            pageRequestDTO.getType(),
+            pageRequestDTO.getKeyword(),
+            pageRequestDTO.getPageable(Sort.by("id").descending()));
+
+        return new PageResultDto<>(result, fn);
+    }
+
+    @Override
+    public PostsDto get(Long id, UserDetailsImpl userDetails) {
+        Object result = postsRepository.getPostsWithAuthor(id);
+        Object[] arr = (Object[]) result;
+        return entityToDTO((Posts) arr[0], (Member) arr[1], userDetails.getMember().getId());
+    }
+
+    @Override
+    public List<PostsDto> getFirstPostsByTopicOrderByIdDesc(Long topicId,
+        UserDetailsImpl userDetails) {
+
+        List<PostsDto> postsDtos = new ArrayList<>();
+
+        List<Long> postsIdList = postsRepository.getPostsIdByTopicOrderByPostsIdLimit4(topicId);
+
+        for (Long postsId : postsIdList) {
+            Object result = postsRepository.getPostsWithAuthor(postsId);
+            Object[] arr = (Object[]) result;
+            postsDtos.add(
+                entityToDTO((Posts) arr[0], (Member) arr[1], userDetails.getMember().getId()));
+        }
+
+        return postsDtos;
     }
 
     @Override
@@ -221,24 +267,6 @@ public class PostsServiceImpl implements PostsService {
         }
     }
 
-    // Tools for Pagination
-    @Override
-    public PageResultDto<PostsDto, Object[]> getList(PageRequestDto pageRequestDTO,
-        UserDetailsImpl userDetails) {
-
-        log.info(pageRequestDTO);
-
-        Function<Object[], PostsDto> fn = (en -> entityToDTO((Posts) en[0], (Member) en[1],
-            userDetails.getMember().getId()));
-
-        Page<Object[]> result = postsRepository.searchPage(
-            pageRequestDTO.getType(),
-            pageRequestDTO.getKeyword(),
-            pageRequestDTO.getPageable(Sort.by("id").descending()));
-
-        return new PageResultDto<>(result, fn);
-    }
-
     @Override
     public ResponseEntity<ResponseDto> likePost(UserDetailsImpl userDetailsImpl, Long id) {
         Member member = userDetailsImpl.getMember();
@@ -253,12 +281,5 @@ public class PostsServiceImpl implements PostsService {
         Posts posts = findPostsById(id);
         likesRepository.deleteLikesByMemberAndPosts(member, posts);
         return responseService.successResult(SuccessCode.DISLIKE_SUCCESS);
-    }
-
-    @Override
-    public PostsDto get(Long id, UserDetailsImpl userDetails) {
-        Object result = postsRepository.getPostsWithAuthor(id);
-        Object[] arr = (Object[]) result;
-        return entityToDTO((Posts) arr[0], (Member) arr[1], userDetails.getMember().getId());
     }
 }

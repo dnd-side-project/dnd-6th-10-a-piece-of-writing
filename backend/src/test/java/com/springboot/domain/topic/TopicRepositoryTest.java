@@ -65,16 +65,16 @@ public class TopicRepositoryTest {
 //        Topic topic = topicRepository.findAll().get(0);
 
 //        List<Posts> posts = topicRepository.getPostsByTopicOrderByPostsIdLimit4(topic.getId());
-        List<Posts> posts = topicRepository.getPostsByTopicOrderByPostsIdLimit4(2L);
+//        List<Posts> posts = topicRepository.getPostsByTopicOrderByPostsIdLimit4(2L);
 //        List<Object> posts = topicRepository.getPostsByTopicOrderByPostsIdLimit4(2L);
 //        List<HashMap<String,Object>> posts = topicRepository.getPostsByTopicOrderByPostsIdLimit4(2L);
-//        List<Long> posts = topicRepository.getPostsByTopicOrderByPostsIdLimit4(2L);
+        List<Long> posts = topicRepository.getPostsIdByTopicOrderByPostsIdLimit4(2L);
 
         logger.info(posts.toString());
 
 
-        for (Posts post : posts
-//        for (Long post : posts
+//        for (Posts post : posts
+        for (Long post : posts
 //        for (HashMap<String,Object> post : posts
         ) {
 //            System.out.println((Posts) post);

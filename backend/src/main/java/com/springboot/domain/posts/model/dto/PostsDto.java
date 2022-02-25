@@ -17,7 +17,7 @@ import lombok.ToString;
 public class PostsDto {
 
     // Posts Info
-    private Long id;
+    private Long postsId;
 
     private String ref;
 

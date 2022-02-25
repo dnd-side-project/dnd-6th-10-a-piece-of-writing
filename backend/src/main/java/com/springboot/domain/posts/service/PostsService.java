@@ -22,7 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface PostsService {
 
-//    Long save(PostsDto requestDto, MultipartDto multipartDto);
+    //    Long save(PostsDto requestDto, MultipartDto multipartDto);
     PostsSaveResponseDto register(PostsSaveRequestDto requestDto, MultipartDto multipartDto);
 
     public Posts findPostsById(Long id);
@@ -31,9 +31,11 @@ public interface PostsService {
 
     public Long removePosts(Long postsId, UserDetailsImpl userDetails);
 
-    public List<PostsDto> findAllPostsOrderByIdDesc(int page, int size, UserDetailsImpl userDetails);
+    public List<PostsDto> findAllPostsOrderByIdDesc(int page, int size, String type, Long topicId,
+        UserDetailsImpl userDetails);
 
-    public List<PostsDto> findAllPostsBySearch(int page, int size, String content, String type, UserDetailsImpl userDetails);
+    public List<PostsDto> findAllPostsBySearch(int page, int size, String content, String type,
+        UserDetailsImpl userDetails);
 
     public String getFileUuid();
 
@@ -47,9 +49,12 @@ public interface PostsService {
 
     public ResponseEntity<ResponseDto> disLikePost(UserDetailsImpl userDetailsImpl, Long id);
 
-    PageResultDto<PostsDto, Object[]> getList(PageRequestDto pageRequestDTO, UserDetailsImpl userDetails);
+    PageResultDto<PostsDto, Object[]> getList(PageRequestDto pageRequestDTO,
+        UserDetailsImpl userDetails);
 
     PostsDto get(Long id, UserDetailsImpl userDetails);
+
+    List<PostsDto> getFirstPostsByTopicOrderByIdDesc(Long topicId, UserDetailsImpl userDetails);
 
     // PostsSaveRequestDto TO Entity
     default Posts dtoToEntity(PostsSaveRequestDto dto, String imageUrl) {
@@ -69,7 +74,7 @@ public interface PostsService {
 
         return PostsDto.builder()
             // posts
-            .id(posts.getId())
+            .postsId(posts.getId())
             .content(posts.getContent())
             .ref(posts.getRef())
             .createdDate(posts.getCreatedDate())
@@ -82,12 +87,12 @@ public interface PostsService {
 //            .authorNickname(author.getNickname())
 //            .authorProfileUrl(author.getProfileUrl())
             .alreadyLike(posts.getLikeMemberList()
-                    .stream().anyMatch(L -> Objects.equals(L.getMember().getId(), displayMemberId)))
+                .stream().anyMatch(L -> Objects.equals(L.getMember().getId(), displayMemberId)))
             .build();
     }
 
     // Entity TO PostsSaveResponseDto
-    default PostsSaveResponseDto entityToPostsSaveResponseDto(Posts posts, Member author){
+    default PostsSaveResponseDto entityToPostsSaveResponseDto(Posts posts, Member author) {
 
         MemberBasicInfoDto authorInfo = MemberBasicInfoDto.entityTOdto(author);
 
