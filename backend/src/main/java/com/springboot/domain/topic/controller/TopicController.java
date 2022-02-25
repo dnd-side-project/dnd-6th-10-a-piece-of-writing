@@ -95,24 +95,6 @@ public class TopicController {
 //        return responseServiceImpl.successResult(SuccessCode.SELECT_TOPIC_SUCCESS, topicDtos);
     }
 
-    @ApiOperation(
-        value = "토픽 검색 api"
-        , notes = "keyword를 포함한 토픽 객체 목록을 반환한다.")
-    @ApiImplicitParam(
-        name = "keyword"
-        , value = "토픽 검색 키워드"
-        , required = true
-        , dataType = "string"
-        , paramType = "path"
-        , defaultValue = "None")
-    @GetMapping("/search/{keyword}")
-    public ResponseEntity<ResponseDto> search(@PathVariable String keyword) {
-
-        List<TopicDto> topicDtos = topicService.searchKeyword(keyword);
-
-        return responseServiceImpl.successResult(SuccessCode.SEARCH_TOPIC_SUCCESS, topicDtos);
-    }
-
 //    @ApiOperation(
 //        value = "토픽별 게시물 초기 4개 이하 조회 api"
 //        , notes = "topicId의 토픽을 가진 게시물 목록 중 4개 이하만 반환한다.")

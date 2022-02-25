@@ -7,10 +7,12 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.JPQLQuery;
+import com.springboot.domain.category.model.entity.QCategory;
 import com.springboot.domain.member.model.QMember;
 import com.springboot.domain.posts.model.entity.Posts;
 import com.springboot.domain.posts.model.entity.QPosts;
 import com.springboot.domain.reply.model.entity.QReply;
+import com.springboot.domain.topic.model.entity.QTopic;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.extern.log4j.Log4j2;
@@ -61,17 +63,18 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport impleme
         log.info("searchPage.............................");
 
         QPosts posts = QPosts.posts;
-        QReply reply = QReply.reply;
+//        QReply reply = QReply.reply;
         QMember member = QMember.member;
+        QTopic topic = QTopic.topic;
+        QCategory category = QCategory.category;
 
         JPQLQuery<Posts> jpqlQuery = from(posts);
         jpqlQuery.leftJoin(member).on(posts.author.eq(member));
-        jpqlQuery.leftJoin(reply).on(reply.posts.eq(posts));
+//        jpqlQuery.leftJoin(reply).on(reply.posts.eq(posts)); // reply 는 받지 않으니 주석 필요?
+        jpqlQuery.innerJoin(category).on(posts.id.eq(category.posts.id));
 
-        //SELECT b, w, count(r) FROM Board b
-        //LEFT JOIN b.writer w LEFT JOIN Reply r ON r.board = b
-        JPQLQuery<Tuple> tuple = jpqlQuery.select(posts, member);
-//        JPQLQuery<Tuple> tuple = jpqlQuery.select(posts, member.id, member.email, member.nickname);
+//        JPQLQuery<Tuple> tuple = jpqlQuery.select(posts, member);
+        JPQLQuery<Tuple> tuple = jpqlQuery.select(posts, member, topic);
 
         BooleanBuilder booleanBuilder = new BooleanBuilder();
         BooleanExpression expression = posts.id.gt(0L);
@@ -85,9 +88,9 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport impleme
 
             for (String t : typeArr) {
                 switch (t) {
-//                    case "t":
-//                        conditionBuilder.or(posts.title.contains(keyword));
-//                        break;
+                    case "t":
+                        conditionBuilder.or(topic.name.contains(keyword));
+                        break;
                     case "a":
                         conditionBuilder.or(member.nickname.contains(keyword));
                         break;
