@@ -59,28 +59,6 @@ public class TopicRepositoryTest {
 
     }
 
-    @DisplayName("[Repository] 특정 Topic ID 와 연관된 Posts 최신순으로 4개 이하만 조회")
-    @Test
-    @Transactional
-    public void testFindPostsByTopicId() {
-
-//        Topic topic = topicRepository.findAll().get(0);
-
-//        List<Posts> posts = topicRepository.getPostsByTopicOrderByPostsIdLimit4(2L);
-        List<Long> posts = topicRepository.getPostsIdByTopicOrderByPostsIdLimit4(2L);
-
-        logger.info(posts.toString());
-
-//        for (Posts post : posts
-        for (Long post : posts
-        ) {
-
-            logger.info("post : " + post.toString());
-            logger.info("post : " + post);
-        }
-
-    }
-
     @DisplayName("특정 게시물의 id로 해당 게시물의 모든 토픽 조회")
     @Test
     @Transactional
