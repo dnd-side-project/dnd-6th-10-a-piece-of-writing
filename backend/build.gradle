@@ -12,6 +12,10 @@ plugins {
     id 'base'
 }
 
+jar {
+    enabled = false
+}
+
 group 'com'
 version '1.0-SNAPSHOT'
 
