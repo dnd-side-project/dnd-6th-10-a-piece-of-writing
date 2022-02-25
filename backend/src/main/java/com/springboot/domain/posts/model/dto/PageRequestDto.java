@@ -17,6 +17,8 @@ public class PageRequestDto {
     private String type;
     private String keyword;
 
+    private Long topicId;
+
 
     public PageRequestDto() {
         this.page = 1;

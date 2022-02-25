@@ -17,12 +17,10 @@ public class MemberBasicInfoDto {
 
     public static MemberBasicInfoDto entityTOdto(Member member){
 
-        MemberBasicInfoDto dto = MemberBasicInfoDto.builder()
+        return MemberBasicInfoDto.builder()
             .id(member.getId())
             .nickname(member.getNickname())
             .profileUrl(member.getProfileUrl())
             .build();
-
-        return dto;
     }
 }

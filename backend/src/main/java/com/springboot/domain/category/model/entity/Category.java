@@ -1,11 +1,8 @@
-package com.springboot.domain.reply.model.entity;
+package com.springboot.domain.category.model.entity;
 
 import com.springboot.domain.common.model.entity.BaseTime;
-import com.springboot.domain.member.model.Member;
 import com.springboot.domain.posts.model.entity.Posts;
-import com.springboot.domain.relation.model.Relation;
-import java.util.Objects;
-import javax.persistence.CascadeType;
+import com.springboot.domain.topic.model.entity.Topic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -26,29 +23,18 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter
 @ToString(exclude = "posts")
-public class Reply extends BaseTime {
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(columnDefinition = "TEXT", nullable = false)
-    private String text;
-
-    // MemberId로 변경 예정
     @ManyToOne(fetch = FetchType.LAZY)
-//    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinColumn(name = "replyer_id")
-    private Member replyer;
-
-//    private String replyer;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-//    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "posts_id")
     private Posts posts;
 
-    public void changeText(String text) {
-        this.text = text;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "topic_id")
+    private Topic topic;
+
 }

@@ -1,7 +1,7 @@
 package com.springboot.domain.relation.service;
 
 import com.springboot.domain.auth.model.UserDetailsImpl;
-import com.springboot.domain.common.model.ResponseDto;
+import com.springboot.domain.common.model.dto.ResponseDto;
 import org.springframework.http.ResponseEntity;
 
 

@@ -16,13 +16,13 @@ import com.google.cloud.vision.v1.Image;
 import com.google.cloud.vision.v1.ImageAnnotatorClient;
 import com.google.cloud.vision.v1.ImageAnnotatorSettings;
 import com.google.cloud.vision.v1.ImageSource;
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.springboot.domain.auth.model.UserDetailsImpl;
+import com.springboot.domain.category.model.entity.Category;
+import com.springboot.domain.category.repository.CategoryRepository;
 import com.springboot.domain.common.error.exception.BusinessException;
 import com.springboot.domain.common.error.exception.EntityNotFoundException;
 import com.springboot.domain.common.error.exception.ErrorCode;
-import com.springboot.domain.common.model.ResponseDto;
+import com.springboot.domain.common.model.dto.ResponseDto;
 import com.springboot.domain.common.model.SuccessCode;
 import com.springboot.domain.common.service.ResponseService;
 import com.springboot.domain.likes.model.Likes;
@@ -30,13 +30,16 @@ import com.springboot.domain.likes.repository.LikesRepository;
 import com.springboot.domain.member.model.Member;
 import com.springboot.domain.member.repository.MemberRepository;
 import com.springboot.domain.posts.model.dto.MultipartDto;
-import com.springboot.domain.member.model.Member;
 import com.springboot.domain.posts.model.dto.PageRequestDto;
 import com.springboot.domain.posts.model.dto.PageResultDto;
 import com.springboot.domain.posts.model.dto.PostsDto;
+import com.springboot.domain.posts.model.dto.PostsSaveRequestDto;
+import com.springboot.domain.posts.model.dto.PostsSaveResponseDto;
 import com.springboot.domain.posts.model.entity.Posts;
 import com.springboot.domain.posts.repository.PostsRepository;
 import com.springboot.domain.reply.repository.ReplyRepository;
+import com.springboot.domain.topic.model.entity.Topic;
+import com.springboot.domain.topic.repository.TopicRepository;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,27 +66,46 @@ public class PostsServiceImpl implements PostsService {
     private final ReplyRepository replyRepository;
     private final ResponseService responseService;
     private final LikesRepository likesRepository;
+    private final CategoryRepository categoryRepository;
+    private final TopicRepository topicRepository;
 
     @Override
     public Posts findPostsById(Long id) {
         return postsRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.ENTITY_NOT_FOUND));
+            .orElseThrow(() -> new EntityNotFoundException(ErrorCode.ENTITY_NOT_FOUND));
     }
 
     @Override
     public Member findMemberById(Long id) {
         return memberRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.ENTITY_NOT_FOUND));
+            .orElseThrow(() -> new EntityNotFoundException(ErrorCode.ENTITY_NOT_FOUND));
     }
 
     @Override
-    public Long save(PostsDto requestDto, MultipartDto multipartDto) {
+    public PostsSaveResponseDto register(PostsSaveRequestDto requestDto,
+        MultipartDto multipartDto) {
         log.info(requestDto);
 
         String imageUrl = postsImgUpload(multipartDto.getFile(), getFileUuid());
         Posts posts = dtoToEntity(requestDto, imageUrl);
-        postsRepository.save(posts);
-        return posts.getId();
+        Posts savedPosts = postsRepository.save(posts);
+        Long savedPostsId = savedPosts.getId();
+        List<Long> topicIdList = requestDto.getTopicIdList();
+
+        for (Long topicId : topicIdList) {
+            Topic topic = topicRepository.getById(topicId);
+            Posts post = postsRepository.getById(savedPostsId);
+
+            Category category = Category.builder()
+                .topic(topic)
+                .posts(post)
+                .build();
+
+            categoryRepository.save(category);
+        }
+
+        return entityToPostsSaveResponseDto(savedPosts,
+            findMemberById(requestDto.getAuthorId()));
     }
 
     @Override
@@ -96,31 +118,78 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Override
-    public List<PostsDto> findAllPostsOrderByIdDesc(int page, int size,
-            UserDetailsImpl userDetails) {
+    public List<PostsDto> findAllPosts(int page, int size,
+        UserDetailsImpl userDetails) {
 
         PageRequestDto pageRequestDTO = PageRequestDto.builder()
-                .page(page)
-                .size(size)
-                .build();
+            .page(page)
+            .size(size)
+            .build();
 
-        PageResultDto<PostsDto, Object[]> resultDTO = getList(pageRequestDTO, userDetails);
+        PageResultDto<PostsDto, Object[]> resultDTO = getList(pageRequestDTO,
+            userDetails.getMember().getId());
         return resultDTO.getDtoList();
     }
 
     @Override
     public List<PostsDto> findAllPostsBySearch(int page, int size, String keyword, String type,
-            UserDetailsImpl userDetails) {
+        Long topicId, UserDetailsImpl userDetails) {
 
         PageRequestDto pageRequestDTO = PageRequestDto.builder()
-                .page(page)
-                .size(size)
-                .type(type)
-                .keyword(keyword)
-                .build();
+            .page(page)
+            .size(size)
+            .type(type)
+            .keyword(keyword)
+            .topicId(topicId)
+            .build();
 
-        PageResultDto<PostsDto, Object[]> resultDTO = getList(pageRequestDTO, userDetails);
+        PageResultDto<PostsDto, Object[]> resultDTO = getList(pageRequestDTO,
+            userDetails.getMember().getId());
         return resultDTO.getDtoList();
+    }
+
+    // Tools for Pagination
+    @Override
+    public PageResultDto<PostsDto, Object[]> getList(PageRequestDto pageRequestDTO,
+        Long loginUserId) {
+
+        log.info(pageRequestDTO);
+
+        Function<Object[], PostsDto> fn = (en -> entityToDTO((Posts) en[0], (Member) en[1],
+            loginUserId));
+
+        Page<Object[]> result = postsRepository.searchPage(
+            pageRequestDTO.getType(),
+            pageRequestDTO.getKeyword(),
+            pageRequestDTO.getTopicId(),
+            pageRequestDTO.getPageable(Sort.by("id").descending()));
+
+        return new PageResultDto<>(result, fn);
+    }
+
+    @Override
+    public PostsDto get(Long id, UserDetailsImpl userDetails) {
+        Object result = postsRepository.getPostsWithAuthor(id);
+        Object[] arr = (Object[]) result;
+        return entityToDTO((Posts) arr[0], (Member) arr[1], userDetails.getMember().getId());
+    }
+
+    @Override
+    public List<PostsDto> getFirstPostsByTopicOrderByIdDesc(Long topicId,
+        UserDetailsImpl userDetails) {
+
+        List<PostsDto> postsDtos = new ArrayList<>();
+
+        List<Long> postsIdList = postsRepository.getPostsIdByTopicOrderByPostsIdLimit4(topicId);
+
+        for (Long postsId : postsIdList) {
+            Object result = postsRepository.getPostsWithAuthor(postsId);
+            Object[] arr = (Object[]) result;
+            postsDtos.add(
+                entityToDTO((Posts) arr[0], (Member) arr[1], userDetails.getMember().getId()));
+        }
+
+        return postsDtos;
     }
 
     @Override
@@ -140,7 +209,7 @@ public class PostsServiceImpl implements PostsService {
 
     @Override
     public String postsImgUpload(MultipartFile multipartFile,
-            String fileName) {
+        String fileName) {
         try {
             byte[] bytes = multipartFile.getBytes();
 
@@ -148,7 +217,7 @@ public class PostsServiceImpl implements PostsService {
             String bucketName = "example-ocr-test";
 
             Storage storage = StorageOptions.newBuilder().setProjectId(projectId)
-                    .setCredentials(getCredentials()).build().getService();
+                .setCredentials(getCredentials()).build().getService();
 
             BlobId blobId = BlobId.of(bucketName, fileName);
             BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("image/jpeg").build();
@@ -170,13 +239,13 @@ public class PostsServiceImpl implements PostsService {
         Image img = Image.newBuilder().setSource(imgSource).build();
         Feature feat = Feature.newBuilder().setType(Feature.Type.TEXT_DETECTION).build();
         AnnotateImageRequest request =
-                AnnotateImageRequest.newBuilder().addFeatures(feat).setImage(img).build();
+            AnnotateImageRequest.newBuilder().addFeatures(feat).setImage(img).build();
         requests.add(request);
 
         try {
             ImageAnnotatorSettings imageAnnotatorSettings = ImageAnnotatorSettings.newBuilder()
-                    .setCredentialsProvider(FixedCredentialsProvider.create(getCredentials()))
-                    .build();
+                .setCredentialsProvider(FixedCredentialsProvider.create(getCredentials()))
+                .build();
 
             ImageAnnotatorClient client = ImageAnnotatorClient.create(imageAnnotatorSettings);
             BatchAnnotateImagesResponse response = client.batchAnnotateImages(requests);
@@ -192,24 +261,6 @@ public class PostsServiceImpl implements PostsService {
         }
     }
 
-    // Tools for Pagination
-    @Override
-    public PageResultDto<PostsDto, Object[]> getList(PageRequestDto pageRequestDTO,
-            UserDetailsImpl userDetails) {
-
-        log.info(pageRequestDTO);
-
-        Function<Object[], PostsDto> fn = (en -> entityToDTO((Posts) en[0], (Member) en[1],
-                userDetails.getMember().getId()));
-
-        Page<Object[]> result = postsRepository.searchPage(
-                pageRequestDTO.getType(),
-                pageRequestDTO.getKeyword(),
-                pageRequestDTO.getPageable(Sort.by("id").descending()));
-
-        return new PageResultDto<>(result, fn);
-    }
-
     @Override
     public ResponseEntity<ResponseDto> likePost(UserDetailsImpl userDetailsImpl, Long id) {
         Member member = userDetailsImpl.getMember();
@@ -222,12 +273,5 @@ public class PostsServiceImpl implements PostsService {
     public ResponseEntity<ResponseDto> disLikePost(UserDetailsImpl userDetailsImpl, Long id) {
         likesRepository.deleteLikesByMemberIdAndPostsId(userDetailsImpl.getMemberId(), id);
         return responseService.successResult(SuccessCode.DISLIKE_SUCCESS);
-    }
-
-    @Override
-    public PostsDto get(Long id, UserDetailsImpl userDetails) {
-        Object result = postsRepository.getPostsWithAuthor(id);
-        Object[] arr = (Object[]) result;
-        return entityToDTO((Posts) arr[0], (Member) arr[1], userDetails.getMember().getId());
     }
 }
