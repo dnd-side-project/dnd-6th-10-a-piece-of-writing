@@ -137,7 +137,7 @@ public class PostsController {
     }
 
     // 검색된 게시물 최신순 내림차순 조회
-    @Operation(summary = "search posts api", description = "검색된 type(c=content, a=author, t=topic)과 keyword를 포함한 게시물 조회 api. 검색 화면에서 글귀를 최신 순으로 페이지당 size개씩 조회.")
+    @Operation(summary = "search posts api", description = "검색된 type(c=posts_content, a=posts_author_nickname, t=topic_name)과 keyword를 포함한 게시물 조회 api. 검색 화면에서 글귀를 최신 순으로 페이지당 size개씩 조회.")
     @GetMapping("/search")
     public ResponseEntity<ResponseDto> findAllPostsBySearch(@RequestParam int page,
         @RequestParam int size, @RequestParam String type, @RequestParam String keyword,

@@ -130,22 +130,26 @@ public class PostsServiceTest {
 //        assertThat(deletedReplyDTOList).isEmpty();
 //    }
 //
-//    @DisplayName("[Service] 조건부 목록 조회 페이지네이션 search 테스트 ")
-//    @Test
-//    @Transactional
-//    public void testSearch() {
-//
-//        PageRequestDto pageRequestDTO = new PageRequestDto();
-//        pageRequestDTO.setPage(1);
-//        pageRequestDTO.setSize(10);
-//        pageRequestDTO.setType("c");
-//        pageRequestDTO.setKeyword("1");
-//
-//        PageResultDto<PostsDto, Object[]> result = service.getList(pageRequestDTO);
-//
-//        for (PostsDto postsDto : result.getDtoList()) {
-//            System.out.println(postsDto);
-//        }
-//    }
+    @DisplayName("[Service] 조건부 목록 조회 페이지네이션 search 테스트 ")
+    @Test
+    @Transactional
+    public void testSearch() {
+
+        Long loginUserId = memberRepository.findAll().get(0).getId();
+
+//        List<PostsDto> postsDtos = service.findAllPostsBySearch(1,10,"t","1",loginUser);
+
+        PageRequestDto pageRequestDTO = new PageRequestDto();
+        pageRequestDTO.setPage(1);
+        pageRequestDTO.setSize(10);
+        pageRequestDTO.setType("t");
+        pageRequestDTO.setKeyword("11");
+
+        PageResultDto<PostsDto, Object[]> result = service.getList(pageRequestDTO,loginUserId);
+
+        for (PostsDto postsDto : result.getDtoList()) {
+            logger.info(postsDto.toString());
+        }
+    }
 
 }

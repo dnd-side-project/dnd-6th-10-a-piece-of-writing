@@ -70,11 +70,14 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport impleme
 
         JPQLQuery<Posts> jpqlQuery = from(posts);
         jpqlQuery.leftJoin(member).on(posts.author.eq(member));
-//        jpqlQuery.leftJoin(reply).on(reply.posts.eq(posts)); // reply 는 받지 않으니 주석 필요?
-        jpqlQuery.innerJoin(category).on(posts.id.eq(category.posts.id));
+//        jpqlQuery.leftJoin(reply).on(reply.posts.eq(posts));
+//        jpqlQuery.innerJoin(category).on(posts.id.eq(category.posts.id));
+        jpqlQuery.innerJoin(category).on(posts.eq(category.posts));
+        jpqlQuery.innerJoin(topic).on(category.topic.eq(topic));
+//        jpqlQuery.innerJoin(topic).on(category.topic.id.eq(topic.id));
 
-//        JPQLQuery<Tuple> tuple = jpqlQuery.select(posts, member);
-        JPQLQuery<Tuple> tuple = jpqlQuery.select(posts, member, topic);
+        JPQLQuery<Tuple> tuple = jpqlQuery.select(posts, member);
+//        JPQLQuery<Tuple> tuple = jpqlQuery.select(posts, member, topic);
 
         BooleanBuilder booleanBuilder = new BooleanBuilder();
         BooleanExpression expression = posts.id.gt(0L);

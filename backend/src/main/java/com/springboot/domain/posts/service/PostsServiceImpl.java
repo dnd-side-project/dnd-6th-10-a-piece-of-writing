@@ -88,13 +88,9 @@ public class PostsServiceImpl implements PostsService {
         log.info(requestDto);
 
         String imageUrl = postsImgUpload(multipartDto.getFile(), getFileUuid());
-
         Posts posts = dtoToEntity(requestDto, imageUrl);
-
         Posts savedPosts = postsRepository.save(posts);
-
         Long savedPostsId = savedPosts.getId();
-
         List<Long> topicIdList = requestDto.getTopicIdList();
 
         for (Long topicId : topicIdList) {
@@ -136,7 +132,8 @@ public class PostsServiceImpl implements PostsService {
             .size(size)
             .build();
 
-        PageResultDto<PostsDto, Object[]> resultDTO = getList(pageRequestDTO, userDetails);
+        PageResultDto<PostsDto, Object[]> resultDTO = getList(pageRequestDTO,
+            userDetails.getMember().getId());
         return resultDTO.getDtoList();
     }
 
@@ -151,19 +148,20 @@ public class PostsServiceImpl implements PostsService {
             .keyword(keyword)
             .build();
 
-        PageResultDto<PostsDto, Object[]> resultDTO = getList(pageRequestDTO, userDetails);
+        PageResultDto<PostsDto, Object[]> resultDTO = getList(pageRequestDTO,
+            userDetails.getMember().getId());
         return resultDTO.getDtoList();
     }
 
     // Tools for Pagination
     @Override
     public PageResultDto<PostsDto, Object[]> getList(PageRequestDto pageRequestDTO,
-        UserDetailsImpl userDetails) {
+        Long loginUserId) {
 
         log.info(pageRequestDTO);
 
         Function<Object[], PostsDto> fn = (en -> entityToDTO((Posts) en[0], (Member) en[1],
-            userDetails.getMember().getId()));
+            loginUserId));
 
         Page<Object[]> result = postsRepository.searchPage(
             pageRequestDTO.getType(),

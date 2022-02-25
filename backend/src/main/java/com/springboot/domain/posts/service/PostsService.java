@@ -50,7 +50,7 @@ public interface PostsService {
     public ResponseEntity<ResponseDto> disLikePost(UserDetailsImpl userDetailsImpl, Long id);
 
     PageResultDto<PostsDto, Object[]> getList(PageRequestDto pageRequestDTO,
-        UserDetailsImpl userDetails);
+        Long loginUserId);
 
     PostsDto get(Long id, UserDetailsImpl userDetails);
 
@@ -82,10 +82,6 @@ public interface PostsService {
             .imageUrl(posts.getImageUrl())
             // author
             .authorInfo(authorInfo)
-//            .authorId(author.getId())
-//            .authorEmail(author.getEmail())
-//            .authorNickname(author.getNickname())
-//            .authorProfileUrl(author.getProfileUrl())
             .alreadyLike(posts.getLikeMemberList()
                 .stream().anyMatch(L -> Objects.equals(L.getMember().getId(), displayMemberId)))
             .build();
