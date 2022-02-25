@@ -30,9 +30,10 @@ export const unfollow = async (userId: number): Promise<RESPONSE_TYPE> => {
   return { success: false, message: '오류가 발생했습니다!' }
 }
 
-export const getFollowing = async (
-  userId: number,
-): Promise<RESPONSE_TYPE<{ followings: UserInfo[]; nickname: string }>> => {
+export type FollowingsResultType = { followings: UserInfo[]; nickname: string }
+export type FollowersResultType = { followers: UserInfo[]; nickname: string }
+
+export const getFollowing = async (userId: number): Promise<RESPONSE_TYPE<FollowingsResultType>> => {
   try {
     const userInfoResult = await loadProfile(userId)
     if (!userInfoResult.success) return { success: false, message: '잘못된 유저입니다!' }
@@ -52,9 +53,7 @@ export const getFollowing = async (
   return { success: false, message: '오류가 발생했습니다!' }
 }
 
-export const getFollower = async (
-  userId: number,
-): Promise<RESPONSE_TYPE<{ followings: UserInfo[]; nickname: string }>> => {
+export const getFollower = async (userId: number): Promise<RESPONSE_TYPE<FollowersResultType>> => {
   try {
     const userInfoResult = await loadProfile(userId)
     if (!userInfoResult.success) return { success: false, message: '잘못된 유저입니다!' }
@@ -63,7 +62,7 @@ export const getFollower = async (
       return {
         success: true,
         message: '팔로우 로드 요청에 성공했습니다!',
-        data: { nickname: userInfoResult.data.nickname, followings: result.data?.data },
+        data: { nickname: userInfoResult.data.nickname, followers: result.data?.data },
       }
     }
   } catch (e: any) {

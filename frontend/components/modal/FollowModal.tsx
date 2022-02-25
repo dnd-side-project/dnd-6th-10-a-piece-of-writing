@@ -1,6 +1,7 @@
 import React, { useRef } from 'react'
 
 import Image from 'next/image'
+import { Oval } from 'react-loader-spinner'
 import styled from 'styled-components'
 
 import Followers from '@/_follower/Followers'
@@ -14,9 +15,18 @@ type Props = {
   setModalOpen: (_: boolean) => void
   followers: UserInfo[]
   isFollowing?: boolean
+  nickname?: string
+  isLoading?: boolean
 }
 
-const FollowModal: React.FC<Props> = ({ isModalOpen = false, setModalOpen, followers = [], isFollowing = false }) => {
+const FollowModal: React.FC<Props> = ({
+  isModalOpen = false,
+  setModalOpen,
+  followers = [],
+  isFollowing = false,
+  nickname = '😄',
+  isLoading = false,
+}) => {
   const contentRef = useRef<HTMLDivElement>(null)
 
   useClickOutside({
@@ -29,19 +39,23 @@ const FollowModal: React.FC<Props> = ({ isModalOpen = false, setModalOpen, follo
   return (
     <Container hidden={!isModalOpen}>
       <FlexDiv width={'100%'} height={'100%'}>
-        <Content ref={contentRef} className={`border-solid border-1 border-gray-200`}>
-          <div className={`relative w-full ${CENTER_FLEX} h-12 border-solid border-b-1 border-b-gray-200`}>
-            <div className={'flex text-t16 text-center text-ellipsis overflow-hidden whitespace-nowrap'}>
-              내가 {isFollowing ? '팔로잉' : '팔로우'}하고 있는 {followers.length}명
+        {isLoading ? (
+          <Oval height={100} />
+        ) : (
+          <Content ref={contentRef} className={`border-solid border-1 border-gray-200`}>
+            <div className={`relative w-full ${CENTER_FLEX} h-12 border-solid border-b-1 border-b-gray-200`}>
+              <div className={'flex text-t16 text-center text-ellipsis overflow-hidden whitespace-nowrap'}>
+                {nickname}이(가) {isFollowing ? '팔로잉' : '팔로우'}하고 있는 {followers.length}명
+              </div>
+              <div className={'absolute right-2 sm:right-4 cursor-pointer'} onClick={() => setModalOpen(false)}>
+                <Image src={'/close.svg'} width={24} height={24} />
+              </div>
             </div>
-            <div className={'absolute right-2 sm:right-4 cursor-pointer'} onClick={() => setModalOpen(false)}>
-              <Image src={'/close.svg'} width={24} height={24} />
+            <div className={'flex flex-col w-full p-6'}>
+              <Followers followers={followers} isSmall={true} />
             </div>
-          </div>
-          <div className={'flex flex-col w-full p-6'}>
-            <Followers followers={followers} isSmall={true} />
-          </div>
-        </Content>
+          </Content>
+        )}
       </FlexDiv>
     </Container>
   )

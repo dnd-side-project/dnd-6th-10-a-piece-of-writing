@@ -48,12 +48,12 @@ const Upload: React.FC<ServerSideProps> = ({ me }) => {
     <>
       {isUploadModalOpen && <ImageUploadModal setIsModalOpen={setIsUploadModalOpen} />}
       <div className={`w-full min-h-screen ${CENTER_FLEX} flex-col flex-nowrap align-middle`}>
-        <div className={`w-full ${CENTER_FLEX} flex-nowrap`}>
+        <div className={`w-full ${CENTER_FLEX} flex-nowrap p-4`}>
           <MainContainer>
             <MainForm />
           </MainContainer>
         </div>
-        <div className={`${CENTER_FLEX} mt-10 w-full flex-nowrap`}>
+        <div className={`${CENTER_FLEX} mt-5 w-full flex-nowrap`}>
           <div className={'w-full md:w-5/6'}>
             <BackgroundImageCarousel onClickImageUploadButton={onClickImageUploadButton} />
           </div>

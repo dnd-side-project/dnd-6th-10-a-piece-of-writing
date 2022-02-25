@@ -3,6 +3,7 @@ import React, { useRef, useState } from 'react'
 import { useAtom } from 'jotai'
 import { useAtomValue } from 'jotai/utils'
 import Image from 'next/image'
+import { TwitterPicker } from 'react-color'
 import styled from 'styled-components'
 
 import { isRecognitionModalOpenAtom, postTextAtom, selectedBackgroundImageAtom } from '@/atom/post'
@@ -20,6 +21,7 @@ type Props = {}
 const MainForm: React.FC<Props> = ({}) => {
   const [text, setText] = useAtom(postTextAtom)
   const [source, setSource] = useState('')
+  const [pickerOpen, setPickerOpen] = useState(false)
   const [textColor, setTextColor] = useState('black')
   const [isRecognitionModalOpen, setIsRecognitionModalOpen] = useAtom(isRecognitionModalOpenAtom)
   const selectedBackgroundImage = useAtomValue(selectedBackgroundImageAtom)
@@ -39,7 +41,7 @@ const MainForm: React.FC<Props> = ({}) => {
 
   const selectedFontFamily = FONTS[fontIndex]?.eng
   const selectedFontSize = FONT_SIZES[fontSizeIndex]?.size
-
+  console.log({ pickerOpen })
   return (
     <>
       {isRecognitionModalOpen && <LetterRecognitionModal />}
@@ -122,7 +124,16 @@ const MainForm: React.FC<Props> = ({}) => {
             <FontColorButton onClick={() => setTextColor('#fff')} color={'#fff'} bgColor={'#444444'}>
               글씨 색{textColor !== 'black' && <Image src={'/post_check_white.svg'} width={20} height={20} />}
             </FontColorButton>
+            <FontColorButton
+              onClick={() => setPickerOpen((pickerOpen) => !pickerOpen)}
+              color={'#444444'}
+              bgImage={'linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%)'}>
+              직접 고르기{textColor !== 'black' && <Image src={'/post_check_white.svg'} width={20} height={20} />}
+            </FontColorButton>
           </FlexDiv>
+          <div className={`flex mt-3 ${pickerOpen ? '' : 'invisible'}`}>
+            <TwitterPicker width={'340px'} color={textColor} onChangeComplete={(color) => setTextColor(color.hex)} />
+          </div>
         </FormContainer>
       </div>
     </>
@@ -232,6 +243,11 @@ const TextLimit = styled.div`
   font-size: 12px;
   color: #a1a1a1;
 `
+type FontColorButtonProps = {
+  color?: string
+  bgColor?: string
+  bgImage?: string
+}
 
 const FontColorButton = styled.button`
   height: 36px;
@@ -246,8 +262,9 @@ const FontColorButton = styled.button`
   border-radius: 13px;
   border: solid 1px #b9b9b9;
   font-size: 12px;
-  background-color: ${(props: { bgColor?: string }) => props.bgColor ?? 'auto'};
-  color: ${(props: { color?: string }) => props.color ?? 'black'};
+  background-color: ${(props: FontColorButtonProps) => props.bgColor ?? 'auto'};
+  background-image: ${(props: FontColorButtonProps) => props.bgImage ?? 'none'};
+  color: ${(props: FontColorButtonProps) => props.color ?? 'black'};
 `
 
 type FontButtonProps = FontProps & {

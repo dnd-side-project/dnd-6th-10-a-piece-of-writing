@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 import { useRouter } from 'next/router'
 import { Oval } from 'react-loader-spinner'
@@ -6,30 +6,15 @@ import styled from 'styled-components'
 
 import Followers from '@/_follower/Followers'
 import FollowLabel from '@/_follower/FollowLabel'
-import { UserInfo } from '@/components/_user/type'
-import { getFollower } from '@/server/user/follow'
+import { useFollowers } from '@/hook/react-query/useFollowers'
 import { CENTER_FLEX } from '@/styles/classNames'
 
 const Following: React.FC = ({}) => {
   const router = useRouter()
   const { id } = router.query
-  const [nickname, setNickname] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [userInfo, setUserInfo] = useState<UserInfo[]>([])
+  const userId = typeof id === 'string' ? parseInt(id) : 1
 
-  useEffect(() => {
-    if (typeof id !== 'string') return
-    setLoading(true)
-    getFollower(parseInt(id))
-      .then((res) => {
-        if (res.success && res.data) {
-          setUserInfo(res.data.followings)
-          setNickname(res.data.nickname)
-        }
-        setLoading(false)
-      })
-      .catch(() => setLoading(false))
-  }, [id])
+  const { followers, isLoading: loading, nickname } = useFollowers(userId)
 
   return (
     <div className={`w-full ${CENTER_FLEX}`}>
@@ -40,9 +25,9 @@ const Following: React.FC = ({}) => {
       ) : (
         <Container>
           <div className={'my-10'}>
-            <FollowLabel nickname={nickname} count={userInfo.length} isFollow={false} />
+            <FollowLabel nickname={nickname} count={followers?.length} isFollow={false} />
           </div>
-          <Followers followers={userInfo} />
+          <Followers followers={followers} />
         </Container>
       )}
     </div>
