@@ -16,11 +16,6 @@ public interface TopicRepository extends JpaRepository<Topic, Long> {
 
     List<Topic> findByNameContaining(String keyword);
 
-    @Query(value = "SELECT p.id FROM Posts p INNER JOIN category c ON p.id = c.posts_id and c.topic_id = :topicId order by p.id desc limit 4", nativeQuery = true)
-//    @Query(value="SELECT * FROM Posts p INNER JOIN category c ON p.id = c.posts_id and c.topic_id = :topicId order by p.id desc limit 2",nativeQuery = true)
-//    List<Posts> getPostsByTopicOrderByPostsIdLimit4(@Param("topicId") Long topicId);
-    List<Long> getPostsIdByTopicOrderByPostsIdLimit4(@Param("topicId") Long topicId);
-
     @Query(value = "SELECT * FROM Topic t "
         + "INNER JOIN category c "
         + "ON t.id = c.topic_id "

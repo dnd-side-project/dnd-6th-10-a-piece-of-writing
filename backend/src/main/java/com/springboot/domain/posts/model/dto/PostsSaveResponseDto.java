@@ -15,8 +15,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostsSaveResponseDto {
-
-    // Posts Info
+    
     private Long postsId;
 
     private String ref;
@@ -28,15 +27,4 @@ public class PostsSaveResponseDto {
     private LocalDateTime createdDate;
 
     private MemberBasicInfoDto authorInfo;
-
-    // Author Info
-//    private Long authorId; //Author id
-//
-//    private String authorEmail; //Author email
-//
-//    private String authorNickname; // Author nickname
-//
-//    private String authorProfileUrl;
-//
-//    private boolean alreadyLike;
 }

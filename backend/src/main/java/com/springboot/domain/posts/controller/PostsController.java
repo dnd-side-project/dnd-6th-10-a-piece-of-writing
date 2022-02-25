@@ -37,10 +37,7 @@ public class PostsController {
     @PostMapping
     public ResponseEntity<ResponseDto> save(
         @RequestPart("request") PostsSaveRequestDto requestDto, MultipartDto multipartDto) {
-//            @RequestPart("request") PostsDto requestDto, MultipartDto multipartDto) {
-//        Long savedPostId = postsService.register(requestDto, multipartDto);
         PostsSaveResponseDto savedPostResponseDto = postsService.register(requestDto, multipartDto);
-//        return responseServiceImpl.successResult(SuccessCode.SAVE_POSTS_SUCCESS, savedPostId);
         return responseServiceImpl.successResult(SuccessCode.SAVE_POSTS_SUCCESS,
             savedPostResponseDto);
     }

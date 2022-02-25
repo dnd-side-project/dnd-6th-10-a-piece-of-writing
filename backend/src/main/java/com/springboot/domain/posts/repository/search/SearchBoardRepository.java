@@ -1,6 +1,5 @@
 package com.springboot.domain.posts.repository.search;
 
-import com.springboot.domain.posts.model.entity.Posts;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

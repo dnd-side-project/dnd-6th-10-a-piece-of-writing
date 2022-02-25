@@ -33,10 +33,9 @@ public enum SuccessCode {
     DELETE_POSTS_SUCCESS("게시물 삭제 성공", "SP003", 200),
     SELECT_ALL_POSTS_SUCCESS("모든 게시물 조회", "SP004", 200),
     SELECT_POSTS_SEARCH_SUCCESS("검색된 게시물 조회", "SP005", 200),
-    SELECT_POSTS_SUCCESS("게시물 조회", "SP006", 200),
+    SELECT_POSTS_SUCCESS("게시물 조회 성공", "SP006", 200),
     LIKE_SUCCESS("좋아요 성공", "SP007", 200),
     DISLIKE_SUCCESS("좋아요 취소 성공", "SP008", 200),
-//    SELECT_POSTS_BY_TOPIC_SUCCESS("토픽별 게시물 조회 성공","SP009",200),
     SELECT_FIRST_POSTS_BY_TOPIC_SUCCESS("토픽별 초기 게시물 조회 성공","SP009",200),
 
     //  Reply

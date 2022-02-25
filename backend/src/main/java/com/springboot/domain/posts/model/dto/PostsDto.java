@@ -31,16 +31,5 @@ public class PostsDto {
 
     private LocalDateTime modifiedDate;
 
-    // Author Info
-//    private Long authorId; //Author id
-//
-//    private String authorEmail; //Author email
-//
-//    private String authorNickname; // Author nickname
-//
-//    private String authorProfileUrl;
-
-
-
     private boolean alreadyLike;
 }
