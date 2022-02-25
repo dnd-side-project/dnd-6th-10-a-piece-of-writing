@@ -6,7 +6,6 @@ import styled from 'styled-components'
 import { UserInfo as UserInfoType } from '@/components/_user/type'
 import { Button } from '@/components/button'
 import { FlexDiv } from '@/components/style/div/FlexDiv'
-import useNeedLogin from '@/hook/useNeedLogin'
 import { useSsrMe } from '@/hook/useSsrMe'
 import { withdraw } from '@/server/user'
 import { withAuthServerSideProps } from '@/server/withAuthServerSide'
@@ -16,7 +15,7 @@ type ServerSideProps = { me: UserInfoType }
 
 const Withdraw: React.FC<ServerSideProps> = ({ me }) => {
   useSsrMe(me)
-  useNeedLogin()
+  // useNeedLogin()
 
   const onClickWithdraw = () => {
     if (!confirm('정말로 탈퇴하시겠습니까?')) return
