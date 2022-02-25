@@ -10,7 +10,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/dnd-side-project/dnd-6th-10-a-piece-of-writing">
-    <img src="logo-vertical.png" alt="Logo" width="80" height="80">
+    <img src="logo-vertical.png" alt="Logo" width="80" height="30">
   </a>
 
 <h3 align="center">글 한조각</h3>
