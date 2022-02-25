@@ -30,35 +30,8 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport impleme
         super(Posts.class);
     }
 
-//    @Override
-//    public Posts search1() {
-//
-//        log.info("search1........................");
-//
-//        QPosts posts = QPosts.posts;
-//        QReply reply = QReply.reply;
-//        QMember member = QMember.member;
-//
-//        JPQLQuery<Posts> jpqlQuery = from(posts);
-//        jpqlQuery.leftJoin(member).on(posts.author.eq(member));
-//        jpqlQuery.leftJoin(reply).on(reply.posts.eq(posts));
-//
-//        JPQLQuery<Tuple> tuple = jpqlQuery.select(posts, member.id, member.email, member.nickname);
-//        tuple.groupBy(posts);
-//
-//        log.info("---------------------------");
-//        log.info(tuple);
-//        log.info("---------------------------");
-//
-//        List<Tuple> result = tuple.fetch();
-//
-//        log.info(result);
-//
-//        return null;
-//    }
-
     @Override
-    public Page<Object[]> searchPage(String type, String keyword, Pageable pageable) {
+    public Page<Object[]> searchPage(String type, String keyword, Long topicId, Pageable pageable) {
 
         log.info("searchPage.............................");
 
@@ -91,8 +64,11 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport impleme
 
             for (String t : typeArr) {
                 switch (t) {
-                    case "t":
+                    case "n":
                         conditionBuilder.or(topic.name.contains(keyword));
+                        break;
+                    case "i":
+                        conditionBuilder.or(topic.id.eq(topicId));
                         break;
                     case "a":
                         conditionBuilder.or(member.nickname.contains(keyword));

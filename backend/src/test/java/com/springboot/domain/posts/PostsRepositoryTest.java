@@ -128,49 +128,6 @@ public class PostsRepositoryTest {
         System.out.println(Arrays.toString(arr));
 
     }
-//
-//    @DisplayName("[Repository] 특정 ID Posts 와 연관된 Reply 조회")
-//    @Test
-//    @Transactional
-//    public void testGetPostsWithReply() {
-//
-//        List<Object[]> result = postsRepository.getPostsWithReply(300L);
-//
-//        for (Object[] arr : result) {
-//            System.out.println(Arrays.toString(arr));
-//        }
-//    }
-//
-//    @DisplayName("[Repository] 게시물 목록 조회 ( 게시물 + 작성자 + 댓글 작성자 ) 및 페이징 처리")
-//    @Test
-//    @Transactional
-//    public void testWithAuthorReply() {
-//
-//        Pageable pageable = PageRequest.of(0, 10, Sort.by("id").descending());
-//
-//        Page<Object[]> result = postsRepository.getPostsListsWithAuthorReply(pageable);
-//
-//        result.get().forEach(row -> {
-//
-//            Object[] arr = (Object[]) row;
-//
-//            System.out.println(Arrays.toString(arr));
-//        });
-//    }
-
-    @DisplayName("[Repository] JPQL 페이지네이션 search 테스트")
-    @Test
-    @Transactional
-    public void testSearchPage() {
-
-        Pageable pageable =
-            PageRequest.of(0, 10,
-                Sort.by("id").descending()
-                    .and(Sort.by("content").ascending()));
-
-        Page<Object[]> result = postsRepository.searchPage("c", "1", pageable);
-
-    }
 
 
 }

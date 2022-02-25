@@ -91,7 +91,38 @@ public class PostsController {
     // 전체 게시물 최신순 내림차순 조회
     @ApiOperation(
         value = "모든 글귀 검색 api."
-        , notes = "request 받은 페이지 기준으로 메인 화면에서 글귀를 최신 순으로 페이지당 size개씩 조회. type = p 일 때, 모든 게시물 조회 기능 제공. type = t일 때, 주어진 topicId에 따른 토픽별 게시물 조회 기능 제공")
+        , notes = "request 받은 페이지 기준으로 메인 화면에서 글귀를 최신 순으로 페이지당 size개씩 조회.")
+    @ApiImplicitParams(
+        {
+            @ApiImplicitParam(
+                name = "page"
+                , value = "페이지 번호"
+                , required = true
+                , dataType = "int"
+                , paramType = "query"
+                , defaultValue = "None"),
+            @ApiImplicitParam(
+                name = "size"
+                , value = "사이즈 크기"
+                , required = true
+                , dataType = "int"
+                , paramType = "query"
+                , defaultValue = "None")
+        }
+    )
+    @GetMapping("/list")
+    public ResponseEntity<ResponseDto> findAllPostsOrderByIdDesc(@RequestParam int page,
+        @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+        @RequestParam int size) {
+
+        List<PostsDto> posts = postsService.findAllPosts(page, size, userDetailsImpl);
+
+        return responseServiceImpl.successResult(SuccessCode.SELECT_ALL_POSTS_SUCCESS, posts);
+    }
+
+    @ApiOperation(
+        value = "유형 및 키워드 기반 검색 api."
+        , notes = "검색된 type(c=posts_content, a=posts_author_nickname, tn=topic_name, ti=topic_id)과 keyword 또는 topidId(ti의 경우)를 포함한 게시물 조회 api. 검색 화면에서 글귀를 최신 순으로 페이지당 size개씩 조회.")
     @ApiImplicitParams(
         {
             @ApiImplicitParam(
@@ -116,34 +147,30 @@ public class PostsController {
                 , paramType = "query"
                 , defaultValue = "None"),
             @ApiImplicitParam(
+                name = "keyword"
+                , value = "검색 키워드"
+                , required = false
+                , dataType = "string"
+                , paramType = "query"
+                , defaultValue = "None"),
+            @ApiImplicitParam(
                 name = "topicId"
                 , value = "토픽 아이디"
-                , required = true
+                , required = false
                 , dataType = "long"
                 , paramType = "query"
                 , defaultValue = "None")
         }
     )
-    @GetMapping("/list")
-    public ResponseEntity<ResponseDto> findAllPostsOrderByIdDesc(@RequestParam int page,
-        @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
-        @RequestParam int size, @RequestParam String type, @RequestParam Long topicId) {
-
-//        List<PostsDto> posts = postsService.findAllPostsOrderByIdDesc(page, size, userDetailsImpl);
-        List<PostsDto> posts = postsService.findAllPostsOrderByIdDesc(page, size, type, topicId,
-            userDetailsImpl);
-
-        return responseServiceImpl.successResult(SuccessCode.SELECT_ALL_POSTS_SUCCESS, posts);
-    }
-
     // 검색된 게시물 최신순 내림차순 조회
-    @Operation(summary = "search posts api", description = "검색된 type(c=posts_content, a=posts_author_nickname, t=topic_name)과 keyword를 포함한 게시물 조회 api. 검색 화면에서 글귀를 최신 순으로 페이지당 size개씩 조회.")
     @GetMapping("/search")
     public ResponseEntity<ResponseDto> findAllPostsBySearch(@RequestParam int page,
-        @RequestParam int size, @RequestParam String type, @RequestParam String keyword,
+        @RequestParam int size, @RequestParam(required = true) String type,
+        @RequestParam(required = false) String keyword,
+        @RequestParam(required = false) Long topicId,
         @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
 
-        List<PostsDto> posts = postsService.findAllPostsBySearch(page, size, keyword, type,
+        List<PostsDto> posts = postsService.findAllPostsBySearch(page, size, keyword, type, topicId,
             userDetailsImpl);
 
         return responseServiceImpl.successResult(

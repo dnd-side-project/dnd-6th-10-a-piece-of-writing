@@ -22,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface PostsService {
 
-    //    Long save(PostsDto requestDto, MultipartDto multipartDto);
     PostsSaveResponseDto register(PostsSaveRequestDto requestDto, MultipartDto multipartDto);
 
     public Posts findPostsById(Long id);
@@ -31,11 +30,10 @@ public interface PostsService {
 
     public Long removePosts(Long postsId, UserDetailsImpl userDetails);
 
-    public List<PostsDto> findAllPostsOrderByIdDesc(int page, int size, String type, Long topicId,
-        UserDetailsImpl userDetails);
+    public List<PostsDto> findAllPosts(int page, int size, UserDetailsImpl userDetails);
 
-    public List<PostsDto> findAllPostsBySearch(int page, int size, String content, String type,
-        UserDetailsImpl userDetails);
+    public List<PostsDto> findAllPostsBySearch(int page, int size, String keyword, String type,
+        Long topicId, UserDetailsImpl userDetails);
 
     public String getFileUuid();
 
@@ -67,7 +65,6 @@ public interface PostsService {
     }
 
     // Posts Entity TO PostsResponseDto
-//    default PostsDto entityToDTO(Posts posts, Member author, Long displayMemberId) {
     default PostsDto entityToDTO(Posts posts, Member author, Long displayMemberId) {
 
         MemberBasicInfoDto authorInfo = MemberBasicInfoDto.entityTOdto(author);

@@ -119,13 +119,8 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Override
-    public List<PostsDto> findAllPostsOrderByIdDesc(int page, int size, String type, Long topicId,
+    public List<PostsDto> findAllPosts(int page, int size,
         UserDetailsImpl userDetails) {
-
-        // 0225 토픽 id 별 모든 포스트 조회 기능 구현해야 함. 페이지네이션 처리하려면 searchPage 를 수정하던가, 새로운 search 기능을 추가해야 함
-//        if(type.equals("p")){
-//
-//        }
 
         PageRequestDto pageRequestDTO = PageRequestDto.builder()
             .page(page)
@@ -139,13 +134,14 @@ public class PostsServiceImpl implements PostsService {
 
     @Override
     public List<PostsDto> findAllPostsBySearch(int page, int size, String keyword, String type,
-        UserDetailsImpl userDetails) {
+        Long topicId, UserDetailsImpl userDetails) {
 
         PageRequestDto pageRequestDTO = PageRequestDto.builder()
             .page(page)
             .size(size)
             .type(type)
             .keyword(keyword)
+            .topicId(topicId)
             .build();
 
         PageResultDto<PostsDto, Object[]> resultDTO = getList(pageRequestDTO,
@@ -166,6 +162,7 @@ public class PostsServiceImpl implements PostsService {
         Page<Object[]> result = postsRepository.searchPage(
             pageRequestDTO.getType(),
             pageRequestDTO.getKeyword(),
+            pageRequestDTO.getTopicId(),
             pageRequestDTO.getPageable(Sort.by("id").descending()));
 
         return new PageResultDto<>(result, fn);
