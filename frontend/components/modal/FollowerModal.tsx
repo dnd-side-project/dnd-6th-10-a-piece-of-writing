@@ -3,20 +3,25 @@ import React from 'react'
 import { useAtom } from 'jotai'
 
 import { isFollowerModalOpenAtom } from '@/atom/user/follow'
-import { DUMMY_USERS } from '@/components/_user/type'
 import FollowModal from '@/components/modal/FollowModal'
+import { useFollowers } from '@/hook/react-query/useFollowers'
 
-type Props = {}
+type Props = {
+  userId: number
+}
 
-const FollowerModal: React.FC<Props> = ({}) => {
+const FollowerModal: React.FC<Props> = ({ userId }) => {
   const [isFollowerModalOpen, setIsFollowerModalOpen] = useAtom(isFollowerModalOpenAtom)
+  const { isLoading, followers, nickname } = useFollowers(userId)
 
   return (
     <FollowModal
-      followers={DUMMY_USERS}
+      nickname={nickname}
+      followers={followers}
+      isFollowing={false}
       isModalOpen={isFollowerModalOpen}
       setModalOpen={setIsFollowerModalOpen}
-      isFollowing={false}
+      isLoading={isLoading}
     />
   )
 }

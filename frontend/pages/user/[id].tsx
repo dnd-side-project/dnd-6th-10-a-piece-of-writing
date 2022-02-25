@@ -1,11 +1,9 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 
-import { useAtom } from 'jotai'
 import { GetServerSidePropsContext } from 'next'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
-import { userInfoAtom } from '@/atom/user/me'
 import { UserInfo as UserInfoType } from '@/components/_user/type'
 import UserInfo from '@/components/_user/UserInfo'
 import UserPostLabel from '@/components/_user/UserPostLabel'
@@ -13,6 +11,7 @@ import UserPosts from '@/components/_user/UserPosts'
 import UserTopicCarousel from '@/components/_user/UserTopicCarousel'
 import FollowerModal from '@/components/modal/FollowerModal'
 import FollowingModal from '@/components/modal/FollowingModal'
+import { useUserProfile } from '@/hook/react-query/useUserProfile'
 import { useSsrMe } from '@/hook/useSsrMe'
 import { loadProfile } from '@/server/user/profile'
 import { withAuthServerSideProps } from '@/server/withAuthServerSide'
@@ -24,28 +23,18 @@ const User: React.FC<ServerSideProps> = ({ me, ssrUserInfo }) => {
   const router = useRouter()
   const { id } = router.query
   const isMe = me?.id === Number(id)
+  const userId = typeof id === 'string' ? parseInt(id) : 1
 
-  const [userInfo, setUserInfo] = useAtom(userInfoAtom)
+  const { userInfo } = useUserProfile(userId)
   console.log({ userInfo })
-  useEffect(() => {
-    if (userInfo?.id || typeof id !== 'string') return
-    void loadProfile(parseInt(id)).then((res) => {
-      if (res.success) {
-        setUserInfo(res.data)
-        return
-      }
-      alert('잘못된 유저입니다.')
-      router.back()
-    })
-  }, [userInfo])
 
   return (
     <>
       <div className={'flex flex-col align-middle justify-center items-center w-full'}>
-        <FollowerModal />
-        <FollowingModal />
+        <FollowerModal userId={userId} />
+        <FollowingModal userId={userId} />
         <Container>
-          <UserInfo isMe={true} nickname={me?.nickname} userInfo={userInfo ?? null} />
+          <UserInfo isMe={true} userInfo={userInfo ?? null} />
           <UserPostLabel isMe={isMe} />
           <UserTopicCarousel />
           <UserPosts isMe={isMe} />

@@ -20,11 +20,10 @@ import { CENTER_FLEX, HOVER_BLUE } from '@/styles/classNames'
 type Props = {
   userInfo: UserInfoType
   isMe?: boolean
-  nickname?: string
   followed?: boolean
 }
 
-const UserInfo: React.FC<Props> = ({ isMe = false, nickname = '유저 닉네임', followed, userInfo }) => {
+const UserInfo: React.FC<Props> = ({ isMe = false, followed, userInfo }) => {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -109,7 +108,7 @@ const UserInfo: React.FC<Props> = ({ isMe = false, nickname = '유저 닉네임'
         />
       )}
       <div className={'relative my-4 mb-5 w-64 text-center align-middle'}>
-        <span className={'text-t16 font-semibold text-center'}>{nickname}</span>
+        <span className={'text-t16 font-semibold text-center'}>{userInfo?.nickname}</span>
         {!isMe && (
           <div className={'absolute right-0 translate-y-2/4 bottom-1/2 '}>
             <FollowButton followed={followed} />

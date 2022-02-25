@@ -4,10 +4,13 @@ import { useEffect } from 'react'
 
 import { useAtom } from 'jotai'
 import type { AppProps } from 'next/app'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 import { meAtom } from '@/atom/user/me'
 import MainLayout from '@/components/layout/MainLayout'
 import { loadMe } from '@/server/user'
+
+const queryClient = new QueryClient()
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const [me, setMe] = useAtom(meAtom)
@@ -18,8 +21,10 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     })
   }, [me])
   return (
-    <MainLayout>
-      <Component {...pageProps} />
-    </MainLayout>
+    <QueryClientProvider client={queryClient}>
+      <MainLayout>
+        <Component {...pageProps} />
+      </MainLayout>
+    </QueryClientProvider>
   )
 }

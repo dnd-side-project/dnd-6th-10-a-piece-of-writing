@@ -16,8 +16,8 @@ const Test: React.FC<Props> = ({}) => {
     <>
       <button onClick={() => setIsFollowerModalOpen(true)}>팔로우</button>
       <button onClick={() => setIsFollowingModalOpen(true)}>팔로잉</button>
-      <FollowerModal />
-      <FollowingModal />
+      <FollowerModal userId={3} />
+      <FollowingModal userId={3} />
     </>
   )
 }
