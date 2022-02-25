@@ -9,16 +9,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface MemberService {
 
+    public Member save(Member member);
+
     public void deleteMemberById(Long id);
+
     public Member findMemberById(Long id);
 
     public Member findMemberByEmail(String email);
 
     public Member findMemberByNickname(String nickname);
-
-    public void deleteMemberByEmail(Member member);
-
-    public Member save(Member member);
 
     public ResponseEntity<? extends ResponseDto> modNickname(UserDetailsImpl userDetailsImpl,
             String nickname);
@@ -34,7 +33,7 @@ public interface MemberService {
 
     public ResponseEntity<? extends ResponseDto> getMyProfile(UserDetailsImpl userDetailsImpl);
 
-    public ResponseEntity<? extends ResponseDto> getMemberProfile(UserDetailsImpl userDetailsImpl, Long id);
+    public ResponseEntity<? extends ResponseDto> getMemberProfile(Long id);
 
     public ResponseEntity<? extends ResponseDto> getFollowList(Long id);
 

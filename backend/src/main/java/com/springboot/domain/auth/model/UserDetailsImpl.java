@@ -20,24 +20,26 @@ public class UserDetailsImpl implements UserDetails {
 
     private final Member member;
 
-    public String getNickname() { return this.member.getNickname(); }
+    public Long getMemberId() { return member.getId(); }
+
+    public String getNickname() { return member.getNickname(); }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(this.member.getAuthority()));
+        authorities.add(new SimpleGrantedAuthority(member.getAuthority()));
         return authorities;
     }
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
     public String getPassword() {
-        return this.member.getPassword();
+        return member.getPassword();
     }
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override // return email
-    public String getUsername() { return this.member.getEmail(); }
+    public String getUsername() { return member.getEmail(); }
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override

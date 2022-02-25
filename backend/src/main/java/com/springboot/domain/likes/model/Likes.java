@@ -29,4 +29,6 @@ public class Likes {
 
     @ManyToOne
     private Posts posts;
+
+
 }

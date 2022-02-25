@@ -12,6 +12,5 @@ public interface AuthService {
     public ResponseEntity<? extends ResponseDto> logout(String accessToken, String refreshTokenUuid);
     public ResponseEntity<? extends ResponseDto> sign(SignDto signDto);
     public ResponseEntity<? extends ResponseDto> withdrawal(UserDetailsImpl userDetailsImpl, String accessToken, String refreshTokenUuid);
-
     public ResponseEntity<? extends ResponseDto> reissue(String refreshTokenUuid);
 }
