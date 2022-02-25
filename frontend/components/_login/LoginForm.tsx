@@ -49,7 +49,6 @@ const LoginForm: React.FC<Props> = ({ big }) => {
 
 const Frame = styled.div`
   width: 400px;
-  height: 220px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
