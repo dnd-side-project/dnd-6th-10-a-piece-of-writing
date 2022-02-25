@@ -10,7 +10,6 @@ import { Button } from '@/components/button'
 import { Label, MainSpan } from '@/components/form/register/RegisterMainForm'
 import { GrayInput } from '@/components/input'
 import { FlexDiv } from '@/components/style/div/FlexDiv'
-import useNeedLogin from '@/hook/useNeedLogin'
 import { registerMessageAtom, useRegister } from '@/hook/usePassword'
 import { useSsrMe } from '@/hook/useSsrMe'
 import { modifyUser } from '@/server/user'
@@ -23,7 +22,7 @@ const cx = classNames.bind({})
 
 const Modify: React.FC<ServerSideProps> = ({ me }) => {
   useSsrMe(me)
-  useNeedLogin()
+  // useNeedLogin()
   const message = useAtomValue(registerMessageAtom)
   const [nickname, setNickname] = useState(me?.nickname ?? '')
   const { password, checkPassword, passwordCheck, onChangePassword, onChangePasswordCheck } = useRegister()

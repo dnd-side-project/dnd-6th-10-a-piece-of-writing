@@ -6,6 +6,11 @@ module.exports = {
       'md': '768px',
       'xl': '1280px',
     },
+    extend: {
+      height: {
+        '3/2': '150%',
+      }
+    },
     fontSize: {
       h1: ['48px'],
       h2: ['32px'],

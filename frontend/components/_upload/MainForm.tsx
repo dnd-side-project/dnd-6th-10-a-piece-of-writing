@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react'
 
-import html2canvas from 'html2canvas'
 import { useAtom } from 'jotai'
 import { useAtomValue } from 'jotai/utils'
 import Image from 'next/image'
@@ -41,12 +40,6 @@ const MainForm: React.FC<Props> = ({}) => {
   const selectedFontFamily = FONTS[fontIndex]?.eng
   const selectedFontSize = FONT_SIZES[fontSizeIndex]?.size
 
-  const exportAsImage = async (element: HTMLElement) => {
-    const canvas = await html2canvas(element)
-    const image = canvas.toDataURL('image/png', 1.0)
-    console.log({ image })
-  }
-
   return (
     <>
       {isRecognitionModalOpen && <LetterRecognitionModal />}
@@ -71,14 +64,6 @@ const MainForm: React.FC<Props> = ({}) => {
             setIsRecognitionModalOpen(true)
           }}>
           사진으로 인식해 업로드하기
-        </UploadSpan>
-        <UploadSpan
-          className={'mt-2'}
-          onClick={() => {
-            const target = exportRef?.current
-            if (target) exportAsImage(target)
-          }}>
-          테스트
         </UploadSpan>
       </ImageFormContainer>
       <div className={`${CENTER_FLEX} w-full md:w-1/2`}>
