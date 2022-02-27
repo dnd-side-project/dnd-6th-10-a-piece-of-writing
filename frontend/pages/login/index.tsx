@@ -4,11 +4,11 @@ import { useWindowSize } from 'react-use'
 
 import LoginForm from '@/components/_login/LoginForm'
 import LoginTitleContainer from '@/components/_login/LoginTitleContainer'
-import { UserInfo as UserInfoType } from '@/components/_user/type'
 import useAlreadyLogin from '@/hook/useAlreadyLogin'
 import { useSsrMe } from '@/hook/useSsrMe'
 import { withAuthServerSideProps } from '@/server/withAuthServerSide'
 import { CENTER_FLEX } from '@/styles/classNames'
+import { UserInfo as UserInfoType } from '@/type/user'
 
 type ServerSideProps = { me: UserInfoType }
 

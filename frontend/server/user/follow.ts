@@ -1,6 +1,6 @@
-import { UserInfo } from '@/components/_user/type'
 import baxios, { RESPONSE_TYPE } from '@/server/axios/baxios'
 import { loadProfile } from '@/server/user/profile'
+import { UserInfo } from '@/type/user'
 
 export const follow = async (userId: number): Promise<RESPONSE_TYPE> => {
   try {

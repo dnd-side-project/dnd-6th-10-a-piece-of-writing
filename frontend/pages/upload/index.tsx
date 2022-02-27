@@ -23,7 +23,7 @@ import { isUploadModalOpenAtom } from '@/atom/post'
 
 import { useAtom } from 'jotai'
 
-import { UserInfo as UserInfoType } from '@/components/_user/type'
+import { UserInfo as UserInfoType } from '@/type/user'
 
 type ServerSideProps = { me: UserInfoType }
 

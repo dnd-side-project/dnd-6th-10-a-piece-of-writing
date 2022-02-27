@@ -4,7 +4,6 @@ import { GetServerSidePropsContext } from 'next'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
-import { UserInfo as UserInfoType } from '@/components/_user/type'
 import UserInfo from '@/components/_user/UserInfo'
 import UserPostLabel from '@/components/_user/UserPostLabel'
 import UserPosts from '@/components/_user/UserPosts'
@@ -15,6 +14,7 @@ import { useUserProfile } from '@/hook/react-query/useUserProfile'
 import { useSsrMe } from '@/hook/useSsrMe'
 import { loadProfile } from '@/server/user/profile'
 import { withAuthServerSideProps } from '@/server/withAuthServerSide'
+import { UserInfo as UserInfoType } from '@/type/user'
 
 type ServerSideProps = { me: UserInfoType; ssrUserInfo: UserInfoType }
 

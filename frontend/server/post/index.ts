@@ -1,5 +1,6 @@
 import { SearchType } from '@/atom/search'
 import baxios, { RESPONSE_TYPE } from '@/server/axios/baxios'
+import { PostInfo } from '@/type/post'
 
 type PostData = {
   author: string
@@ -18,12 +19,19 @@ export const loadMainPosts = async (params: { page: number; size: number }): Pro
   }
 }
 
+export type PostsParam = {
+  page?: number
+  size: number
+  type: SearchType
+  keyword: string
+}
+
 export const loadPosts = async (params: {
   page: number
   size: number
   type: SearchType
   keyword: string
-}): Promise<RESPONSE_TYPE> => {
+}): Promise<RESPONSE_TYPE<PostInfo[]>> => {
   try {
     const res = await baxios.post(`/posts/search`, params)
     if (res.status === 200) return { success: true, message: '게시글 검색 성공!', data: res.data.data }

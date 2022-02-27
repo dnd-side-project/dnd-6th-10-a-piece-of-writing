@@ -5,10 +5,10 @@ import { Oval } from 'react-loader-spinner'
 import styled from 'styled-components'
 
 import Followers from '@/_follower/Followers'
-import { UserInfo } from '@/components/_user/type'
 import { FlexDiv } from '@/components/style/div/FlexDiv'
 import { useClickOutside } from '@/hook/useClickOutside'
 import { CENTER_FLEX } from '@/styles/classNames'
+import { UserInfo } from '@/type/user'
 
 type Props = {
   isModalOpen: boolean

@@ -1,11 +1,11 @@
 import React from 'react'
 
-import { UserInfo as UserInfoType } from '@/components/_user/type'
 import DummyCard from '@/components/card/DummyCard'
 import { PlainDivider } from '@/components/Divider'
 import { FlexDiv } from '@/components/style/div/FlexDiv'
 import { useSsrMe } from '@/hook/useSsrMe'
 import { withAuthServerSideProps } from '@/server/withAuthServerSide'
+import { UserInfo as UserInfoType } from '@/type/user'
 
 type ServerSideProps = { me: UserInfoType }
 

@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { UserInfo } from '@/components/_user/type'
 import FollowerCard from '@/components/card/FollowerCard'
+import { UserInfo } from '@/type/user'
 
 type Props = {
   followers: UserInfo[]

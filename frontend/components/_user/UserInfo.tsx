@@ -6,7 +6,6 @@ import { useRouter } from 'next/router'
 import { Oval } from 'react-loader-spinner'
 
 import { meAtom } from '@/atom/user/me'
-import { UserInfo as UserInfoType } from '@/components/_user/type'
 import FollowButton from '@/components/button/FollowButton'
 import MenuButton from '@/components/button/MenuButton'
 import ProfileImageCard from '@/components/card/ProfileImageCard'
@@ -16,6 +15,7 @@ import { FlexDiv } from '@/components/style/div/FlexDiv'
 import { logout } from '@/server/user'
 import { setProfileImage } from '@/server/user/profile'
 import { CENTER_FLEX, HOVER_BLUE } from '@/styles/classNames'
+import { UserInfo as UserInfoType } from '@/type/user'
 
 type Props = {
   userInfo: UserInfoType

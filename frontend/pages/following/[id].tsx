@@ -6,9 +6,9 @@ import styled from 'styled-components'
 
 import Followers from '@/_follower/Followers'
 import FollowLabel from '@/_follower/FollowLabel'
-import { UserInfo } from '@/components/_user/type'
 import { getFollowing } from '@/server/user/follow'
 import { CENTER_FLEX } from '@/styles/classNames'
+import { UserInfo } from '@/type/user'
 
 const Follower: React.FC = ({}) => {
   const router = useRouter()

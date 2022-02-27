@@ -1,8 +1,8 @@
 import { Cookies } from 'react-cookie'
 
-import { UserInfo } from '@/components/_user/type'
 import { KEY_ACCESS_TOKEN, KEY_HEADER_ACCESS_TOKEN, KEY_HEADER_REFRESH_TOKEN, KEY_REFRESH_TOKEN } from '@/constant'
 import baxios, { RESPONSE_TYPE } from '@/server/axios/baxios'
+import { UserInfo } from '@/type/user'
 
 export const cookies = new Cookies()
 

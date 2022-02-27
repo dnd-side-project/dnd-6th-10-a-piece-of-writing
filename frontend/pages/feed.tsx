@@ -3,7 +3,6 @@ import React from 'react'
 import styled from 'styled-components'
 
 import MainTitle from '@/components/_main/MainTitle'
-import { UserInfo as UserInfoType } from '@/components/_user/type'
 import AddButton from '@/components/button/AddButton'
 import { TopicCarousel } from '@/components/carousel'
 import Posts from '@/components/post/Posts'
@@ -12,6 +11,7 @@ import { useSsrMe } from '@/hook/useSsrMe'
 import { loadMainPosts } from '@/server/post'
 import { withAuthServerSideProps } from '@/server/withAuthServerSide'
 import { CENTER_FLEX } from '@/styles/classNames'
+import { UserInfo as UserInfoType } from '@/type/user'
 
 type ServerSideProps = { me: UserInfoType; posts: any }
 
