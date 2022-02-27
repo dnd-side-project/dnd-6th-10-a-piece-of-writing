@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import MainTitle from '@/components/_main/MainTitle'
 import AddButton from '@/components/button/AddButton'
 import { TopicCarousel } from '@/components/carousel'
-import Posts from '@/components/post/Posts'
+import Posts, { DUMMY_POSTS } from '@/components/post/Posts'
 import { FlexDiv } from '@/components/style/div/FlexDiv'
 import { useSsrMe } from '@/hook/useSsrMe'
 import { loadMainPosts } from '@/server/post'
@@ -31,7 +31,25 @@ const Feed: React.FC<ServerSideProps> = ({ me, posts }) => {
             </div>
           </FlexDiv>
           <div className={`w-full ${CENTER_FLEX} mt-10 ml-5 xl:ml-0`}>
-            <Posts />
+            {/*<InfiniteScroll*/}
+            {/*  dataLength={items.length} //This is important field to render the next data*/}
+            {/*  next={fetchData}*/}
+            {/*  hasMore={true}*/}
+            {/*  loader={<h4>Loading...</h4>}*/}
+            {/*  endMessage={*/}
+            {/*    <p style={{ textAlign: 'center' }}>*/}
+            {/*      <b>Yay! You have seen it all</b>*/}
+            {/*    </p>*/}
+            {/*  }*/}
+            {/*  // below props only if you need pull down functionality*/}
+            {/*  refreshFunction={this.refresh}*/}
+            {/*  pullDownToRefresh*/}
+            {/*  pullDownToRefreshThreshold={50}*/}
+            {/*  pullDownToRefreshContent={<h3 style={{ textAlign: 'center' }}>&#8595; Pull down to refresh</h3>}*/}
+            {/*  releaseToRefreshContent={<h3 style={{ textAlign: 'center' }}>&#8593; Release to refresh</h3>}>*/}
+            {/*  {items}*/}
+            <Posts posts={DUMMY_POSTS} />
+            {/*</InfiniteScroll>*/}
           </div>
         </MainContainer>
       </div>
