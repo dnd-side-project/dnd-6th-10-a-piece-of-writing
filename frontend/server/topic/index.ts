@@ -1,32 +1,28 @@
-import { RESPONSE_TYPE } from '@/server/axios/baxios'
+import baxios, { RESPONSE_TYPE } from '@/server/axios/baxios'
 
 export type TopicInfo = {
-  id: string
+  topicId: number
   name: string
 }
 
-export const addTopic = async (topicName: string): Promise<RESPONSE_TYPE<TopicInfo>> => {
-  console.log(`addTopic_${topicName}`)
-  await setTimeout(() => {}, 500)
-  const dummyId = Math.ceil(Math.random() * 9999).toString()
-  return {
-    success: true,
-    message: '태그 추가 성공',
-    data: {
-      id: Math.ceil(Math.random() * 9999).toString(),
-      name: `임의의태그_${dummyId}`,
-    },
+export const addTopic = async (name: string): Promise<RESPONSE_TYPE<TopicInfo>> => {
+  try {
+    const res = await baxios.post(`/topic`, { name })
+    if (res.status === 200) return { success: true, message: '토픽 추가 성공!', data: res.data?.data }
+    return { success: false, message: '토픽 추가 실패!' }
+  } catch (e) {
+    return { success: false, message: '토픽 추가 실패!' }
   }
 }
 
-const DUMMY_DATA = [
-  { id: '1', name: '운동' },
-  { id: '2', name: '감성' },
-  { id: '3', name: '인생1' },
-  { id: '4', name: '인생2인생2인생2인생2인생2인생2인생2인생2인생2인생2인생2인생2' },
-  { id: '5', name: '인생3' },
-  { id: '6', name: '인생4' },
-  { id: '7', name: '인생5' },
+const DUMMY_DATA: TopicInfo[] = [
+  { topicId: 1, name: '운동' },
+  { topicId: 2, name: '감성' },
+  { topicId: 3, name: '인생1' },
+  { topicId: 4, name: '인생2인생2인생2인생2인생2인생2인생2인생2인생2인생2인생2인생2' },
+  { topicId: 5, name: '인생3' },
+  { topicId: 6, name: '인생4' },
+  { topicId: 7, name: '인생5' },
 ]
 
 export const searchTopic = async (topicName: string): Promise<RESPONSE_TYPE<TopicInfo[]>> => {
@@ -37,5 +33,15 @@ export const searchTopic = async (topicName: string): Promise<RESPONSE_TYPE<Topi
     success: true,
     message: '태그 검색 성공',
     data: DUMMY_DATA.slice(0, randIndex),
+  }
+}
+
+export const loadMainTopics = async (): Promise<RESPONSE_TYPE<TopicInfo[]>> => {
+  try {
+    const res = await baxios.get(`/topic/list`)
+    if (res.status === 200) return { success: true, message: '토픽 로드 성공!', data: res.data?.data || [] }
+    return { success: false, message: '토픽 로드 실패!' }
+  } catch (e) {
+    return { success: false, message: '토픽 로드 실패!' }
   }
 }

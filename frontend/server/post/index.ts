@@ -3,10 +3,10 @@ import baxios, { RESPONSE_TYPE } from '@/server/axios/baxios'
 import { PostInfo } from '@/type/post'
 
 type PostData = {
-  author: string
+  authorId: number
   content: string
   ref?: string
-  topic?: string
+  topicList?: number[]
 }
 
 export const loadMainPosts = async (params: { page: number; size: number }): Promise<RESPONSE_TYPE> => {

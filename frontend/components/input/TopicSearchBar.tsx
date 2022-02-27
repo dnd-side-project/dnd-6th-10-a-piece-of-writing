@@ -1,21 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 import { useAtom } from 'jotai'
-import { useUpdateAtom } from 'jotai/utils'
 import Image from 'next/image'
 import { useDebounce } from 'react-use'
 import styled from 'styled-components'
 
-import { topicSearchResultsAtom, topicSearchTextAtom } from '@/atom/topic'
-import { searchTopic } from '@/server/topic'
+import { topicSearchTextAtom, topicSearchTextForApiAtom } from '@/atom/topic'
 
 type Props = {}
 
 const TopicSearchBar: React.FC<Props> = ({}) => {
   const [text, setText] = useAtom(topicSearchTextAtom)
-  const [textForApi, setTextForApi] = useState('')
-
-  const setTopicSearchResults = useUpdateAtom(topicSearchResultsAtom)
+  const [textForApi, setTextForApi] = useAtom(topicSearchTextForApiAtom)
 
   console.log({ textForApi })
 
@@ -27,19 +23,10 @@ const TopicSearchBar: React.FC<Props> = ({}) => {
     [text],
   )
 
-  useEffect(() => {
-    if (textForApi === '') return
-    const setTopics = async () => {
-      const res = await searchTopic(textForApi)
-      if (res.data) setTopicSearchResults(res.data)
-    }
-    setTopics()
-  }, [textForApi])
-
   return (
     <Container>
       <input placeholder={'키워드로 검색'} value={text} onChange={(e) => setText(e.target.value)} />
-      <div className={'ml-auto'}>
+      <div className={'ml-auto cursor-pointer'}>
         <Image src={'/menu_search.svg'} width={24} height={24} alt={'search'} />
       </div>
     </Container>
