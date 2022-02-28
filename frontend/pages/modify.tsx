@@ -5,7 +5,6 @@ import { useAtomValue, useUpdateAtom } from 'jotai/utils'
 import styled from 'styled-components'
 
 import { setNicknameAtom } from '@/atom/user/me'
-import { UserInfo as UserInfoType } from '@/components/_user/type'
 import { Button } from '@/components/button'
 import { Label, MainSpan } from '@/components/form/register/RegisterMainForm'
 import { GrayInput } from '@/components/input'
@@ -15,6 +14,7 @@ import { useSsrMe } from '@/hook/useSsrMe'
 import { modifyUser } from '@/server/user'
 import { withAuthServerSideProps } from '@/server/withAuthServerSide'
 import { CENTER_FLEX } from '@/styles/classNames'
+import { UserInfo as UserInfoType } from '@/type/user'
 
 type ServerSideProps = { me: UserInfoType }
 

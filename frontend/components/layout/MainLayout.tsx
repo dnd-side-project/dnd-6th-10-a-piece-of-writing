@@ -11,13 +11,16 @@ type Props = {}
 
 const MainLayout: React.FC<Props> = ({ children }) => {
   const me = useAtomValue(meAtom)
+
   return (
     <>
       <div className={`w-full flex flex-nowrap flex-col justify-center content-center align-middle`}>
         <MainBar>
-          <Link href={'/'}>
-            <Image className={'cursor-pointer'} src={'/logo_vertical.svg'} width={84} height={22} />
-          </Link>
+          <div className={'flex ml-4 justify-center'}>
+            <Link href={'/'}>
+              <Image className={'cursor-pointer'} src={'/logo_vertical.svg'} width={84} height={22} />
+            </Link>
+          </div>
           <div> </div>
           <div> </div>
           <div className={`flex gap-4`}>

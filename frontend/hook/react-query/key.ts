@@ -1,3 +1,11 @@
+/* 유저 관련 */
 export const USER_PROFILE_KEY = 'USER_PROFILE_KEY'
 export const USE_FOLLOWERS_KEY = 'USE_FOLLOWERS_KEY'
 export const USE_FOLLOWINGS_KEY = 'USE_FOLLOWINGS_KEY'
+
+/* 글귀 관련 */
+export const USE_INFINITE_POSTS_KEY = 'USE_INFINITE_POSTS_KEY'
+
+/* 토픽 관련 */
+export const USE_MAIN_TOPICS_KEY = 'USE_MAIN_TOPICS_KEY'
+export const USE_SEARCH_TOPICS_KEY = 'USE_SEARCH_TOPICS_KEY'

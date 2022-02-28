@@ -1,6 +1,7 @@
 import { atom } from 'jotai'
 
-import { UserInfo, UserInfoSure } from '@/components/_user/type'
+import { UserInfoSure } from '@/components/_user/type'
+import { UserInfo } from '@/type/user'
 
 export const meAtom = atom<UserInfo>(null)
 export const setNicknameAtom = atom(null, (get, set, nickname: string) => {

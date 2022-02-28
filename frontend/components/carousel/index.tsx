@@ -1,16 +1,19 @@
 import React from 'react'
 
+import { useAtom } from 'jotai'
 import Slider, { Settings } from 'react-slick'
 import styled from 'styled-components'
 
+import { isTopicSearchBarOpenAtom } from '@/atom/topic'
 import CheckButton, { CheckButtonColor } from '@/components/button/CheckButton'
+import TopicSearch from '@/components/input/TopicSearch'
 import { FlexDiv } from '@/components/style/div/FlexDiv'
 
 const sliderSettings: Settings = {
   dots: false,
   infinite: false,
   speed: 500,
-  arrows: false,
+  arrows: true,
   variableWidth: true,
 }
 
@@ -24,15 +27,21 @@ type Props = {
 }
 
 export const TopicCarousel = ({ topics, onClickTopic, showAll, onClickAll = () => {} }: Props) => {
+  const [isTopicSearchBarOpen, setIsTopicSearchBarOpen] = useAtom(isTopicSearchBarOpenAtom)
+
   return (
     <Slider {...sliderSettings}>
       {showAll && <Topic topicInfo={{ name: '모두', isChecked: true }} onClick={onClickAll} />}
       {topics.map((topicInfo, i) => (
         <Topic key={`TopicContainer_${i}`} topicInfo={topicInfo} onClick={onClickTopic ? onClickTopic(i) : () => {}} />
       ))}
-      <AddTopicButton>
-        <FlexDiv height={'100%'}>+</FlexDiv>
-      </AddTopicButton>
+      {isTopicSearchBarOpen ? (
+        <TopicSearch />
+      ) : (
+        <AddTopicButton onClick={() => setIsTopicSearchBarOpen(true)}>
+          <FlexDiv height={'100%'}>+</FlexDiv>
+        </AddTopicButton>
+      )}
     </Slider>
   )
 }

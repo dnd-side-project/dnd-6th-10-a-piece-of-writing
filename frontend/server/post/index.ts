@@ -1,11 +1,12 @@
 import { SearchType } from '@/atom/search'
 import baxios, { RESPONSE_TYPE } from '@/server/axios/baxios'
+import { PostInfo } from '@/type/post'
 
-type PostData = {
-  author: string
+export type PostData = {
+  authorId: number
   content: string
   ref?: string
-  topic?: string
+  topicList?: number[]
 }
 
 export const loadMainPosts = async (params: { page: number; size: number }): Promise<RESPONSE_TYPE> => {
@@ -18,12 +19,19 @@ export const loadMainPosts = async (params: { page: number; size: number }): Pro
   }
 }
 
+export type PostsParam = {
+  page?: number
+  size: number
+  type: SearchType
+  keyword: string
+}
+
 export const loadPosts = async (params: {
   page: number
   size: number
   type: SearchType
   keyword: string
-}): Promise<RESPONSE_TYPE> => {
+}): Promise<RESPONSE_TYPE<PostInfo[]>> => {
   try {
     const res = await baxios.post(`/posts/search`, params)
     if (res.status === 200) return { success: true, message: '게시글 검색 성공!', data: res.data.data }
@@ -33,9 +41,13 @@ export const loadPosts = async (params: {
   }
 }
 
-export const uploadPost = async (postData: PostData): Promise<RESPONSE_TYPE> => {
+export type UploadPostParam = {
+  formData: FormData
+}
+
+export const uploadPost = async ({ formData }: UploadPostParam): Promise<RESPONSE_TYPE> => {
   try {
-    const res = await baxios.post(`/posts`, postData)
+    const res = await baxios.post(`/posts`, formData)
     if (res.status === 200) return { success: true, message: '게시글 추가 성공!', data: res.data.data }
     return { success: false, message: '게시글 추가 실패!' }
   } catch (e) {

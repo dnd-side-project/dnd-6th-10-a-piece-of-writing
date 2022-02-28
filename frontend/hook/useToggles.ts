@@ -15,8 +15,6 @@ export const useToggles = (props: Props) => {
     return Array.from(selectedIndexesSet)
   }, [selectedIndexesSet, selectedIndexesSet?.size])
 
-  // const selectedIndexes = Array.from(selectedIndexesSet)
-
   const onToggle = (index: number) => () => {
     if (singleMode) {
       reset()

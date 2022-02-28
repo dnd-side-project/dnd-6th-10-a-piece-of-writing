@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import { useAtom } from 'jotai'
 import { useAtomValue } from 'jotai/utils'
@@ -6,7 +6,13 @@ import Image from 'next/image'
 import { TwitterPicker } from 'react-color'
 import styled from 'styled-components'
 
-import { isRecognitionModalOpenAtom, postTextAtom, selectedBackgroundImageAtom } from '@/atom/post'
+import {
+  isRecognitionModalOpenAtom,
+  postImageElemAtom,
+  postTextAtom,
+  selectedBackgroundImageAtom,
+  sourceTextAtom,
+} from '@/atom/post'
 import { PlainDivider } from '@/components/Divider'
 import { Label } from '@/components/form/register/RegisterMainForm'
 import LetterRecognitionModal from '@/components/modal/LetterRecognitionModal'
@@ -20,13 +26,18 @@ type Props = {}
 
 const MainForm: React.FC<Props> = ({}) => {
   const [text, setText] = useAtom(postTextAtom)
-  const [source, setSource] = useState('')
+  const [source, setSource] = useAtom(sourceTextAtom)
+  const [, setPostImageElem] = useAtom(postImageElemAtom)
   const [pickerOpen, setPickerOpen] = useState(false)
   const [textColor, setTextColor] = useState('black')
   const [isRecognitionModalOpen, setIsRecognitionModalOpen] = useAtom(isRecognitionModalOpenAtom)
   const selectedBackgroundImage = useAtomValue(selectedBackgroundImageAtom)
 
   const exportRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (exportRef?.current) setPostImageElem(exportRef.current)
+  }, [exportRef?.current])
 
   const {
     selectedIndex: fontIndex,
@@ -41,7 +52,7 @@ const MainForm: React.FC<Props> = ({}) => {
 
   const selectedFontFamily = FONTS[fontIndex]?.eng
   const selectedFontSize = FONT_SIZES[fontSizeIndex]?.size
-  console.log({ pickerOpen })
+
   return (
     <>
       {isRecognitionModalOpen && <LetterRecognitionModal />}

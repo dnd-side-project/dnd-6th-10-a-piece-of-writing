@@ -1,9 +1,9 @@
 import { useQuery } from 'react-query'
 
-import { UserInfo } from '@/components/_user/type'
 import { USER_PROFILE_KEY } from '@/hook/react-query/key'
 import { RESPONSE_TYPE } from '@/server/axios/baxios'
 import { loadProfile } from '@/server/user/profile'
+import { UserInfo } from '@/type/user'
 
 export const useUserProfile = (userId: number | string) => {
   const id = typeof userId === 'string' ? parseInt(userId) : userId
