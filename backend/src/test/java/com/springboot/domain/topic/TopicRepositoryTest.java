@@ -48,6 +48,28 @@ public class TopicRepositoryTest {
 //
 //    }
 
+    @DisplayName("[Repository] 최신순 토픽 목록 모두 조회")
+    @Test
+    @Transactional
+    public void testFindAllTopicOrderById() {
+
+        List<Topic> topics = topicRepository.findAllByOrderByIdDesc();
+
+        topics.forEach(t -> logger.info(t.toString()));
+
+    }
+
+    @DisplayName("[Repository] 최신순 토픽 10개 이하 목록 조회")
+    @Test
+    @Transactional
+    public void testFindBelow10TopicOrderById() {
+
+        List<Topic> topics = topicRepository.getTopicsBelow10OrderById(10);
+
+        topics.forEach(t -> logger.info(t.toString()));
+
+    }
+
     @DisplayName("[Repository] keyword 포함한 name 가진 토픽 목록 조회")
     @Test
     @Transactional
