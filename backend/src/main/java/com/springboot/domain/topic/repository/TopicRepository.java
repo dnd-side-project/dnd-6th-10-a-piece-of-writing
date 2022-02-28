@@ -31,4 +31,7 @@ public interface TopicRepository extends JpaRepository<Topic, Long> {
         + "limit 10", nativeQuery = true)
     List<Topic> getTop10Topics();
 
+    @Query(value = "select * from topic order by id desc limit :num", nativeQuery = true)
+    List<Topic> getTopicsBelow10OrderById(@Param("num") int num);
+
 }
