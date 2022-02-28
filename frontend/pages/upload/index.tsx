@@ -12,7 +12,7 @@ import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
 
 import MainForm from '@/components/_upload/MainForm'
 import { useSsrMe } from '@/hook/useSsrMe'
-import { useToggles } from '@/hook/useToggles'
+import { PostData, uploadPost } from '@/server/post'
 import { loadMainTopics, TopicInfo } from '@/server/topic'
 import { withAuthServerSideProps } from '@/server/withAuthServerSide'
 import { BreakPoints } from '@/styles/breakPoint'
@@ -20,37 +20,67 @@ import { CENTER_FLEX } from '@/styles/classNames'
 
 import styled from 'styled-components'
 
-import { isUploadModalOpenAtom } from '@/atom/post'
+import { isUploadModalOpenAtom, postImageElemAtom, postTextAtom, sourceTextAtom } from '@/atom/post'
 
 import { useAtom } from 'jotai'
 
 import { UserInfo as UserInfoType } from '@/type/user'
-import { topicsAtom } from '@/atom/topic'
+import { checkedTopicsAtom, checkTopicUpdateAtom, topicsAtom } from '@/atom/topic'
 
 import { GetServerSidePropsContext } from 'next'
+import { useAtomValue } from 'jotai/utils'
+import html2canvas from 'html2canvas'
+
+import { dataURItoBlob } from '@/util'
 
 type ServerSideProps = { me: UserInfoType; ssrTopics: TopicInfo[] }
 
 const Upload: React.FC<ServerSideProps> = ({ me, ssrTopics }) => {
   useSsrMe(me, [[topicsAtom, ssrTopics ?? []]])
   // useNeedLogin()
+  const [, checkTopicUpdate] = useAtom(checkTopicUpdateAtom)
   const [isUploadModalOpen, setIsUploadModalOpen] = useAtom(isUploadModalOpenAtom)
-  const [topics] = useAtom(topicsAtom)
+  const [postImageElem] = useAtom(postImageElemAtom)
+  const topics = useAtomValue(topicsAtom)
+  const checkedTopics = useAtomValue(checkedTopicsAtom)
+  const postText = useAtomValue(postTextAtom)
+  const sourceText = useAtomValue(sourceTextAtom)
   console.log({ topics })
 
-  const {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    selectedIndexes: topicIndexes,
-    isSelectedIndex: isSelectedTopic,
-    onToggle: onClickTopic,
-  } = useToggles({ defaultIndexes: [0], singleMode: false })
+  const onClickTopic = (i: number) => () => checkTopicUpdate(i)
 
   const onClickImageUploadButton = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
     setIsUploadModalOpen((_isUploadModalOpen) => !_isUploadModalOpen)
   }
 
-  const onClickUpload = () => {}
+  const exportAsImage = async (element: HTMLElement) => {
+    const canvas = await html2canvas(element)
+    const image = canvas.toDataURL('image/png', 1.0)
+    return dataURItoBlob(image)
+  }
+
+  const onClickUpload = async () => {
+    if (!postImageElem) {
+      alert('이미지에 오류가 발생했습니다.')
+      return
+    }
+    const postData: PostData = {
+      authorId: me?.id ?? 1,
+      content: postText ?? '',
+      ref: sourceText ?? '',
+      topicList: checkedTopics.map((topic) => topic.topicId) ?? [],
+    }
+
+    const formData = new FormData()
+    const image = await exportAsImage(postImageElem)
+    formData.append('file', image)
+    formData.append('request', JSON.stringify(postData))
+
+    uploadPost({ formData }).then((res) => {
+      alert(res.message)
+    })
+  }
 
   return (
     <>
@@ -70,10 +100,7 @@ const Upload: React.FC<ServerSideProps> = ({ me, ssrTopics }) => {
           <TopicContainer>
             <div className={'w-full'}>
               <div className={'my-5'}>관련된 주제를 골라주세요</div>
-              <TopicCarousel
-                topics={DUMMY_TOPICS.map((topicInfo, i) => ({ ...topicInfo, isChecked: isSelectedTopic(i) }))}
-                onClickTopic={onClickTopic}
-              />
+              <TopicCarousel topics={topics} onClickTopic={onClickTopic} />
             </div>
           </TopicContainer>
         </div>
@@ -89,33 +116,6 @@ const Upload: React.FC<ServerSideProps> = ({ me, ssrTopics }) => {
     </>
   )
 }
-
-const DUMMY_TOPICS = [
-  {
-    name: '동기부여',
-    isChecked: false,
-  },
-  {
-    name: '공부',
-    isChecked: false,
-  },
-  {
-    name: '인생',
-    isChecked: true,
-  },
-  {
-    name: '감성',
-    isChecked: true,
-  },
-  {
-    name: '위로',
-    isChecked: false,
-  },
-  {
-    name: '월요일',
-    isChecked: false,
-  },
-]
 
 const MainContainer = styled.div`
   display: flex;

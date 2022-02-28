@@ -13,7 +13,7 @@ const sliderSettings: Settings = {
   dots: false,
   infinite: false,
   speed: 500,
-  arrows: false,
+  arrows: true,
   variableWidth: true,
 }
 

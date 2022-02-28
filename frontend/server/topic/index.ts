@@ -6,6 +6,7 @@ import baxios, { RESPONSE_TYPE } from '@/server/axios/baxios'
 export type TopicInfo = {
   topicId: number
   name: string
+  isChecked?: boolean
 }
 
 export const addTopic = async (name: string): Promise<RESPONSE_TYPE<TopicInfo>> => {
@@ -17,16 +18,6 @@ export const addTopic = async (name: string): Promise<RESPONSE_TYPE<TopicInfo>> 
     return { success: false, message: '토픽 추가 실패!' }
   }
 }
-
-const DUMMY_DATA: TopicInfo[] = [
-  { topicId: 1, name: '운동' },
-  { topicId: 2, name: '감성' },
-  { topicId: 3, name: '인생1' },
-  { topicId: 4, name: '인생2인생2인생2인생2인생2인생2인생2인생2인생2인생2인생2인생2' },
-  { topicId: 5, name: '인생3' },
-  { topicId: 6, name: '인생4' },
-  { topicId: 7, name: '인생5' },
-]
 
 export const searchTopic = async (topicName: string): Promise<RESPONSE_TYPE<TopicInfo[]>> => {
   try {

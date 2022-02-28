@@ -15,6 +15,13 @@ export const DUMMY_TOPICS = [
 export const topicSearchTextAtom = atom('')
 export const topicSearchTextForApiAtom = atom('')
 export const topicsAtom = atom<TopicInfo[]>([])
+export const checkedTopicsAtom = atom<TopicInfo[]>((get) => get(topicsAtom).filter((topic) => topic.isChecked))
+
+export const checkTopicUpdateAtom = atom(null, (get, set, index: number) => {
+  const newTopics = [...get(topicsAtom)] || []
+  if (newTopics[index]) newTopics[index]['isChecked'] = !newTopics[index]?.['isChecked']
+  set(topicsAtom, newTopics)
+})
 
 export const addTopicUpdateAtom = atom(null, (get, set, topic: TopicInfo) => {
   set(
