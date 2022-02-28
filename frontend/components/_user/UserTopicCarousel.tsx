@@ -9,6 +9,7 @@ type Props = {}
 
 const UserTopicCarousel: React.FC<Props> = ({}) => {
   const userTopics = useAtomValue(topicSearchResultsAtom)
+
   return (
     <div className={'my-8 w-full'}>
       <div className={'ml-2'}>

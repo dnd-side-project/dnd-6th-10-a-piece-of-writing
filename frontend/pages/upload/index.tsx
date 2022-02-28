@@ -13,6 +13,7 @@ import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
 import MainForm from '@/components/_upload/MainForm'
 import { useSsrMe } from '@/hook/useSsrMe'
 import { useToggles } from '@/hook/useToggles'
+import { loadMainTopics, TopicInfo } from '@/server/topic'
 import { withAuthServerSideProps } from '@/server/withAuthServerSide'
 import { BreakPoints } from '@/styles/breakPoint'
 import { CENTER_FLEX } from '@/styles/classNames'
@@ -24,13 +25,18 @@ import { isUploadModalOpenAtom } from '@/atom/post'
 import { useAtom } from 'jotai'
 
 import { UserInfo as UserInfoType } from '@/type/user'
+import { topicsAtom } from '@/atom/topic'
 
-type ServerSideProps = { me: UserInfoType }
+import { GetServerSidePropsContext } from 'next'
 
-const Upload: React.FC<ServerSideProps> = ({ me }) => {
-  useSsrMe(me)
+type ServerSideProps = { me: UserInfoType; ssrTopics: TopicInfo[] }
+
+const Upload: React.FC<ServerSideProps> = ({ me, ssrTopics }) => {
+  useSsrMe(me, [[topicsAtom, ssrTopics ?? []]])
   // useNeedLogin()
   const [isUploadModalOpen, setIsUploadModalOpen] = useAtom(isUploadModalOpenAtom)
+  const [topics] = useAtom(topicsAtom)
+  console.log({ topics })
 
   const {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -43,6 +49,8 @@ const Upload: React.FC<ServerSideProps> = ({ me }) => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
     setIsUploadModalOpen((_isUploadModalOpen) => !_isUploadModalOpen)
   }
+
+  const onClickUpload = () => {}
 
   return (
     <>
@@ -72,8 +80,8 @@ const Upload: React.FC<ServerSideProps> = ({ me }) => {
         <div className={`w-full ${CENTER_FLEX} flex-nowrap`}>
           <TopicContainer>
             <FlexDiv margin={'100px 0'} gap={'20px'}>
-              <Button>업로드 없이 이미지만 저장하기</Button>
-              <Button>업로드</Button>
+              {/*<Button>업로드 없이 이미지만 저장하기</Button>*/}
+              <Button onClick={onClickUpload}>업로드</Button>
             </FlexDiv>
           </TopicContainer>
         </div>
@@ -138,6 +146,13 @@ const TopicContainer = styled.div`
   }
 `
 
-export const getServerSideProps = withAuthServerSideProps()
+export const getServerSideProps = withAuthServerSideProps(async (ctx: GetServerSidePropsContext) => {
+  const result = await loadMainTopics(ctx)
+  const exampleTopics = result.success ? result.data ?? [] : []
+  console.log({ result })
+  return {
+    ssrTopics: exampleTopics,
+  }
+})
 
 export default Upload

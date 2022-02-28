@@ -1,19 +1,19 @@
 import React from 'react'
 
 import { useAtom } from 'jotai'
+import { useUpdateAtom } from 'jotai/utils'
 import Image from 'next/image'
 import { useDebounce } from 'react-use'
 import styled from 'styled-components'
 
-import { topicSearchTextAtom, topicSearchTextForApiAtom } from '@/atom/topic'
+import { isTopicSearchModalOpenAtom, topicSearchTextAtom, topicSearchTextForApiAtom } from '@/atom/topic'
 
 type Props = {}
 
 const TopicSearchBar: React.FC<Props> = ({}) => {
   const [text, setText] = useAtom(topicSearchTextAtom)
-  const [textForApi, setTextForApi] = useAtom(topicSearchTextForApiAtom)
-
-  console.log({ textForApi })
+  const setTextForApi = useUpdateAtom(topicSearchTextForApiAtom)
+  const setIsTopicSearchModalopen = useUpdateAtom(isTopicSearchModalOpenAtom)
 
   const [,] = useDebounce(
     () => {
@@ -25,7 +25,14 @@ const TopicSearchBar: React.FC<Props> = ({}) => {
 
   return (
     <Container>
-      <input placeholder={'키워드로 검색'} value={text} onChange={(e) => setText(e.target.value)} />
+      <input
+        placeholder={'키워드로 검색'}
+        value={text}
+        onFocus={() => {
+          setIsTopicSearchModalopen(true)
+        }}
+        onChange={(e) => setText(e.target.value)}
+      />
       <div className={'ml-auto cursor-pointer'}>
         <Image src={'/menu_search.svg'} width={24} height={24} alt={'search'} />
       </div>

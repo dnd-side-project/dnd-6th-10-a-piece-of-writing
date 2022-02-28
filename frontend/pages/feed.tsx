@@ -33,7 +33,7 @@ const Feed: React.FC<ServerSideProps> = ({ me, posts }) => {
               {topicLoading ? (
                 <Rings height={40} />
               ) : (
-                <TopicCarousel topics={topics.length === 0 ? DUMMY_TOPICS : topics} onClickTopic={(_) => () => {}} />
+                <TopicCarousel topics={topics.length === 0 ? [] : topics} onClickTopic={(_) => () => {}} />
               )}
             </div>
           </FlexDiv>
