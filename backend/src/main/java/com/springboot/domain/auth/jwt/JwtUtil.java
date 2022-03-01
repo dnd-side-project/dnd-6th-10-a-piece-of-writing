@@ -31,7 +31,7 @@ public class JwtUtil {
 
     @Value("${secret.key}")
     private String secretKey;
-    private final long AUTH_TIME = 1000 * 60 * 60; // 60min
+    private final long AUTH_TIME = 1000 * 60 * 6000; // 60min
     private final long REFRESH_TIME = 1000 * 60 * 60 * 24 * 7; // 7days
 
     private final UserDetailsServiceImpl userDetailsServiceImpl;

@@ -12,7 +12,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ErrorResponse {
+public class  ErrorResponse {
 
     private String message;
     private int status;
