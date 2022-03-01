@@ -39,7 +39,7 @@ public interface MemberService {
 
     public ResponseEntity<? extends ResponseDto> getFollowerList(Long id);
 
-    public ResponseEntity<? extends ResponseDto> getMyPostsList(UserDetailsImpl userDetails);
+    public ResponseEntity<? extends ResponseDto> getPostsList(Long id);
 
-    public ResponseEntity<? extends ResponseDto> getMyLikesList(UserDetailsImpl userDetails);
+    public ResponseEntity<? extends ResponseDto> getLikesList(Long id);
 }

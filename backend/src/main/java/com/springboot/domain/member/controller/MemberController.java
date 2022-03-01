@@ -73,13 +73,27 @@ public class MemberController {
     @GetMapping(value = "/posts/list")
     public ResponseEntity<? extends ResponseDto> getMyPostsList(
             @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
-        return memberService.getMyPostsList(userDetailsImpl);
+        return memberService.getPostsList(userDetailsImpl.getMemberId());
+    }
+
+    @Operation(summary = "멤버 글 목록 조회 api", description = "멤버 글 목록 조회 api")
+    @GetMapping(value = "/posts/list/{id}")
+    public ResponseEntity<? extends ResponseDto> getMyPostsList(
+            @Parameter(description = "유저 id", required = true) @PathVariable Long id) {
+        return memberService.getPostsList(id);
     }
 
     @Operation(summary = "내 좋아요 목록 조회 api", description = "내 좋아요 목록 조회 api")
     @GetMapping(value = "/like/list")
     public ResponseEntity<? extends ResponseDto> getMyLikesList(
             @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
-        return memberService.getMyLikesList(userDetailsImpl);
+        return memberService.getLikesList(userDetailsImpl.getMemberId());
+    }
+
+    @Operation(summary = "좋아요 목록 조회 api", description = "멤버 좋아요 목록 조회 api")
+    @GetMapping(value = "/like/list/{id}")
+    public ResponseEntity<? extends ResponseDto> getLikesList(
+            @Parameter(description = "유저 id", required = true) @PathVariable Long id) {
+        return memberService.getLikesList(id);
     }
 }

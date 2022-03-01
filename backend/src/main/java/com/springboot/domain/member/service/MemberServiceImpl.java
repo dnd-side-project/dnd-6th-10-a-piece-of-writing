@@ -185,19 +185,19 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public ResponseEntity<? extends ResponseDto> getMyPostsList(UserDetailsImpl userDetails) {
-        List<Long> LikePostsIdList = likesRepository.getAllByMemberId(userDetails.getMemberId())
+    public ResponseEntity<? extends ResponseDto> getPostsList(Long id) {
+        List<Long> LikePostsIdList = likesRepository.getAllByMemberId(id)
                 .stream().map(L -> L.getPosts().getId()).collect(Collectors.toList());
 
-        List<PostsListResponseDto> list = userDetails.getMember().getPostsList()
+        List<PostsListResponseDto> list = findMemberById(id).getPostsList()
                 .stream().map(P -> postsToDto(P, LikePostsIdList.stream()
-                .anyMatch(id -> Objects.equals(id, P.getId())))).collect(Collectors.toList());
+                        .anyMatch(ID -> Objects.equals(ID, P.getId())))).collect(Collectors.toList());
         return responseService.successResult(SuccessCode.GET_POSTS_LIST_SUCCESS, list);
     }
 
     @Override
-    public ResponseEntity<? extends ResponseDto> getMyLikesList(UserDetailsImpl userDetails) {
-        List<PostsListResponseDto> list = likesRepository.getAllByMemberId(userDetails.getMember().getId())
+    public ResponseEntity<? extends ResponseDto> getLikesList(Long id) {
+        List<PostsListResponseDto> list = likesRepository.getAllByMemberId(id)
                 .stream().map(L -> postsToDto(L.getPosts(), true))
                 .collect(Collectors.toList());
         return responseService.successResult(SuccessCode.GET_LIKES_LIST_SUCCESS, list);

@@ -30,6 +30,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final ValueOperations<String, String> valueOperations;
 
+    private final String[] publicApiList = {
+            "/api/v1/auth/**", "/api/v1/posts/{page}", "/api/v1/posts/type/**",
+            "/api/v1/member/profile/{id}", "/api/v1/member/follow/list/{id}",
+            "/api/v1/member/follower/list/{id}",
+
+            "/v3/api-docs", "/v2/api-docs", "/swagger-resources/**",
+            "/swagger-ui/**", "/webjars/**", "/swagger-ui/index.html**",
+
+            "/profile",
+    };
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -44,13 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/v1/auth/**").permitAll()
-                .antMatchers("/api/v1/posts/{page}", "/api/v1/posts/type/**").permitAll()
-                .antMatchers("/api/v1/member/profile/{id}", "/api/v1/member/follow/list/{id}",
-                        "/api/v1/member/follower/list/{id}").permitAll()
-                .antMatchers("/v3/api-docs", "/v2/api-docs", "/swagger-resources/**",
-                        "/swagger-ui/**", "/webjars/**", "/swagger-ui/index.html**").permitAll()
-                .antMatchers("/profile").permitAll()
+                .antMatchers(publicApiList).permitAll()
                 .anyRequest().hasRole("USER")
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtil, valueOperations),
