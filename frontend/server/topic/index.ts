@@ -1,41 +1,47 @@
-import { RESPONSE_TYPE } from '@/server/axios/baxios'
+import { GetServerSidePropsContext } from 'next'
+
+import { KEY_ACCESS_TOKEN, KEY_HEADER_ACCESS_TOKEN, KEY_HEADER_REFRESH_TOKEN, KEY_REFRESH_TOKEN } from '@/constant'
+import baxios, { RESPONSE_TYPE } from '@/server/axios/baxios'
 
 export type TopicInfo = {
-  id: string
+  topicId: number
   name: string
+  isChecked?: boolean
 }
 
-export const addTopic = async (topicName: string): Promise<RESPONSE_TYPE<TopicInfo>> => {
-  console.log(`addTopic_${topicName}`)
-  await setTimeout(() => {}, 500)
-  const dummyId = Math.ceil(Math.random() * 9999).toString()
-  return {
-    success: true,
-    message: '태그 추가 성공',
-    data: {
-      id: Math.ceil(Math.random() * 9999).toString(),
-      name: `임의의태그_${dummyId}`,
-    },
+export const addTopic = async (name: string): Promise<RESPONSE_TYPE<TopicInfo>> => {
+  try {
+    const res = await baxios.post(`/topic`, { name })
+    if (res.status === 200) return { success: true, message: '토픽 추가 성공!', data: res.data?.data }
+    return { success: false, message: '토픽 추가 실패!' }
+  } catch (e) {
+    return { success: false, message: '토픽 추가 실패!' }
   }
 }
 
-const DUMMY_DATA = [
-  { id: '1', name: '운동' },
-  { id: '2', name: '감성' },
-  { id: '3', name: '인생1' },
-  { id: '4', name: '인생2인생2인생2인생2인생2인생2인생2인생2인생2인생2인생2인생2' },
-  { id: '5', name: '인생3' },
-  { id: '6', name: '인생4' },
-  { id: '7', name: '인생5' },
-]
-
 export const searchTopic = async (topicName: string): Promise<RESPONSE_TYPE<TopicInfo[]>> => {
-  console.log(`searchTopic_${topicName}`)
-  await setTimeout(() => {}, 500)
-  const randIndex = Math.ceil(Math.random() * 6)
-  return {
-    success: true,
-    message: '태그 검색 성공',
-    data: DUMMY_DATA.slice(0, randIndex),
+  try {
+    const res = await baxios.get(`/topic/search/${topicName}`)
+    if (res.status === 200) return { success: true, message: '토픽 검색 성공!', data: res.data?.data || [] }
+    return { success: false, message: '토픽 검색 실패!' }
+  } catch (e) {
+    return { success: false, message: '토픽 검색 실패!' }
+  }
+}
+
+export const loadMainTopics = async (ctx?: GetServerSidePropsContext): Promise<RESPONSE_TYPE<TopicInfo[]>> => {
+  try {
+    const accessToken = ctx?.req?.cookies?.[KEY_ACCESS_TOKEN] ?? null
+    const refreshToken = ctx?.req?.cookies?.[KEY_REFRESH_TOKEN] ?? null
+    const res =
+      accessToken && refreshToken
+        ? await baxios.get(`/topic/list`, {
+            headers: { [KEY_HEADER_ACCESS_TOKEN]: accessToken, [KEY_HEADER_REFRESH_TOKEN]: refreshToken },
+          })
+        : await baxios.get(`/topic/list`)
+    if (res.status === 200) return { success: true, message: '토픽 로드 성공!', data: res.data?.data || [] }
+    return { success: false, message: '토픽 로드 실패!' }
+  } catch (e) {
+    return { success: false, message: '토픽 로드 실패!' }
   }
 }

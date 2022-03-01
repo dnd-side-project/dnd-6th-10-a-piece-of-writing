@@ -1,9 +1,9 @@
 import React from 'react'
 
-import { UserInfo } from '@/components/_user/type'
 import FollowButton from '@/components/button/FollowButton'
 import ProfileImageCard from '@/components/card/ProfileImageCard'
 import { HOVER_BLUE } from '@/styles/classNames'
+import { UserInfo } from '@/type/user'
 
 type Props = {
   userInfo: UserInfo

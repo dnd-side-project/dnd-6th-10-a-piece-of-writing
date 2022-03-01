@@ -53,6 +53,10 @@ public class TopicServiceImpl implements TopicService {
 
         List<Topic> topicList = topicRepository.getTop10Topics();
 
+        int necessaryNum = 10 - topicList.size();
+
+        topicList.addAll(topicRepository.getTopicsBelow10OrderById(necessaryNum));
+
         return topicList.stream().map(T -> entityToDTO(T))
             .collect(Collectors.toList());
     }

@@ -3,13 +3,13 @@ import React from 'react'
 import Link from 'next/link'
 import styled from 'styled-components'
 
-import { UserInfo as UserInfoType } from '@/components/_user/type'
 import { Button } from '@/components/button'
 import { FlexDiv } from '@/components/style/div/FlexDiv'
 import { useSsrMe } from '@/hook/useSsrMe'
 import { withdraw } from '@/server/user'
 import { withAuthServerSideProps } from '@/server/withAuthServerSide'
 import { BreakPoints } from '@/styles/breakPoint'
+import { UserInfo as UserInfoType } from '@/type/user'
 
 type ServerSideProps = { me: UserInfoType }
 

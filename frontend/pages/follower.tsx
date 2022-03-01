@@ -4,10 +4,11 @@ import styled from 'styled-components'
 
 import Followers from '@/_follower/Followers'
 import FollowLabel from '@/_follower/FollowLabel'
-import { DUMMY_USERS, UserInfo as UserInfoType } from '@/components/_user/type'
+import { DUMMY_USERS } from '@/components/_user/type'
 import { useSsrMe } from '@/hook/useSsrMe'
 import { withAuthServerSideProps } from '@/server/withAuthServerSide'
 import { CENTER_FLEX } from '@/styles/classNames'
+import { UserInfo as UserInfoType } from '@/type/user'
 
 type ServerSideProps = { me: UserInfoType }
 
