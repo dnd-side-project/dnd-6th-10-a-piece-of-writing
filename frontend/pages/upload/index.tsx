@@ -75,8 +75,7 @@ const Upload: React.FC<ServerSideProps> = ({ me, ssrTopics }) => {
     const formData = new FormData()
     const image = await exportAsImage(postImageElem)
     formData.append('file', image)
-    formData.append('request', JSON.stringify(postData))
-
+    formData.append('request', new Blob([JSON.stringify(postData)], { type: 'application/json' }))
     uploadPost({ formData }).then((res) => {
       alert(res.message)
     })

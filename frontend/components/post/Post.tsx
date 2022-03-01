@@ -18,8 +18,6 @@ type Props = {
 const Post: React.FC<Props> = ({ post }) => {
   const imgUrl = 'https://fakeimg.pl/300/'
 
-  if (!post) return null
-
   const element = (hovered: boolean) => (
     <PostContainer>
       <div className={'absolute w-full h-full rounded'}>

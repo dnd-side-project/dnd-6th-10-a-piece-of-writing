@@ -47,7 +47,11 @@ export type UploadPostParam = {
 
 export const uploadPost = async ({ formData }: UploadPostParam): Promise<RESPONSE_TYPE> => {
   try {
-    const res = await baxios.post(`/posts`, formData)
+    const res = await baxios.post(`/posts`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
     if (res.status === 200) return { success: true, message: '게시글 추가 성공!', data: res.data.data }
     return { success: false, message: '게시글 추가 실패!' }
   } catch (e) {
