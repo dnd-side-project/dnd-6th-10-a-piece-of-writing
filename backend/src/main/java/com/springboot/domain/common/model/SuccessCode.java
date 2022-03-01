@@ -21,11 +21,11 @@ public enum SuccessCode {
     NICKNAME_DUPLICATION_CHECK_SUCCESS("닉네임이 사용 가능합니다", "SM001", 200),
     MOD_NICKNAME_SUCCESS("닉네임 설정 성공", "SM002", 200),
     MOD_PROFILE_SUCCESS("프로필 변경 성공", "SM003", 200),
-    GET_PROFILE_SUCCESS("멤버 프로필 조회 성공", "SM004", 200),
+    GET_PROFILE_SUCCESS("프로필 조회 성공", "SM004", 200),
     GET_FOLLOW_LIST_SUCCESS("팔로우 리스트 조회 성공", "SM005", 200),
     GET_FOLLOWER_LIST_SUCCESS("팔로워 리스트 조회 성공", "SM006", 200),
     GET_LIKES_LIST_SUCCESS("좋아요 목록 조회 성공", "SM007", 200),
-    GET_POSTS_LIST_SUCCESS("내 글 목록 조회 성공", "SM008", 200),
+    GET_POSTS_LIST_SUCCESS("글 목록 조회 성공", "SM008", 200),
 
     //  Posts
     EXTRACT_SUCCESS("텍스트 추출 성공", "SP001", 200),
