@@ -75,33 +75,6 @@ const MainContainer = styled.div`
   }
 `
 
-const DUMMY_TOPICS = [
-  {
-    name: '동기부여',
-    isChecked: false,
-  },
-  {
-    name: '공부',
-    isChecked: false,
-  },
-  {
-    name: '인생',
-    isChecked: true,
-  },
-  {
-    name: '감성',
-    isChecked: true,
-  },
-  {
-    name: '위로',
-    isChecked: false,
-  },
-  {
-    name: '월요일',
-    isChecked: false,
-  },
-]
-
 export const getServerSideProps = withAuthServerSideProps(async () => {
   const res = await loadMainPosts({ page: 1, size: 20 })
   return {
