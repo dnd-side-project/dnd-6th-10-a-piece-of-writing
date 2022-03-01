@@ -45,7 +45,6 @@ const Upload: React.FC<ServerSideProps> = ({ me, ssrTopics }) => {
   const checkedTopics = useAtomValue(checkedTopicsAtom)
   const postText = useAtomValue(postTextAtom)
   const sourceText = useAtomValue(sourceTextAtom)
-  console.log({ topics })
 
   const onClickTopic = (i: number) => () => checkTopicUpdate(i)
 
@@ -55,7 +54,7 @@ const Upload: React.FC<ServerSideProps> = ({ me, ssrTopics }) => {
   }
 
   const exportAsImage = async (element: HTMLElement) => {
-    const canvas = await html2canvas(element)
+    const canvas = await html2canvas(element, { useCORS: true })
     const image = canvas.toDataURL('image/png', 1.0)
     return dataURItoBlob(image)
   }
@@ -69,7 +68,7 @@ const Upload: React.FC<ServerSideProps> = ({ me, ssrTopics }) => {
       authorId: me?.id ?? 1,
       content: postText ?? '',
       ref: sourceText ?? '',
-      topicList: checkedTopics.map((topic) => topic.topicId) ?? [],
+      topicIdList: checkedTopics.map((topic) => topic.topicId) ?? [],
     }
 
     const formData = new FormData()

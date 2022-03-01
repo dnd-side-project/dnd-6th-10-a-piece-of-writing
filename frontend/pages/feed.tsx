@@ -76,7 +76,8 @@ const MainContainer = styled.div`
 `
 
 export const getServerSideProps = withAuthServerSideProps(async () => {
-  const res = await loadMainPosts({ page: 1, size: 20 })
+  const res = await loadMainPosts({ page: 1, size: 10 })
+  console.log({ res })
   return {
     posts: res.data ?? [],
   }

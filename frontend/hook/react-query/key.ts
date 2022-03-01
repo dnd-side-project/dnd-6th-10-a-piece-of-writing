@@ -1,4 +1,5 @@
 /* 유저 관련 */
+export const USE_MY_POSTS_KEY = 'USE_MY_POSTS_KEY'
 export const USER_PROFILE_KEY = 'USER_PROFILE_KEY'
 export const USE_FOLLOWERS_KEY = 'USE_FOLLOWERS_KEY'
 export const USE_FOLLOWINGS_KEY = 'USE_FOLLOWINGS_KEY'

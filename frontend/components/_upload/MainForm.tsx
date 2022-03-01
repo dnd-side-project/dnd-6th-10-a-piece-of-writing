@@ -26,7 +26,7 @@ type Props = {}
 
 const MainForm: React.FC<Props> = ({}) => {
   const [text, setText] = useAtom(postTextAtom)
-  const [source, setSource] = useAtom(sourceTextAtom)
+  const [sourceText, setSourceText] = useAtom(sourceTextAtom)
   const [, setPostImageElem] = useAtom(postImageElemAtom)
   const [pickerOpen, setPickerOpen] = useState(false)
   const [textColor, setTextColor] = useState('black')
@@ -69,7 +69,7 @@ const MainForm: React.FC<Props> = ({}) => {
           <ImageSpan color={textColor} fontSize={selectedFontSize} fontFamily={selectedFontFamily}>
             {text}
           </ImageSpan>
-          <SourceSpan color={'#a1a1a1'}>{source}</SourceSpan>
+          <SourceSpan color={'#a1a1a1'}>{sourceText}</SourceSpan>
         </ImageContainer>
         <UploadSpan
           className={'mt-2'}
@@ -95,13 +95,13 @@ const MainForm: React.FC<Props> = ({}) => {
           <TextField
             height={'52px'}
             onChange={(e) => {
-              if (e?.target?.value.length >= 50) return setSource(e.target.value.slice(0, 50))
-              setSource(e.target.value)
+              if (e?.target?.value.length >= 50) return setSourceText(e.target.value.slice(0, 50))
+              setSourceText(e.target.value)
             }}
-            value={source}
+            value={sourceText}
             placeholder={'책 제목-작가 / 영화제목/ 노래 제목 - 가수'}
           />
-          <TextLimit>{source.length}/50</TextLimit>
+          <TextLimit>{sourceText.length}/50</TextLimit>
           <FlexDiv width={'100%'} height={'36px'} margin={'1'} justify={'flex-start'}>
             {FONTS.map((fontInfo, index) => (
               <FontButton
