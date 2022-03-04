@@ -114,7 +114,7 @@ const UserInfo: React.FC<Props> = ({ userInfo }) => {
           </div>
         )}
       </div>
-      <UserSummaryCard />
+      <UserSummaryCard userInfo={userInfo} />
     </div>
   )
 }

@@ -71,6 +71,23 @@ export const loadMyPosts = async (ctx?: GetServerSidePropsContext): Promise<RESP
   }
 }
 
+export const loadMyLikedPosts = async (ctx?: GetServerSidePropsContext): Promise<RESPONSE_TYPE<PostInfo[]>> => {
+  try {
+    const accessToken = ctx?.req?.cookies?.[KEY_ACCESS_TOKEN] ?? null
+    const refreshToken = ctx?.req?.cookies?.[KEY_REFRESH_TOKEN] ?? null
+    const res =
+      accessToken && refreshToken
+        ? await baxios.get(`/member/like/list`, {
+            headers: { [KEY_HEADER_ACCESS_TOKEN]: accessToken, [KEY_HEADER_REFRESH_TOKEN]: refreshToken },
+          })
+        : await baxios.get(`/member/like/list`)
+    if (res.status === 200) return { success: true, message: '내 좋아요 게시글 로드 성공!', data: res.data.data }
+    return { success: false, message: '내 좋아요 게시글 로드 실패!' }
+  } catch (e) {
+    return { success: false, message: '내 좋아요 게시글 로드 실패!' }
+  }
+}
+
 export type UploadPostParam = {
   formData: FormData
 }

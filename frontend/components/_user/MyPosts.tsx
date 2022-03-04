@@ -16,8 +16,7 @@ type Props = {
   userInfo: UserInfo
 }
 
-// TODO : 유저 별 게시글 조회 나오면 수정 필요
-const UserPosts: React.FC<Props> = ({ userInfo }) => {
+const MyPosts: React.FC<Props> = ({ userInfo }) => {
   const isMe = useIsMe(userInfo?.id)
   const userProfileTab = useAtomValue(userProfileTabAtom)
   const isPostTab = userProfileTab === ProfileTab.POST
@@ -43,4 +42,4 @@ const UserPosts: React.FC<Props> = ({ userInfo }) => {
   )
 }
 
-export default UserPosts
+export default MyPosts
