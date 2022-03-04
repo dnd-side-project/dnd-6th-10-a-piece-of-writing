@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 
+import { useAtomValue } from 'jotai/utils'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
+import { meAtom } from '@/atom/user/me'
 import CommentButton from '@/components/button/CommentButton'
 import DownloadButton from '@/components/button/DownloadButton'
 import LikeButton from '@/components/button/LikeButton'
@@ -12,6 +14,7 @@ import ShareButton from '@/components/button/ShareButton'
 import CommentCard from '@/components/card/CommentCard'
 import { MenuModalContainer } from '@/components/container/MenuModalContainer'
 import CommentInput from '@/components/input/CommentInput'
+import { deletePost } from '@/server/post'
 import { TopicInfo } from '@/server/topic'
 import { PostInfo } from '@/type/post'
 
@@ -24,7 +27,10 @@ type Props = {
 
 const PostCard: React.FC<Props> = ({ post, topics }) => {
   const router = useRouter()
+  const me = useAtomValue(meAtom)
   const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const isMyCard = me.id === post?.authorInfo?.id
 
   useEffect(() => {
     if (!post) {
@@ -32,6 +38,13 @@ const PostCard: React.FC<Props> = ({ post, topics }) => {
       router.back()
     }
   }, [post])
+
+  const onClickDelete = () => {
+    post?.postsId &&
+      deletePost(post?.postsId).then((res) => {
+        alert(res.message)
+      })
+  }
 
   if (!post) return null
 
@@ -48,9 +61,11 @@ const PostCard: React.FC<Props> = ({ post, topics }) => {
               setIsModalOpen((open) => !open)
             }}
           />
-          {isModalOpen && (
+          {isModalOpen && isMyCard && (
             <MenuModalContainer>
-              <div className={'cursor-pointer'}>삭제하기</div>
+              <div className={'cursor-pointer'} onClick={onClickDelete}>
+                삭제하기
+              </div>
             </MenuModalContainer>
           )}
         </div>

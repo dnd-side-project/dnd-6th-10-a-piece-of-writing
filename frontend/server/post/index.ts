@@ -89,7 +89,7 @@ export const uploadPost = async ({ formData }: UploadPostParam): Promise<RESPONS
   }
 }
 
-export const deletePost = async (id: string): Promise<RESPONSE_TYPE> => {
+export const deletePost = async (id: number): Promise<RESPONSE_TYPE> => {
   try {
     const res = await baxios.delete(`/posts/${id}`)
     if (res.status === 200) return { success: true, message: '게시글 삭제 성공!' }
