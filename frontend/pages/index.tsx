@@ -21,8 +21,8 @@ const Index: React.FC<ServerSideProps> = ({ me }) => {
         <DummyCard href={'/feed'} title={'메인'} content={'메인 피드입니다. (목업상태)'} />
         <DummyCard href={'/modify'} title={'수정'} content={'프로필 수정입니다. (목업상태)'} />
         <DummyCard href={'/follower'} title={'팔로워'} content={'팔로워입니다. (목업상태)'} />
-        <DummyCard href={'/user/123'} title={'유저프로필'} content={'유저 프로필입니다. (목업상태)'} />
-        <DummyCard href={'/postcard'} title={'포스트'} content={'포스트 예시입니다. (목업상태)'} />
+        <DummyCard href={'/user/123'} title={'유저프로필'} content={'/user/${userId}'} />
+        <DummyCard href={'/post/6'} title={'포스트'} content={'/post/${postId}'} />
         <DummyCard href={'/withdraw'} title={'탈퇴'} content={'탈퇴하기 페이지'} />
         <DummyCard href={'/upload'} title={'업로드'} content={'게시글 업로드입니다. (게시글 db API 미구현)'} />
         <DummyCard href={'/register'} title={'회원가입'} content={'회원가입 페이지입니다.'} />

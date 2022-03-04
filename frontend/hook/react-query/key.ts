@@ -10,4 +10,5 @@ export const USE_POST_KEY = 'USE_POST_KEY'
 
 /* 토픽 관련 */
 export const USE_MAIN_TOPICS_KEY = 'USE_MAIN_TOPICS_KEY'
+export const USE_POST_TOPICS_KEY = 'USE_POST_TOPICS_KEY'
 export const USE_SEARCH_TOPICS_KEY = 'USE_SEARCH_TOPICS_KEY'

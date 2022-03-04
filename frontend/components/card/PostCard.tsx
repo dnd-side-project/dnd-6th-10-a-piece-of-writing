@@ -18,7 +18,7 @@ import { PostInfo } from '@/type/post'
 import { FlexDiv } from '../style/div/FlexDiv'
 
 type Props = {
-  post: PostInfo
+  post: PostInfo | null
   topics: TopicInfo[]
 }
 

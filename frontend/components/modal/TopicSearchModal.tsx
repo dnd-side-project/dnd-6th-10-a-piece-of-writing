@@ -10,7 +10,7 @@ import {
   topicSearchTextAtom,
   topicSearchTextForApiAtom,
 } from '@/atom/topic'
-import { useSearchTopics } from '@/hook/react-query/useSearchTopics'
+import { useSearchTopics } from '@/hook/react-query/topic/useSearchTopics'
 import { addTopic as addTopicServer, TopicInfo } from '@/server/topic'
 import { HOVER_BLUE } from '@/styles/classNames'
 

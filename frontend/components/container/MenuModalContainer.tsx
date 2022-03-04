@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 
+import { LIGHT_GRAY } from '@/styles/classNames'
+
 export type MenuModalContainerProps = {
   top?: string
   right?: string
@@ -22,4 +24,9 @@ export const MenuModalContainer = styled.div`
   background-color: #fff;
   transition: opacity 0.5s;
   font-size: 14px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${LIGHT_GRAY};
+  }
 `
