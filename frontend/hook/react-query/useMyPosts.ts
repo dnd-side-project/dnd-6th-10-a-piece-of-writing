@@ -12,6 +12,7 @@ export const useMyPosts = () => {
   const { isError, isLoading, data, isSuccess } = useQuery<RESPONSE_TYPE<PostInfo[]>, Error>(
     [USE_MY_POSTS_KEY, me?.id ?? ''],
     async () => loadMyPosts(),
+    { refetchInterval: 60 * 60 * 60 },
   )
   return { isError: !data?.success || isError, isLoading, myPosts: data?.data ?? [], isSuccess }
 }
