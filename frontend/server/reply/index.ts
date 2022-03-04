@@ -28,10 +28,10 @@ export const deleteReply = async (replyId: number): Promise<RESPONSE_TYPE<ReplyI
 
 export const modifyReply = async (param: AddReplyParam): Promise<RESPONSE_TYPE<ReplyInfo>> => {
   try {
-    const res = await baxios.post(`/reply/${param.postsId}`, { text: param.text })
-    if (res.status === 200) return { success: true, message: '댓글 숙제 성공!', data: res.data.data }
-    return { success: false, message: '댓글 숙제 실패!' }
+    const res = await baxios.put(`/reply/${param.postsId}`, { text: param.text })
+    if (res.status === 200) return { success: true, message: '댓글 수정 성공!', data: res.data.data }
+    return { success: false, message: '댓글 수정 실패!' }
   } catch (e) {
-    return { success: false, message: '댓글 숙제 실패!' }
+    return { success: false, message: '댓글 수정 실패!' }
   }
 }

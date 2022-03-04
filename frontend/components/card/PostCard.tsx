@@ -90,7 +90,7 @@ const PostCard: React.FC<Props> = ({ post, topics }) => {
           <ShareButton />
         </FlexDiv>
         <CommentCard nickName={'유저 닉네임'} text={'댓글 내용'} isMe={true} />
-        <CommentInput />
+        <CommentInput postId={post.postsId} />
       </PostCardContainer>
     </>
   )
