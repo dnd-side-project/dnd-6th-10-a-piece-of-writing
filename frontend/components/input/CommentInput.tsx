@@ -3,12 +3,13 @@ import React from 'react'
 import styled from 'styled-components'
 
 type Props = {
+  postId: number
   width?: string
   value?: string
   onChange?: () => {}
 }
 
-const CommentInput: React.FC<Props> = ({ width = '100%', value, onChange, ...props }) => {
+const CommentInput: React.FC<Props> = ({ postId, width = '100%', value, onChange, ...props }) => {
   return (
     <InputContainer width={width} {...props}>
       <input
