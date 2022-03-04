@@ -8,12 +8,12 @@ export const loadProfile = async (userId: number): Promise<RESPONSE_TYPE> => {
       return {
         success: true,
         data: result.data?.data,
-        message: '프로필 조 성공',
+        message: '프로필 조회 성공',
       }
     }
     return {
       success: false,
-      message: '프로필 조 데이터 파싱 실패',
+      message: '프로필 조회 데이터 파싱 실패',
     }
   } catch (e) {
     return { success: false, message: '프로필 조회에 실패했습니다.' }

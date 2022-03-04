@@ -19,14 +19,16 @@ import { UserInfo as UserInfoType } from '@/type/user'
 type ServerSideProps = { me: UserInfoType; ssrUserInfo: UserInfoType }
 
 const User: React.FC<ServerSideProps> = ({ me, ssrUserInfo }) => {
-  useSsrMe(me, ssrUserInfo ?? [])
+  useSsrMe(me)
   const router = useRouter()
   const { id } = router.query
-  const isMe = me?.id === Number(id)
   const userId = typeof id === 'string' ? parseInt(id) : 1
 
-  const { userInfo } = useUserProfile(userId)
-  console.log({ userInfo })
+  const { userInfo: csrUserInfo } = useUserProfile(userId, !ssrUserInfo?.id)
+
+  console.log({ ssrUserInfo })
+
+  const userInfo = ssrUserInfo ?? csrUserInfo
 
   return (
     <>
@@ -34,10 +36,10 @@ const User: React.FC<ServerSideProps> = ({ me, ssrUserInfo }) => {
         <FollowerModal userId={userId} />
         <FollowingModal userId={userId} />
         <Container>
-          <UserInfo isMe={true} userInfo={userInfo ?? null} />
-          <UserPostLabel isMe={isMe} />
-          <UserTopicCarousel />
-          <UserPosts isMe={isMe} />
+          <UserInfo userInfo={userInfo} />
+          <UserPostLabel userInfo={userInfo} />
+          <UserTopicCarousel userInfo={userInfo} />
+          <UserPosts userInfo={userInfo} />
         </Container>
       </div>
     </>

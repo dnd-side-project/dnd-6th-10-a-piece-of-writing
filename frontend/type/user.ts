@@ -4,7 +4,7 @@ export type UserInfo = {
   profileUrl?: string
   email?: string
   alreadyFollow?: boolean
-  follow?: number
-  follower?: number
+  followingCount?: number
+  followerCount?: number
   authority?: string
 } | null
