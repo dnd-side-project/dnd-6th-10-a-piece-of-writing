@@ -17,12 +17,23 @@ import CommentInput from '@/components/input/CommentInput'
 import { deletePost } from '@/server/post'
 import { TopicInfo } from '@/server/topic'
 import { PostInfo } from '@/type/post'
+import { ReplyInfo } from '@/type/reply'
 
 import { FlexDiv } from '../style/div/FlexDiv'
 
 type Props = {
   post: PostInfo | null
   topics: TopicInfo[]
+}
+
+export const DUMMY_COMMENT: ReplyInfo = {
+  replyId: 11,
+  text: 'Postsman text test 22/02/21',
+  replyer: {
+    id: 1,
+    nickname: 'tester01',
+    profileUrl: 'https://storage.googleapis.com/example-ocr-test/67954529-47c3-49c0-ae2b-efa5174404f7',
+  },
 }
 
 const PostCard: React.FC<Props> = ({ post, topics }) => {
@@ -89,7 +100,7 @@ const PostCard: React.FC<Props> = ({ post, topics }) => {
           <DownloadButton />
           <ShareButton />
         </FlexDiv>
-        <CommentCard nickName={'유저 닉네임'} text={'댓글 내용'} isMe={true} />
+        <CommentCard comment={DUMMY_COMMENT} />
         <CommentInput postId={post.postsId} />
       </PostCardContainer>
     </>
