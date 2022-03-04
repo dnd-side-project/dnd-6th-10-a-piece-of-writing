@@ -6,6 +6,7 @@ export const USE_FOLLOWINGS_KEY = 'USE_FOLLOWINGS_KEY'
 
 /* 글귀 관련 */
 export const USE_INFINITE_POSTS_KEY = 'USE_INFINITE_POSTS_KEY'
+export const USE_POST_KEY = 'USE_POST_KEY'
 
 /* 토픽 관련 */
 export const USE_MAIN_TOPICS_KEY = 'USE_MAIN_TOPICS_KEY'

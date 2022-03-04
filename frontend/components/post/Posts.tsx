@@ -27,7 +27,7 @@ export const DUMMY_POSTS: PostInfo[] = [
     imageUrl: 'https://picsum.photos/id/1002/400/400',
   },
   {
-    postsId: 4,
+    postsId: 5,
     content: '테스트',
     imageUrl: 'https://picsum.photos/id/9/400/400',
   },

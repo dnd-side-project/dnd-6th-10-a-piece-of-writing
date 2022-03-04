@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
 import CommentButton from '@/components/button/CommentButton'
@@ -11,22 +12,37 @@ import ShareButton from '@/components/button/ShareButton'
 import CommentCard from '@/components/card/CommentCard'
 import { MenuModalContainer } from '@/components/container/MenuModalContainer'
 import CommentInput from '@/components/input/CommentInput'
+import { TopicInfo } from '@/server/topic'
+import { PostInfo } from '@/type/post'
 
 import { FlexDiv } from '../style/div/FlexDiv'
 
 type Props = {
-  imageUrl: string
+  post: PostInfo
+  topics: TopicInfo[]
 }
 
-const PostCard: React.FC<Props> = ({ imageUrl }) => {
+const PostCard: React.FC<Props> = ({ post, topics }) => {
+  const router = useRouter()
   const [isModalOpen, setIsModalOpen] = useState(false)
+
+  useEffect(() => {
+    if (!post) {
+      alert('올바르지 않은 글귀입니다!')
+      router.back()
+    }
+  }, [post])
+
+  if (!post) return null
 
   return (
     <>
       <PostCardContainer>
         <div className={'w-full flex mb-6 relative'}>
-          <Image src={'/profile.svg'} width={24} height={24} alt={'profile'} />
-          <p className={'text-overline'}>유저 닉네임</p>
+          <div className={'flex items-center'}>
+            <Image src={post.authorInfo?.profileUrl ?? '/profile.svg'} width={24} height={24} alt={'profile'} />
+            <p className={'text-overline ml-2'}>{post?.authorInfo?.nickname ?? '유저 닉네임'}</p>
+          </div>
           <MenuButton
             onClick={() => {
               setIsModalOpen((open) => !open)
@@ -38,13 +54,19 @@ const PostCard: React.FC<Props> = ({ imageUrl }) => {
             </MenuModalContainer>
           )}
         </div>
-        <Image className={'rounded-xl'} src={imageUrl} alt={'post'} width={386} height={386} />
+        <Image
+          className={'rounded-xl'}
+          src={post.imageUrl ?? 'https://fakeimg.pl/100x100/'}
+          alt={'post'}
+          width={386}
+          height={386}
+        />
         <div className={'flex flex-nowrap gap-1 my-6 whitespace-nowrap overflow-hidden hover:overflow-visible'}>
-          <TopicContainer>감성</TopicContainer>
-          <TopicContainer>나만의글</TopicContainer>
-          <TopicContainer>명언</TopicContainer>
-          <TopicContainer>로맨틱</TopicContainer>
-          <TopicContainer>기분전환</TopicContainer>
+          {topics?.length > 0 ? (
+            topics?.map((topic, i) => <TopicContainer key={topic.topicId ?? i}>{topic.name}</TopicContainer>)
+          ) : (
+            <span className={'text-t12 italic ml-2 text-gray-500'}>(토픽없음)</span>
+          )}
         </div>
         <FlexDiv justify={'space-between'}>
           <LikeButton />
