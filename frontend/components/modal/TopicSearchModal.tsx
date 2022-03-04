@@ -10,6 +10,7 @@ import {
   topicSearchTextAtom,
   topicSearchTextForApiAtom,
 } from '@/atom/topic'
+import { MAX_TOPIC_LENGTH } from '@/constant/number'
 import { useSearchTopics } from '@/hook/react-query/topic/useSearchTopics'
 import { addTopic as addTopicServer, TopicInfo } from '@/server/topic'
 import { HOVER_BLUE } from '@/styles/classNames'
@@ -57,7 +58,14 @@ const TopicSearchModal: React.FC<Props> = ({}) => {
         </div>
       ))}
       {text && !isContainTopic(searchTopics, text) && (
-        <div className={`cursor-pointer w-full p-4 text-link ${HOVER_BLUE}`} onClick={() => onClickAddTopic(text)}>
+        <div
+          className={`cursor-pointer w-full p-4 text-link ${HOVER_BLUE}`}
+          onClick={() => {
+            if (text.length > MAX_TOPIC_LENGTH) {
+              return alert('토픽 이름의 길이가 너무 깁니다!')
+            }
+            onClickAddTopic(text)
+          }}>
           {`"${text}" 을 새로 추가합니다.`}
         </div>
       )}

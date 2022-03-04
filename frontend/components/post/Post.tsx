@@ -30,7 +30,7 @@ const Post: React.FC<Props> = ({ post }) => {
             <p className={'text-overline'}>유저 닉네임</p>
           </NickNameContainer>
           <div className={'mt-185px w-full flex flex-wrap justify-around'}>
-            <LikeButton />
+            <LikeButton liked={post.alreadyLike} postId={post.postsId} />
             <CommentButton />
             <DownloadButton onClick={() => download(post.imageUrl ?? imgUrl)} />
             <ShareButton onClick={() => share(post.imageUrl ?? imgUrl)} />

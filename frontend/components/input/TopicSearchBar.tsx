@@ -7,6 +7,7 @@ import { useDebounce } from 'react-use'
 import styled from 'styled-components'
 
 import { isTopicSearchModalOpenAtom, topicSearchTextAtom, topicSearchTextForApiAtom } from '@/atom/topic'
+import { MAX_TOPIC_LENGTH } from '@/constant/number'
 
 type Props = {}
 
@@ -31,7 +32,9 @@ const TopicSearchBar: React.FC<Props> = ({}) => {
         onFocus={() => {
           setIsTopicSearchModalopen(true)
         }}
-        onChange={(e) => setText(e.target.value)}
+        onChange={(e) => {
+          if (e.target.value.length <= MAX_TOPIC_LENGTH) setText(e.target.value)
+        }}
       />
       <div className={'ml-auto cursor-pointer'}>
         <Image src={'/menu_search.svg'} width={24} height={24} alt={'search'} />

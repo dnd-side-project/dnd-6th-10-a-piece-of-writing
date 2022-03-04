@@ -24,9 +24,10 @@ type Props = {
   onClickTopic?: (index: number) => () => void
   showAll?: boolean
   onClickAll?: () => void
+  addAble?: boolean
 }
 
-export const TopicCarousel = ({ topics, onClickTopic, showAll, onClickAll = () => {} }: Props) => {
+export const TopicCarousel = ({ topics, onClickTopic, showAll, onClickAll = () => {}, addAble = false }: Props) => {
   const [isTopicSearchBarOpen, setIsTopicSearchBarOpen] = useAtom(isTopicSearchBarOpenAtom)
 
   return (
@@ -35,13 +36,15 @@ export const TopicCarousel = ({ topics, onClickTopic, showAll, onClickAll = () =
       {topics.map((topicInfo, i) => (
         <Topic key={`TopicContainer_${i}`} topicInfo={topicInfo} onClick={onClickTopic ? onClickTopic(i) : () => {}} />
       ))}
-      {isTopicSearchBarOpen ? (
-        <TopicSearch />
-      ) : (
-        <AddTopicButton onClick={() => setIsTopicSearchBarOpen(true)}>
-          <FlexDiv height={'100%'}>+</FlexDiv>
-        </AddTopicButton>
-      )}
+
+      {addAble &&
+        (isTopicSearchBarOpen ? (
+          <TopicSearch />
+        ) : (
+          <AddTopicButton onClick={() => setIsTopicSearchBarOpen(true)}>
+            <FlexDiv height={'100%'}>+</FlexDiv>
+          </AddTopicButton>
+        ))}
     </Slider>
   )
 }

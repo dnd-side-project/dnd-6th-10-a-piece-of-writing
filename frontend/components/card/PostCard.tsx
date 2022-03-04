@@ -30,7 +30,7 @@ const PostCard: React.FC<Props> = ({ post, topics }) => {
   const me = useAtomValue(meAtom)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const isMyCard = me.id === post?.authorInfo?.id
+  const isMyCard = me?.id === post?.authorInfo?.id
 
   useEffect(() => {
     if (!post) {
@@ -84,7 +84,7 @@ const PostCard: React.FC<Props> = ({ post, topics }) => {
           )}
         </div>
         <FlexDiv justify={'space-between'}>
-          <LikeButton />
+          <LikeButton liked={post.alreadyLike} postId={post.postsId} />
           <CommentButton />
           <DownloadButton />
           <ShareButton />

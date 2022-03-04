@@ -98,7 +98,7 @@ const Upload: React.FC<ServerSideProps> = ({ me, ssrTopics }) => {
           <TopicContainer>
             <div className={'w-full'}>
               <div className={'my-5'}>관련된 주제를 골라주세요</div>
-              <TopicCarousel topics={topics} onClickTopic={onClickTopic} />
+              <TopicCarousel topics={topics} onClickTopic={onClickTopic} addAble />
             </div>
           </TopicContainer>
         </div>
