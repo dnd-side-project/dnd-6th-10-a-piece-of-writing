@@ -110,7 +110,7 @@ const UserInfo: React.FC<Props> = ({ userInfo }) => {
         <span className={'text-t16 font-semibold text-center'}>{userInfo?.nickname}</span>
         {!isMe && (
           <div className={'absolute right-0 translate-y-2/4 bottom-1/2 '}>
-            <FollowButton followed={userInfo?.alreadyFollow} />
+            <FollowButton userId={userInfo?.id} followed={userInfo?.alreadyFollow} />
           </div>
         )}
       </div>
