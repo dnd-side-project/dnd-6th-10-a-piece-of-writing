@@ -16,7 +16,7 @@ public interface TopicRepository extends JpaRepository<Topic, Long> {
 
     List<Topic> findByNameContaining(String keyword);
 
-    @Query(value = "SELECT * FROM Topic t "
+    @Query(value = "SELECT * FROM topic t "
         + "INNER JOIN category c "
         + "ON t.id = c.topic_id "
         + "and c.posts_id = :postsId", nativeQuery = true)
