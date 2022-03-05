@@ -42,12 +42,17 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport impleme
         QCategory category = QCategory.category;
 
         JPQLQuery<Posts> jpqlQuery = from(posts);
-        jpqlQuery.leftJoin(member).on(posts.author.eq(member));
+
+        if (type == null && keyword == null) {
+            jpqlQuery.leftJoin(member).on(posts.author.eq(member));
+        } else {
+            jpqlQuery.leftJoin(member).on(posts.author.eq(member));
 //        jpqlQuery.leftJoin(reply).on(reply.posts.eq(posts));
 //        jpqlQuery.innerJoin(category).on(posts.id.eq(category.posts.id));
-        jpqlQuery.innerJoin(category).on(posts.eq(category.posts));
-        jpqlQuery.innerJoin(topic).on(category.topic.eq(topic));
+            jpqlQuery.innerJoin(category).on(posts.eq(category.posts));
+            jpqlQuery.innerJoin(topic).on(category.topic.eq(topic));
 //        jpqlQuery.innerJoin(topic).on(category.topic.id.eq(topic.id));
+        }
 
         JPQLQuery<Tuple> tuple = jpqlQuery.select(posts, member);
 //        JPQLQuery<Tuple> tuple = jpqlQuery.select(posts, member, topic);
