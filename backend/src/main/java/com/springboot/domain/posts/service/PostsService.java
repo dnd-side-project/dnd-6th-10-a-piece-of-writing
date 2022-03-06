@@ -29,9 +29,9 @@ public interface PostsService {
 
     public Long removePosts(Long postsId, UserDetailsImpl userDetails);
 
-    public List<PostsDto> findAllPosts(int page, int size, UserDetailsImpl userDetails);
+    public List<Object> findAllPosts(int page, int size, UserDetailsImpl userDetails);
 
-    public List<PostsDto> findAllPostsBySearch(int page, int size, String keyword, String type,
+    public List<Object> findAllPostsBySearch(int page, int size, String keyword, String type,
         Long topicId, UserDetailsImpl userDetails);
 
     public String getFileUuid();

@@ -118,7 +118,7 @@ public class PostsServiceImpl implements PostsService {
     }
 
     @Override
-    public List<PostsDto> findAllPosts(int page, int size,
+    public List<Object> findAllPosts(int page, int size,
         UserDetailsImpl userDetails) {
 
         PageRequestDto pageRequestDTO = PageRequestDto.builder()
@@ -128,11 +128,15 @@ public class PostsServiceImpl implements PostsService {
 
         PageResultDto<PostsDto, Object[]> resultDTO = getList(pageRequestDTO,
             userDetails.getMember().getId());
-        return resultDTO.getDtoList();
+
+        return new ArrayList<Object>() {{
+            add(resultDTO.getDtoList().size());
+            add(resultDTO.getDtoList());
+        }};
     }
 
     @Override
-    public List<PostsDto> findAllPostsBySearch(int page, int size, String keyword, String type,
+    public List<Object> findAllPostsBySearch(int page, int size, String keyword, String type,
         Long topicId, UserDetailsImpl userDetails) {
 
         PageRequestDto pageRequestDTO = PageRequestDto.builder()
@@ -145,7 +149,11 @@ public class PostsServiceImpl implements PostsService {
 
         PageResultDto<PostsDto, Object[]> resultDTO = getList(pageRequestDTO,
             userDetails.getMember().getId());
-        return resultDTO.getDtoList();
+
+        return new ArrayList<Object>() {{
+            add(resultDTO.getDtoList().size());
+            add(resultDTO.getDtoList());
+        }};
     }
 
     // Tools for Pagination

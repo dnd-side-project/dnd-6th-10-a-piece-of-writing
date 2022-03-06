@@ -112,9 +112,9 @@ public class PostsController {
         @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
         @RequestParam int size) {
 
-        List<PostsDto> posts = postsService.findAllPosts(page, size, userDetailsImpl);
+        List<Object> result = postsService.findAllPosts(page, size, userDetailsImpl);
 
-        return responseServiceImpl.successResult(SuccessCode.SELECT_ALL_POSTS_SUCCESS, posts);
+        return responseServiceImpl.successResult(SuccessCode.SELECT_ALL_POSTS_SUCCESS, result);
     }
 
     @ApiOperation(
@@ -167,11 +167,11 @@ public class PostsController {
         @RequestParam(required = false) Long topicId,
         @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
 
-        List<PostsDto> posts = postsService.findAllPostsBySearch(page, size, keyword, type, topicId,
+        List<Object> result = postsService.findAllPostsBySearch(page, size, keyword, type, topicId,
             userDetailsImpl);
 
         return responseServiceImpl.successResult(
-            SuccessCode.SELECT_POSTS_SEARCH_SUCCESS, posts);
+            SuccessCode.SELECT_POSTS_SEARCH_SUCCESS, result);
     }
 
     @ApiOperation(value = "이미지 텍스트 추출 api", notes = "이미지를 전송해 텍스트를 추출한다.")
