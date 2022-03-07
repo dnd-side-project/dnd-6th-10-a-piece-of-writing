@@ -12,13 +12,14 @@ import FollowerModal from '@/components/modal/FollowerModal'
 import FollowingModal from '@/components/modal/FollowingModal'
 import { useUserProfile } from '@/hook/react-query/useUserProfile'
 import { useSsrMe } from '@/hook/useSsrMe'
+import { loadUserPosts } from '@/server/post'
 import { loadProfile } from '@/server/user/profile'
 import { withAuthServerSideProps } from '@/server/withAuthServerSide'
 import { UserInfo as UserInfoType } from '@/type/user'
 
 type ServerSideProps = { me: UserInfoType; ssrUserInfo: UserInfoType }
 
-const User: React.FC<ServerSideProps> = ({ me, ssrUserInfo }) => {
+const User: React.FC<ServerSideProps> = ({ me, ssrPosts, ssrUserInfo }) => {
   useSsrMe(me)
   const router = useRouter()
   const { id } = router.query
@@ -39,7 +40,7 @@ const User: React.FC<ServerSideProps> = ({ me, ssrUserInfo }) => {
           <UserInfo userInfo={userInfo} />
           <UserPostLabel userInfo={userInfo} />
           <UserTopicCarousel userInfo={userInfo} />
-          <UserPosts userInfo={userInfo} />
+          <UserPosts userInfo={userInfo} likePosts={ssrPosts} userPosts={ssrPosts} />
         </Container>
       </div>
     </>
@@ -58,9 +59,11 @@ const Container = styled.div`
 export const getServerSideProps = withAuthServerSideProps(async (ctx: GetServerSidePropsContext) => {
   const userIdByString = ctx.req.url?.slice(6) //  -- /user/123  의 index 6 이후값들
   if (userIdByString) {
-    const res = await loadProfile(parseInt(userIdByString))
+    const profileResult = await loadProfile(parseInt(userIdByString))
+    const postResult = await loadUserPosts(parseInt(userIdByString), ctx)
     return {
-      ssrUserInfo: res.data || null,
+      ssrUserInfo: profileResult.data || null,
+      ssrPosts: postResult.data ?? null,
     }
   }
   return {}

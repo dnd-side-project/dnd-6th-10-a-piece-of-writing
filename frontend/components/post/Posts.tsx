@@ -38,6 +38,8 @@ type Props = {
 }
 
 const Posts: React.FC<Props> = ({ posts = DUMMY_POSTS }) => {
+  if (!posts) return null
+
   return (
     <PostsContainer>
       {posts.map((post) => (
