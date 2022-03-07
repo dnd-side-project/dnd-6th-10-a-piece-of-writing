@@ -12,9 +12,10 @@ export type PostData = {
   topicIdList?: number[]
 }
 
-export const loadMainPosts = async (params: { page: number; size: number }): Promise<RESPONSE_TYPE> => {
+export const loadMainPosts = async (params: { page: number; size: number }): Promise<RESPONSE_TYPE<PostInfo[]>> => {
   try {
     const res = await baxios.get(`/posts/list`, { params })
+    console.log({ res })
     if (res.status === 200) return { success: true, message: '게시글 로드 성공!', data: res.data?.data }
     return { success: false, message: '게시글 로드 실패!' }
   } catch (e) {
@@ -24,9 +25,9 @@ export const loadMainPosts = async (params: { page: number; size: number }): Pro
 
 export type PostsParam = {
   page?: number
-  size: number
-  type: SearchType
-  keyword: string
+  size?: number
+  type?: SearchType
+  keyword?: string
 }
 
 export const loadPost = async (postId: number): Promise<RESPONSE_TYPE<PostInfo>> => {
@@ -40,10 +41,10 @@ export const loadPost = async (postId: number): Promise<RESPONSE_TYPE<PostInfo>>
 }
 
 export const loadPosts = async (params: {
-  page: number
-  size: number
-  type: SearchType
-  keyword: string
+  page?: number
+  size?: number
+  type?: SearchType
+  keyword?: string
 }): Promise<RESPONSE_TYPE<PostInfo[]>> => {
   try {
     const res = await baxios.post(`/posts/search`, params)

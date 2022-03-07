@@ -38,7 +38,7 @@ type Props = {
 }
 
 const Posts: React.FC<Props> = ({ posts = DUMMY_POSTS }) => {
-  if (!posts) return null
+  if (!posts || !posts.length) return null
 
   return (
     <PostsContainer>

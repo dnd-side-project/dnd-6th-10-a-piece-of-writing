@@ -1,27 +1,34 @@
 import React from 'react'
 
-import { Rings } from 'react-loader-spinner'
+import InfiniteScroll from 'react-infinite-scroll-component'
+import { Oval, Rings } from 'react-loader-spinner'
 import styled from 'styled-components'
 
 import MainTitle from '@/components/_main/MainTitle'
 import AddButton from '@/components/button/AddButton'
 import { TopicCarousel } from '@/components/carousel'
-import Posts, { DUMMY_POSTS } from '@/components/post/Posts'
+import Posts from '@/components/post/Posts'
 import { FlexDiv } from '@/components/style/div/FlexDiv'
+import { useMainInfinitePosts } from '@/hook/react-query/post/useMainInfinitePosts'
 import { useMainTopics } from '@/hook/react-query/topic/useMainTopics'
 import { useSsrMe } from '@/hook/useSsrMe'
 import { loadMainPosts } from '@/server/post'
 import { withAuthServerSideProps } from '@/server/withAuthServerSide'
-import { CENTER_FLEX } from '@/styles/classNames'
+import { CENTER_FLEX, GRAY } from '@/styles/classNames'
 import { UserInfo as UserInfoType } from '@/type/user'
 
 type ServerSideProps = { me: UserInfoType; posts: any }
 
+const PAGE_SIZE = 10
+
 const Feed: React.FC<ServerSideProps> = ({ me, posts }) => {
   useSsrMe(me)
-
+  // const [page, setPage] = useState(1)
   const { topics, isLoading: topicLoading } = useMainTopics()
-  console.log(posts)
+  const { data, fetchNextPage, hasNextPage } = useMainInfinitePosts()
+
+  console.log(data?.pages)
+
   return (
     <>
       <div className={`flex flex-col-reverse flex-end items-center w-full`}>
@@ -38,25 +45,27 @@ const Feed: React.FC<ServerSideProps> = ({ me, posts }) => {
             </div>
           </FlexDiv>
           <div className={`w-full ${CENTER_FLEX} mt-10 ml-5 xl:ml-0`}>
-            {/*<InfiniteScroll*/}
-            {/*  dataLength={items.length} //This is important field to render the next data*/}
-            {/*  next={fetchData}*/}
-            {/*  hasMore={true}*/}
-            {/*  loader={<h4>Loading...</h4>}*/}
-            {/*  endMessage={*/}
-            {/*    <p style={{ textAlign: 'center' }}>*/}
-            {/*      <b>Yay! You have seen it all</b>*/}
-            {/*    </p>*/}
-            {/*  }*/}
-            {/*  // below props only if you need pull down functionality*/}
-            {/*  refreshFunction={this.refresh}*/}
-            {/*  pullDownToRefresh*/}
-            {/*  pullDownToRefreshThreshold={50}*/}
-            {/*  pullDownToRefreshContent={<h3 style={{ textAlign: 'center' }}>&#8595; Pull down to refresh</h3>}*/}
-            {/*  releaseToRefreshContent={<h3 style={{ textAlign: 'center' }}>&#8593; Release to refresh</h3>}>*/}
-            {/*  {items}*/}
-            <Posts posts={DUMMY_POSTS} />
-            {/*</InfiniteScroll>*/}
+            <InfiniteScroll
+              dataLength={10} //This is important field to render the next data
+              next={fetchNextPage}
+              hasMore={hasNextPage ?? false}
+              loader={
+                <FlexDiv>
+                  <Oval color={GRAY} height={150}></Oval>
+                </FlexDiv>
+              }
+              endMessage={
+                <p style={{ textAlign: 'center' }}>
+                  <b>Yay! You have seen it all</b>
+                </p>
+              }
+              pullDownToRefresh
+              refreshFunction={() => {}}
+              pullDownToRefreshThreshold={50}
+              pullDownToRefreshContent={<h3 style={{ textAlign: 'center' }}>&#8595; Pull down to refresh</h3>}
+              releaseToRefreshContent={<h3 style={{ textAlign: 'center' }}>&#8593; Release to refresh</h3>}>
+              <Posts posts={data?.pages?.map((page) => page.posts).reduce((prev, next) => [...prev, ...next])} />
+            </InfiniteScroll>
           </div>
         </MainContainer>
       </div>
