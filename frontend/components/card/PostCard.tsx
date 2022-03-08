@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useAtomValue } from 'jotai/utils'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import { Oval } from 'react-loader-spinner'
 import styled from 'styled-components'
 
 import { meAtom } from '@/atom/user/me'
@@ -14,9 +15,12 @@ import ShareButton from '@/components/button/ShareButton'
 import CommentCard from '@/components/card/CommentCard'
 import { MenuModalContainer } from '@/components/container/MenuModalContainer'
 import CommentInput from '@/components/input/CommentInput'
+import { usePostReplies } from '@/hook/react-query/reply/usePostReplies'
 import { deletePost } from '@/server/post'
 import { TopicInfo } from '@/server/topic'
+import { GRAY } from '@/styles/classNames'
 import { PostInfo } from '@/type/post'
+import { ReplyInfo } from '@/type/reply'
 
 import { FlexDiv } from '../style/div/FlexDiv'
 
@@ -25,12 +29,26 @@ type Props = {
   topics: TopicInfo[]
 }
 
+export const DUMMY_COMMENT: ReplyInfo = {
+  replyId: 11,
+  text: 'Postsman text test 22/02/21',
+  replyer: {
+    id: 1,
+    nickname: 'tester01',
+    profileUrl: 'https://storage.googleapis.com/example-ocr-test/67954529-47c3-49c0-ae2b-efa5174404f7',
+  },
+}
+
 const PostCard: React.FC<Props> = ({ post, topics }) => {
   const router = useRouter()
   const me = useAtomValue(meAtom)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const isMyCard = me?.id === post?.authorInfo?.id
+
+  const { replies, isLoading } = usePostReplies(post?.postsId ?? post?.id ?? 1)
+
+  console.log({ replies })
 
   useEffect(() => {
     if (!post) {
@@ -89,8 +107,13 @@ const PostCard: React.FC<Props> = ({ post, topics }) => {
           <DownloadButton />
           <ShareButton />
         </FlexDiv>
-        <CommentCard nickName={'유저 닉네임'} text={'댓글 내용'} isMe={true} />
-        <CommentInput />
+        {isLoading && <Oval color={GRAY} height={80} />}
+        {replies?.map((reply, i) => (
+          <CommentCard comment={reply} key={`COMMENT_CARD_${i}`} />
+        ))}
+        <div className={'flex mt-3'}>
+          <CommentInput postId={post.postsId} />
+        </div>
       </PostCardContainer>
     </>
   )

@@ -1,46 +1,97 @@
 import React from 'react'
 
-import DummyCard from '@/components/card/DummyCard'
-import { PlainDivider } from '@/components/Divider'
+import InfiniteScroll from 'react-infinite-scroll-component'
+import { Oval, Rings } from 'react-loader-spinner'
+import styled from 'styled-components'
+
+import MainTitle from '@/components/_main/MainTitle'
+import AddButton from '@/components/button/AddButton'
+import { TopicCarousel } from '@/components/carousel'
+import Posts from '@/components/post/Posts'
 import { FlexDiv } from '@/components/style/div/FlexDiv'
+import { useMainInfinitePosts } from '@/hook/react-query/post/useMainInfinitePosts'
+import { useMainTopics } from '@/hook/react-query/topic/useMainTopics'
 import { useSsrMe } from '@/hook/useSsrMe'
+import { loadMainPosts } from '@/server/post'
 import { withAuthServerSideProps } from '@/server/withAuthServerSide'
+import { CENTER_FLEX, GRAY } from '@/styles/classNames'
 import { UserInfo as UserInfoType } from '@/type/user'
 
-type ServerSideProps = { me: UserInfoType }
+type ServerSideProps = { me: UserInfoType; posts: any }
 
-const Index: React.FC<ServerSideProps> = ({ me }) => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const PAGE_SIZE = 10
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const Feed: React.FC<ServerSideProps> = ({ me, posts }) => {
   useSsrMe(me)
-  console.log({ me })
+  // const [page, setPage] = useState(1)
+  const { topics, isLoading: topicLoading } = useMainTopics()
+  const { data, fetchNextPage, hasNextPage } = useMainInfinitePosts()
+
+  console.log(data?.pages)
 
   return (
     <>
-      <p className={'text-h2 ml-20'}>Pages</p>
-      <div className={'grid grid-cols-3 gap-2 w-full h-120 p-5'}>
-        <DummyCard href={'/search'} title={'검색'} content={'검색 페이지 (목업상태)'} />
-        <DummyCard href={'/feed'} title={'메인'} content={'메인 피드입니다. (목업상태)'} />
-        <DummyCard href={'/modify'} title={'수정'} content={'프로필 수정입니다. (목업상태)'} />
-        <DummyCard href={'/follower'} title={'팔로워'} content={'팔로워입니다. (목업상태)'} />
-        <DummyCard href={'/user/123'} title={'유저프로필'} content={'/user/${userId}'} />
-        <DummyCard href={'/post/6'} title={'포스트'} content={'/post/${postId}'} />
-        <DummyCard href={'/withdraw'} title={'탈퇴'} content={'탈퇴하기 페이지'} />
-        <DummyCard href={'/upload'} title={'업로드'} content={'게시글 업로드입니다. (게시글 db API 미구현)'} />
-        <DummyCard href={'/register'} title={'회원가입'} content={'회원가입 페이지입니다.'} />
-        <DummyCard href={'/login'} title={'로그인'} content={'로그인 페이지입니다.'} />
+      <div className={`flex flex-col-reverse flex-end items-center w-full`}>
+        <AddButton sticky={true} />
+        <MainContainer>
+          <MainTitle />
+          <FlexDiv margin={'2.5rem 0 0 0 '}>
+            <div className={'w-full'}>
+              {topicLoading ? (
+                <Rings height={40} />
+              ) : (
+                <TopicCarousel topics={topics.length === 0 ? [] : topics} onClickTopic={(_) => () => {}} />
+              )}
+            </div>
+          </FlexDiv>
+          <div className={`w-full ${CENTER_FLEX} mt-10 ml-5 xl:ml-0`}>
+            <InfiniteScroll
+              dataLength={10} //This is important field to render the next data
+              next={fetchNextPage}
+              hasMore={hasNextPage ?? false}
+              loader={
+                <FlexDiv>
+                  <Oval color={GRAY} height={150}></Oval>
+                </FlexDiv>
+              }
+              endMessage={
+                <p style={{ textAlign: 'center' }}>
+                  <b>Yay! You have seen it all</b>
+                </p>
+              }
+              pullDownToRefresh
+              refreshFunction={() => {}}
+              pullDownToRefreshThreshold={50}
+              pullDownToRefreshContent={<h3 style={{ textAlign: 'center' }}>&#8595; Pull down to refresh</h3>}
+              releaseToRefreshContent={<h3 style={{ textAlign: 'center' }}>&#8593; Release to refresh</h3>}>
+              <Posts posts={data?.pages?.map((page) => page.posts).reduce((prev, next) => [...prev, ...next])} />
+            </InfiniteScroll>
+          </div>
+        </MainContainer>
       </div>
-      <PlainDivider />
-      <p className={'text-h2 ml-20'}>기타</p>
-      <div className={'grid grid-cols-3 gap-2 w-full h-64 p-5'}></div>
-      <FlexDiv>
-        <h1 className={'mt-5'}>
-          {' '}
-          제플린 기반의 더미 페이지들입니다. 백엔드 API 연동은 아직 안되어 있습니다. (기능은 동작하지 않을 확률이 높음)
-        </h1>
-      </FlexDiv>
     </>
   )
 }
 
-export const getServerSideProps = withAuthServerSideProps()
+const MainContainer = styled.div`
+  max-width: 1201px;
+  margin-left: 1.3rem;
+  margin-top: 1.3rem;
+  width: 100%;
+  @media screen and (min-width: 1201px) {
+    margin-left: 0;
+    width: auto;
+  }
+`
 
-export default Index
+export const getServerSideProps = withAuthServerSideProps(async () => {
+  const res = await loadMainPosts({ page: 1, size: 10 })
+  console.log({ ssrPosts: res })
+  return {
+    posts: res.data ?? [],
+  }
+})
+
+export default Feed

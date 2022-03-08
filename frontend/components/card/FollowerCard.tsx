@@ -32,7 +32,7 @@ const FollowerCard: React.FC<Props> = ({ userInfo, isSmall }) => {
           </>
         )}
       </div>
-      <FollowButton followed={userInfo.alreadyFollow} />
+      <FollowButton userId={userInfo?.id} followed={userInfo.alreadyFollow} />
     </div>
   )
 }

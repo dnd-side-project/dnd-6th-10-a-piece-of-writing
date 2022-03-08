@@ -2,15 +2,32 @@ import React from 'react'
 
 import styled from 'styled-components'
 
+import { deleteReply } from '@/server/reply'
 import { HOVER_BLUE } from '@/styles/classNames'
 
-type Props = {}
+type Props = {
+  id: number
+}
 
-const CommentModal: React.FC<Props> = ({}) => {
+const CommentModal: React.FC<Props> = ({ id }) => {
+  const onClickModify = () => {
+    // modifyReply()
+  }
+
+  const onClickDelete = () => {
+    deleteReply(id).then((res) => {
+      alert(res.message)
+    })
+  }
+
   return (
     <Container>
-      <span className={`text-t14 p-2 pl-6 ${HOVER_BLUE} w-full cursor-pointer`}>수정하기</span>
-      <span className={`text-t14 p-2 pl-6 ${HOVER_BLUE} w-full cursor-pointer`}>삭제하기</span>
+      <span className={`text-t14 p-2 pl-6 ${HOVER_BLUE} w-full cursor-pointer`} onClick={onClickModify}>
+        수정하기
+      </span>
+      <span className={`text-t14 p-2 pl-6 ${HOVER_BLUE} w-full cursor-pointer`} onClick={onClickDelete}>
+        삭제하기
+      </span>
     </Container>
   )
 }
