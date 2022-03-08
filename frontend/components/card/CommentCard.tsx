@@ -16,19 +16,19 @@ const CommentCard: React.FC<Props> = ({ comment }) => {
 
   const isMe = useIsMyComment(comment)
 
-  if (!comment?.replyId) return null
+  if (!comment?.replyId && !comment?.id) return null
 
   return (
     <>
       <div>
         <div className={'w-full flex mt-6'}>
           <Image src={'/profile.svg'} width={24} height={24} alt={'profile'} />
-          <p className={'text-overline'}>{comment?.replyer?.nickname}</p>
+          <p className={'ml-2 text-overline'}>{comment?.replyer?.nickname ?? comment.replyerNickname}</p>
           {isMe && (
             <div className={'flex ml-auto relative'} onClick={() => setIsModalOpen((isModalOpen) => !isModalOpen)}>
               {isModalOpen && (
                 <div className={'absolute top-6 -left-52 md:left-0'}>
-                  <CommentModal id={comment.replyId} />
+                  <CommentModal id={comment.replyId ?? comment.id ?? 0} />
                 </div>
               )}
               <MenuButton />

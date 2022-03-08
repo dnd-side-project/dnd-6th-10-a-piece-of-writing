@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useAtomValue } from 'jotai/utils'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import { Oval } from 'react-loader-spinner'
 import styled from 'styled-components'
 
 import { meAtom } from '@/atom/user/me'
@@ -14,8 +15,10 @@ import ShareButton from '@/components/button/ShareButton'
 import CommentCard from '@/components/card/CommentCard'
 import { MenuModalContainer } from '@/components/container/MenuModalContainer'
 import CommentInput from '@/components/input/CommentInput'
+import { usePostReplies } from '@/hook/react-query/reply/usePostReplies'
 import { deletePost } from '@/server/post'
 import { TopicInfo } from '@/server/topic'
+import { GRAY } from '@/styles/classNames'
 import { PostInfo } from '@/type/post'
 import { ReplyInfo } from '@/type/reply'
 
@@ -42,6 +45,10 @@ const PostCard: React.FC<Props> = ({ post, topics }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const isMyCard = me?.id === post?.authorInfo?.id
+
+  const { replies, isLoading } = usePostReplies(post?.postsId ?? post?.id ?? 1)
+
+  console.log({ replies })
 
   useEffect(() => {
     if (!post) {
@@ -100,8 +107,13 @@ const PostCard: React.FC<Props> = ({ post, topics }) => {
           <DownloadButton />
           <ShareButton />
         </FlexDiv>
-        <CommentCard comment={DUMMY_COMMENT} />
-        <CommentInput postId={post.postsId} />
+        {isLoading && <Oval color={GRAY} height={80} />}
+        {replies?.map((reply, i) => (
+          <CommentCard comment={reply} key={`COMMENT_CARD_${i}`} />
+        ))}
+        <div className={'flex mt-3'}>
+          <CommentInput postId={post.postsId} />
+        </div>
       </PostCardContainer>
     </>
   )
