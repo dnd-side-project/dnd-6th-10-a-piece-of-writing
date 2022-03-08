@@ -15,11 +15,12 @@ import { useSsrMe } from '@/hook/useSsrMe'
 import { loadUserPosts } from '@/server/post'
 import { loadProfile } from '@/server/user/profile'
 import { withAuthServerSideProps } from '@/server/withAuthServerSide'
+import { PostInfo } from '@/type/post'
 import { UserInfo as UserInfoType } from '@/type/user'
 
-type ServerSideProps = { me: UserInfoType; ssrUserInfo: UserInfoType }
+type ServerSideProps = { me: UserInfoType; ssrUserInfo: UserInfoType; ssrPosts: PostInfo[] }
 
-const User: React.FC<ServerSideProps> = ({ me, ssrPosts, ssrUserInfo }) => {
+const User: React.FC<ServerSideProps> = ({ me, ssrPosts = [], ssrUserInfo }) => {
   useSsrMe(me)
   const router = useRouter()
   const { id } = router.query
