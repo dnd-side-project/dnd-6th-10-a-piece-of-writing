@@ -15,17 +15,11 @@ import lombok.ToString;
 @Data
 public class ReplyDto {
 
-    private Long id; // 댓글 아이디
+    private Long replyId; // 댓글 아이디
 
     private String text; // 댓글 내용
 
-    private Long replyerId; // 댓글 작성자 아이디
-
-    private String replyerNickname; // 댓글 작성자 닉네임
-
-    private String replyerEmail; // 댓글 작성자 이메일
-
-//    private MemberBasicInfoDto replyer;
+    private MemberBasicInfoDto replyer; // 댓글 작성자 정보
 
     private Long postsId;  //게시글 번호
 

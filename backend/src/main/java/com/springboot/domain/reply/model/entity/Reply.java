@@ -35,13 +35,10 @@ public class Reply extends BaseTime {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String text;
 
-    // MemberId로 변경 예정
     @ManyToOne(fetch = FetchType.LAZY)
 //    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "replyer_id")
     private Member replyer;
-
-//    private String replyer;
 
     @ManyToOne(fetch = FetchType.LAZY)
 //    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)

@@ -34,7 +34,8 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
     @Override
-    public List<ReplyDto> getFirstList(Long postsId) {
+//    public List<ReplyDto> getFirstList(Long postsId) {
+    public List<ReplyResponseDto> getFirstList(Long postsId) {
 
         List<Reply> result = replyRepository
             .getRepliesByPostsOrderByIdLimit3(Posts.builder().id(postsId).build());
@@ -43,7 +44,8 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
     @Override
-    public List<ReplyDto> getList(Long postsId) {
+//    public List<ReplyDto> getList(Long postsId) {
+    public List<ReplyResponseDto> getList(Long postsId) {
 
         List<Reply> result = replyRepository
 //            .getRepliesByPostsOrderById(Posts.builder().id(postsId).build());
@@ -76,17 +78,13 @@ public class ReplyServiceImpl implements ReplyService {
 
         Posts posts = postsService.findPostsById(dto.getPostsId());
 
-//        Member replyer = memberService.findMemberById(dto.getReplyerId());
         Member replyer = memberService.findMemberById(loginUser.getId());
 
-        Reply reply = Reply.builder()
-//            .id(dto.getReplyId())
-            .id(dto.getId())
+        return Reply.builder()
+            .id(dto.getReplyId())
             .text(dto.getText())
             .replyer(replyer)
             .posts(posts)
             .build();
-
-        return reply;
     }
 }

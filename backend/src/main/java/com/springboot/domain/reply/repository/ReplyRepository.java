@@ -18,7 +18,7 @@ public interface ReplyRepository extends JpaRepository<Reply, Long> {
     List<Reply> getRepliesByPostsOrderByIdDesc(Posts posts);
 
     // 게시물로 댓글 초기 3개 조회
-    @Query(value = "select * from Reply r "
+    @Query(value = "select * from reply r "
         + "order by r.id desc "
         + "limit 3", nativeQuery = true)
     List<Reply> getRepliesByPostsOrderByIdLimit3(Posts posts);

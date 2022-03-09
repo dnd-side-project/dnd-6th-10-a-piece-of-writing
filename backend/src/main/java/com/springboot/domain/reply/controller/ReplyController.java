@@ -6,6 +6,7 @@ import com.springboot.domain.common.model.dto.ResponseDto;
 import com.springboot.domain.common.service.ResponseServiceImpl;
 import com.springboot.domain.member.model.Member;
 import com.springboot.domain.reply.model.dto.ReplyDto;
+import com.springboot.domain.reply.model.dto.ReplyResponseDto;
 import com.springboot.domain.reply.model.dto.ReplySaveResponseDto;
 import com.springboot.domain.reply.model.dto.ReplyUpdateResponseDto;
 import com.springboot.domain.reply.service.ReplyService;
@@ -42,7 +43,8 @@ public class ReplyController {
 
         log.info("postsId: " + postsId);
 
-        List<ReplyDto> replies = replyService.getList(postsId);
+//        List<ReplyDto> replies = replyService.getList(postsId);
+        List<ReplyResponseDto> replies = replyService.getList(postsId);
 
         return responseServiceImpl.successResult(SuccessCode.SELECT_REPLY_SUCCESS, replies);
     }
@@ -53,7 +55,8 @@ public class ReplyController {
 
         log.info("postsId: " + postsId);
 
-        List<ReplyDto> replies = replyService.getFirstList(postsId);
+//        List<ReplyDto> replies = replyService.getFirstList(postsId);
+        List<ReplyResponseDto> replies = replyService.getList(postsId);
 
         return responseServiceImpl.successResult(SuccessCode.SELECT_FIRST_REPLY_SUCCESS, replies);
     }
