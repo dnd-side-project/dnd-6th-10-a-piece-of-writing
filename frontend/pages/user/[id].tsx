@@ -12,21 +12,25 @@ import FollowerModal from '@/components/modal/FollowerModal'
 import FollowingModal from '@/components/modal/FollowingModal'
 import { useUserProfile } from '@/hook/react-query/useUserProfile'
 import { useSsrMe } from '@/hook/useSsrMe'
+import { loadUserPosts } from '@/server/post'
 import { loadProfile } from '@/server/user/profile'
 import { withAuthServerSideProps } from '@/server/withAuthServerSide'
+import { PostInfo } from '@/type/post'
 import { UserInfo as UserInfoType } from '@/type/user'
 
-type ServerSideProps = { me: UserInfoType; ssrUserInfo: UserInfoType }
+type ServerSideProps = { me: UserInfoType; ssrUserInfo: UserInfoType; ssrPosts: PostInfo[] }
 
-const User: React.FC<ServerSideProps> = ({ me, ssrUserInfo }) => {
-  useSsrMe(me, ssrUserInfo ?? [])
+const User: React.FC<ServerSideProps> = ({ me, ssrPosts = [], ssrUserInfo }) => {
+  useSsrMe(me)
   const router = useRouter()
   const { id } = router.query
-  const isMe = me?.id === Number(id)
   const userId = typeof id === 'string' ? parseInt(id) : 1
 
-  const { userInfo } = useUserProfile(userId)
-  console.log({ userInfo })
+  const { userInfo: csrUserInfo } = useUserProfile(userId, !ssrUserInfo?.id)
+
+  console.log({ ssrUserInfo })
+
+  const userInfo = ssrUserInfo ?? csrUserInfo
 
   return (
     <>
@@ -34,10 +38,10 @@ const User: React.FC<ServerSideProps> = ({ me, ssrUserInfo }) => {
         <FollowerModal userId={userId} />
         <FollowingModal userId={userId} />
         <Container>
-          <UserInfo isMe={true} userInfo={userInfo ?? null} />
-          <UserPostLabel isMe={isMe} />
-          <UserTopicCarousel />
-          <UserPosts isMe={isMe} />
+          <UserInfo userInfo={userInfo} />
+          <UserPostLabel userInfo={userInfo} />
+          <UserTopicCarousel userInfo={userInfo} />
+          <UserPosts userInfo={userInfo} likePosts={ssrPosts} userPosts={ssrPosts} />
         </Container>
       </div>
     </>
@@ -56,9 +60,11 @@ const Container = styled.div`
 export const getServerSideProps = withAuthServerSideProps(async (ctx: GetServerSidePropsContext) => {
   const userIdByString = ctx.req.url?.slice(6) //  -- /user/123  의 index 6 이후값들
   if (userIdByString) {
-    const res = await loadProfile(parseInt(userIdByString))
+    const profileResult = await loadProfile(parseInt(userIdByString))
+    const postResult = await loadUserPosts(parseInt(userIdByString), ctx)
     return {
-      ssrUserInfo: res.data || null,
+      ssrUserInfo: profileResult.data || null,
+      ssrPosts: postResult.data ?? null,
     }
   }
   return {}

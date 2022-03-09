@@ -19,16 +19,15 @@ import { UserInfo as UserInfoType } from '@/type/user'
 
 type Props = {
   userInfo: UserInfoType
-  isMe?: boolean
-  followed?: boolean
 }
 
-const UserInfo: React.FC<Props> = ({ isMe = false, followed, userInfo }) => {
+const UserInfo: React.FC<Props> = ({ userInfo }) => {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [previewUrl, setPreviewUrl] = useState<string>('')
   const [me, setMe] = useAtom(meAtom)
+  const isMe = me?.id === userInfo?.id
 
   const imageInputRef = useRef<HTMLInputElement>(null)
 
@@ -111,11 +110,11 @@ const UserInfo: React.FC<Props> = ({ isMe = false, followed, userInfo }) => {
         <span className={'text-t16 font-semibold text-center'}>{userInfo?.nickname}</span>
         {!isMe && (
           <div className={'absolute right-0 translate-y-2/4 bottom-1/2 '}>
-            <FollowButton followed={followed} />
+            <FollowButton userId={userInfo?.id} followed={userInfo?.alreadyFollow} />
           </div>
         )}
       </div>
-      <UserSummaryCard />
+      <UserSummaryCard userInfo={userInfo} />
     </div>
   )
 }

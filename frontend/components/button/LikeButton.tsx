@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 
 import { IconContainer } from '@/components/container/IconContainer'
-import { useIsMyPost } from '@/hook/useIsMyPost'
+import { useIsMyPost } from '@/hook/isMy/useIsMyPost'
 import { like, unlike } from '@/server/post/like'
 
 type Props = {

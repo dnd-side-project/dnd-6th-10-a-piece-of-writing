@@ -4,8 +4,8 @@ import Image from 'next/image'
 import { useHover } from 'react-use'
 import styled from 'styled-components'
 
-import CommentButton from '@/components/button/CommentButton'
 import DownloadButton from '@/components/button/DownloadButton'
+import GotoButton from '@/components/button/GotoButton'
 import LikeButton from '@/components/button/LikeButton'
 import ShareButton from '@/components/button/ShareButton'
 import { PostInfo } from '@/type/post'
@@ -31,7 +31,7 @@ const Post: React.FC<Props> = ({ post }) => {
           </NickNameContainer>
           <div className={'mt-185px w-full flex flex-wrap justify-around'}>
             <LikeButton liked={post.alreadyLike} postId={post.postsId} />
-            <CommentButton />
+            <GotoButton postId={post.postsId ?? post.id} />
             <DownloadButton onClick={() => download(post.imageUrl ?? imgUrl)} />
             <ShareButton onClick={() => share(post.imageUrl ?? imgUrl)} />
           </div>

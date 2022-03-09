@@ -1,6 +1,7 @@
 import { UserInfo } from '@/type/user'
 
 export type PostInfo = {
+  id?: number
   postsId: number
   content: string
   imageUrl: string

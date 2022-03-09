@@ -4,10 +4,14 @@ import { useAtomValue } from 'jotai/utils'
 
 import { topicSearchResultsAtom } from '@/atom/topic'
 import { TopicCarousel } from '@/components/carousel'
+import { UserInfo } from '@/type/user'
 
-type Props = {}
+type Props = {
+  userInfo: UserInfo
+}
 
-const UserTopicCarousel: React.FC<Props> = ({}) => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const UserTopicCarousel: React.FC<Props> = ({ userInfo }) => {
   const userTopics = useAtomValue(topicSearchResultsAtom)
 
   return (

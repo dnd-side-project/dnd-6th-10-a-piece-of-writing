@@ -1,34 +1,37 @@
 import React from 'react'
 
-import { useAtomValue, useUpdateAtom } from 'jotai/utils'
+import { useUpdateAtom } from 'jotai/utils'
 import styled from 'styled-components'
 
 import { isFollowerModalOpenAtom, isFollowingModalOpenAtom } from '@/atom/user/follow'
-import { userInfoAtom } from '@/atom/user/me'
 import { CENTER_FLEX, HOVER_BLUE } from '@/styles/classNames'
+import { UserInfo } from '@/type/user'
 
-type Props = {}
+type Props = {
+  userInfo: UserInfo
+}
 
-const UserSummaryCard: React.FC<Props> = () => {
-  const userInfo = useAtomValue(userInfoAtom)
+const UserSummaryCard: React.FC<Props> = ({ userInfo }) => {
   const setIsFollowerModalOpen = useUpdateAtom(isFollowerModalOpenAtom)
   const setIsFollowingModalOpen = useUpdateAtom(isFollowingModalOpenAtom)
 
   return (
     <Container>
-      <div className={`${CENTER_FLEX} p-1 px-3 text-t16 font-medium ${HOVER_BLUE} cursor-pointer`}>{0} 글조각</div>
+      <div className={`${CENTER_FLEX} p-1 px-3 text-t16 font-medium ${HOVER_BLUE} cursor-pointer`}>
+        {userInfo?.postsCount ?? 0} 글조각
+      </div>
       {/*<Link href={`/follower/${userInfo?.id ?? 1}`}>*/}
       <div
         className={`${CENTER_FLEX} p-1 px-3 text-t16 font-medium cursor-pointer ${HOVER_BLUE} `}
         onClick={() => setIsFollowerModalOpen(true)}>
-        {userInfo?.follower ?? 0} 팔로워
+        {userInfo?.followerCount ?? 0} 팔로워
       </div>
       {/*</Link>*/}
       {/*<Link href={`/following/${userInfo?.id ?? 1}`}>*/}
       <div
         className={`${CENTER_FLEX} p-1 px-3 text-t16 font-medium ${HOVER_BLUE} cursor-pointer`}
         onClick={() => setIsFollowingModalOpen(true)}>
-        {userInfo?.follow ?? 0} 팔로잉
+        {userInfo?.followingCount ?? 0} 팔로잉
       </div>
       {/*</Link>*/}
     </Container>
