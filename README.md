@@ -58,7 +58,7 @@
 - Framework : SpringBoot
 - DB : MySQL
 - ORM : JPA
-- Development Detail : JPQL, QueryDSL
+- Development Detail : JPQL, QueryDSL, Google Vision API, Google Cloud Storage, Redis
 - Authentication : Spring Security, JWT
 - DevOps: Github Action, S3, CodeDeploy, Nginx
 - Cloud : AWS EC2
