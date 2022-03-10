@@ -53,11 +53,17 @@
 ## ⚒️ 기술 스택
 
 ### Backend
-- Development : Java, SpringBoot, IntelliJ, JPA
+- Development Tool : IntelliJ, Gradle
+- Language : JAVA
+- Framework : SpringBoot
+- DB : MySQL
+- ORM : JPA
+- Development Detail : JPQL, QueryDSL, Google Vision API, Google Cloud Storage, Redis
 - Authentication : Spring Security, JWT
 - DevOps: Github Action, S3, CodeDeploy, Nginx
 - Cloud : AWS EC2
 - Test : Junit
+- Development Methodology : TDD(Test-Driven-Development), DDD(Domain-Driven-Development)
 
 ### Frontend
 - Main Framework : Next JS + TypeScript 
