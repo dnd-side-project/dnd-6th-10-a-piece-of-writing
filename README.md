@@ -49,6 +49,9 @@
 
 ![architecture](architecture.png)
 
+## 🗺️DB ERD
+![ERD](DnD-A-Piece-Of-Writing-DB.png)
+
 
 ## ⚒️ 기술 스택
 
