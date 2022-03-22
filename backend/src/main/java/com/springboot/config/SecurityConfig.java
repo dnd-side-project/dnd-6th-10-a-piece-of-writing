@@ -37,7 +37,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         "/api/v1/posts/list", "/api/v1/posts/search",
 
         "/api/v1/member/profile/{id}", "/api/v1/member/follow/list/{id}",
-        "/api/v1/member/follower/list/{id}",
+        "/api/v1/member/follower/list/{id}", "/api/v1/member/posts/list/{id}",
+        "/api/v1/member/like/list/{id}",
 
         "/api/v1/reply/{postsId}", "/api/v1/reply/first/**",
 
